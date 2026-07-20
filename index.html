@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语学习</title>
+<style>
+:root{
+  --bg:#11131a;--card:#191c26;--card-2:#1f2330;--line:#2a2f3d;
+  --ink:#e9ecf4;--ink-soft:#aeb4c5;--ink-mute:#6f7689;
+  --accent:#7c9cff;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:48px 20px 80px}
+.title{font-size:26px;font-weight:700;margin-bottom:6px}
+.sub{font-size:14px;color:var(--ink-mute);margin-bottom:36px}
+.week{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px}
+.day{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;
+}
+.day:hover{border-color:var(--accent);background:var(--card-2)}
+.day.today{border-color:var(--accent)}
+.day-left{display:flex;flex-direction:column;gap:3px}
+.day-label{font-size:16px;font-weight:600}
+.day-date{font-size:12px;color:var(--ink-mute)}
+.day-arrow{font-size:18px;color:var(--ink-mute)}
+.today-badge{
+  font-size:11px;background:var(--accent);color:#0d1018;
+  padding:2px 8px;border-radius:6px;font-weight:700;margin-left:8px;
+}
+</style>
+</head>
+<body>
+<div class="title">📖 英语学习</div>
+<div class="sub">点击进入当天单词卡片</div>
+<div class="week">
+  <a class="day today" href="07-21.html">
+    <div class="day-left">
+      <div class="day-label">第一天 <span class="today-badge">今天</span></div>
+      <div class="day-date">7月21日（周一）</div>
+    </div>
+    <div class="day-arrow">›</div>
+  </a>
+  <a class="day" href="07-22.html">
+    <div class="day-left">
+      <div class="day-label">第二天</div>
+      <div class="day-date">7月22日（周二）</div>
+    </div>
+    <div class="day-arrow">›</div>
+  </a>
+  <a class="day" href="07-23.html">
+    <div class="day-left">
+      <div class="day-label">第三天</div>
+      <div class="day-date">7月23日（周三）</div>
+    </div>
+    <div class="day-arrow">›</div>
+  </a>
+  <a class="day" href="07-24.html">
+    <div class="day-left">
+      <div class="day-label">第四天</div>
+      <div class="day-date">7月24日（周四）</div>
+    </div>
+    <div class="day-arrow">›</div>
+  </a>
+  <a class="day" href="07-25.html">
+    <div class="day-left">
+      <div class="day-label">第五天</div>
+      <div class="day-date">7月25日（周五）</div>
+    </div>
+    <div class="day-arrow">›</div>
+  </a>
+  <a class="day" href="07-26.html">
+    <div class="day-left">
+      <div class="day-label">第六天</div>
+      <div class="day-date">7月26日（周六）</div>
+    </div>
+    <div class="day-arrow">›</div>
+  </a>
+  <a class="day" href="07-27.html">
+    <div class="day-left">
+      <div class="day-label">第七天</div>
+      <div class="day-date">7月27日（周日）</div>
+    </div>
+    <div class="day-arrow">›</div>
+  </a>
+</div>
+</body>
+</html>
