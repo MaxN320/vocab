@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>形容词 · 阶梯式笔记 v3</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 地基 · 加属性 */
+    --r2:#60a5fa;     /* 位置 */
+    --r3:#fbbf24;     /* 顺序(约定重) */
+    --r4:#34d399;     /* 比较/程度 */
+    --r5:#c084fc;     /* 分词形容词 */
+    --term:#818cf8;   /* 可推导框 */
+    --conv:#e0913d;   /* 纯约定框 */
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:var(--conv)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* 元规则条 */
+  .meta{margin:22px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+  .meta .mt{font-size:.92rem;font-weight:700;color:var(--ink);margin-bottom:12px}
+  .mgrid{display:flex;gap:12px;flex-wrap:wrap}
+  .mbox{flex:1;min-width:250px;border-radius:11px;padding:12px 15px;border:1px solid var(--line)}
+  .mbox .h{font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.88rem;margin-bottom:5px}
+  .mbox p{margin:0;font-size:.84rem;color:var(--ink-soft)} .mbox p b{color:var(--ink)}
+  .mbox.derive{border-left:3px solid var(--term);background:rgba(129,140,248,.05)} .mbox.derive .h{color:#a5b4fc}
+  .mbox.convb{border-left:3px solid var(--conv);background:rgba(224,145,61,.06)} .mbox.convb .h{color:#ffc078}
+
+  /* ===== 招牌视觉：形容词堆叠槽 ===== */
+  .stack{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .stack .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:12px}
+  .slots{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap}
+  .slot{flex:1;min-width:88px;border-radius:9px;border:1px solid var(--line);background:var(--panel-2);padding:9px 8px;text-align:center;border-top:3px solid var(--r3)}
+  .slot .lb{font-size:.62rem;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:5px;letter-spacing:.02em}
+  .slot .wd{font-size:.92rem;color:#ffe0a3;font-weight:700}
+  .slot.noun{border-top-color:var(--base);flex:0 0 auto;min-width:74px}
+  .slot.noun .wd{color:var(--base)}
+  .slot.noun .lb{color:var(--base)}
+  .stack .sflow{text-align:center;color:var(--ink-faint);font-size:.9rem;margin:12px 0 8px;font-family:"SF Mono",Consolas,monospace}
+  .stack .full{background:var(--code);border:1px solid var(--line);border-radius:9px;padding:11px 13px;font-size:1.05rem}
+  .stack .full .zh{color:var(--zh);font-size:.82rem;margin-top:3px}
+  .stack .snote{margin-top:10px;font-size:.8rem;color:#ffd9a8;background:rgba(224,145,61,.07);border:1px solid rgba(224,145,61,.22);border-radius:8px;padding:8px 11px}
+  .stack .snote b{color:#fff}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.28rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .adj{color:#ffe0a3;font-weight:700}       /* 形容词本体 */
+  .attr{color:#7ab8ff;font-weight:700}      /* 定语位 */
+  .pred{color:#8ce99a;font-weight:700}      /* 表语位 */
+  .cmp{color:#7ee0b8;font-weight:700}       /* 比较级 */
+  .ing{color:#ffb3a0;font-weight:700}       /* -ing */
+  .edp{color:#c4a6ff;font-weight:700}       /* -ed */
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+  .lv{color:var(--ink-faint);font-style:italic}  /* 系动词 */
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  /* 可推导框（蓝） */
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  /* 纯约定框（橙） */
+  details.conv{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--conv);border-radius:10px;background:rgba(224,145,61,.055);overflow:hidden}
+  details.conv>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#ffc078;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.conv>summary::-webkit-details-marker{display:none}
+  details.conv>summary .caret{transition:transform .2s;color:var(--conv);font-size:.72rem}
+  details.conv[open]>summary .caret{transform:rotate(90deg)}
+  details.conv>summary:hover{background:rgba(224,145,61,.1)}
+
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+  details.conv .tbody{border-top-color:rgba(224,145,61,.25)} details.conv .tbody code{color:#ffd9a8}
+  details.conv .tbody .warn{background:rgba(224,145,61,.1);border-color:rgba(224,145,61,.3);color:#ffd9a8}
+  details.conv .tbody .warn b{color:#fff}
+
+  /* 两位置对照 */
+  .pos2{display:flex;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+  .poscol{flex:1;min-width:230px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px;border-top:3px solid var(--r2)}
+  .poscol h5{margin:0 0 5px;font-size:.9rem;color:var(--r2)}
+  .poscol .ex{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:#8ce99a;margin:6px 0} .poscol .ex .zh{color:var(--zh);font-family:inherit;display:block}
+  .poscol .rule{font-size:.82rem;color:var(--ink-soft)} .poscol .rule b{color:var(--ink)}
+
+  /* 比较级三情形 */
+  .comp{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+  .cc{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--r4)}
+  .cc .tg{flex:0 0 88px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.82rem;color:var(--r4)}
+  .cc .bd{flex:1;font-size:.85rem;color:var(--ink-soft)} .cc .bd b{color:var(--ink)}
+  .cc .ex{font-family:"SF Mono",Consolas,monospace;font-size:.79rem;color:#8ce99a;margin-top:3px}
+
+  /* 维度分隔小标题 */
+  .dim{margin:18px 0 8px;display:flex;align-items:center;gap:10px}
+  .dim .dn{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:var(--r4);color:#053d2b;display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.85rem}
+  .dim .dt{font-size:1.02rem;font-weight:750;color:var(--r4)}
+  .dim .dd{font-size:.8rem;color:var(--ink-faint)}
+
+  /* as...as 骨架 + 否定三态 */
+  .asbar{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:10px 0 6px;text-align:center}
+  .asbar .frame{font-family:"SF Mono",Consolas,monospace;font-size:1.05rem;color:var(--ink)}
+  .asbar .frame b{color:#7ee0b8} .asbar .frame .mid{color:#ffe0a3}
+  .asbar .zh{color:var(--zh);font-size:.82rem;margin-top:4px}
+  .negt{width:100%;border-collapse:collapse;margin:10px 0 4px;font-size:.85rem}
+  .negt th,.negt td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  .negt th{background:var(--panel-2);color:var(--ink);font-size:.74rem;font-family:"SF Mono",Consolas,monospace}
+  .negt .st{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;white-space:nowrap}
+  .negt .st.a{color:#7ee0b8} .negt .st.b{color:#ffce7a} .negt .st.c{color:#ff9db0}
+  .negt .mean{color:var(--ink-soft)} .negt .mean b{color:var(--ink)}
+  .negt .eqv{color:var(--ink-faint);font-size:.8rem}
+
+  /* -ing/-ed 对照 */
+  .ie{display:flex;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+  .iecol{flex:1;min-width:230px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .iecol.ing{border-top:3px solid #ff9d84} .iecol.ed{border-top:3px solid #c4a6ff}
+  .iecol h5{margin:0 0 4px;font-size:.92rem} .iecol.ing h5{color:#ff9d84} .iecol.ed h5{color:#c4a6ff}
+  .iecol .who{font-size:.83rem;color:var(--ink-soft);margin-bottom:6px} .iecol .who b{color:var(--ink)}
+  .iecol .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a} .iecol .ex .zh{color:var(--zh);font-family:inherit;display:block}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+    .slot{min-width:72px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>形容词</h1>
+    <div class="sub">adjectives · describing a noun · v3</div>
+    <p class="lead">形容词干的事只有一件:<b>给名词加一个属性,把它说得更具体</b>。dog → big dog → big black dog。整份笔记就沿着这个"加属性"的动作,一层层追问:属性<b>放哪</b>?好几个属性<b>怎么排</b>?属性能不能<b>比大小</b>?属性来自一个<b>动作</b>时又怎么办?</p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的概念。<span class="pill conv">🧷 纯约定</span> 橙框：没逻辑、只能背的固定用法（延续上一册立的规矩：该推的推，该背的老实说背）。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>形容词是一个<b>修饰词</b>——它拉住一个名词,往上<span class="q">追加一条属性,让"哪一个/什么样的"变得更清楚</span>。"a dog"是笼统的,"a big black dog"就被缩小了。后面四阶做的所有事,都只是围绕这一个动作:这条属性<b>贴在哪、排第几、能否分级、从哪来</b>。抓住"加属性"这三个字,全篇不散。
+  </div>
+
+  <div class="meta">
+    <div class="mt">⚖️ 沿用上一册的元规则：形容词里也有"两种规则"，别一视同仁</div>
+    <div class="mgrid">
+      <div class="mbox derive"><div class="h">📖 可推导</div><p>有自洽逻辑，值得理解透：四个位置、短词加 -er / 长词用 more（发音省力）、-ing/-ed 的主动被动。</p></div>
+      <div class="mbox convb"><div class="h">🧷 纯约定</div><p>没有一路自洽的逻辑，只能背：<b>多个形容词的精确排序</b>、<b>good→better 这类不规则比较级</b>。遇到就记，别硬推。</p></div>
+    </div>
+  </div>
+
+  <!-- ===== 招牌：堆叠槽 ===== -->
+  <div class="stack">
+    <div class="scap">多个形容词，像往名词前"插槽"一样按固定顺序堆叠</div>
+    <div class="slots">
+      <div class="slot"><div class="lb">Opinion 看法</div><div class="wd">beautiful</div></div>
+      <div class="slot"><div class="lb">Size 大小</div><div class="wd">small</div></div>
+      <div class="slot"><div class="lb">Age 新旧</div><div class="wd">old</div></div>
+      <div class="slot"><div class="lb">Color 颜色</div><div class="wd">red</div></div>
+      <div class="slot"><div class="lb">Material 材料</div><div class="wd">wooden</div></div>
+      <div class="slot noun"><div class="lb">NOUN 名词</div><div class="wd">table</div></div>
+    </div>
+    <div class="sflow">↓ 组装起来 ↓</div>
+    <div class="full">a <span class="adj">beautiful small old red wooden</span> <span style="color:var(--base);font-weight:700">table</span><div class="zh">一张漂亮的、小巧的、古旧的红色木桌</div></div>
+    <div class="snote">🧷 <b>老实说:</b>这个顺序主要是<b>约定/语感</b>,不是严密逻辑。唯一能抓的一条真线索是——<b>越"本质、越属于这东西本身"的属性(材料/用途)越贴近名词;越"主观"的(看法)离得越远</b>。精确槽位记不住时,就按这条感觉走,细节靠多读固化(详见第三阶)。</div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>加属性：拉住名词，追加一条描述<span class="chip">modify a noun</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">名词往往太笼统("一只狗")。我们需要一种词,专门<b>往名词身上加属性</b>,把它说清楚。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这是地基本身。形容词的唯一使命就是<b>修饰名词</b>——回答"什么样的?哪一个?"。它把名词的范围<b>缩小</b>:a dog → a big dog(排除了小狗)。</div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">She has a <span class="adj">big</span> <span class="noun">dog</span>.</div><div class="zh">她有一只大狗。（big 给 dog 加了"大"这条属性）</div></div>
+        <div class="eg"><div class="en">He is a <span class="adj">happy</span> <span class="noun">child</span>.</div><div class="zh">他是个快乐的孩子。</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 边界：形容词 vs 副词——一个改名词，一个改动作</summary>
+        <div class="tbody">
+          <p>最常见的混淆:形容词只修饰<b>名词</b>;要修饰<b>动作(动词)</b>,那是<b>副词</b>的活,是<b>另一个词</b>。</p>
+          <p><b>· 形容词 → 名词:</b> <code>a quick runner</code>(一个快的跑者)、<code>She is quick.</code>(她很快)</p>
+          <p><b>· 副词 → 动作:</b> <code>She runs quickly.</code>(她跑得快)——修饰的是"跑"这个动作。</p>
+          <div class="warn">⚠️ 中国学习者高频错:❌ <code>She runs quick.</code>(想修饰"跑"却用了形容词)→ ✅ <code>quickly</code>。<b>记住:改名词用形容词,改动作用副词。</b>(副词是另一大块,留待专门一册。)</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>第一阶只确立一件事——形容词=给名词加属性。但"加"这个动作立刻有个问题:这条属性,到底<b>贴在名词的什么位置</b>?这逼出第二阶。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">怎么用</span>四个位置：形容词能落在哪<span class="chip">定语 / 表语 / 宾补 / 后置</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">第一阶的局限:光说"加属性",没说这属性<b>放在句子的哪儿</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">英语给形容词<b>四个落脚点</b>,但都在做同一件事——把一条属性贴到某个名词/代词上。前两个最常用(定语、表语),后两个(宾补、后置)是它的延伸。<b>其中表语=句型篇的"主系表 P",宾补=句型篇的"主谓宾补 C"——你都见过。</b></div></div>
+      </div>
+
+      <div class="pos2">
+        <div class="poscol">
+          <h5>① 前置定语（贴名词前）</h5>
+          <div class="rule">紧挨名词<b>前面</b>,合成更具体的名词短语。</div>
+          <div class="ex">a <span class="attr">happy</span> child<span class="zh">一个快乐的孩子</span></div>
+        </div>
+        <div class="poscol">
+          <h5>② 表语（系动词后）</h5>
+          <div class="rule">在 <span class="lv">is / look / seem</span> <b>后</b>描述主语。<b>=主系表 S+V+P。</b></div>
+          <div class="ex">The child <span class="lv">is</span> <span class="pred">happy</span>.<span class="zh">这孩子很快乐。</span></div>
+        </div>
+        <div class="poscol">
+          <h5>③ 宾语补语（宾语后）</h5>
+          <div class="rule">在宾语<b>后</b>补充说明宾语。<b>=主谓宾补 S+V+O+C</b>(回扣句型篇)。</div>
+          <div class="ex">They painted the door <span class="pred">red</span>.<span class="zh">他们把门刷成红色。（red 说明 door）</span></div>
+        </div>
+        <div class="poscol">
+          <h5>④ 后置定语（名词后）</h5>
+          <div class="rule">少数情况,形容词跟在名词<b>后面</b>修饰它。本质是<b>定语从句的省略</b>(详见下框)。</div>
+          <div class="ex">something <span class="attr">new</span><span class="zh">新的东西</span></div>
+        </div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">She has a <span class="attr">red</span> <span class="noun">car</span>. / The <span class="noun">car</span> <span class="lv">is</span> <span class="pred">red</span>.</div><div class="zh">她有辆红色的车。／ 这车是红色的。（同一个 red，一个当定语，一个当表语）</div></div>
+      </div>
+
+      <div class="callout">🔗 <b>接上句型笔记:</b>②表语=主系表的 P，③宾补=主谓宾补的 C。所以形容词的中间两个位置，你早在句型那册见过——这里只是认出、命名。</div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 可推导：后置定语——本质是"定语从句省略"，四种情形</summary>
+        <div class="tbody">
+          <p>形容词一般前置。但下面几种<b>被逼到名词后面</b>——而且都能还原成一个定语从句,这就是它们的统一逻辑:</p>
+          <p><b>纲:</b> <code>The boy silent</code> = <code>The boy who was silent</code>。<b>后置形容词 = 把"who/which + be"省掉后剩下的那个形容词。</b>抓住这条,四种情形一通百通。</p>
+          <p><b>① 修饰不定代词 → 必须后置:</b> some/any/no/every + thing/one/body 是"空壳词",形容词只能跟在后面。<code>something new</code>(新东西)、<code>nothing wrong</code>(没什么不对)、<code>anyone interested</code>。</p>
+          <p><b>② a- 开头的形容词作定语 → 后置:</b> alive/alone/awake/asleep 这类本只能作表语(见下一个框),硬要修饰名词时被挤到后面。<code>the only man awake</code>(唯一醒着的人)。</p>
+          <p><b>③ 非限制性（带状语味）:</b> 用逗号隔开,像补一句"当时是…的状态"。<code>The boy, silent, stood at the door.</code>(男孩默默地站在门口)——对比前置的 <code>The silent boy stood…</code>只是"沉默的男孩",没有那层"当时正沉默着"的意味。</p>
+          <p><b>④ 并列形容词 → 常后置:</b> 两个及以上形容词用 and 并列,整组放名词后。<code>a set of furniture, simple and beautiful</code>、<code>an accident pure and simple</code>(纯属意外)。</p>
+          <div class="warn">🔑 全部回到那条纲:<b>后置 = 定语从句省了 who/which is</b>。所以它不是新语法,是你以后要学的定语从句的"压缩版"。</div>
+        </div>
+      </details>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 少数形容词"挑位置"：只能站一边</summary>
+        <div class="tbody">
+          <p>绝大多数形容词多个位置都能站。但少数是"偏科生":</p>
+          <p><b>· 只能作定语:</b> <code>main, only, elder</code>。✅ the <b>main</b> reason／❌ The reason is main.</p>
+          <p><b>· 只能作表语（多是 a- 开头的）:</b> <code>asleep, awake, alone, afraid, alive</code>。✅ The baby is <b>asleep</b>.／❌ an asleep baby（前置要说 a <b>sleeping</b> baby;若非要修饰名词则后置,见上框②）。</p>
+          <div class="warn">🔑 这一小撮属于<b>约定</b>,遇到记住即可。判断法:拿不准时,塞进"a __ 名词"和"名词 is __"各试一次,哪个别扭就避开哪个。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>属性有了四个落脚位。最常用的定语位一旦<b>塞进不止一个</b>形容词(a big black wooden table),新问题就来了:它们<b>谁先谁后</b>?这逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">特殊情况</span>多个形容词的顺序<span class="chip">🧷 半约定</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">定语位塞进好几个形容词时,英语有个<b>默认排序</b>,乱排会立刻"听着不对"。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val"><b>诚实地讲:这条主要是约定/语感,不是严密逻辑</b>(所以标🧷)。硬找因果会被反例问穿。但有<b>一条真线索</b>可抓——见下。</div></div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r3)">🧭 <b>唯一能推的那条线索:</b>把形容词按"<b>离名词远近</b>"想成一条轴——<b>越是这东西"天生、本质、改不掉"的属性(材料 wooden、用途 dining),越贴近名词;越是"我主观加上去"的评价(beautiful、nice),越靠外。</b> 因为材料几乎等于这东西的一部分,而"漂亮"只是你的看法,可以随时换。中间那些(大小、新旧、颜色)按惯例落在两者之间。</div>
+
+      <details class="conv">
+        <summary><span class="caret">▸</span>🧷 纯约定：完整排序口诀（记不住就靠上面那条线索 + 多读）</summary>
+        <div class="tbody">
+          <p>英语默认顺序(名词前,从左到右):</p>
+          <p><b>看法 → 大小 → 新旧 → 形状 → 颜色 → 来源 → 材料 → 用途 →</b> 名词</p>
+          <p>(Opinion → Size → Age → Shape → Color → Origin → Material → Purpose → NOUN)</p>
+          <p>例:<code>a nice small old round red Chinese wooden dining table</code>。真实说话很少一口气堆这么多;常见的是两三个,如 <code>a beautiful old house</code>(看法+新旧)。</p>
+          <div class="warn">🔑 <b>态度:</b>别背这一长串去"推",记不住是正常的。日常只需 ① 抓住"本质近、主观远"那条线索,② 高频搭配靠多读固化语感。<b>这是约定,不是逻辑。</b></div>
+        </div>
+      </details>
+
+      <div class="egs">
+        <div class="eg"><div class="en">She bought a <span class="adj">beautiful old</span> <span class="noun">house</span>.</div><div class="zh">她买了一栋漂亮的老房子。（看法 beautiful → 新旧 old → 名词）</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 澄清：a / the / this / my / 数词 不是形容词，别拿去排序</summary>
+        <div class="tbody">
+          <p>有些排序表会把"限定"塞在最前面,容易让人误以为 a/the/this 也是形容词。<b>它们不是。</b></p>
+          <p>a/the/this/that/my/your/some/数词属于<b>限定词</b>(冠词篇讲过)——它们站在<b>所有形容词更前面</b>,且彼此<b>互斥</b>(不能 ❌the my old house)。</p>
+          <p>所以严格说,形容词的排序是从<b>"描绘性/主观"那一段</b>才开始的:<code>my</code>(限定词) + <code>beautiful old</code>(形容词) + <code>house</code>。</p>
+          <div class="warn">🔑 排序时,先把限定词(a/the/my…)放到最前定死,<b>剩下的才是形容词之间</b>比"本质近·主观远"。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>顺序问题(尽量)理清了。但到目前,形容词只会"平铺"一条属性。属性其实是有<b>程度</b>的——高、更高、最高。这条"分级"能力还没上场,逼出第四阶。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">怎么用</span>比较级 / 最高级：给属性分档<span class="chip">-er / -est · more / most</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前面的形容词都是"有没有这属性"。但生活里要比:<b>A 比 B 高、C 最高、D 和 E 一样高</b>。属性需要<b>刻度</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">于是形容词长出三档:原级(tall)→ 比较级(taller)→ 最高级(tallest)。<b>变形取决于词的长短——背后是发音省力,和名词篇加 -s 同一个道理。</b></div></div>
+      </div>
+
+      <div class="callout">🧭 <b>先分清两道工序，别把它们摆成平级:</b>比较其实是两件事——<b>一、怎么把 taller 这个词"造"出来（构词）</b>；<b>二、taller 造好后，句子怎么"装配"（句法）</b>。下面严格按这两层展开。</div>
+
+      <!-- 维度一 -->
+      <div class="dim"><div class="dn">一</div><div><div class="dt">怎么变形（造词）</div><div class="dd">原级 → 比较级 / 最高级，长什么样</div></div></div>
+
+      <div class="comp">
+        <div class="cc"><div class="tg">短词 +er/est</div><div class="bd"><b>单音节(及部分双音节)</b>:直接加。背后是<b>发音省力</b>(同名词篇加 -s)。<div class="ex">tall → taller → tallest · big → bigger → biggest</div></div></div>
+        <div class="cc"><div class="tg">长词 more/most</div><div class="bd"><b>多音节</b>:前加 more/most。因为 ❌ beautifullest 太拗口。<div class="ex">beautiful → more beautiful → most beautiful</div></div></div>
+        <div class="cc"><div class="tg">负方向 less/least</div><div class="bd">"更不…／最不…" → <b>不分音节,一律</b> less/least + 原级。<div class="ex">less important(更不重要) · the least expensive(最不贵)</div></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 可推导：-er/-est 的拼写变化，和名词复数是同一套规则</summary>
+        <div class="tbody">
+          <p>加 -er/-est 的拼写微调,几乎照搬名词篇加 -s 的逻辑——都为了<b>好拼、好读</b>:</p>
+          <p><b>· 以 e 结尾 → 只加 r/st:</b> <code>nice → nicer → nicest</code></p>
+          <p><b>· 辅音字母+y → 变 y 为 i:</b> <code>happy → happier → happiest</code>(同 baby→babies)</p>
+          <p><b>· 重读闭音节(单元音+单辅音) → 双写辅音:</b> <code>big → bigger</code>、<code>hot → hotter</code>(锁住短元音)</p>
+          <p>双音节里"辅音字母+y"结尾的(happy, easy),就<b>照单音节规则</b>;有些双音节两种都行(<code>clever → cleverer / more clever</code>)。</p>
+          <div class="warn">🔑 名词篇学的"变形为发音服务",这里<b>又一次生效</b>。老原理换场景。</div>
+        </div>
+      </details>
+
+      <details class="conv">
+        <summary><span class="caret">▸</span>🧷 纯约定：不规则比较级（背，没有逻辑）</summary>
+        <div class="tbody">
+          <p>少数最常用的形容词,比较级/最高级<b>完全不按规则</b>,历史遗留,直接背:</p>
+          <p><code>good/well → better → best</code>　<code>bad/ill → worse → worst</code><br><code>many/much → more → most</code>　<code>little → less → least</code></p>
+          <p><b>两个要分辨含义的:</b><br>· <code>far → farther / further</code>:<b>距离</b>两者通用;<b>抽象/程度</b>(进一步)只用 <b>further</b>。<br>· <code>old → older / elder</code>:比高矮岁数用 older;<b>elder/eldest 只作定语、只用于人</b>(家庭长幼)——✅ my <b>elder</b> brother／❌ He is elder than me(用 older than)。</p>
+          <div class="warn">🔑 越高频的词越"不规则"。这几个用得极多,背下来一劳永逸。</div>
+        </div>
+      </details>
+
+      <!-- 维度二 -->
+      <div class="dim"><div class="dn">二</div><div><div class="dt">怎么使用（造句）</div><div class="dd">词造好后，放进什么句型</div></div></div>
+
+      <div class="comp">
+        <div class="cc"><div class="tg">比较级 + than</div><div class="bd">和谁比,后跟 <b>than + 对象</b>。<div class="ex">She is <span class="cmp">taller than</span> her sister. 她比她妹妹高。</div></div></div>
+        <div class="cc"><div class="tg">the + 最高级</div><div class="bd"><b>三者以上</b>才用最高级;"独一无二"→配 <b>the</b>(回扣冠词篇)。结构 the+最高级+(范围)。<div class="ex">He is <span class="cmp">the tallest</span> in the class. 他是全班最高的。</div></div></div>
+        <div class="cc"><div class="tg">程度修饰</div><div class="bd">给比较级加量:<b>much / far / even / a little</b> + 比较级。<b>不用 very</b>(❌ very taller)。<div class="ex">much taller(高得多) · a little older(大一点)</div></div></div>
+        <div class="cc"><div class="tg">同级 as…as</div><div class="bd">比"一样不一样",中间放<b>原级</b>。详见下面独立板块。<div class="ex">Amy is <span class="cmp">as tall as</span> Bill. 一样高。</div></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 高频坑：than 后面要"对等对比"，别拿人跟头发比</summary>
+        <div class="tbody">
+          <p>than 两边比的东西<b>必须是同一类</b>。中文常省略,英语不能。</p>
+          <p>❌ <code>My hair is longer than you.</code> —— 字面"我的头发比<b>你(人)</b>长",错位。</p>
+          <p>✅ <code>My hair is longer than <b>yours</b>.</code>(=than your hair)—— 头发比头发,对等。</p>
+          <div class="warn">🔑 写完 than 回头看:<b>它后面那个，和句首比较的是不是同一类？</b> 用 yours/mine/his(名词性物主代词，代词篇)顶替最省事。</div>
+        </div>
+      </details>
+
+      <div class="egs">
+        <div class="eg"><div class="en">This coat is <span class="cmp">prettier</span>.</div><div class="zh">这件外套更好看。（对象明显时，than 可省）</div></div>
+        <div class="eg"><div class="en">This is <span class="cmp">the best</span> <span class="noun">day</span> of my life.</div><div class="zh">这是我一生中最好的一天。</div></div>
+      </div>
+
+      <!-- 同级比较独立板块 -->
+      <div class="callout" style="border-color:var(--r4)">📐 <b>同级比较（属于"怎么使用"下的一支，但难点集中，单独讲透）</b><br>骨架永远是 <b>as + 原级 + as</b>（中间是原级 tall，不是 taller，因为你在说"一样"，不是"更"）。难点全在<b>否定</b>——三种否定意思完全不同，是拉分点。</div>
+
+      <div class="asbar">
+        <div class="frame">A is <b>as</b> <span class="mid">tall</span> <b>as</b> B</div>
+        <div class="zh">A 和 B 一样高。（两个 as 像一对"等号钩"，把原级夹住 = 两边相等）</div>
+      </div>
+
+      <table class="negt">
+        <thead><tr><th>结构</th><th>意思</th><th>等价于</th></tr></thead>
+        <tbody>
+          <tr><td class="st a">as rich as</td><td class="mean"><b>一样</b>富</td><td class="eqv">两边相等</td></tr>
+          <tr><td class="st b">not as rich as</td><td class="mean"><b>不如</b>——A 没 B 富（A 穷些）</td><td class="eqv">= A is poorer than B</td></tr>
+          <tr><td class="st c">no richer than</td><td class="mean"><b>一样烂</b>——A 和 B 一样穷（都穷）</td><td class="eqv">= A is as poor as B</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout"><b>一句话记牢三种否定的差别：</b>
+        <br>· <b>not as…as</b> → 一方<b>输</b>了（明确 A 比不上 B）
+        <br>· <b>not …er than</b> → 一方<b>没赢</b>（"不比…更"，可能一样可能输，<b>模糊</b>）
+        <br>· <b>no …er than</b> → 俩人<b>一样烂</b>（看到 <b>no</b> 就把形容词<b>翻成反义词</b>去理解）
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 万能公式：no + 比较级 + than 怎么秒懂 + 倍数表达</summary>
+        <div class="tbody">
+          <p><b>公式:</b> <code>A is no + 比较级 + than B</code> = <b>A 和 B 一样，且都往"反义词"那边倒</b>。看到 no，就把形容词换成反义词。</p>
+          <p>· <code>Amy is <b>no richer than</b> Bill.</code> → rich 反义=poor → <b>一样穷</b>(都穷) = as poor as。</p>
+          <p>· <code>The heart is <b>no more intelligent than</b> the stomach.</code> → intelligent 反义=愚 → <b>一样不聪明</b>(都不聪明)。</p>
+          <p><b>顺带 · 倍数比较（很实用）:</b> 数字放最前，<code>倍数 + as + 原级 + as</code>。</p>
+          <p>· <code>This room is <b>twice as big as</b> that one.</code> 这房间是那间的<b>两倍</b>大。（three times as… 三倍）</p>
+          <div class="warn">⚠️ 重申上一处纠正：<b>not richer ≠ 一样穷</b>（这是常见误记）；<b>no richer = 一样穷</b>。只有 <code>no + 比较级 + than</code> 才表"两者都在反义那头"。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>比较这一阶现在两层清清楚楚——<b>一、怎么变形</b>(短/长/负向 + 拼写 + 不规则)；<b>二、怎么使用</b>(than、the+最高级、程度修饰、同级 as…as 及其否定三态)。但前面所有形容词都是"简单描述词"。有一大批其实<b>来自动词</b>(boring 来自 bore)，英语把它们一劈为二——逼出第五阶。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">高级技巧 · 跨界</span>分词形容词 -ing / -ed：由"动词的分词"转来的形容词<span class="chip">boring vs bored</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">很多形容词由动词变来(bore 使厌烦 → boring / bored)。它们<b>成对出现,且意思相反</b>,选错就闹笑话。</div></div>
+        <div class="row"><div class="lab">身份</div><div class="val"><b>说清一件事:这类词一脚踩两个领域</b>——论<b>来历</b>它是动词的<b>分词(非谓语动词)</b>;论<b>用法</b>它在句中当<b>形容词</b>使。放这册讲,是因为它扮演的是形容词角色;以后学"非谓语动词"会从分词那一面再遇到它。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">区分它俩其实<b>能推,不是约定</b>:-ing 表<b>主动</b>(引发这感觉的一方),-ed 表<b>被动</b>(承受这感觉的一方)。看清"谁是源头、谁是感受者",永远不会错。</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 双重身份：它既是"分词"，又是"形容词"</summary>
+        <div class="tbody">
+          <p>同一个 <code>boring</code>，站在两个坐标系里:</p>
+          <p><b>· 来历坐标（动词家族）:</b> 它是动词 bore 的<b>现在分词</b>;<code>bored</code> 是<b>过去分词</b>。分词属于<b>非谓语动词</b>(动词变个形，去干非谓语的活)——这是<b>后面专门一册</b>的内容。</p>
+          <p><b>· 用法坐标（本册）:</b> 在句子里它就是个<b>形容词</b>——能作定语(<code>a boring movie</code>)、能作表语(<code>The movie is boring</code>)，和普通形容词一样受第二阶"四个位置"管。</p>
+          <div class="warn">🔑 所以别把它当"两个不同的知识点"：<b>是同一个词的两张面孔</b>。这册从"形容词用法"这面讲透；非谓语那册会从"分词构成"那面补齐。</div>
+        </div>
+      </details>
+
+      <div class="ie">
+        <div class="iecol ing">
+          <h5>-ing · 引发者（主动）</h5>
+          <div class="who">形容<b>那个"让人产生感觉"的源头</b>(通常是物、事)。</div>
+          <div class="ex">The movie is <span class="ing">boring</span>.<span class="zh">这电影令人厌倦。（电影是"无聊"的源头）</span></div>
+        </div>
+        <div class="iecol ed">
+          <h5>-ed · 感受者（被动）</h5>
+          <div class="who">形容<b>那个"感受到情绪"的一方</b>(通常是人)。</div>
+          <div class="ex">I am <span class="edp">bored</span>.<span class="zh">我感到厌倦。（我是承受"无聊"的人）</span></div>
+        </div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r5)">⚠️ <b>中国学习者头号陷阱:</b> "I am <span class="ing">boring</span>." 不是"我很无聊",而是——<b>"我这个人很没劲、让别人厌倦"</b>!想说"我感到无聊",必须是 "I am <span class="edp">bored</span>."。<br>一句话分清:<b>东西/事 → 多用 -ing(它引发感觉);人 → 多用 -ed(他感受到)。</b> 但真正的判据是"主动引发 vs 被动承受",而非"人还是物"。</div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">The <span class="noun">book</span> is <span class="ing">interesting</span>, so I am <span class="edp">interested</span> in it.</div><div class="zh">这本书有趣，所以我对它感兴趣。（书=源头 -ing；我=感受者 -ed）</div></div>
+        <div class="eg"><div class="en">The <span class="noun">news</span> was <span class="ing">surprising</span>. Everyone was <span class="edp">surprised</span>.</div><div class="zh">这消息令人吃惊。所有人都很吃惊。</div></div>
+      </div>
+
+      <div class="callout">🧠 <b>系统收口:</b>这一阶把"加属性"推到了尽头——属性可以是<b>一个动作的两面</b>:施加的一面(-ing)、承受的一面(-ed)。而它俩照样遵守第二阶的位置(a <span class="ing">boring</span> movie 定语 / The movie is <span class="ing">boring</span> 表语)。<b>老规矩没变,只是属性的"来历"变深了。</b></div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流:加属性(1)→ 落四个位置(2)→ 多个排序(3)→ 分档比较(4)→ 属性来自动作时分主被动(5)。每一阶,都只是围绕"给名词加一条属性"多解决一个问题。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读,是"给名词加属性"这一个动作被逐步补全</b>。🧷 标记的是纯约定项。</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>解决什么</th><th>机制</th><th>核心例句</th><th>依赖 / 备注</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 加属性</td><td>把名词说具体</td><td><code>形容词修饰名词</code></td><td><code>a big dog</code><span class="mini">一只大狗</span></td><td>——（地基）</td></tr>
+          <tr data-r="2"><td class="stage">2 · 四个位置</td><td>属性放哪</td><td><code>定语/表语/宾补/后置</code></td><td><code>The car is red.</code><span class="mini">车是红的</span></td><td>表语=P，宾补=C；后置=定从省略</td></tr>
+          <tr data-r="3"><td class="stage">3 · 顺序 🧷</td><td>多个怎么排</td><td><code>本质近·主观远</code><span class="mini">精确顺序是约定</span></td><td><code>a beautiful old house</code><span class="mini">漂亮的老房子</span></td><td>半约定，记语感（限定词≠形容词）</td></tr>
+          <tr data-r="4"><td class="stage">4 · 比较</td><td>属性分档（两层）</td><td><code>一·变形 | 二·使用</code><span class="mini">造词 vs 造句</span></td><td><code>as poor as / no richer</code><span class="mini">同级与否定</span></td><td>否定三态；than要对等；no≠not</td></tr>
+          <tr data-r="5"><td class="stage">5 · 分词形容词</td><td>属性来自动作</td><td><code>-ing 主动 / -ed 被动</code></td><td><code>I am bored.</code><span class="mini">我感到无聊</span></td><td>可推：源头 vs 感受者</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：用一个形容词，五问定位</h3>
+    <p class="sectlead" style="margin-top:8px">从上往下问，形容词的形态和位置就定了：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我在描述"一个名词"，还是"一个动作"？</div><div class="arm"><span class="no">动作</span> → 那要用<b>副词</b>(quickly)，不是形容词｜<span class="yes">名词</span> → 继续</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">放哪？</div><div class="arm">名词前 → <b>定语</b>｜is/look/seem 后 → <b>表语</b>｜宾语后说明宾语 → <b>宾补</b>｜修饰 something/并列/a-词 → <b>后置</b></div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">定语位有好几个形容词？</div><div class="arm">按 <b>本质近·主观远</b> 排（材料/用途贴名词，看法最外）；精确顺序是🧷约定，靠语感（a/the/my 是限定词，不参与排序）</div></div></div>
+      <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">要比较 / 分档吗？分两步：先造词，再造句</div><div class="arm"><b>①造词</b>:短词 -er/-est、长词 more/most、负向一律 less/least（good/bad 等🧷不规则背）｜<b>②造句</b>:比较级+than（要对等）、the+最高级（三者以上）、程度 much/far、同级 as…as｜<b>同级否定</b>:not as…as=不如／no …er than=一样烂（翻反义词）</div></div></div>
+      <div class="qnode"><div class="qq">Q5</div><div class="body"><div class="ask">这个形容词来自一个动词/感觉吗？</div><div class="arm">它是<b>引发感觉的源头</b> → <b>-ing</b>(boring)｜它是<b>感受者</b> → <b>-ed</b>(bored)</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿五问:</b>一切都围绕"<b>给这个名词加一条属性</b>"——先确认是不是在修饰名词(Q1)，再定它<b>贴哪(Q2)、排第几(Q3)、什么档(Q4)、什么来历(Q5)</b>。其中 Q3 的精确顺序、Q4 的不规则词是<b>纯约定(背)</b>，其余都能顺原理推出来。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>形容词千头万绪——四个位置、一长串排序、三档比较、-ing/-ed 的主动被动——但全都从一个动作生长:<b>给名词加一条属性</b>。属性贴哪(定语/表语/宾补/后置)、多个怎么排(本质近主观远)、能否分级(比较级)、从动作来时分哪面(-ing/-ed),是这个动作的四次延伸。而且这一册也守住了上册的诚实:<b>能推的推到底(位置、发音省力、主被动),纯约定的老实标🧷让你背(精确词序、不规则比较级)。</b>你不是在背形容词的用法清单,你是在追踪<b>一条属性,如何被贴上、排好、分档、并追溯到它的来历。</b>
+  </footer>
+
+</div>
+</body>
+</html>

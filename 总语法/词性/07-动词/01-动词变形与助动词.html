@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动词变形 & 助动词 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 五形态 */
+    --r2:#60a5fa;     /* 拼写规则 */
+    --r3:#fbbf24;     /* 读法/发音 */
+    --r4:#34d399;     /* 助动词配对 */
+    --r5:#c084fc;     /* 串联 */
+    --term:#818cf8;
+    --conv:#e0913d;
+    --ipa:#a5b4fc;
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(1.8rem,4.6vw,2.7rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:var(--conv)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+  .scope{margin:12px 0 0;font-size:.82rem;color:var(--ink-faint);background:var(--panel-2);border:1px dashed var(--line);border-radius:10px;padding:10px 13px}
+  .scope b{color:var(--ink-soft)}
+
+  /* ===== 招牌：变形工艺台 ===== */
+  .bench{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .bench .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .bench .ssub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .bench .ssub b{color:var(--ink)}
+  .forms{display:flex;gap:7px;flex-wrap:wrap}
+  .fm{flex:1;min-width:110px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);padding:10px 11px;text-align:center;border-top:3px solid var(--base)}
+  .fm .fl{font-family:"SF Mono",Consolas,monospace;font-size:.64rem;text-transform:uppercase;color:var(--base);margin-bottom:5px;letter-spacing:.03em}
+  .fm .fw{font-size:1rem;color:var(--ink);font-weight:700;font-family:"SF Mono",Consolas,monospace}
+  .fm .fi{font-family:"SF Mono",Consolas,monospace;font-size:.72rem;color:var(--ipa);margin-top:3px}
+  .bench .brow{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem;color:var(--ink-soft)}
+  .bench .brow .k{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:7px 11px;flex:1;min-width:180px}
+  .bench .brow .k b{color:var(--ink)}
+  .bench .brow .k .ipa{color:var(--ipa);font-family:"SF Mono",Consolas,monospace}
+  .bench .snote{margin-top:11px;font-size:.82rem;color:var(--ink-faint)}
+  .bench .snote b{color:var(--ink)}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.24rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .vb{color:#ffe0a3;font-weight:700}
+  .aux{color:#7ee0b8;font-weight:700}
+  .ipa{color:var(--ipa);font-family:"SF Mono",Consolas,monospace;font-weight:700}
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  details.conv{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--conv);border-radius:10px;background:rgba(224,145,61,.055);overflow:hidden}
+  details.conv>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#ffc078;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.conv>summary::-webkit-details-marker{display:none}
+  details.conv>summary .caret{transition:transform .2s;color:var(--conv);font-size:.72rem}
+  details.conv[open]>summary .caret{transform:rotate(90deg)}
+  details.conv>summary:hover{background:rgba(224,145,61,.1)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+  details.conv .tbody{border-top-color:rgba(224,145,61,.25)} details.conv .tbody code{color:#ffd9a8}
+  details.conv .tbody .warn{background:rgba(224,145,61,.1);border-color:rgba(224,145,61,.3);color:#ffd9a8}
+
+  /* 规则级联 */
+  .rules{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .rule{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .rule .tg{flex:0 0 118px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.82rem}
+  .rule.b2 .tg{color:#7ab8ff} .rule.b3 .tg{color:#ffce7a} .rule.b4 .tg{color:#7ee0b8}
+  .rule .bd{flex:1;font-size:.86rem;color:var(--ink-soft)} .rule .bd b{color:var(--ink)}
+  .rule .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a;margin-top:3px}
+  .rule .ex .ipa{color:var(--ipa)}
+
+  /* 发音三态 */
+  .snd{display:flex;flex-direction:column;gap:8px;margin:10px 0 6px}
+  .sc{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;flex-wrap:wrap}
+  .sc .ph{flex:0 0 auto;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:1rem;color:var(--ipa);min-width:44px}
+  .sc .cond{flex:1;min-width:150px;font-size:.85rem;color:var(--ink-soft)} .sc .cond b{color:var(--ink)}
+  .sc .ex{flex-basis:100%;font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a} .sc .ex .ipa{color:var(--ipa)} .sc .ex .zh{color:var(--zh);font-family:inherit}
+
+  /* 助动词锁定 */
+  .lock{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .lk{display:flex;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--r4);flex-wrap:wrap}
+  .lk .a{flex:0 0 auto;font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#7ee0b8;font-size:.9rem}
+  .lk .arw{color:var(--ink-faint);font-weight:800}
+  .lk .f{flex:0 0 auto;font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:#ffce7a}
+  .lk .ex{flex:1;min-width:170px;font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a;text-align:right} .lk .ex .zh{color:var(--zh);font-family:inherit;display:block;text-align:right}
+
+  /* 操作手核心图 */
+  .oper{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px;margin:12px 0}
+  .oper .ln{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;font-family:"SF Mono",Consolas,monospace}
+  .oper .box{border-radius:9px;padding:9px 13px;font-size:.9rem;font-weight:700;border:1px solid var(--line)}
+  .oper .mv{background:rgba(255,224,163,.08);border-color:rgba(255,224,163,.4);color:#ffe0a3}
+  .oper .op{background:rgba(126,224,184,.08);border-color:rgba(126,224,184,.45);color:#7ee0b8}
+  .oper .plus{color:var(--ink-faint);font-weight:800;font-size:1.1rem}
+  .oper .cap{text-align:center;font-size:.82rem;color:var(--ink-soft);margin-top:10px}
+  .oper .cap b{color:var(--ink)}
+
+  /* 两个活儿 拆解 */
+  .twojob{background:var(--code);border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin:12px 0}
+  .twojob .sent{font-family:"SF Mono",Consolas,monospace;font-size:1.1rem;color:var(--ink);text-align:center;margin-bottom:12px}
+  .twojob .sent .hl{color:#7ee0b8;font-weight:800;border-bottom:2px solid rgba(126,224,184,.5)}
+  .twojob .jobs{display:flex;gap:10px;flex-wrap:wrap}
+  .twojob .jb{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+  .twojob .jb .t{font-size:.78rem;font-family:"SF Mono",Consolas,monospace;color:#7ee0b8;margin-bottom:3px}
+  .twojob .jb .d{font-size:.83rem;color:var(--ink-soft)} .twojob .jb .d b{color:var(--ink)}
+
+  /* 操作手大表 */
+  .optbl{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:.85rem}
+  .optbl th,.optbl td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  .optbl thead th{background:var(--panel-2);color:var(--ink);font-size:.72rem;font-family:"SF Mono",Consolas,monospace}
+  .optbl tbody th{background:var(--panel);color:#7ee0b8;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.82rem;white-space:nowrap}
+  .optbl td code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.82rem}
+  .optbl td .zh{color:var(--zh);font-size:.76rem;display:block;margin-top:2px}
+  .optbl .grp{background:var(--panel-2);color:var(--ink-faint);font-family:"SF Mono",Consolas,monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+
+  /* 串联装配 */
+  .chain{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin:12px 0 6px}
+  .chain .title{font-size:1.15rem;font-family:"SF Mono",Consolas,monospace;color:var(--ink);text-align:center;margin-bottom:12px}
+  .chain .title b{color:#d4a6ff}
+  .chlink{display:flex;flex-direction:column;gap:7px}
+  .cl{display:flex;gap:10px;align-items:center;background:var(--code);border:1px solid var(--line);border-radius:9px;padding:9px 12px;flex-wrap:wrap}
+  .cl .who{flex:0 0 auto;font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#7ee0b8;font-size:.85rem;min-width:56px}
+  .cl .act{flex:1;min-width:180px;font-size:.83rem;color:var(--ink-soft)} .cl .act b{color:#ffce7a}
+  .cl .res{flex:0 0 auto;font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:#ffe0a3}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+    .rule .tg{flex-basis:92px}
+    .lk .ex{text-align:left}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>动词变形 & 助动词</h1>
+    <div class="sub">verb forms · spelling · pronunciation · auxiliaries</div>
+    <p class="lead">动词进句子,几乎从不是光秃秃的原形——它要<b>变形态</b>。而"变形"有两件事要搞定:<b>怎么拼</b>(拼写规则)、<b>怎么读</b>(发音规则);再由<b>助动词</b>带着这些形态上场。这一册就是动词变形的"工艺手册":先认清五种形态,再把拼写和读法两块吃透,最后看助动词怎么调用它们。</p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。<span class="pill conv">🧷 纯约定</span> 橙框：靠记的（延续系列规矩）。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>动词变形,归根到底就<span class="q">五种形态</span>,而所有变化都在做两件事——<b>把它拼对、把它读对</b>。拼写和读音各有一套规则(而且和你学过的名词复数、比较级<b>同根同源</b>)。会拼会读之后,再由<span class="q">助动词</span>把这些形态"锁定"着调出来。抓住"五形态 + 拼写 + 读法 + 助动词调用"这条线,动词的变化就不再是一团乱麻。
+    <div class="scope">📎 <b>本册范围:</b>只讲<b>动词的形态变化(拼写+读法)+ 助动词怎么调用形态</b>。"时态"的概念会自然浮现(be+ing=进行、have+过去分词=完成),但<b>12 时态具体怎么系统使用,留给"时态"专册</b>,本册不展开。语态(被动)也不涉及。</div>
+  </div>
+
+  <!-- ===== 招牌：变形工艺台 ===== -->
+  <div class="bench">
+    <div class="scap">动词的五种形态 —— 每一种"怎么拼、怎么读"，是本册的核心</div>
+    <div class="ssub">以 <b>work</b> 为例（规则动词）。所有变化都从这五个形态里取料。</div>
+    <div class="forms">
+      <div class="fm"><div class="fl">原形 base</div><div class="fw">work</div><div class="fi">/wɜːk/</div></div>
+      <div class="fm"><div class="fl">三单 -s</div><div class="fw">works</div><div class="fi">/wɜːks/</div></div>
+      <div class="fm"><div class="fl">过去式 -ed</div><div class="fw">worked</div><div class="fi">/wɜːkt/</div></div>
+      <div class="fm"><div class="fl">过去分词</div><div class="fw">worked</div><div class="fi">/wɜːkt/</div></div>
+      <div class="fm"><div class="fl">现在分词 -ing</div><div class="fw">working</div><div class="fi">/ˈwɜːkɪŋ/</div></div>
+    </div>
+    <div class="brow">
+      <div class="k">✏️ <b>拼写</b>:三单加 -s/-es、-ing 去 e 或双写…（第二阶）</div>
+      <div class="k">🔊 <b>读法</b>:-s 读 <span class="ipa">/s/·/z/·/ɪz/</span>、-ed 读 <span class="ipa">/t/·/d/·/ɪd/</span>（第三阶）</div>
+    </div>
+    <div class="snote">→ 全篇：五形态（地基）→ 拼写规则（②）→ 读法规则（③）→ 助动词调用（④⑤）。<b>先把形态拼对读对，再谈怎么用。</b></div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么 · 地基</span>动词的五种基本形态<span class="chip">five forms</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">动词千变万化,但"原材料"是有限的。到底有几种形态?——就 <b>5 种</b>。先认清它们,后面拼写、读法、助动词才有对象。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这 5 种是整个动词系统的<b>物料库</b>:后面所有变化(以及以后的时态),都是从这 5 个形态里<b>取料拼装</b>。</div></div>
+      </div>
+
+      <div class="callout">🧱 <b>五种形态(拿 work 规则、go 不规则各一个对照):</b></div>
+      <div class="rules">
+        <div class="rule b2"><div class="tg" style="color:#7ab8ff">① 原形</div><div class="bd">动词最原始的样子。<div class="ex">work · go</div></div></div>
+        <div class="rule b2"><div class="tg" style="color:#7ab8ff">② 三单 (-s)</div><div class="bd">主语第三人称单数时用。<div class="ex">works · goes</div></div></div>
+        <div class="rule b2"><div class="tg" style="color:#7ab8ff">③ 过去式</div><div class="bd">表过去。规则加 -ed;不规则要背。<div class="ex">worked · went</div></div></div>
+        <div class="rule b2"><div class="tg" style="color:#7ab8ff">④ 过去分词</div><div class="bd">配合 have 等用。规则同过去式;不规则常不同。<div class="ex">worked · gone</div></div></div>
+        <div class="rule b2"><div class="tg" style="color:#7ab8ff">⑤ 现在分词 (-ing)</div><div class="bd">配合 be 等用。一律加 -ing。<div class="ex">working · going</div></div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">She <span class="vb">works</span> hard.</div><div class="zh">她工作努力。（三单）</div></div>
+        <div class="eg"><div class="en">She <span class="vb">went</span> home.</div><div class="zh">她回家了。（go 的过去式，不规则）</div></div>
+      </div>
+
+      <details class="conv">
+        <summary><span class="caret">▸</span>🧷 提醒：不规则动词的过去式/过去分词，只能背</summary>
+        <div class="tbody">
+          <p>规则动词过去式=过去分词=原形+ed(work→worked→worked)。但一批高频动词<b>不规则</b>,三个形态各不相同,<b>没有逻辑,直接背</b>:</p>
+          <p><code>go → went → gone</code>　<code>do → did → done</code>　<code>see → saw → seen</code>　<code>eat → ate → eaten</code>　<code>take → took → taken</code>　<code>write → wrote → written</code></p>
+          <div class="warn">🔑 越高频的动词越不规则(语言常态)。这批必须背熟——它们是后面拼装的关键零件。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>五形态=物料库。其中"三单"和"现在分词"是靠<b>加后缀</b>变出来的,而加后缀有<b>拼写讲究</b>(不是简单粘上)。这就是第二阶。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">怎么变 · 拼写</span>三单 -s & 现在分词 -ing 的拼写规则<span class="chip">spelling</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">三单加 -s、分词加 -ing,大多数直接粘,但有几种情况要变形(去 e、双写、变 y)。拼错就是硬伤。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这些变化全是为了<b>好拼、好读</b>——和你学过的<b>名词复数、形容词比较级同一套逻辑</b>。学过三次了,这里再巩固。</div></div>
+      </div>
+
+      <div class="callout">✏️ <b>三单 -s / -es 的拼写:</b></div>
+      <div class="rules">
+        <div class="rule b3"><div class="tg">一般 +s</div><div class="bd">直接加。<div class="ex">work → works · run → runs · play → plays</div></div></div>
+        <div class="rule b3"><div class="tg">+es</div><div class="bd"><b>s / x / sh / ch / o</b> 结尾:加 -es。<div class="ex">go → goes · watch → watches · fix → fixes · wash → washes</div></div></div>
+        <div class="rule b3"><div class="tg">辅音+y→ies</div><div class="bd"><b>辅音字母 + y</b>:变 y 为 i 再加 es(同 baby→babies)。<div class="ex">study → studies · fly → flies</div></div></div>
+      </div>
+      <div class="callout" style="margin-top:6px;border-color:var(--r2)">注意:<b>元音 + y</b> 直接加 s,不变:<code style="color:#8ce99a">play → plays</code>、<code style="color:#8ce99a">buy → buys</code>。只有"辅音+y"才变 i。</div>
+
+      <div class="callout">✏️ <b>现在分词 -ing 的拼写:</b></div>
+      <div class="rules">
+        <div class="rule b3"><div class="tg">一般 +ing</div><div class="bd">直接加。<div class="ex">work → working · play → playing</div></div></div>
+        <div class="rule b3"><div class="tg">去 e +ing</div><div class="bd">以<b>不发音的 e</b> 结尾:去掉 e 再加 ing。<div class="ex">make → making · write → writing · come → coming</div></div></div>
+        <div class="rule b3"><div class="tg">双写 +ing</div><div class="bd"><b>重读闭音节</b>(单元音+单辅音):双写末尾辅音字母。<div class="ex">run → running · sit → sitting · begin → beginning</div></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 同根同源：这些拼写变化，你已经见过三次了</summary>
+        <div class="tbody">
+          <p>动词的这套拼写规则,和前面几册<b>是同一个底层逻辑</b>(发音省力):</p>
+          <p><b>· 变 y 为 i:</b> 动词 study→studies = 名词 baby→babies = 比较级 happy→happier。<b>同一条。</b></p>
+          <p><b>· 双写辅音:</b> 动词 run→running = 比较级 big→bigger。<b>同一条。</b></p>
+          <p><b>· 去 e:</b> 动词 make→making = 比较级(以 e 结尾加 er 只加 r)nice→nicer。<b>同一条。</b></p>
+          <div class="warn">🔑 你不是在学"动词的新规则",是在<b>复用一套老规则</b>。名词、形容词、动词加后缀,拼写调整都遵循"让它好拼好读"。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>拼写会了。但"works"这个 -s 到底读 /s/ 还是 /z/?"worked"的 -ed 读 /t/ 还是 /d/?——<b>拼对不等于读对</b>。读法是另一套规则,也是你要加厚的重点,逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">怎么读 · 发音技巧</span>-s 和 -ed 的读音：清浊对应<span class="chip">pronunciation</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">三单 -s、过去式 -ed,<b>同一个拼写,读音却有三种</b>。这是中国学生最容易忽略、最影响口语地道度的地方。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">读音由<b>前面那个音的"清浊"</b>决定,规则叫<b>"清浊对应"</b>——清辅音后跟清音、浊辅音后跟浊音,发音才省力。<b>-s 和 -ed 是同一条原理的两次应用。</b></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 先补概念：什么是"清辅音 / 浊辅音"（手放喉咙测）</summary>
+        <div class="tbody">
+          <p><b>把手指放在喉咙上发音:</b></p>
+          <p><b>· 清辅音</b>:声带<b>不振动</b>(喉咙不抖),气音。如 /p/ /t/ /k/ /f/ /s/ /θ/。</p>
+          <p><b>· 浊辅音</b>:声带<b>振动</b>(喉咙发麻)。如 /b/ /d/ /g/ /v/ /z/,以及<b>所有元音</b>。</p>
+          <div class="warn">🔑 这个"清浊"你在名词复数 -s 读法那册见过——<b>完全同一套</b>。清浊分清了,下面 -s 和 -ed 的读音就是自动的。</div>
+        </div>
+      </details>
+
+      <div class="callout">🔊 <b>三单 / -s 的三种读音</b>(和名词复数 -s 完全一致):</div>
+      <div class="snd">
+        <div class="sc"><div class="ph">/s/</div><div class="cond"><b>清辅音</b>后 → 读 /s/</div><div class="ex">works <span class="ipa">/wɜːks/</span> · stops <span class="ipa">/stɒps/</span> <span class="zh">(k、p 是清辅音)</span></div></div>
+        <div class="sc"><div class="ph">/z/</div><div class="cond"><b>浊辅音 / 元音</b>后 → 读 /z/</div><div class="ex">runs <span class="ipa">/rʌnz/</span> · plays <span class="ipa">/pleɪz/</span> · goes <span class="ipa">/ɡəʊz/</span> <span class="zh">(n、元音是浊音)</span></div></div>
+        <div class="sc"><div class="ph">/ɪz/</div><div class="cond"><b>咝音</b>(s/z/sh/ch 等)后 → 读 /ɪz/，多一个音节</div><div class="ex">watches <span class="ipa">/ˈwɒtʃɪz/</span> · washes <span class="ipa">/ˈwɒʃɪz/</span> · uses <span class="ipa">/ˈjuːzɪz/</span></div></div>
+      </div>
+
+      <div class="callout">🔊 <b>过去式 -ed 的三种读音</b>(同一个"清浊对应"原理):</div>
+      <div class="snd">
+        <div class="sc"><div class="ph">/t/</div><div class="cond"><b>清辅音</b>后 → 读 /t/</div><div class="ex">worked <span class="ipa">/wɜːkt/</span> · stopped <span class="ipa">/stɒpt/</span> · watched <span class="ipa">/wɒtʃt/</span></div></div>
+        <div class="sc"><div class="ph">/d/</div><div class="cond"><b>浊辅音 / 元音</b>后 → 读 /d/</div><div class="ex">played <span class="ipa">/pleɪd/</span> · cleaned <span class="ipa">/kliːnd/</span> · loved <span class="ipa">/lʌvd/</span></div></div>
+        <div class="sc"><div class="ph">/ɪd/</div><div class="cond"><b>t / d</b> 结尾后 → 读 /ɪd/，多一个音节</div><div class="ex">wanted <span class="ipa">/ˈwɒntɪd/</span> · needed <span class="ipa">/ˈniːdɪd/</span> · started <span class="ipa">/ˈstɑːtɪd/</span></div></div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r3)">🎯 <b>一句话记牢两套读音:</b>
+        <br>· <b>-s</b>:清辅音后 /s/、浊音元音后 /z/、咝音后 /ɪz/。
+        <br>· <b>-ed</b>:清辅音后 /t/、浊音元音后 /d/、t/d 后 /ɪd/。
+        <br>共同规律:<b>清配清、浊配浊</b>;遇到"同族音"(-s 遇咝音、-ed 遇 t/d)读不出来,就<b>加一个音节 /ɪ/</b> 隔开。这和名词复数 -s 是同一套,学一次用三处。
+      </div>
+
+      <div class="sum">📍 <b>小结:</b>形态会拼(②)、会读(③)了。可这些形态<b>不会自己上场</b>——谁来调用它们?比如"正在做""已做完"怎么表达?这需要"帮手"——助动词。逼出第四阶。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">怎么用 · 助动词</span>助动词 = 动词的"操作手"<span class="chip">the operator</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">你可能困惑:助动词好像"什么都管"——管疑问(Do you…)、管否定(don't)、又管时态(be/have)。它到底是干嘛的?为什么这么杂?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">因为它其实<b>只干一件事</b>,你没看到那个统一点。看懂它,这些"零散搭配"就串成一根线,不用再死记。</div></div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r4)"><b>🔑 一句话看穿助动词:主动词只管"意义"(做什么);凡是要对这个动作做"额外操作"——提问它、否定它、标记它的时间状态——都得请一个助动词来当"操作手"执行。</b><br>疑问、否定、时态,不是助动词的三种不同功能,而是它作为"操作手"能执行的三种<b>操作</b>。角色是单一的。</div>
+
+      <div class="oper">
+        <div class="ln">
+          <span class="box mv">主动词</span>
+          <span class="plus">→ 只管</span>
+          <span class="box mv">意义（做什么）</span>
+        </div>
+        <div class="ln" style="margin-top:10px">
+          <span class="box op">助动词</span>
+          <span class="plus">→ 执行</span>
+          <span class="box op">提问 / 否定 / 标记时间状态</span>
+        </div>
+        <div class="cap">主动词管"说什么"，助动词管"怎么操作它"。<b>分工明确，各司其职。</b></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 为什么主动词自己干不了？（中英对比一眼看懂）</summary>
+        <div class="tbody">
+          <p><b>中文</b>提问否定,动词自己不变,靠加字:她工作 → 她工作<b>吗</b>？→ 她<b>不</b>工作。</p>
+          <p><b>英文</b>不这么干。它规定:<b>执行语法操作(提问/否定)的必须是助动词,不能是实义动词。</b></p>
+          <p>❌ <code>Works she?</code>（想让实义动词自己提前提问 → 不允许）<br>✅ <code>Does she work?</code>（派 do 出来执行提问，work 保持原样）</p>
+          <div class="warn">🔑 实义动词只负责"意义",不负责"操作"。要操作,就得先请一个助动词出场。这就是助动词存在的根本原因。</div>
+        </div>
+      </details>
+
+      <div class="callout">💡 <b>最关键的顿悟:疑问和时态,常常是同一个助动词"一手包办"的两件事。</b>看这句 <code>Did you work?</code>——did 一个词同时干了两件事:</div>
+
+      <div class="twojob">
+        <div class="sent"><span class="hl">Did</span> you work yesterday?</div>
+        <div class="jobs">
+          <div class="jb"><div class="t">活儿 ①：执行提问</div><div class="d">did <b>跑到主语 you 前面</b> → 这就是"疑问"的标志</div></div>
+          <div class="jb"><div class="t">活儿 ②：标记时间</div><div class="d">用 <b>did 而不是 do</b> → 这就是"过去"的标志</div></div>
+        </div>
+      </div>
+
+      <div class="callout">所以不是"did 有时管疑问、有时管时态"——<b>did 本来就同时携带这两个信息</b>。助动词一出场,既执行你要的操作,又自带时间标记。这就是你觉得它"既管疑问又管时态"的真相:<b>它俩本来就是一回事的两面。</b></div>
+
+      <div class="callout">🎯 <b>再对比一下"陈述"和"提问",彻底想通:</b>
+        <br>· 陈述过去:<code>You <b>worked</b> yesterday.</code>（只是平铺直叙 → 主动词自己变过去式就够，<b>不需要助动词</b>）
+        <br>· 提问过去:<code><b>Did</b> you work yesterday?</code>（要执行"提问"操作 → 请 did 出场，work <b>卸下时间标记、变回原形</b>）
+        <br>👉 规律:<b>句子只是平铺直叙时，主动词自己变形就行；一旦要提问/否定，就请助动词当操作手，主动词把时间标记"交给"助动词扛（do→did）、自己回原形。</b>
+      </div>
+
+      <h3 class="block" style="font-size:1.05rem;margin:22px 0 0;border-left-color:var(--r4)">📋 助动词全表：按"执行什么操作"来记（不是零散背）</h3>
+      <p class="sectlead" style="margin-top:6px;font-size:.86rem">横看是"哪个助动词"，竖看是"执行什么操作 + 锁定什么形态"。记这张表的逻辑，比背零散搭配牢得多。</p>
+      <table class="optbl">
+        <thead><tr><th>助动词</th><th>执行的操作</th><th>锁定主动词形态</th><th>例句</th></tr></thead>
+        <tbody>
+          <tr><td class="grp" colspan="4">A 组 · do 家族：只管"提问 / 否定"（不表时间状态，最纯粹的操作手）</td></tr>
+          <tr><th>do / does</th><td>提问、否定（现在）</td><td>+ 原形</td><td><code>Do you work?</code> <span class="zh">你工作吗？</span><code>She doesn't work.</code> <span class="zh">她不工作。</span></td></tr>
+          <tr><th>did</th><td>提问、否定（过去）</td><td>+ 原形</td><td><code>Did you work?</code> <span class="zh">你（那时）工作吗？</span><code>She didn't work.</code> <span class="zh">她（那时）没工作。</span></td></tr>
+          <tr><td class="grp" colspan="4">B 组 · be / have：标记"时间状态"（进行 / 完成）</td></tr>
+          <tr><th>be<br>(am/is/are/was…)</th><td>标记"正在进行"</td><td>+ 现在分词 -ing</td><td><code>She is working.</code> <span class="zh">她正在工作。</span></td></tr>
+          <tr><th>have<br>(has/had)</th><td>标记"已完成"</td><td>+ 过去分词</td><td><code>She has worked.</code> <span class="zh">她（已）工作了。</span></td></tr>
+          <tr><td class="grp" colspan="4">C 组 · will / 情态：标记"将来 / 态度"（能力、必要、可能…）</td></tr>
+          <tr><th>will</th><td>标记"将来"</td><td>+ 原形</td><td><code>She will work.</code> <span class="zh">她将要工作。</span></td></tr>
+          <tr><th>can / must /<br>may / should</th><td>表能力/必要/可能等态度</td><td>+ 原形</td><td><code>She can swim.</code> <span class="zh">她会游泳。</span><code>You must go.</code> <span class="zh">你必须走。</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout"><b>🧠 这张表怎么帮你"记得住":</b>别再把 do/be/have/will 当四个孤立的词背。按<b>操作</b>归类记——<b>要提问否定→找 do 家族；要表进行/完成→找 be/have；要表将来/态度→找 will/情态</b>。你先想"我要执行什么操作"，再<b>反查</b>该请哪个助动词。这样是"按需取用"，不是"死记硬背"。</div>
+
+      <div class="callout" style="border-color:var(--r4)">🔩 <b>而每个助动词，都"锁定"主动词的一个固定形态（这条雷打不动）:</b>
+        <br>· <b>be</b> 后面永远跟 <b>-ing</b>（现在分词）——is <b>working</b>
+        <br>· <b>have</b> 后面永远跟 <b>过去分词</b>——has <b>worked</b>
+        <br>· <b>do / will / 情态</b> 后面永远跟 <b>原形</b>——did <b>work</b> / will <b>go</b>
+        <br>你前三阶学的"形态"，到这里被助动词<b>精确调用</b>。记不清搭配时，回到这三条锁定规则即可。
+      </div>
+
+      <div class="callout" style="border-color:var(--r4)">💡 <b>"时态"就是在这里浮现的:</b> be+ing 让你感到"正在进行"、have+过去分词让你感到"已经完成"、will 让你感到"将来"——这些就是<b>时态的雏形</b>。但具体每个时态<b>什么时候用、12 个怎么成体系</b>,是"时态"专册的事。本册只到"助动词当操作手、锁定形态"为止。</div>
+
+      <div class="sum">📍 <b>小结:</b>助动词=动词的操作手,执行提问/否定/标记时间,并锁定主动词形态。理解了"它为什么存在、按操作归类记",就不用死背搭配了。但真实句子里,助动词能<b>叠着用</b>(has been working)——多个操作手怎么协同?逼出第五阶。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">顿悟</span>助动词串联：锁定关系层层传递<span class="chip">chaining</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前面每次只用一个助动词。但 <code>has been working</code> 用了两个(have + be)。它们怎么协同?看着复杂,其实有铁律。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">规律惊人地简单:<b>每个助动词,只负责锁定"紧跟它的下一个词"的形态</b>。像齿轮咬合,一环扣一环。看懂这条,再长的动词词组也能拆开。</div></div>
+      </div>
+
+      <div class="chain">
+        <div class="title">She <b>has been working</b>.（她一直在工作）</div>
+        <div class="chlink">
+          <div class="cl"><div class="who">has</div><div class="act">have 锁定下一个 → 变<b>过去分词</b></div><div class="res">be → been</div></div>
+          <div class="cl"><div class="who">been</div><div class="act">be 锁定下一个 → 变<b>现在分词 -ing</b></div><div class="res">work → working</div></div>
+          <div class="cl"><div class="who">working</div><div class="act">链条末端 = 主动词，带着实义</div><div class="res">✓ 完成</div></div>
+        </div>
+      </div>
+
+      <div class="callout">🧠 <b>这一步把整册的逻辑打通了:</b> 动词词组不是背出来的,是<b>"助动词锁定下一个词形态"这条规则层层套用</b>的结果。<code>has been working</code> = have 让 be 变过去分词(been)、be 让 work 变现在分词(working)。每个环节都只做一件事:<b>锁定紧邻的下一个</b>。再复杂的组合(以后时态册里会遇到),拆解方法都一样——<b>从左往右,一个锁一个。</b></div>
+
+      <div class="callout" style="border-color:var(--r5)">🔭 <b>指向下一册:</b> 你现在已经掌握了动词词组的<b>"装配机制"</b>——五形态怎么拼读、助动词怎么锁定、多个怎么串联。<b>"时态"册要做的,就是给这些装配好的组合"指派意义":</b>什么时候用 be+ing、什么时候用 have+过去分词、12 个时态如何各司其职。零件和装配法你已经有了,下一步是学怎么用。</div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流:五形态(1)→ 拼写规则(2)→ 读法规则(3)→ 助动词锁定形态(4)→ 多个助动词串联(5)。动词的一切变形,都是"从物料库取料、按锁定规则拼装"——不是背,是拼。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读，是动词变形的完整工艺：认料 → 拼对 → 读对 → 调用 → 串联</b>。（12 时态的具体用法不在本册。）</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>解决什么</th><th>要点</th><th>核心例</th><th>依赖 / 备注</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 五形态</td><td>认清原材料</td><td><code>原/三单/过去/过分/现分</code></td><td><code>go→goes→went→gone→going</code><span class="mini">物料库</span></td><td>不规则要背</td></tr>
+          <tr data-r="2"><td class="stage">2 · 拼写</td><td>怎么拼</td><td><code>-s/-es · -ing 去e/双写</code></td><td><code>study→studies · run→running</code><span class="mini">变y/双写/去e</span></td><td>同名词复数/比较级</td></tr>
+          <tr data-r="3"><td class="stage">3 · 读法</td><td>怎么读</td><td><code>-s: /s//z//ɪz/ · -ed: /t//d//ɪd/</code></td><td><code>worked /t/ · played /d/</code><span class="mini">清浊对应</span></td><td>同名词复数 -s 读法</td></tr>
+          <tr data-r="4"><td class="stage">4 · 助动词</td><td>操作手：提问/否定/时间</td><td><code>be+ing · have+过分 · will+原形</code><span class="mini">按操作归类记</span></td><td><code>Did you work?</code><span class="mini">一手提问一手标时间</span></td><td>时态概念浮现</td></tr>
+          <tr data-r="5"><td class="stage">5 · 串联</td><td>多个怎么协同</td><td><code>锁定层层传递</code></td><td><code>has been working</code><span class="mini">一个锁一个</span></td><td>指向时态册</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：变一个动词形态，四步不出错</h3>
+    <p class="sectlead" style="margin-top:8px">要写出正确的动词形态，从上往下走：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我需要哪个形态？</div><div class="arm">看有没有助动词：<b>be</b>→用<b>-ing</b>｜<b>have</b>→用<b>过去分词</b>｜<b>do/will/情态</b>→用<b>原形</b>｜没助动词、主语三单→<b>加 -s</b></div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">这个形态怎么拼？</div><div class="arm">-s：s/x/sh/ch/o 后加 <b>-es</b>，辅音+y 变 <b>ies</b>｜-ing：去 e 或 <b>双写</b>末辅音｜过去式不规则要背</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">这个后缀怎么读？</div><div class="arm">-s：清后 <b>/s/</b>、浊/元后 <b>/z/</b>、咝音后 <b>/ɪz/</b>｜-ed：清后 <b>/t/</b>、浊/元后 <b>/d/</b>、t/d 后 <b>/ɪd/</b></div></div></div>
+      <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">有多个助动词叠用？</div><div class="arm">→ <b>从左往右，一个锁一个</b>：前一个助动词决定后一个词的形态（has been working）</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿:</b>动词变形 = <b>从五种形态里取料，按助动词的锁定规则拼装</b>。先定要哪个形态(Q1)，再拼对(Q2)、读对(Q3)；多个助动词就层层锁定(Q4)。拼写和读法都复用你学过的老规则(名词复数、比较级)，助动词则是把形态"调出来"的开关。<b>不是背动词的一堆变化，是掌握一套取料+装配的工艺。</b></div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>动词的变形看着杂乱——三单、过去式、分词、还有一堆助动词——但它只有<b>五种形态</b>，一切都是从这个物料库里<b>取料、拼对、读对、再由助动词调用</b>。拼写和读音的规则，你在名词复数、形容词比较级里已经学过，这里只是<b>第四次复用</b>；助动词则是把形态"锁定着调出来"的开关，多个叠用时不过是<b>一个锁一个</b>的层层传递。你不是在背动词的无数变化，你是在掌握一套<b>工艺</b>：认料 → 拼对 → 读对 → 装配。<br><br><span style="color:var(--ink-faint)">这些装配好的组合"什么时候用、表达什么时间意义"——即 12 时态的系统用法——是"时态"专册的主线，与本册的"形态工艺"分开。语态(被动)亦另册。</span>
+  </footer>
+
+</div>
+</body>
+</html>

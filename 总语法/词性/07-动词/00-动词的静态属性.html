@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动词的静态属性 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 及物/不及物 */
+    --r2:#60a5fa;     /* 动作/状态 */
+    --r3:#fbbf24;     /* 实义/功能 */
+    --r4:#34d399;     /* 属性→句型 */
+    --r5:#c084fc;     /* 一词多性 */
+    --term:#818cf8;
+    --conv:#e0913d;
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:var(--conv)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+  .scope{margin:12px 0 0;font-size:.82rem;color:var(--ink-faint);background:var(--panel-2);border:1px dashed var(--line);border-radius:10px;padding:10px 13px}
+  .scope b{color:var(--ink-soft)}
+
+  /* ===== 招牌：属性检测台 ===== */
+  .bench{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .bench .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .bench .ssub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .bench .ssub b{color:var(--ink)}
+  .pipe{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+  .stg{flex:1;min-width:120px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);padding:11px 12px}
+  .stg .n{font-family:"SF Mono",Consolas,monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:5px}
+  .stg.q1{border-top:3px solid var(--base)} .stg.q1 .n{color:var(--base)}
+  .stg.q2{border-top:3px solid var(--r2)} .stg.q2 .n{color:var(--r2)}
+  .stg.q3{border-top:3px solid var(--r3)} .stg.q3 .n{color:var(--r3)}
+  .stg .qq{font-size:.86rem;color:var(--ink);font-weight:600;margin-bottom:3px}
+  .stg .op{font-size:.78rem;color:var(--ink-soft)}
+  .arrw{align-self:center;color:var(--ink-faint);font-weight:800;flex:0 0 auto}
+  .bench .out{margin-top:12px;background:var(--code);border:1px solid rgba(52,211,153,.4);border-radius:10px;padding:11px 14px;font-size:.9rem;color:var(--ink)}
+  .bench .out b{color:#8ce99a}
+  .bench .snote{margin-top:10px;font-size:.82rem;color:var(--ink-faint)}
+  .bench .snote b{color:var(--ink)}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.26rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .vb{color:#ffe0a3;font-weight:700}
+  .obj{color:#7ee0b8;font-weight:700}
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+  .pp{color:#7ab8ff;font-weight:700}
+  .bad{color:#fb7185;font-weight:700}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+
+  /* 二分卡 */
+  .split{display:flex;gap:10px;margin:12px 0 6px;flex-wrap:wrap}
+  .sp{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .sp h5{margin:0 0 5px;font-size:.9rem}
+  .sp .ex{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:#8ce99a;margin:5px 0} .sp .ex .zh{color:var(--zh);font-family:inherit;display:block}
+  .sp .d{font-size:.83rem;color:var(--ink-soft)} .sp .d b{color:var(--ink)}
+  .sp.a{border-top:3px solid var(--base)} .sp.a h5{color:var(--base)}
+  .sp.b{border-top:3px solid #f0997b} .sp.b h5{color:#f0997b}
+
+  /* 四类功能词 */
+  .func{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .fc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--r3)}
+  .fc .w{font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#ffe0a3;font-size:.9rem;margin-bottom:2px}
+  .fc .m{font-size:.85rem;color:var(--ink-soft)} .fc .m b{color:var(--ink)}
+  .fc .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a;margin-top:4px} .fc .ex .zh{color:var(--zh);font-family:inherit}
+
+  /* 属性→句型 映射 */
+  .map{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .mp{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--r4);flex-wrap:wrap}
+  .mp .from{flex:0 0 auto;font-family:"SF Mono",Consolas,monospace;font-weight:700;color:#7ee0b8;font-size:.86rem}
+  .mp .ar{color:var(--ink-faint);font-weight:800}
+  .mp .to{flex:1;min-width:180px;font-size:.85rem;color:var(--ink-soft)} .mp .to b{color:var(--ink)}
+  .mp .ex{flex-basis:100%;font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a} .mp .ex .zh{color:var(--zh);font-family:inherit}
+
+  /* 一词多性 */
+  .multi{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .mc{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px;border-left:3px solid var(--r5)}
+  .mc .w{font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#d4a6ff;font-size:.95rem;margin-bottom:5px}
+  .mc .two{display:flex;gap:10px;flex-wrap:wrap}
+  .mc .role{flex:1;min-width:200px;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+  .mc .role .rl{font-size:.76rem;color:#d4a6ff;font-family:"SF Mono",Consolas,monospace;margin-bottom:3px}
+  .mc .role .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a} .mc .role .ex .zh{color:var(--zh);font-family:inherit;display:block}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>动词的静态属性</h1>
+    <div class="sub">a verb's built-in properties · 它天生是什么样的动词</div>
+    <p class="lead">动词是句子的发动机。但发动机<b>分很多种</b>——用一个动词之前,得先看清它的<b>几个天生属性</b>:它<b>要不要宾语</b>?表<b>动作还是状态</b>?是<b>实义动词还是"帮忙的"</b>?这些"出厂设置",决定了它后面能怎么用、能进哪个句型。</p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。<span class="pill conv">🧷 纯约定</span> 橙框：靠记的（延续系列规矩）。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>动词有两面——<span class="q">"天生什么样"(静态属性)</span> 和 "上场时怎么变"(动态操作)。<b>本册只讲第一面:静态属性。</b>就是给动词做"体检",看清它的<b>三项出厂设置</b>:要不要宾语、表动作还是状态、是实义还是功能词。看懂这三项,你就知道这个动词<span class="q">能坐进五大句型的哪一个</span>——静态属性不是死知识,它<b>直接决定用法</b>。
+    <div class="scope">📎 <b>本册范围:</b>只讲动词的<b>静态属性</b>(分类)。动词"怎么变形上场"——时态、语态、语气、主谓一致、非谓语——各自<b>单独成册</b>,本册完全不涉及,以免打乱"分类"这条主线。</div>
+  </div>
+
+  <!-- ===== 招牌：属性检测台 ===== -->
+  <div class="bench">
+    <div class="scap">把一个动词丢进"检测台"，过三道属性检测，就知道它能进哪个句型</div>
+    <div class="ssub">动词的静态属性 = <b>三个天生开关</b>。三个开关的状态，决定这个动词的用法。</div>
+    <div class="pipe">
+      <div class="stg q1"><div class="n">检测 ①</div><div class="qq">要不要宾语？</div><div class="op">及物 / 不及物</div></div>
+      <span class="arrw">→</span>
+      <div class="stg q2"><div class="n">检测 ②</div><div class="qq">动作还是状态？</div><div class="op">动作 / 状态</div></div>
+      <span class="arrw">→</span>
+      <div class="stg q3"><div class="n">检测 ③</div><div class="qq">实义还是帮忙？</div><div class="op">实义 / 助动·系动·情态</div></div>
+    </div>
+    <div class="out">▶ 输出：三个属性合起来 → <b>这个动词能坐进五大句型的哪一个</b>（第四阶把它接回句型篇）</div>
+    <div class="snote">→ 全篇就是这台检测机的三道检测 + 一个输出。<b>先看清动词"是什么样的"，再谈怎么用它。</b></div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">检测①</span>要不要宾语：及物 / 不及物<span class="chip">transitive / intransitive</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">动词表示"做某事"。但有的"做"必须有一个<b>承受对象</b>(吃"什么"),有的不需要(她"笑")。这是动词第一个、最基本的分野。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">因为它决定动词<b>后面要不要跟宾语</b>——跟错了直接就是病句。这是动词的"一号出厂设置"。</div></div>
+      </div>
+
+      <div class="split">
+        <div class="sp a">
+          <h5>及物动词（vt）：必须带宾语</h5>
+          <div class="d">动作要落到一个<b>对象</b>上，后面<b>必须</b>跟宾语。</div>
+          <div class="ex">She eats <span class="obj">an apple</span>. <span class="zh">她吃一个苹果。（eat 后必须有"吃什么"）</span></div>
+          <div class="ex bad" style="color:#fb7185">❌ She eats. <span class="zh" style="color:var(--zh)">（缺宾语，不完整）</span></div>
+        </div>
+        <div class="sp b">
+          <h5>不及物动词（vi）：不带宾语</h5>
+          <div class="d">动作<b>自身完整</b>，后面<b>不跟</b>宾语（要接别的，得先加介词）。</div>
+          <div class="ex">She smiles. <span class="zh">她笑了。（smile 本身就完整）</span></div>
+          <div class="ex">The sun rises. <span class="zh">太阳升起。</span></div>
+        </div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 很多动词"两栖"：同一个词，及物和不及物都行</summary>
+        <div class="tbody">
+          <p>大量常用动词<b>两种身份都有</b>,看有没有带宾语:</p>
+          <p><code>He runs</code> 他跑（不及物）／ <code>He runs <b>a shop</b></code> 他经营一家店（及物，带宾语）</p>
+          <p><code>She reads</code> 她在阅读（不及物）／ <code>She reads <b>a book</b></code> 她读一本书（及物）</p>
+          <div class="warn">🔑 所以别死记"某词是及物还是不及物"——<b>看这句里它后面有没有宾语</b>,就知道它此刻是哪种身份。（呼应后面第五阶:属性看语境。）</div>
+        </div>
+      </details>
+
+      <div class="callout">🔗 <b>接回宾语概念:</b>"及物"的"物"就是<b>宾语</b>——动作的承受者。你在句型篇学的"主谓宾"(S+V+O),那个能带 O 的 V,就是<b>及物动词</b>。第一阶已经悄悄接上句型了。</div>
+
+      <div class="sum">📍 <b>小结:</b>一号开关:及物(带宾语)/ 不及物(不带)。但"带不带宾语"只说了动词的<b>结构</b>需求。它表达的<b>是动作还是一种状态</b>?这是另一个维度,逼出第二阶。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">检测②</span>动作还是状态<span class="chip">dynamic / stative</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">不是所有动词都表"动作"。run/eat 有动态过程;但 know/love 表示的是一种<b>持续的状态</b>,没有"动作"在发生。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这个区分有个<b>实际后果</b>:状态动词<b>通常不用进行时</b>。分清它,才不会写出 ❌ I am knowing 这种错。</div></div>
+      </div>
+
+      <div class="split">
+        <div class="sp a">
+          <h5>动作动词：有动态过程</h5>
+          <div class="d">表示"做"，有起止、有过程，<b>可以"正在做"</b>。</div>
+          <div class="ex">He runs every day. <span class="zh">他每天跑步。（run 是动作）</span></div>
+          <div class="ex">She eats slowly. <span class="zh">她吃得慢。</span></div>
+        </div>
+        <div class="sp b">
+          <h5>状态动词：一种持续状态</h5>
+          <div class="d">表示"处于某种状态/关系"，<b>没有动作过程</b>：know, love, like, have(拥有), want, belong。</div>
+          <div class="ex">I know the answer. <span class="zh">我知道答案。（"知道"是状态）</span></div>
+          <div class="ex">She loves music. <span class="zh">她热爱音乐。</span></div>
+        </div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r2)">⚠️ <b>实际后果:状态动词一般不用进行时</b>(动作/状态这个属性,唯一你现在就要记住的用处):<br>❌ <code>I am knowing it.</code> → ✅ <code>I know it.</code> 我知道。<br>❌ <code>She is loving music.</code> → ✅ <code>She loves music.</code> 她热爱音乐。<br>因为"知道""爱"本身就是<b>持续状态</b>,不存在"正在知道"这个动态过程。</div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 有些词"两义"：当动作讲能进行，当状态讲不能</summary>
+        <div class="tbody">
+          <p>同一个词,意思不同、身份就不同,最典型是 <code>have</code>:</p>
+          <p><b>· 状态义"拥有"</b>→不用进行:<code>I have a car.</code> 我有辆车。（❌ I am having a car）</p>
+          <p><b>· 动作义"吃/进行某活动"</b>→可进行:<code>I am having lunch.</code> 我在吃午饭。（✅）</p>
+          <p>类似的:<code>think</code>(认为=状态 / 思考=动作)、<code>see</code>(看见=状态 / 会面=动作)。</p>
+          <div class="warn">🔑 又一次证明:动词属性<b>不是死标签,随意思而变</b>。这条主线到第五阶会推到顶。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>二号开关:动作 / 状态(决定能不能用进行时)。前两个开关都在看动词<b>自身表达什么</b>。但还有一类动词,自己几乎不表意,专门<b>给别的动词帮忙</b>——这是完全不同的一个维度,逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">检测③</span>实义动词，还是"帮忙的"<span class="chip">notional / function</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前两阶默认动词都有实在意义(eat=吃)。但有一批动词<b>本身几乎不表意</b>,它们的作用是<b>辅助、连接、或表态度</b>——功能完全不同。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">因为它们在句子里的<b>角色</b>和实义动词不一样(有的不能单独作谓语、有的后面要接表语)。分清"实义 vs 功能",才知道一个动词是<b>主角还是配角</b>。</div></div>
+      </div>
+
+      <div class="callout">🎭 <b>动词按"有没有实在意义"分两大阵营:</b><br>· <b style="color:#ffe0a3">实义动词</b>(主角):有完整意义,能独当一面作谓语——eat, run, love, work。<br>· <b style="color:#ffe0a3">功能动词</b>(配角):意义虚,给别人帮忙——分下面三种。</div>
+
+      <div class="func">
+        <div class="fc"><div class="w">助动词 auxiliary</div><div class="m">do / does / did、have、be —— 帮忙<b>构成疑问、否定</b>等,自己不表实义。<div class="ex">Do you like it? <span class="zh">你喜欢吗？（do 帮忙提问，本身无实义）</span></div></div></div>
+        <div class="fc"><div class="w">系动词 linking</div><div class="m">be、look、seem、become —— 不表动作,专门<b>把主语和"表语"连起来</b>。<div class="ex">She is happy. / You look tired. <span class="zh">她很开心。／ 你看起来累了。</span></div></div></div>
+        <div class="fc"><div class="w">情态动词 modal</div><div class="m">can、must、may、should —— 表<b>能力/必要/可能</b>等态度,后面<b>接动词原形</b>。<div class="ex">She can swim. / You must go. <span class="zh">她会游泳。／ 你必须走。</span></div></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 系动词的落点：它逼出"主系表"</summary>
+        <div class="tbody">
+          <p>系动词最特别:它不表动作,后面必须跟一个<b>表语</b>(形容词或名词)来说明主语"是什么样/是什么"。</p>
+          <p><code>She <b>is</b> happy.</code> 她开心。（is 连接 She 和表语 happy）<br><code>You <b>look</b> tired.</code> 你看起来累。（look=看起来，系动词，接表语 tired）</p>
+          <div class="warn">🔑 这正是句型篇的<b>"主系表 S+V+P"</b>——那个 V 就是系动词。所以"系动词"这个属性,直接决定它进"主系表"句型(第四阶细说)。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>三号开关:实义 / 功能(助动·系动·情态)。三道检测全过完了。那这三个属性<b>合起来有什么用</b>?——它们联手决定这个动词<b>能进哪个句型</b>。这是第四阶,也是"属性→用法"的兑现。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">兑现</span>属性 → 决定能进哪个句型<span class="chip">property ⇒ pattern</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前三阶把动词的属性看清了。但属性<b>不是拿来分类就完了</b>——它有什么实际用处?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">因为一个动词的属性,<b>直接决定它能坐进五大句型的哪一个</b>。这就是"静态属性"的价值兑现:看懂属性=看懂用法。(回扣你的句型篇。)</div></div>
+      </div>
+
+      <div class="map">
+        <div class="mp"><span class="from">不及物动词</span><span class="ar">→</span><span class="to"><b>主谓 (S+V)</b>：自身完整，不带宾语</span><span class="ex">She smiles. <span class="zh">她笑了。</span></span></div>
+        <div class="mp"><span class="from">及物动词</span><span class="ar">→</span><span class="to"><b>主谓宾 (S+V+O)</b>：动作落到宾语上</span><span class="ex">She eats an apple. <span class="zh">她吃一个苹果。</span></span></div>
+        <div class="mp"><span class="from">系动词</span><span class="ar">→</span><span class="to"><b>主系表 (S+V+P)</b>：连接主语与表语</span><span class="ex">She is happy. <span class="zh">她很开心。</span></span></div>
+        <div class="mp"><span class="from">部分及物动词</span><span class="ar">→</span><span class="to"><b>主谓双宾 / 宾补</b>：能带两个宾语或宾补</span><span class="ex">She gives him a book. <span class="zh">她给他一本书。</span></span></div>
+      </div>
+
+      <div class="callout">🧩 <b>这一阶是全篇的"合龙":</b>你在句型篇学的五大句型,<b>根子就在动词属性上</b>——为什么这个句子是"主系表"?因为它的动词是<b>系动词</b>。为什么那个是"主谓宾"?因为动词<b>及物</b>。<b>句型不是背出来的,是动词属性"长"出来的。</b>静态属性到这里,兑现成了实实在在的用法。</div>
+
+      <div class="sum">📍 <b>小结:</b>属性→句型,价值兑现。但这里藏着一个反直觉的事实:同一个动词,<b>换个语境,属性会变</b>——它可能这句是实义、那句是助动;这句及物、那句系动。这逼出最后的顿悟,第五阶。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">顿悟</span>一词多性：属性是"角色"，不是死标签<span class="chip">role, not label</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前四阶给你一个印象:每个动词有固定属性。但你会撞见 <code>have</code> 一会儿是实义、一会儿是助动;<code>be</code> 一会儿系动、一会儿助动。矛盾吗?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">不矛盾。这揭示更深一层:<b>属性不是贴在单词上的死标签,而是它在"这一句里扮演的角色"</b>。同一个词,换语境就换角色。看懂这点,前面所有属性才真正激活。</div></div>
+      </div>
+
+      <div class="multi">
+        <div class="mc">
+          <div class="w">have</div>
+          <div class="two">
+            <div class="role"><div class="rl">实义动词 · 拥有</div><div class="ex">I have a car. <span class="zh">我有辆车。</span></div></div>
+            <div class="role"><div class="rl">助动词 · 帮忙</div><div class="ex">I have finished. <span class="zh">我已完成。（have 帮忙，无"拥有"义）</span></div></div>
+          </div>
+        </div>
+        <div class="mc">
+          <div class="w">be</div>
+          <div class="two">
+            <div class="role"><div class="rl">系动词 · 连接表语</div><div class="ex">She is happy. <span class="zh">她很开心。</span></div></div>
+            <div class="role"><div class="rl">助动词 · 帮忙</div><div class="ex">She is running. <span class="zh">她在跑步。（is 帮忙，无实义）</span></div></div>
+          </div>
+        </div>
+        <div class="mc">
+          <div class="w">look</div>
+          <div class="two">
+            <div class="role"><div class="rl">实义动词 · 看</div><div class="ex">Look at me. <span class="zh">看着我。</span></div></div>
+            <div class="role"><div class="rl">系动词 · 看起来</div><div class="ex">You look tired. <span class="zh">你看起来累了。</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">🧠 <b>这一步把整册升级了:</b>你以为在给单词"贴属性标签",其实真正该做的,是<b>看它在具体句子里扮演什么角色</b>——同一个 have，在 <code>I have a car</code> 里是实义主角，在 <code>I have finished</code> 里是助动配角。<b>属性是"随语境切换的角色",不是"焊死在单词上的身份"。</b>（这和你在名词篇"可数不可数是视角"、介词篇"位置决定功能"、并列句"对等看两边"——是同一种顿悟。）</div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流:及物性(1)→ 动作状态(2)→ 实义功能(3)→ 属性决定句型(4)→ 而属性本身是"随语境切换的角色"(5)。看动词，从来不是查它"是什么"，而是看它<b>在这一句里扮演什么</b>。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读，是给动词做的三项"体检" + 一个兑现</b>。（时态/语态/语气/主谓一致/非谓语均不在本册。）</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>检测什么</th><th>两/三分</th><th>核心例句</th><th>实际用处</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 及物性</td><td>要不要宾语</td><td><code>及物 / 不及物</code></td><td><code>She eats an apple.</code><span class="mini">她吃苹果</span></td><td>决定后面带不带宾语</td></tr>
+          <tr data-r="2"><td class="stage">2 · 动作/状态</td><td>动作还是状态</td><td><code>dynamic / stative</code></td><td><code>I know the answer.</code><span class="mini">我知道答案</span></td><td>状态动词不用进行时</td></tr>
+          <tr data-r="3"><td class="stage">3 · 实义/功能</td><td>主角还是配角</td><td><code>实义 / 助动·系动·情态</code></td><td><code>She is happy.</code><span class="mini">她很开心</span></td><td>决定它在句中的角色</td></tr>
+          <tr data-r="4"><td class="stage">4 · 兑现</td><td>属性→句型</td><td><code>属性决定句型</code></td><td><code>She gives him a book.</code><span class="mini">她给他书</span></td><td>回扣五大句型</td></tr>
+          <tr data-r="5"><td class="stage">5 · 一词多性</td><td>属性=角色</td><td><code>随语境切换</code></td><td><code>have a car / have finished</code><span class="mini">拥有／已完成</span></td><td>看语境，非死标签</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：拿到一个动词，三检测定性</h3>
+    <p class="sectlead" style="margin-top:8px">在具体句子里，对着动词从上往下过一遍：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">它后面带宾语吗？</div><div class="arm"><span class="yes">带</span> → <b>及物</b>（可进"主谓宾"）｜<span class="no">不带</span> → <b>不及物</b>（"主谓"）或 <b>系动词</b>（看是否接表语）</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">它表动作还是状态？</div><div class="arm"><span class="yes">动作</span>(可进行)｜<span class="no">状态</span>(know/love/have拥有 → 不用进行时)</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">它有实义，还是在帮忙？</div><div class="arm"><b>实义</b>(主角)｜<b>助动</b>(do/be/have帮忙)｜<b>系动</b>(接表语)｜<b>情态</b>(can/must+原形)</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿:</b>看动词，永远<b>在具体句子里</b>过这三道检测——它的属性<b>随这一句的语境而定</b>(Q1-Q3)，不是查字典查出来的固定标签。三个属性一确定，它能进哪个句型也就定了。<b>"这一句里它扮演什么角色"，才是唯一该问的问题。</b></div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>动词千变万化，但"看懂一个动词"的第一步，从来不是背它怎么变形，而是先给它做"体检"——<b>它要不要宾语？表动作还是状态？是主角还是配角？</b>这三项静态属性，决定了它能进哪个句型、能不能进行时、在句中当什么角色。而最深的一层是:<b>属性不是焊死在单词上的标签，而是它在具体一句里扮演的角色</b>——同一个 have，可以是"拥有"的主角，也可以是帮忙的配角。你不是在背哪个词及物、哪个词是系动词，你是在训练一双眼睛:<b>看一个动词，就看它在这一句里，扮演的是什么。</b><br><br><span style="color:var(--ink-faint)">动词"怎么变形上场"——时态、语态、语气、主谓一致、非谓语动词——每一块都是独立的一册，与本册的"静态属性"分开。</span>
+  </footer>
+
+</div>
+</body>
+</html>

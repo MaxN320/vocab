@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>并列句 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 地基 · 平等 */
+    --r2:#60a5fa;     /* 成分对等(核心) */
+    --r3:#fbbf24;     /* FANBOYS */
+    --r4:#34d399;     /* 关联并列词 */
+    --r5:#c084fc;     /* 从句连词入口 */
+    --term:#818cf8;
+    --conv:#e0913d;
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:var(--conv)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* ===== 招牌：成分对等天平 ===== */
+  .scale{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .scale .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .scale .ssub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .scale .ssub b{color:var(--ink)}
+  .bal{display:flex;flex-direction:column;gap:10px}
+  .balrow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+  .pan{flex:1;min-width:130px;border-radius:10px;padding:10px 13px;font-size:.92rem;border:1px solid var(--line);background:var(--code)}
+  .pan .lb{font-family:"SF Mono",Consolas,monospace;font-size:.68rem;text-transform:uppercase;margin-bottom:4px;letter-spacing:.03em}
+  .pan .cnt{color:var(--ink);font-weight:600}
+  .conj{flex:0 0 auto;align-self:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#ffe0a3;padding:0 4px}
+  .pan.ok{border-color:rgba(52,211,153,.5)} .pan.ok .lb{color:#34d399}
+  .pan.bad{border-color:rgba(251,113,133,.5)} .pan.bad .lb{color:#fb7185}
+  .verdict{display:flex;align-items:center;gap:8px;font-size:.82rem;margin-top:2px}
+  .verdict.g{color:#8ce99a} .verdict.r{color:#ffb3c0}
+  .scale .zh{color:var(--zh);font-size:.8rem;margin-top:6px}
+  .scale .snote{margin-top:12px;font-size:.82rem;color:var(--ink-faint)}
+  .scale .snote b{color:var(--ink)}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.28rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .cj{color:#ffe0a3;font-weight:700}
+  .p1{color:#7ee0b8;font-weight:700}
+  .p2{color:#7ab8ff;font-weight:700}
+  .bad{color:#fb7185;font-weight:700}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+
+  /* FANBOYS 词条 */
+  .fan{display:flex;flex-direction:column;gap:7px;margin:12px 0 6px}
+  .fi{display:flex;gap:12px;align-items:baseline;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 13px;border-left:3px solid var(--r3)}
+  .fi .w{flex:0 0 60px;font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#ffe0a3;font-size:.95rem}
+  .fi .m{flex:1;font-size:.85rem;color:var(--ink-soft)} .fi .m b{color:var(--ink)} .fi .m .en{font-family:"SF Mono",Consolas,monospace;color:#8ce99a} .fi .m .zh{color:var(--zh)}
+
+  /* 关联词卡 */
+  .corr{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .cc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--r4)}
+  .cc .w{font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#7ee0b8;font-size:.92rem;margin-bottom:2px}
+  .cc .m{font-size:.85rem;color:var(--ink-soft)} .cc .m b{color:var(--ink)}
+  .cc .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a;margin-top:4px} .cc .ex .zh{color:var(--zh);font-family:inherit}
+
+  /* 平等vs降级 对照 */
+  .vs{display:flex;gap:10px;margin:12px 0 6px;flex-wrap:wrap}
+  .vscol{flex:1;min-width:230px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .vscol.eq{border-top:3px solid var(--base)} .vscol.sub{border-top:3px solid var(--r5)}
+  .vscol h5{margin:0 0 5px;font-size:.9rem} .vscol.eq h5{color:var(--base)} .vscol.sub h5{color:var(--r5)}
+  .vscol .ex{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:#8ce99a;margin:5px 0} .vscol .ex .zh{color:var(--zh);font-family:inherit;display:block}
+  .vscol .d{font-size:.82rem;color:var(--ink-soft)}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+    .fi .w{flex-basis:48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>并列句</h1>
+    <div class="sub">coordinating conjunctions · 把平等的两半接起来</div>
+    <p class="lead">并列连词(and / but / or…)干的事很单纯:<b>把两个"地位平等"的东西接在一起</b>,让表达更连贯。核心就一个字——<b>"平"</b>:它连接的两边,必须是<b>同一种语法成分</b>(名词配名词、句子配句子)。这条对等规则,就是并列句最大的考点。</p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。<span class="pill conv">🧷 纯约定</span> 橙框：靠记的（延续系列规矩）。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>连词分两种活法——<span class="q">把两半"并起来"(平等),或把一半"挂上去"(从属)</span>。本册只讲第一种:<b>并列连词</b>。它的灵魂是<b>"对等"</b>:连接的两边语法身份必须相同,像天平两端放同样的东西才平衡。<span class="q">名词↔名词、形容词↔形容词、句子↔句子。</span>抓住"两边要对等"这一条,并列句的所有考点都是它的延伸。(而"挂上去"的从属连词,是下一册的事,第五阶只轻轻点一下。)
+  </div>
+
+  <!-- ===== 招牌：成分对等天平 ===== -->
+  <div class="scale">
+    <div class="scap">并列连词像一架天平：两端必须放"同一种成分"才平衡</div>
+    <div class="ssub">这是中国学生最大的坑 —— <b>中文能把不对等的东西并在一起，英语不行。</b></div>
+    <div class="bal">
+      <div>
+        <div class="balrow">
+          <span class="pan bad"><span class="lb">左：一个句子</span><span class="cnt">讲得非常认真</span></span>
+          <span class="conj">而且</span>
+          <span class="pan bad"><span class="lb">右：一个修饰语</span><span class="cnt">非常清楚</span></span>
+        </div>
+        <div class="verdict r">✗ 失衡：左边是"主谓(句子)"，右边是"形容词(修饰语)"，两边不同类 → 英语里是病句</div>
+        <div class="zh">中文"我不但讲得认真，而且也清楚"听着顺 —— 但两半语法身份不一样。</div>
+      </div>
+      <div style="border-top:1px solid var(--line);padding-top:10px">
+        <div class="balrow">
+          <span class="pan ok"><span class="lb">左：形容词</span><span class="cnt">carefully</span></span>
+          <span class="conj">and</span>
+          <span class="pan ok"><span class="lb">右：形容词</span><span class="cnt">clearly</span></span>
+        </div>
+        <div class="verdict g">✓ 平衡：两边都是副词 → I explained it carefully and clearly. 我讲得又认真又清楚。</div>
+      </div>
+    </div>
+    <div class="snote">→ 用并列连词前，先问一句：<b>它左右两边，是不是同一种成分？</b>不是，就是病句。这一条贯穿全篇。</div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>把平等的两半接起来<span class="chip">connect equals</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">两个相关的意思,分成两句太琐碎(I like tea. I like coffee.)。想把它们<b>连成一句</b>,更连贯。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">并列连词就是干这个的。关键:它连接的两部分<b>语法地位相同</b>——可以是词、短语、或整句,但两边必须<b>同一级</b>。</div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">I like <span class="p1">tea</span> <span class="cj">and</span> <span class="p2">coffee</span>.</div><div class="zh">我喜欢茶和咖啡。（连接两个名词）</div></div>
+        <div class="eg"><div class="en">She is <span class="p1">tired</span> <span class="cj">but</span> <span class="p2">happy</span>.</div><div class="zh">她累但开心。（连接两个形容词）</div></div>
+        <div class="eg"><div class="en"><span class="p1">I came</span>, <span class="cj">but</span> <span class="p2">she left</span>.</div><div class="zh">我来了，但她走了。（连接两个完整句子）</div></div>
+      </div>
+
+      <div class="callout">💡 <b>"增加流畅性"的另一面:省略。</b>并列结构里,两边<b>重复的部分可以省掉</b>,句子更紧凑:<br><code>He loves her and she <span style="color:var(--ink-faint)">(loves)</span> him.</code> 他爱她，她也爱他。（省掉重复的 loves）<br><code>The camera loves me and I <span style="color:var(--ink-faint)">(love)</span> it.</code> 镜头爱我，我也爱它。</div>
+
+      <div class="sum">📍 <b>小结:</b>并列句=用连词把<b>平等的两半</b>接起来。而"平等"这条,一旦落到语法上,就是最容易踩的坑——两边必须<b>同一种成分</b>。这就是第二阶的核心考点。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">核心考点</span>成分对等：天平两端要同类<span class="chip">parallel structure</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">中文思维会把"不同类"的东西并在一起(还听着挺顺)。英语<b>不允许</b>——这是考试和写作的头号扣分点。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">并列连词连接的两边,<b>必须是同一种语法成分</b>:名词配名词、形容词配形容词、动词配动词、句子配句子。<b>混搭 = 病句。</b></div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">❌ He is <span class="bad">smart</span> and <span class="bad">works hard</span>.</div><div class="zh">✗ 病句：smart 是形容词，works hard 是动词短语，不对等。</div></div>
+        <div class="eg"><div class="en">✅ He is <span class="p1">smart</span> and <span class="p2">hardworking</span>.</div><div class="zh">✓ 他又聪明又勤奋。（两个形容词，对等）</div></div>
+        <div class="eg"><div class="en">✅ He <span class="p1">works hard</span> and <span class="p2">learns fast</span>.</div><div class="zh">✓ 他工作努力、学得又快。（两个动词短语，对等）</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 实用工具：成分对等"自查法"三步</summary>
+        <div class="tbody">
+          <p>写完带 and/but/or 的句子,怕不对等?三步自查:</p>
+          <p><b>① 找到连词</b>(and/but/or…)。</p>
+          <p><b>② 拎出它左右紧挨的两部分</b>,各是什么词性/成分。</p>
+          <p><b>③ 问:两边是不是同一类?</b> 是→对;不是→改成同类。</p>
+          <p>例:<code>I like reading and to swim.</code> → 左 reading(动名词)、右 to swim(不定式)→ 不同类 → 改成 <code>reading and swimming</code> 或 <code>to read and to swim</code>。</p>
+          <div class="warn">🔑 一个好用的检验:<b>把连词一边的内容删掉,剩下的应该仍是通顺的句子;换成另一边,也应通顺。</b>两边"可互换位置"就说明对等。</div>
+        </div>
+      </details>
+
+      <div class="callout">🎯 <b>为什么单独列成一阶:</b>因为这是并列句<b>唯一真正的难点</b>。连词本身(and/but)你都认识,真正考的是——<b>你能不能保证连词两边对等</b>。记住天平那个画面:<b>两端不同类,句子就"塌"了。</b></div>
+
+      <div class="sum">📍 <b>小结:</b>对等规则立住了。接下来把常用的并列连词过一遍——它们各自表达什么逻辑关系(并列/转折/选择/因果)。这是第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">常用词</span>FANBOYS：七个并列连词<span class="chip">and / but / or / so…</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">并列连词具体有哪些?各表什么关系?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">英语并列连词一共就<b>七个</b>,有个经典记忆口诀 <b>FANBOYS</b>(每个首字母)。记住这七个,并列连词就齐了。</div></div>
+      </div>
+
+      <div class="fan">
+        <div class="fi"><div class="w">For</div><div class="m"><b>因为</b>(书面，表原因)。<span class="en">He stayed home, for he was ill.</span> <span class="zh">他待在家，因为病了。</span></div></div>
+        <div class="fi"><div class="w">And</div><div class="m"><b>并列/顺承/因果</b>。<span class="en">I have a pen and some paper.</span> <span class="zh">我有一支笔和一些纸。</span></div></div>
+        <div class="fi"><div class="w">Nor</div><div class="m"><b>也不</b>(接否定，后面要倒装)。<span class="en">He can't swim, nor can I.</span> <span class="zh">他不会游泳，我也不会。</span></div></div>
+        <div class="fi"><div class="w">But</div><div class="m"><b>转折</b>。<span class="en">She is young but wise.</span> <span class="zh">她年轻却睿智。</span></div></div>
+        <div class="fi"><div class="w">Or</div><div class="m"><b>选择</b>。<span class="en">We can stay or go.</span> <span class="zh">我们可以留下或离开。</span></div></div>
+        <div class="fi"><div class="w">Yet</div><div class="m"><b>然而</b>(≈but，语气更强的转折)。<span class="en">It's simple, yet powerful.</span> <span class="zh">它简单，然而强大。</span></div></div>
+        <div class="fi"><div class="w">So</div><div class="m"><b>所以</b>(表结果)。<span class="en">It rained, so we stayed in.</span> <span class="zh">下雨了，所以我们待在室内。</span></div></div>
+      </div>
+
+      <div class="callout">📌 <b>连接整句时加逗号:</b>并列连词连接<b>两个完整句子</b>时，习惯在连词<b>前</b>加逗号:<code>I came, but she left.</code> 连接的只是词/短语时不用:<code>tea and coffee</code>。</div>
+
+      <div class="callout">🧩 <b>and 不止"和":</b>它能表<b>顺承</b>(先后:Come and see. 来看看)和<b>因果</b>(Work hard and you'll pass. 努力就能过)。同一个 and，具体啥意思看上下文。</div>
+
+      <div class="sum">📍 <b>小结:</b>七个单个并列连词齐了。还有一类"成对出现"的并列词(both…and…),它们更强调、也更容易考主谓一致。这是第四阶。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">进阶</span>关联并列词：成对出现<span class="chip">both…and…</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">有些并列词<b>成对使用</b>,语气更强、更正式(不只是"和",而是"两者都")。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">它们有两个考点:<b>① 结构对称</b>(前后接同类,还是"对等"那条)<b>② 主谓一致</b>(接主语时谓语用单还是复数,有讲究)。</div></div>
+      </div>
+
+      <div class="corr">
+        <div class="cc"><div class="w">both … and …</div><div class="m"><b>两者都</b>。接主语时谓语用<b>复数</b>。<div class="ex">Both Tom and Jerry <b style="color:#8ce99a">are</b> here. <span class="zh">汤姆和杰瑞都在。</span></div></div></div>
+        <div class="cc"><div class="w">either … or …</div><div class="m"><b>两者任一</b>(或此或彼)。<div class="ex">You can have either tea or coffee. <span class="zh">茶或咖啡，你可选一样。</span></div></div></div>
+        <div class="cc"><div class="w">neither … nor …</div><div class="m"><b>两者都不</b>。<div class="ex">He likes neither tea nor coffee. <span class="zh">他茶和咖啡都不喜欢。</span></div></div></div>
+        <div class="cc"><div class="w">not only … but also …</div><div class="m"><b>不但…而且…</b>(递进)。<div class="ex">She is not only smart but also kind. <span class="zh">她不但聪明，而且善良。</span></div></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 考点：主谓一致——both 用复数，其余"就近原则"</summary>
+        <div class="tbody">
+          <p>这几组接<b>主语</b>时,谓语动词用单数还是复数?规则分两派:</p>
+          <p><b>· both … and … → 永远复数</b>(两个都算,天然是复数):<code>Both you and he <b>are</b> right.</code></p>
+          <p><b>· either…or / neither…nor / not only…but also → "就近原则"</b>:谓语跟<b>离它最近的那个主语</b>一致。</p>
+          <p><code>Either you or <b>he</b> <b>is</b> right.</code>（跟 he → 单数）<br><code>Neither he nor <b>they</b> <b>are</b> here.</code>（跟 they → 复数）<br><code>Not only you but also <b>she</b> <b>is</b> wrong.</code>（跟 she → 单数）</p>
+          <div class="warn">🔑 一句话:<b>both…and 一律复数;其余三组"看最近的那个主语"。</b>这是考试高频点。</div>
+        </div>
+      </details>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 两个细节：not only 的"重心" & 结构对称</summary>
+        <div class="tbody">
+          <p><b>① 重心在后半:</b> not only … but also … 里,<b>but also 后面才是想强调的重点</b>(不是"B比A更重要的事实",而是语气落在 B 上)。<code>He is not only a teacher but also a friend.</code>——重心落在"朋友"。</p>
+          <p><b>② 前后要对称</b>(还是"对等"那条铁律):not only 后接什么,but also 后就接什么。</p>
+          <p>❌ <code>Not only <b>he is smart</b> but also <b>works hard</b>.</code>（前接句子、后接动词短语，不对称）<br>✅ <code>He is not only <b>smart</b> but also <b>hardworking</b>.</code>（都接形容词）</p>
+          <div class="warn">🔑 关联词再花哨,也逃不过第二阶的天平:<b>前后接的东西必须同类。</b></div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>并列连词(单个 + 成对)全覆盖了。最后,退一步看全局:连词其实还有另一大家族——"挂上去"的从属连词。第五阶轻点一下,作为下一册的入口。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">入口 · 轻点</span>另一半天地：从句连词<span class="chip">下一册预告</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前四阶讲的都是"并起来"的连词(两边平等)。但连词还有一大类,活法完全不同——它把一半"<b>降级</b>"成从句。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这类叫<b>从属连词</b>(because/if/when/although…)。它引出的半句<b>不能独立</b>,要挂靠在主句上。这是<b>从句体系的入口,留待下一册</b>,这里只让你看清它和并列的区别。</div></div>
+      </div>
+
+      <div class="vs">
+        <div class="vscol eq">
+          <h5>并列（本册）：两边平等</h5>
+          <div class="ex">I stayed home, <span style="color:#ffe0a3">and</span> it rained. <span class="zh">我待在家，而且下雨了。</span></div>
+          <div class="d">两个句子地位相同，谁也不从属谁，去掉任一句另一句都成立。</div>
+        </div>
+        <div class="vscol sub">
+          <h5>从属（下一册）：一边降级</h5>
+          <div class="ex">I stayed home <span style="color:#d4a6ff">because</span> it rained. <span class="zh">我待在家，因为下雨了。</span></div>
+          <div class="d">"because it rained"是从句，不能独立成句，它从属于主句"I stayed home"。</div>
+        </div>
+      </div>
+
+      <div class="callout">🔭 <b>下一册预告:</b>从属连词引出的从句,按<b>在主句里当什么成分</b>分三种——<b>状语从句</b>(when/because/if…)、<b>定语从句</b>(who/which/that，你在形容词篇、介词篇见过的"后置定语"就是它)、<b>名词从句</b>(that/whether…)。这三种,是接下来的主线。</div>
+
+      <div class="callout" style="border-color:#fb7185"><b>顺带避个中式坑(下一册细讲):</b>从属连词 <b>although / because</b> 在英语里<b>不和 but / so 连用</b>——中文"虽然…但是…""因为…所以…"是成对的，英文只能留一个:<br>❌ <code>Although he is poor, but he is happy.</code> → ✅ 去掉 but。<br>❌ <code>Because it rained, so I stayed.</code> → ✅ 去掉 so。</div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流:并列句=把平等的两半接起来(1)→ 核心是成分对等(2)→ 七个 FANBOYS(3)→ 成对的关联词(4)→ 而"挂上去"的从属连词,是另一片天地,下一册见(5)。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读，是"把平等的两半接起来"这一件事被逐步说清</b>。核心永远是那架天平——两边对等。</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>解决什么</th><th>要点</th><th>核心例句</th><th>依赖 / 备注</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 是什么</td><td>连平等的两半</td><td><code>词/短语/句子，同一级</code></td><td><code>tea and coffee</code><span class="mini">茶和咖啡</span></td><td>可省略重复部分</td></tr>
+          <tr data-r="2"><td class="stage">2 · 核心考点</td><td>成分对等</td><td><code>两边必须同类</code><span class="mini">名↔名 句↔句</span></td><td><code>smart and hardworking</code><span class="mini">聪明又勤奋</span></td><td>★头号扣分点</td></tr>
+          <tr data-r="3"><td class="stage">3 · FANBOYS</td><td>有哪些并列词</td><td><code>for/and/nor/but/or/yet/so</code></td><td><code>It rained, so we stayed.</code><span class="mini">下雨所以没出门</span></td><td>连整句前加逗号</td></tr>
+          <tr data-r="4"><td class="stage">4 · 关联词</td><td>成对并列词</td><td><code>both…and… 等</code><span class="mini">对称+主谓一致</span></td><td><code>either you or he is…</code><span class="mini">就近原则</span></td><td>both→复数，余就近</td></tr>
+          <tr data-r="5"><td class="stage">5 · 入口</td><td>从属连词是另一类</td><td><code>because/if/when…</code><span class="mini">引出从句</span></td><td><code>I stayed because it rained.</code><span class="mini">因为下雨</span></td><td>下一册主线</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：用并列连词，三问不出错</h3>
+    <p class="sectlead" style="margin-top:8px">写一个并列句，从上往下问：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我要表达什么关系？选对连词</div><div class="arm">并列→<b>and</b>｜转折→<b>but/yet</b>｜选择→<b>or</b>｜因果→<b>so</b>(果)/<b>for</b>(因)</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">★连词两边，是同一种成分吗？</div><div class="arm"><b>拎出左右两部分对比</b>：名↔名、形↔形、句↔句才行。不对等 → 改成同类（这是最容易错的一步）</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">用的是成对关联词、且接主语？</div><div class="arm">查主谓一致：<b>both…and→复数</b>｜<b>either/neither/not only…→就近</b>（跟最近的主语）｜别忘前后<b>结构对称</b></div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿:</b>并列句的一切都回到那架<b>天平</b>——连词两边必须<b>对等</b>(Q2)。选对关系词(Q1)、管好主谓一致(Q3)是配套，但<b>"两边同类"才是命门</b>。中文能把不对等的东西并在一起，英语不行，这是你最该盯的地方。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>并列句看着简单——不就是 and/but/or 嘛——但它真正的功夫全在一个字:<b>"平"</b>。连词两边必须是<b>同一种语法成分</b>,像天平两端放同样的东西才平衡。中文思维最容易在这里栽跟头(把句子和修饰语并在一起还听着顺),而英语一票否决。你不是在背 and/but/or，你是在训练一种<b>对称感</b>:每次用并列连词，都下意识检查一下——<b>左右两边，对等吗？</b><br><br><span style="color:var(--ink-faint)">连词的另一半天地——"挂上去"的从属连词(because/if/when/although…)与它引出的三种从句(状语/定语/名词从句)——是下一册的主线。</span>
+  </footer>
+
+</div>
+</body>
+</html>

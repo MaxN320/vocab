@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语五大基本句型 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#161b22;
+    --panel-2:#1c2230;
+    --ink:#e6edf3;
+    --ink-soft:#9da7b3;
+    --ink-faint:#6b7482;
+    --line:#2a313c;
+
+    /* 五阶主题色 —— 冷到暖，像温度逐级升高 */
+    --s1:#4dd0e1;  /* 青  地基 */
+    --s2:#66bb6a;  /* 绿  给予 */
+    --s3:#ffca28;  /* 黄  变身 */
+    --s4:#ff8a65;  /* 橙  补语 */
+    --s5:#ba68c8;  /* 紫  纯粹存在 */
+
+    --zh:#7f8896;
+    --code:#0a0e14;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #13202e 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, #17131f 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:860px;margin:0 auto;padding:56px 22px 120px}
+
+  /* ---------- 头部 ---------- */
+  header.hero{margin-bottom:14px}
+  .kicker{
+    font-family:"SF Mono",Consolas,monospace;
+    letter-spacing:.34em;
+    text-transform:uppercase;
+    font-size:.68rem;
+    color:var(--ink-faint);
+    margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(2rem,5.5vw,3rem);
+    line-height:1.1;
+    margin:0 0 16px;
+    font-weight:800;
+    letter-spacing:-.01em;
+  }
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:60ch}
+  .lead b{color:var(--ink)}
+
+  /* ---------- 贯穿全篇的“主语+动词”地基条 ---------- */
+  .thesis{
+    margin:34px 0 10px;
+    padding:16px 20px;
+    border-left:3px solid var(--s1);
+    background:linear-gradient(90deg,rgba(77,208,225,.08),transparent);
+    border-radius:0 10px 10px 0;
+    font-size:.96rem;
+    color:var(--ink-soft);
+  }
+  .thesis b{color:var(--s1)}
+
+  /* ---------- 阶梯竖轴 ---------- */
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{
+    content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;
+    background:linear-gradient(var(--s1),var(--s2),var(--s3),var(--s4),var(--s5));
+    opacity:.5;
+  }
+
+  .step{position:relative;padding-left:56px;margin-bottom:44px}
+  .dot{
+    position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;
+    display:grid;place-items:center;font-weight:800;font-size:.9rem;color:var(--bg);
+    box-shadow:0 0 0 6px var(--bg), 0 0 22px -4px currentColor;
+    z-index:2;
+  }
+  .s1 .dot{background:var(--s1);color:#052}
+  .s2 .dot{background:var(--s2)}
+  .s3 .dot{background:var(--s3);color:#3a2c00}
+  .s4 .dot{background:var(--s4)}
+  .s5 .dot{background:var(--s5)}
+
+  .step h2{
+    margin:0 0 4px;font-size:1.34rem;font-weight:750;letter-spacing:-.01em;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  }
+  .s1 h2 .tag{color:var(--s1)} .s2 h2 .tag{color:var(--s2)}
+  .s3 h2 .tag{color:var(--s3)} .s4 h2 .tag{color:var(--s4)} .s5 h2 .tag{color:var(--s5)}
+  .formula{
+    font-family:"SF Mono",Consolas,monospace;font-size:.82rem;
+    padding:2px 10px;border-radius:20px;border:1px solid var(--line);
+    color:var(--ink-soft);background:var(--panel);white-space:nowrap;
+  }
+
+  /* 问题 / 为什么 卡 */
+  .why{
+    margin:14px 0 18px;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;
+  }
+  .why .row{display:flex;gap:0;border-bottom:1px solid var(--line)}
+  .why .row:last-child{border-bottom:0}
+  .why .lab{
+    flex:0 0 96px;padding:11px 14px;font-size:.74rem;letter-spacing:.06em;
+    color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;
+    font-family:"SF Mono",Consolas,monospace;
+  }
+  .why .val{padding:11px 16px;font-size:.94rem;color:var(--ink-soft)}
+  .why .val b{color:var(--ink)}
+
+  /* 例句块 */
+  .egs{display:flex;flex-direction:column;gap:12px;margin:16px 0 8px}
+  .eg{
+    background:var(--code);border:1px solid var(--line);border-radius:10px;
+    padding:13px 16px;
+  }
+  .eg .en{font-size:1.04rem;letter-spacing:.01em}
+  .eg .zh{color:var(--zh);font-size:.85rem;margin-top:3px}
+  /* 成分着色 */
+  .S{color:#7aa2ff;font-weight:600}
+  .V{color:#ff9d7a;font-weight:600}
+  .O{color:#8ce99a;font-weight:600}
+  .Oi{color:#ffd47a;font-weight:600}
+  .Od{color:#8ce99a;font-weight:600}
+  .P{color:#f2a6ff;font-weight:600}
+  .Cs{color:#ffd47a;font-weight:600}
+  .Co{color:#ff8fb0;font-weight:600}
+  .adv{color:var(--ink-faint);font-style:italic}
+
+  /* 成分小图例 */
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;margin:10px 0 2px;color:var(--ink-faint)}
+  .legend span b{font-weight:700}
+
+  /* 小结 */
+  .sum{
+    margin-top:16px;padding:12px 16px 12px 18px;border-radius:0 10px 10px 0;
+    font-size:.9rem;color:var(--ink-soft);
+  }
+  .s1 .sum{border-left:3px solid var(--s1);background:rgba(77,208,225,.06)}
+  .s2 .sum{border-left:3px solid var(--s2);background:rgba(102,187,106,.06)}
+  .s3 .sum{border-left:3px solid var(--s3);background:rgba(255,202,40,.06)}
+  .s4 .sum{border-left:3px solid var(--s4);background:rgba(255,138,101,.06)}
+  .s5 .sum{border-left:3px solid var(--s5);background:rgba(186,104,206,.06)}
+  .sum b{color:var(--ink)}
+
+  .callout{
+    margin:12px 0;padding:12px 16px;border-radius:10px;background:var(--panel-2);
+    border:1px dashed var(--line);font-size:.9rem;color:var(--ink-soft);
+  }
+  .callout b{color:var(--ink)}
+
+  /* ---------- 总览表 ---------- */
+  .overview{margin-top:24px}
+  h3.block{
+    font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em;
+    padding-left:14px;border-left:4px solid var(--ink);
+  }
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:18px}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+  th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--panel-2);color:var(--ink);font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  tbody tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;text-align:center;width:44px}
+  tr[data-s="1"] td.num{color:var(--s1)} tr[data-s="2"] td.num{color:var(--s2)}
+  tr[data-s="3"] td.num{color:var(--s3)} tr[data-s="4"] td.num{color:var(--s4)}
+  tr[data-s="5"] td.num{color:var(--s5)}
+  td code{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:var(--ink)}
+  td .mini{color:var(--zh);font-size:.78rem;display:block;margin-top:2px}
+
+  /* ---------- 判断流程 ---------- */
+  .flow{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+  .qnode{
+    display:flex;gap:14px;align-items:flex-start;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  }
+  .qnode .q{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);
+    display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;
+    font-weight:800;font-size:.82rem;color:var(--ink-soft)}
+  .qnode .body{flex:1}
+  .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .yes{color:#8ce99a} .qnode .no{color:var(--ink-faint)}
+  .qnode .arm{font-size:.9rem;margin-top:2px;color:var(--ink-soft)}
+  .qnode .arm b{font-weight:700}
+
+  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:520px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>英语五大基本句型</h1>
+    <p class="lead">别把它们当成五条要背的规则。它们其实是<b>同一个地基</b>，为了容纳越来越复杂的意思，一阶一阶长出来的。看完你会发现：五种句型是被“逼”出来的。</p>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基：</b>任何一个英语句子，剥到最后都只剩两样东西 —— <span class="S">谁（主语 S）</span> + <span class="V">做/是什么（谓语动词 V）</span>。后面四阶做的所有事，都只是在给这个地基<b>加零件</b>。记住这一点，后面就不用背了。
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step s1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>主谓：一个动作自己就完整了<span class="formula">S + V</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">怎样用最少的词，说清<b>“一件事发生了”</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这是句子的<b>最小完整单位</b>。没有它，其他四阶无从谈起 —— 它就是地基本身。</div></div>
+      </div>
+
+      <div class="legend">
+        <span><b class="S">S</b> 主语</span><span><b class="V">V</b> 谓语动词</span><span class="adv">灰斜体＝状语（可有可无）</span>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">works</span>.</div><div class="zh">她工作。</div></div>
+        <div class="eg"><div class="en"><span class="S">He</span> <span class="V">smiled</span> <span class="adv">this morning</span>.</div><div class="zh">他今天早上笑了。</div></div>
+      </div>
+
+      <div class="callout">关键判断：<b>动词后面不需要任何东西，意思就已经完整</b>。这种动词叫<b>不及物动词</b>（work / smile / run / sleep）。“this morning”只是状语，删掉句子照样成立 —— 这就是判断它“可有可无”的方法。</div>
+
+      <div class="sum">📍 <b>小结：</b>句型一 = 主语 + 一个能独立站住的动作。这是唯一不需要任何“宾语补充”的句型，也是后四阶的出发点。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step s2">
+      <div class="dot">2</div>
+      <h2><span class="tag">怎么用</span>主谓宾：动作必须落在一个对象上<span class="formula">S + V + O</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">句型一的局限：很多动作<b>不指向一个对象就说不完整</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">你说 <span class="S">She</span> <span class="V">eats</span>“她吃”——吃什么？听者会等下文。动作需要一个<b>承受者（宾语 O）</b>才闭合。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="S">S</b> 主语</span><span><b class="V">V</b> 谓语</span><span><b class="O">O</b> 宾语（动作的承受者）</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">eats</span> <span class="O">an apple</span>.</div><div class="zh">她吃一个苹果。</div></div>
+        <div class="eg"><div class="en"><span class="S">I</span> <span class="V">like</span> <span class="O">you</span>.</div><div class="zh">我喜欢你。</div></div>
+      </div>
+
+      <div class="callout">对照第一阶就懂了：<span class="V">work</span> 后面加不了宾语（不能说 “work an apple”），而 <span class="V">eat</span> 后面<b>必须</b>能接。能接宾语的动词叫<b>及物动词</b>。<b>能否接一个宾语，就是区分句型一和句型二的唯一标准。</b></div>
+
+      <div class="sum">📍 <b>小结：</b>句型二在地基上加了<b>一个零件：宾语</b>。从这里开始，“动词后面缺什么”成了辨认句型的核心线索。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step s3">
+      <div class="dot">3</div>
+      <h2><span class="tag">进一阶</span>主系表：不是“做”，而是“是/成为”<span class="formula">S + V + P</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">前两阶都在描述<b>动作</b>。但我们还常常要描述<b>状态</b>：某人“是”怎样、“变得”怎样。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">“她苹果”这类动作模型套不上“她很累”。这时动词不表动作，只当<b>等号（=）</b>，把主语和它的“身份/状态”连起来。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="S">S</b> 主语</span><span><b class="V">V</b> 系动词（=号）</span><span><b class="P">P</b> 表语（描述主语）</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">is</span> <span class="P">tired</span>.</div><div class="zh">她累了。</div></div>
+        <div class="eg"><div class="en"><span class="S">He</span> <span class="V">is</span> <span class="P">a doctor</span>.</div><div class="zh">他是一名医生。</div></div>
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">looks</span> <span class="P">happy</span>.</div><div class="zh">她看起来很开心。</div></div>
+      </div>
+
+      <div class="callout"><b>宾语 vs 表语 —— 一招分清：</b>句型二的 <span class="O">O</span> 和主语是<b>两个不同的人/物</b>（She ≠ apple）；句型三的 <span class="P">P</span> 反过来<b>描述主语本身</b>（She = tired）。能在中间填上“是/等于”而意思不变的，就是主系表。系动词除了 be，还有 look / become / feel / get 等“变化或感官”词。</div>
+
+      <div class="sum">📍 <b>小结：</b>动作线（一、二阶）到此分叉出一条<b>状态线</b>。判断口诀升级为：先看动词表<b>动作</b>还是<b>等号</b>——这决定你走宾语路还是表语路。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step s4">
+      <div class="dot">4</div>
+      <h2><span class="tag">特殊情况</span>主谓双宾：给“谁”一样“什么”<span class="formula">S + V + Oi + Od</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">句型二只能接<b>一个</b>宾语。但“给予”类动作天生涉及两方：<b>给谁</b> + <b>给什么</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">“She gives a book”——给谁？信息缺一半。give / send / tell / show 这类词，需要<b>两个宾语</b>才说得完整。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="Oi">Oi</b> 间接宾语（给谁·人）</span><span><b class="Od">Od</b> 直接宾语（给什么·物）</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">gives</span> <span class="Oi">him</span> <span class="Od">a book</span>.</div><div class="zh">她给他一本书。</div></div>
+        <div class="eg"><div class="en"><span class="S">I</span> <span class="V">tell</span> <span class="Oi">you</span> <span class="Od">a story</span>.</div><div class="zh">我给你讲一个故事。</div></div>
+      </div>
+
+      <div class="callout">它是句型二的<b>“加倍版”</b>：把一个宾语扩成“人+物”两个。顺序默认是<b>先人后物</b>（him a book）。验证法：两个成分都是动作的接收方，且能改写成 “gives a book <b>to</b> him” —— 能拆出 to/for 的，基本就是双宾。</div>
+
+      <div class="sum">📍 <b>小结：</b>第四阶不是新地基，而是把第二阶的“一个宾语”<b>裂变成两个</b>。到这里“动作路”走到最繁的一支。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step s5">
+      <div class="dot">5</div>
+      <h2><span class="tag">高级技巧</span>主谓宾补：宾语还没说完，得补一句<span class="formula">S + V + O + Co</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">前面所有宾语都是“动作的终点”。但有时<b>宾语自己也需要被描述</b>——它怎么样了、成了什么。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">“They made him”——把他怎么了？句子悬空。必须再<b>补一个成分</b>去说明<span class="O">him</span>的结果状态。这是把第三阶的“描述能力”嫁接到宾语身上。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="O">O</b> 宾语</span><span><b class="Co">Co</b> 宾语补足语（描述宾语）</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">They</span> <span class="V">made</span> <span class="O">him</span> <span class="Co">happy</span>.</div><div class="zh">他们使他开心。</div></div>
+        <div class="eg"><div class="en"><span class="S">We</span> <span class="V">call</span> <span class="O">her</span> <span class="Co">Ann</span>.</div><div class="zh">我们叫她安。</div></div>
+      </div>
+
+      <div class="callout"><b>双宾 vs 宾补 —— 最易混，一句话分清：</b><br>
+      · 双宾（四阶）：<span class="Oi">him</span> 和 <span class="Od">a book</span> 是<b>两样东西</b>，him ≠ a book。<br>
+      · 宾补（五阶）：<span class="O">him</span> 和 <span class="Co">happy</span> 说的是<b>同一个人</b>，him = happy（“他是开心的”这层关系成立）。<br>
+      换句话说：能在宾语和补语之间填“是/变成”的，就是宾补——这正是第三阶“等号”思维的复用。</div>
+
+      <div class="sum">📍 <b>小结：</b>第五阶=<b>第二阶的宾语 + 第三阶的描述</b>，两条线在此合流。五种句型至此形成一棵完整的树，全部长自最初那个 S+V 地基。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ================= 总览表 ================= -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="lead" style="margin-top:10px">竖着读是五种结构；<b>横着读是同一地基的成长史</b> —— 每行都比上一行多容纳一点意思。</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th class="num">#</th><th>结构</th><th>本质（解决什么）</th><th>核心例句</th><th>关键动词类型</th></tr>
+        </thead>
+        <tbody>
+          <tr data-s="1"><td class="num">1</td><td><code>S + V</code><span class="mini">主谓</span></td><td>一个动作自身完整</td><td><code>She works.</code><span class="mini">她工作。</span></td><td>不及物动词</td></tr>
+          <tr data-s="2"><td class="num">2</td><td><code>S + V + O</code><span class="mini">主谓宾</span></td><td>动作落到一个对象上</td><td><code>She eats an apple.</code><span class="mini">她吃一个苹果。</span></td><td>及物动词</td></tr>
+          <tr data-s="3"><td class="num">3</td><td><code>S + V + P</code><span class="mini">主系表</span></td><td>描述主语的状态/身份</td><td><code>She is tired.</code><span class="mini">她累了。</span></td><td>系动词（be/look…）</td></tr>
+          <tr data-s="4"><td class="num">4</td><td><code>S + V + Oi + Od</code><span class="mini">主谓双宾</span></td><td>给“谁”一样“什么”</td><td><code>She gives him a book.</code><span class="mini">她给他一本书。</span></td><td>授予类（give/tell…）</td></tr>
+          <tr data-s="5"><td class="num">5</td><td><code>S + V + O + Co</code><span class="mini">主谓宾补</span></td><td>再补充说明宾语</td><td><code>They made him happy.</code><span class="mini">他们使他开心。</span></td><td>使役/称呼（make/call…）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 判断流程 ================= -->
+  <section class="overview">
+    <h3 class="block">判断/应用：拿到句子，四问定型</h3>
+    <p class="lead" style="margin-top:10px">遇到任意句子，先划掉状语（时间、地点等可删部分），只盯<b>主干</b>，然后从上往下问：</p>
+
+    <div class="flow">
+      <div class="qnode">
+        <div class="q">Q1</div>
+        <div class="body">
+          <div class="ask">动词后面是空的，意思就完整了吗？</div>
+          <div class="arm"><span class="yes">是</span> → <b>句型一 S+V</b>（She works.）｜<span class="no">否，后面还缺东西</span> → 往下</div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q2</div>
+        <div class="body">
+          <div class="ask">这个动词是“等号”吗（能填“是/变成”）？</div>
+          <div class="arm"><span class="yes">是</span> → <b>句型三 S+V+P</b>（She is tired.）｜<span class="no">否，是真动作</span> → 往下</div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q3</div>
+        <div class="body">
+          <div class="ask">动词后面有几个成分？只有一个吗？</div>
+          <div class="arm"><span class="yes">只有一个</span> → <b>句型二 S+V+O</b>（She eats an apple.）｜<span class="no">有两个</span> → 往下</div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q4</div>
+        <div class="body">
+          <div class="ask">这两个成分之间，能填“是/等于”吗？</div>
+          <div class="arm"><span class="no">不能，是两样东西</span> → <b>句型四 双宾</b>（gives him a book，him≠book）<br><span class="yes">能，指同一个</span> → <b>句型五 宾补</b>（made him happy，him=happy）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:18px">🧭 <b>一条主线记全表：</b>先分<b>动作 or 等号</b>（Q1、Q2）→ 动作再看<b>宾语几个</b>（Q3）→ 两个宾语再看<b>能否画等号</b>（Q4）。整套判断，其实只在反复使用两个最原始的概念：<b>“动词缺不缺东西”</b> 和 <b>“两个成分之间能不能画等号”</b>。</div>
+  </section>
+
+  <footer>
+    <b>回看地基：</b>五种句型不是五条规则，是一棵树。树根是 <span class="S">S</span>+<span class="V">V</span>；及物 or 不及物、动作 or 等号，是主干的两次分叉；双宾与宾补则是枝头最后的分化。你不是在背五个，而是在看一个概念如何生长。
+  </footer>
+
+</div>
+</body>
+</html>

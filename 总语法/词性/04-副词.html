@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>副词 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 地基 · 修饰非名词 */
+    --r2:#60a5fa;     /* 变形 -ly */
+    --r3:#fbbf24;     /* 位置(难点) */
+    --r4:#34d399;     /* 名词化破解 */
+    --r5:#c084fc;     /* 搭配·写作 */
+    --term:#818cf8;   /* 可推导框 */
+    --conv:#e0913d;   /* 纯约定框 */
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:var(--conv)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* ===== 招牌视觉：副词在句中的可落点 ===== */
+  .slots{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .slots .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .slots .ssub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .track2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:1.05rem;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 14px}
+  .tok{color:var(--ink)}
+  .drop{border:1px dashed var(--line);border-radius:7px;padding:2px 8px;font-size:.72rem;font-family:"SF Mono",Consolas,monospace;white-space:nowrap;background:var(--panel-2)}
+  .drop.front{color:var(--r5);border-color:rgba(192,132,252,.5)}
+  .drop.mid{color:var(--r3);border-color:rgba(251,191,36,.5)}
+  .drop.end{color:var(--r4);border-color:rgba(52,211,153,.5)}
+  .slots .legend2{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;margin-top:12px;color:var(--ink-soft)}
+  .slots .legend2 b{font-weight:700}
+  .slots .snote{margin-top:10px;font-size:.8rem;color:var(--ink-faint)}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.28rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .adv{color:#ffe0a3;font-weight:700}        /* 副词本体 */
+  .vb{color:#7ab8ff;font-weight:700}          /* 动词 */
+  .aj{color:#8ce99a;font-weight:700}          /* 形容词 */
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+  .man{color:#8ce99a;font-weight:700}         /* 方式 */
+  .freq{color:#ffce7a;font-weight:700}        /* 频率 */
+  .deg{color:#7ab8ff;font-weight:700}         /* 程度 */
+  .sen{color:#d4a6ff;font-weight:700}         /* 句子 */
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  details.conv{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--conv);border-radius:10px;background:rgba(224,145,61,.055);overflow:hidden}
+  details.conv>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#ffc078;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.conv>summary::-webkit-details-marker{display:none}
+  details.conv>summary .caret{transition:transform .2s;color:var(--conv);font-size:.72rem}
+  details.conv[open]>summary .caret{transform:rotate(90deg)}
+  details.conv>summary:hover{background:rgba(224,145,61,.1)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+  details.conv .tbody{border-top-color:rgba(224,145,61,.25)} details.conv .tbody code{color:#ffd9a8}
+  details.conv .tbody .warn{background:rgba(224,145,61,.1);border-color:rgba(224,145,61,.3);color:#ffd9a8}
+  details.conv .tbody .warn b{color:#fff}
+
+  /* 变形规则级联 */
+  .rules{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .rule{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .rule .tg{flex:0 0 92px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.86rem;color:var(--r2)}
+  .rule .bd{flex:1;font-size:.86rem;color:var(--ink-soft)} .rule .bd b{color:var(--ink)}
+  .rule .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a;margin-top:3px}
+
+  /* 位置四类卡 */
+  .pos{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .pc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .pc.man{border-left:3px solid #8ce99a} .pc.freq{border-left:3px solid #ffce7a}
+  .pc.deg{border-left:3px solid #7ab8ff} .pc.sen{border-left:3px solid #d4a6ff}
+  .pc .h{font-size:.9rem;font-weight:700;margin-bottom:3px}
+  .pc.man .h{color:#8ce99a} .pc.freq .h{color:#ffce7a} .pc.deg .h{color:#7ab8ff} .pc.sen .h{color:#d4a6ff}
+  .pc .d{font-size:.84rem;color:var(--ink-soft)} .pc .d b{color:var(--ink)}
+  .pc .ex{font-family:"SF Mono",Consolas,monospace;font-size:.79rem;color:#8ce99a;margin-top:4px} .pc .ex .zh{color:var(--zh);font-family:inherit}
+
+  /* 名词化破解 对照 */
+  .swap{display:flex;gap:10px;margin:12px 0 6px;flex-wrap:wrap}
+  .swcol{flex:1;min-width:230px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .swcol.no{border-top:3px solid #fb7185} .swcol.yes{border-top:3px solid var(--r4)}
+  .swcol h5{margin:0 0 5px;font-size:.9rem} .swcol.no h5{color:#fb7185} .swcol.yes h5{color:var(--r4)}
+  .swcol .ex{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:#8ce99a;margin:5px 0} .swcol .ex .zh{color:var(--zh);font-family:inherit;display:block}
+  .swcol .d{font-size:.82rem;color:var(--ink-soft)}
+
+  /* 搭配库 */
+  .collo{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .cgrp{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px;border-left:3px solid var(--r5)}
+  .cgrp h5{margin:0 0 6px;font-size:.9rem;color:#d4a6ff}
+  .cgrp .items{display:flex;flex-direction:column;gap:5px}
+  .ci{font-size:.86rem;color:var(--ink-soft)} .ci b{color:#ffe0a3;font-family:"SF Mono",Consolas,monospace}
+  .ci .zh{color:var(--zh);font-size:.8rem}
+
+  /* 形副同形陷阱表 */
+  .flat{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:.86rem}
+  .flat th,.flat td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+  .flat th{background:var(--panel-2);color:var(--ink);font-size:.75rem;font-family:"SF Mono",Consolas,monospace}
+  .flat .w{font-family:"SF Mono",Consolas,monospace;font-weight:700;color:#ffe0a3}
+  .flat .a{color:var(--ink-soft)} .flat .b{color:#ffb3c0} .flat .b b{color:#fff}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>副词</h1>
+    <div class="sub">adverbs · describing everything except the noun</div>
+    <p class="lead">上一册形容词只修饰<b>名词</b>。但"跑得<b>快</b>"里的"快"修饰的是<b>动作</b>,形容词管不着——这正是副词登场的理由。一句话记住它俩的分工:<b>形容词描述"事物",副词描述"动作、性质、程度",几乎修饰名词以外的一切。</b></p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。<span class="pill conv">🧷 纯约定</span> 橙框：没逻辑、靠积累/背的（延续系列规矩）。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>形容词管"事物"(名词),副词管"其余一切"。<span class="q">它修饰动作(run fast)、修饰性质(very tall)、修饰另一个副词(too fast)、甚至评论整句(Luckily, …)。</span> 一个粗暴但好用的判断:<b>你想描述的对象,如果不是一个"东西",那多半就该用副词。</b>下面五阶,把这个"描述非名词"的工具一层层拆开:先弄清修饰谁 → 怎么变出来 → 放句子哪儿 → 找不到副词怎么办 → 怎么用它写出漂亮句子。
+  </div>
+
+  <!-- ===== 招牌：可落点 ===== -->
+  <div class="slots">
+    <div class="scap">副词和形容词最大的不同：它不锁死在一个位置，能在句中"滑动"</div>
+    <div class="ssub">同一句话，不同类型的副词落在不同的槽位 —— <b style="color:var(--ink)">位置本身携带信息</b>，放错就别扭甚至变意。</div>
+    <div class="track2">
+      <span class="drop front">句首 · 句子副词<br>Luckily,</span>
+      <span class="tok">She</span>
+      <span class="drop mid">中位 · 频率副词<br>always</span>
+      <span class="tok">sings</span>
+      <span class="drop end">句末 · 方式副词<br>beautifully</span>
+    </div>
+    <div class="legend2">
+      <span><b class="sen">句首</b>=评论整句</span><span><b class="freq">中位</b>=多久一次</span><span><b class="deg">词前</b>=程度(very)</span><span><b class="man">句末</b>=怎么做</span>
+    </div>
+    <div class="snote">→ 完整例句：<span class="sen">Luckily</span>, she <span class="freq">always</span> sings <span class="man">beautifully</span>.（幸好，她总是唱得很动听。）位置的门道见第三阶。</div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>修饰"非名词"：动词 / 形容词 / 副词 / 整句<span class="chip">modify non-nouns</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">形容词只能贴名词(a quick runner)。可"他跑得快"里的"快"描述的是<b>跑这个动作</b>,形容词伸不进去。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">于是有了副词,专门修饰<b>名词以外</b>的成分。它有四个作用对象,记住这四类,就抓住了副词的全部用武之地。</div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">She <span class="vb">runs</span> <span class="adv">quickly</span>.</div><div class="zh">她跑得快。（quickly 修饰动词 runs——最典型）</div></div>
+        <div class="eg"><div class="en">He is <span class="adv">very</span> <span class="aj">tall</span>.</div><div class="zh">他非常高。（very 修饰形容词 tall——程度）</div></div>
+        <div class="eg"><div class="en">She runs <span class="adv">too</span> <span class="adv">quickly</span>.</div><div class="zh">她跑得太快了。（too 修饰另一个副词 quickly）</div></div>
+        <div class="eg"><div class="en"><span class="adv">Luckily</span>, we won the game.</div><div class="zh">幸运的是，我们赢了比赛。（Luckily 评论整句——句子副词）</div></div>
+      </div>
+
+      <div class="callout">🔗 <b>接上形容词篇:</b>那一册第一阶埋了一句"改名词用形容词,改动作用副词"。这里就是它的展开:副词把"改"的对象<b>从名词扩展到了动词、形容词、副词、整句</b>。一句话对照——<b>形容词描述"什么样的东西",副词描述"怎么样地做/多么地怎样"。</b></div>
+
+      <div class="sum">📍 <b>小结:</b>副词=修饰非名词的四类成分。知道它"修饰谁"之后,第一个实际问题是:这个副词<b>怎么来</b>?大多数由形容词加工而成,逼出第二阶。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">怎么变形</span>形容词 → 副词：加 -ly 的规则<span class="chip">adj + ly</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">绝大多数副词不是凭空造的,而是<b>从形容词加工</b>来的:quick(形)→ quickly(副)。规则怎么走?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">拼写微调仍然服务于<b>好拼、好读</b>——和名词复数、形容词比较级<b>同一套底层逻辑</b>,你已经见过两次了。</div></div>
+      </div>
+
+      <div class="rules">
+        <div class="rule"><div class="tg">默认 +ly</div><div class="bd">直接加。<div class="ex">quick → quickly · slow → slowly · real → really</div></div></div>
+        <div class="rule"><div class="tg">辅音+y→ily</div><div class="bd"><b>辅音字母 + y</b>:变 y 为 i 再加 ly(同 baby→babies)。<div class="ex">happy → happily · easy → easily</div></div></div>
+        <div class="rule"><div class="tg">-le → -ly</div><div class="bd"><b>以 -le 结尾</b>:把 le 换成 ly(不是加 ly)。<div class="ex">simple → simply · terrible → terribly · gentle → gently</div></div></div>
+        <div class="rule"><div class="tg">-ic → ally</div><div class="bd"><b>以 -ic 结尾</b>:加 -ally(多一个 a)。<div class="ex">basic → basically · automatic → automatically</div></div></div>
+        <div class="rule"><div class="tg">-l 照常+ly</div><div class="bd">以 l 结尾的,照常加 ly,会出现<b>两个 l</b>(正常)。<div class="ex">careful → carefully · usual → usually</div></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 纠正一个常见错记：以 e 结尾"要不要去 e"？</summary>
+        <div class="tbody">
+          <p>很多人记成"去 e 加 ly",<b>这是错的、会让你写出 ❌ nicly</b>。真相:</p>
+          <p><b>· 绝大多数 e 结尾 → 保留 e，直接 +ly:</b> <code>nice → nicely</code>、<code>close → closely</code>、<code>complete → completely</code>、<code>brave → bravely</code>。</p>
+          <p><b>· 真正"变形"的只是 -le 结尾</b>(见上面规则):<code>simple → simply</code> 是把 <b>le 换成 ly</b>,不是"去 e"。别把这两种搞混。</p>
+          <div class="warn">⚠️ 少数几个词<b>确实去 e</b>,是不规则,单独记就好:<code>true → truly</code>、<code>whole → wholly</code>、<code>due → duly</code>。除这几个,e 结尾一律保留 e。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>副词的"造词"搞定了。但副词真正的难点不在长什么样,而在<b>放句子哪里</b>——这是它和位置固定的形容词最大的分野,逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">特殊情况 · 重点</span>位置：不同类型的副词，落点不同<span class="chip">position matters</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">形容词位置固定(贴名词);副词却能滑到句首、句中、句末。<b>放错位置轻则别扭,重则改意思</b>——这是中国学习者最高频的错区。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">副词按<b>"在回答什么问题"</b>分类,每类有自己的默认落点。下面<b>先讲位置最讲究的四类(方式/频率/程度/句子)</b>,再补三类<b>常用但位置简单的(时间/地点/疑问)</b>——七类一并覆盖。</div></div>
+      </div>
+
+      <div class="pos">
+        <div class="pc man">
+          <div class="h">① 方式副词（怎么做）→ 句末</div>
+          <div class="d">回答"how"。放在<b>动词后 / 宾语后</b>。<b>别插在动词和宾语之间。</b></div>
+          <div class="ex">She speaks English <span class="man">fluently</span>. <span class="zh">她英语说得流利。</span><br>❌ She speaks <span class="man">fluently</span> English.</div>
+        </div>
+        <div class="pc freq">
+          <div class="h">② 频率副词（多久一次）→ 句中</div>
+          <div class="d">回答"how often"(always/often/never…)。规则:<b>实义动词前、be 动词后、第一个助动词后</b>。</div>
+          <div class="ex">He <span class="freq">always</span> gets up early. <span class="zh">他总是早起。（实义动词前）</span><br>She is <span class="freq">never</span> late. <span class="zh">她从不迟到。（be 后）</span><br>❌ He gets up <span class="freq">always</span> early.</div>
+        </div>
+        <div class="pc deg">
+          <div class="h">③ 程度副词（多么）→ 紧贴被修饰词前</div>
+          <div class="d">回答"to what extent"(very/quite/too/almost)。放在<b>它修饰的那个形容词/副词前面</b>。</div>
+          <div class="ex">It is <span class="deg">very</span> cold today. <span class="zh">今天非常冷。</span><br>She sings <span class="deg">quite</span> well. <span class="zh">她唱得相当好。</span></div>
+        </div>
+        <div class="pc sen">
+          <div class="h">④ 句子副词（评论整句）→ 句首</div>
+          <div class="d">对整句表态(luckily/honestly/maybe)。放<b>句首,常带逗号</b>。</div>
+          <div class="ex"><span class="sen">Honestly</span>, I don't know. <span class="zh">老实说，我不知道。</span><br><span class="sen">Maybe</span> she forgot. <span class="zh">也许她忘了。</span></div>
+        </div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r3)">➕ <b>上面四类"位置最讲究"，所以重点讲。下面三类也很常用，但位置很简单，一起补齐：</b></div>
+
+      <div class="pos">
+        <div class="pc man" style="border-left-color:#7dd3fc">
+          <div class="h" style="color:#7dd3fc">⑤ 时间副词（何时）→ 多在句末</div>
+          <div class="d">回答"when"：now, today, soon, yesterday…</div>
+          <div class="ex" style="color:#7dd3fc">I will call you <span style="color:#7dd3fc;font-weight:700">soon</span>. <span class="zh">我很快给你打电话。</span><br>We met <span style="color:#7dd3fc;font-weight:700">yesterday</span>. <span class="zh">我们昨天见了面。</span></div>
+        </div>
+        <div class="pc deg" style="border-left-color:#5eead4">
+          <div class="h" style="color:#5eead4">⑥ 地点副词（何处）→ 多在句末</div>
+          <div class="d">回答"where"：here, there, home…</div>
+          <div class="ex" style="color:#5eead4">Come <span style="color:#5eead4;font-weight:700">here</span>. <span class="zh">过来这儿。</span><br>She is not <span style="color:#5eead4;font-weight:700">here</span>. <span class="zh">她不在这儿。</span></div>
+        </div>
+        <div class="pc sen" style="border-left-color:#fca5a5">
+          <div class="h" style="color:#fca5a5">⑦ 疑问副词（提问）→ 句首</div>
+          <div class="d">用来提问：when / where / why / how。放<b>句首</b>。</div>
+          <div class="ex" style="color:#fca5a5"><span style="color:#fca5a5;font-weight:700">Where</span> is my book? <span class="zh">我的书在哪儿？</span><br><span style="color:#fca5a5;font-weight:700">Why</span> are you sad? <span class="zh">你为什么难过？</span></div>
+        </div>
+      </div>
+
+      <div class="callout">🔸 还有一类<b>关系副词</b>(when/where/why 引导从句,如 the day <b>when</b> we met)——它属于<b>定语从句</b>的范畴,留到从句那册专门讲,这里知道有它即可,不展开。</div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 可推导：句末多个副词一起，按"方式 → 地点 → 时间"排</summary>
+        <div class="tbody">
+          <p>如果句末同时有方式、地点、时间副词,顺序是固定的:<b>方式(M) → 地点(P) → 时间(T)</b>。</p>
+          <p><code>She sang <span style="color:#8ce99a">beautifully</span> <span style="color:#7ab8ff">here</span> <span style="color:#d4a6ff">yesterday</span>.</code><br>她昨天在这儿唱得很动听。(怎么唱→在哪→何时)</p>
+          <p><b>一条好记的线索:</b>离动作越"近"的越靠前——"怎么做"和动作最贴身(方式),"何时"最外围(时间)。这和名词篇"越本质越贴近"是同一种直觉。</p>
+          <div class="warn">🔑 记不住 M-P-T 全序也没关系,最该守住的是第①条:<b>方式副词别塞进"动词+宾语"中间</b>,这是最常被扣分的点。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>位置这一关过了,副词的"用法"就基本齐了。但接下来会撞上一个结构性难题——<b>很多概念根本没有好用的副词</b>。这逼出第四阶的破解术。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">高级技巧</span>副词不够用时：名词化，改用形容词去修饰<span class="chip">the workaround</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">英语里<b>形容词的数量远多于副词</b>。很多意思你想用副词表达,却发现<b>要么没有对应副词,要么那个副词很生硬</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">破解思路:<b>把动作"名词化"变成名词,再拿一个形容词去修饰它</b>。形容词多、好用、还能叠——绕开了副词的短缺。</div></div>
+      </div>
+
+      <div class="swap">
+        <div class="swcol no">
+          <h5>✗ 硬找副词（常常卡住或生硬）</h5>
+          <div class="ex">He explained it ??? <span class="zh">想说"他解释得极其清楚/有力"，副词一时难凑</span></div>
+          <div class="d">很多"程度 + 方式"的组合，没有现成的单个副词能精准表达。</div>
+        </div>
+        <div class="swcol yes">
+          <h5>✓ 名词化 + 形容词（万能绕过）</h5>
+          <div class="ex">He explained it <span class="aj">with great clarity</span>. <span class="zh">他解释得极其清楚。</span></div>
+          <div class="d">把"清楚"变名词 clarity，用形容词 great 修饰它，套进 with/at/in a … way 结构。</div>
+        </div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">She ran <span class="aj">at an incredible speed</span>.</div><div class="zh">她跑得快得惊人。（= ran incredibly fast，用 speed + incredible 绕过）</div></div>
+        <div class="eg"><div class="en">They worked <span class="aj">with great care</span>.</div><div class="zh">他们干得非常仔细。（= worked very carefully）</div></div>
+        <div class="eg"><div class="en">He answered <span class="aj">in a strange way</span>.</div><div class="zh">他回答得很奇怪。（= answered strangely，但 way 结构更灵活）</div></div>
+      </div>
+
+      <div class="callout">🧠 <b>为什么这是高招:</b>名词是英语里"承重能力最强的容器"(形容词篇讲过)。一旦把动作变成名词,你就能在它前面挂那些<b>又多又强的形容词</b>——<code>great / immense / incredible / remarkable / fantastic</code>。常用骨架:<code>with + 形 + 名</code>(with great care)、<code>at + 形 + speed</code>、<code>in a + 形 + way</code>。<b>这也是写作里让句子显得高级、精准的常用手法。</b></div>
+
+      <div class="sum">📍 <b>小结:</b>副词短缺的问题被"名词化+形容词"化解了。最后一步,把副词用出彩——有一批<b>副词+词的固定搭配</b>,是写作的杀器,逼出第五阶。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">积累 · 写作杀器</span>副词的固定搭配<span class="chip">🧷 靠积累</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">母语者习惯用一些<b>固定的"副词 + 形容词/动词"组合</b>。用对了,一句话立刻地道、有力;用不对(或只会 very)就平庸。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这类搭配<b>没有严密逻辑,是约定</b>(标🧷)——为什么是 highly successful 而不是 strongly successful?没道理,就是习惯。<b>只能靠见到就积累。</b></div></div>
+      </div>
+
+      <div class="collo">
+        <div class="cgrp">
+          <h5>副词 + 形容词（替代平庸的 very）</h5>
+          <div class="items">
+            <div class="ci"><b>notoriously difficult</b> <span class="zh">出了名地难</span></div>
+            <div class="ci"><b>highly successful</b> <span class="zh">非常成功</span></div>
+            <div class="ci"><b>bitterly cold</b> <span class="zh">刺骨地冷</span></div>
+            <div class="ci"><b>deeply concerned</b> <span class="zh">深切担忧</span></div>
+            <div class="ci"><b>perfectly clear</b> <span class="zh">完全清楚</span></div>
+          </div>
+        </div>
+        <div class="cgrp">
+          <h5>副词 + 动词（让动作更有力）</h5>
+          <div class="items">
+            <div class="ci"><b>strongly recommend</b> <span class="zh">强烈推荐</span></div>
+            <div class="ci"><b>firmly believe</b> <span class="zh">坚信</span></div>
+            <div class="ci"><b>sincerely apologize</b> <span class="zh">诚挚道歉</span></div>
+            <div class="ci"><b>badly need</b> <span class="zh">急需</span></div>
+            <div class="ci"><b>fully understand</b> <span class="zh">完全理解</span></div>
+          </div>
+        </div>
+        <div class="cgrp">
+          <h5>连接副词（连接句子、表逻辑）——写作尤其有用</h5>
+          <div class="items">
+            <div class="ci"><b>however</b> <span class="zh">然而（转折）· It was hard. However, we did it. 那很难。然而我们做到了。</span></div>
+            <div class="ci"><b>therefore</b> <span class="zh">因此（结果）· He was ill. Therefore, he stayed home. 他病了，因此待在家。</span></div>
+            <div class="ci"><b>moreover</b> <span class="zh">而且（递进）· It is cheap. Moreover, it is good. 它便宜，而且好。</span></div>
+            <div class="ci"><b>otherwise</b> <span class="zh">否则 · Hurry, otherwise we will be late. 快点，否则我们要迟到。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r5)">🔗 <b>连接副词的用法要点(简单记):</b>它连接<b>两个完整句子</b>,表达它们之间的逻辑关系(转折/因果/递进)。最常见是放<b>第二句句首,后面加逗号</b>:<code>…. However, ….</code> 这类词能让你的<b>写作条理清晰、有逻辑感</b>——正是考试作文的加分点。</div>
+
+      <div class="callout">✍️ <b>怎么积累:</b>你在命令行报错、技术文档、文章里遇到这类"副词+词"搭配,别只记单词——<b>把整个搭配当一个"块"记下来</b>(highly successful 作为一个整体),写作时直接调用。这比背单个副词有用得多,是从"看得懂"到"写得出"的关键一步。</div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流:副词修饰非名词(1)→ 加 ly 造出来(2)→ 按类型摆位置(3)→ 短缺时名词化绕过(4)→ 固定搭配写出彩(5)。整册都围绕"描述非名词"这一个使命展开。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 独立陷阱框 ===== -->
+  <section class="overview" style="margin-top:36px">
+    <h3 class="block">⚠️ 独立陷阱：形副同形 & 加 ly 变意</h3>
+    <p class="sectlead" style="margin-top:8px">有一批词，<b>加不加 ly 是两个意思</b>，甚至意思相反。这是高频失分点，单独拎出来强记。</p>
+
+    <table class="flat">
+      <thead><tr><th>词</th><th>原形（也是副词，"平副词"）</th><th>加 ly 后（意思变了！）</th></tr></thead>
+      <tbody>
+        <tr><td class="w">hard</td><td class="a">努力地 · work <b style="color:#8ce99a">hard</b> 努力工作</td><td class="b"><b>hardly</b> = 几乎不 · work hardly 几乎不工作（意思相反！）</td></tr>
+        <tr><td class="w">late</td><td class="a">晚 · come <b style="color:#8ce99a">late</b> 来晚了</td><td class="b"><b>lately</b> = 最近</td></tr>
+        <tr><td class="w">near</td><td class="a">近 · stand <b style="color:#8ce99a">near</b> 站得近</td><td class="b"><b>nearly</b> = 几乎</td></tr>
+        <tr><td class="w">high</td><td class="a">高（物理高度）· fly <b style="color:#8ce99a">high</b> 飞得高</td><td class="b"><b>highly</b> = 高度地（抽象）· highly recommend</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout" style="border-color:#fb7185"><b>最狠的坑是 hard / hardly:</b> <code>He works hard.</code>(他工作努力)和 <code>He hardly works.</code>(他几乎不工作)<b>意思完全相反</b>!<span style="color:#ffb3c0">hardly 已经彻底脱离了 hard 的原意</span>,别把它当"hard 的副词"。<br><br>另外补两个"平副词"(形容词和副词同形,不加 ly):<code>fast</code>(a fast car / run fast)、<code>well</code>(well 是 good 的副词:do it well)。</div>
+  </section>
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读，是"描述非名词"这一个使命被逐步补全</b>。🧷 标记的是纯约定项。</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>解决什么</th><th>机制</th><th>核心例句</th><th>依赖 / 备注</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 修饰谁</td><td>描述非名词</td><td><code>动/形/副/整句</code></td><td><code>She runs quickly.</code><span class="mini">她跑得快</span></td><td>对照形容词修饰名词</td></tr>
+          <tr data-r="2"><td class="stage">2 · 变形</td><td>怎么造出来</td><td><code>adj + ly（含 -le/-ic）</code><span class="mini">发音省力</span></td><td><code>simple → simply</code><span class="mini">简单地</span></td><td>拼写同名词/形容词篇</td></tr>
+          <tr data-r="3"><td class="stage">3 · 位置</td><td>放句子哪儿</td><td><code>四类讲究+三类简单</code><span class="mini">共七类</span></td><td><code>He always gets up early.</code><span class="mini">他总早起</span></td><td>★重点，最易错</td></tr>
+          <tr data-r="4"><td class="stage">4 · 破解</td><td>副词不够用</td><td><code>名词化 + 形容词</code></td><td><code>with great care</code><span class="mini">非常仔细</span></td><td>形容词多、好用</td></tr>
+          <tr data-r="5"><td class="stage">5 · 搭配 🧷</td><td>写出彩</td><td><code>副词+形/动 固定块</code><span class="mini">靠积累</span></td><td><code>strongly recommend</code><span class="mini">强烈推荐</span></td><td>约定，整块记</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：要用一个副词，五问定位</h3>
+    <p class="sectlead" style="margin-top:8px">从上往下问，副词的形态、位置、乃至"要不要换结构"就定了：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我要描述的是"一个东西"，还是动作/性质/程度/整句？</div><div class="arm"><span class="no">是东西(名词)</span> → 用<b>形容词</b>｜<span class="yes">是动作/性质/程度/整句</span> → 用<b>副词</b>，继续</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">怎么变出来？</div><div class="arm">adj+<b>ly</b>｜辅音+y→<b>ily</b>｜-le→<b>-ly</b>(simply)｜-ic→<b>-ally</b>｜e 结尾一般<b>保留 e</b>(nicely)</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">放句子哪个位置？看它是哪类</div><div class="arm">方式(怎么做)→<b>句末</b>｜频率(多久)→<b>句中</b>(实义动词前/be后)｜程度(多么)→<b>被修饰词前</b>｜评论整句→<b>句首</b>｜时间/地点(何时/何处)→<b>句末</b>｜疑问(提问)→<b>句首</b></div></div></div>
+      <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">找不到合适的副词、或副词很生硬？</div><div class="arm">→ <b>名词化</b>：把动作变名词，用形容词修饰（with great care / at high speed / in a … way）</div></div></div>
+      <div class="qnode"><div class="qq">Q5</div><div class="body"><div class="ask">在写作，想让句子更地道有力？</div><div class="arm">→ 调用<b>固定搭配</b>(🧷整块记)：副词+形(highly successful)、副词+动(strongly recommend)，别只会 very</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿五问:</b>一切围绕"<b>描述一个非名词的东西</b>"——先确认该用副词而非形容词(Q1)，再定它<b>长什么样(Q2)、坐哪儿(Q3)</b>；副词不给力时<b>换名词化结构(Q4)</b>，想出彩时<b>调固定搭配(Q5)</b>。其中位置(Q3)是最该练的，固定搭配(Q5)是纯约定要靠积累。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>副词看着零散——一堆 ly、飘忽的位置、hardly 这种陷阱——但它只有一个使命:<b>描述名词以外的一切</b>。修饰谁、怎么变、放哪里，是这个使命的三次落地；副词不够用时用"名词化+形容词"绕过，想写得漂亮时调"副词+词"的固定块。它和形容词是一对搭档:<b>形容词管"事物"，副词管"动作、性质、程度与整句"</b>。你不是在背一堆 ly，你是在学会：当你要描述的不是一个"东西"时，如何精准地把它说出来。
+  </footer>
+
+</div>
+</body>
+</html>

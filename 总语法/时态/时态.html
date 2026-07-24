@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时态 · 自己推导版 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 一般时 */
+    --r2:#60a5fa;     /* 进行时 */
+    --r3:#fbbf24;     /* 完成时 */
+    --r4:#34d399;     /* 完成进行时 */
+    --r5:#c084fc;     /* 核心规律 */
+    --term:#818cf8;
+    --conv:#e0913d;
+
+    --time:#f0a875;   /* 时间信息高亮 */
+    --state:#7ab8ff;  /* 状态信息高亮 */
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:66ch}
+  .lead b{color:var(--ink)}
+  .byline{margin:12px 0 0;font-size:.82rem;color:var(--ink-faint);background:var(--panel-2);border:1px dashed var(--line);border-radius:10px;padding:9px 13px}
+  .byline b{color:#a5b4fc}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.t{color:#ffc79e;border-color:var(--time)}
+  .termhint .pill.s{color:#a9d0ff;border-color:var(--state)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* ===== 招牌：谁站最左谁扛时间 + 层层锁定 ===== */
+  .sig{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .sig .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .sig .ssub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .sig .ssub b{color:var(--ink)}
+  .sigsent{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .word{border-radius:9px;padding:8px 13px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:1rem;text-align:center;min-width:70px}
+  .word .lbl{display:block;font-size:.6rem;font-weight:600;margin-top:4px;letter-spacing:.02em}
+  .word.leftmost{background:rgba(240,168,117,.14);border:1px solid var(--time);color:#ffc79e}
+  .word.leftmost .lbl{color:#ffc79e}
+  .word.mid{background:rgba(122,184,255,.1);border:1px solid rgba(122,184,255,.4);color:#a9d0ff}
+  .word.mid .lbl{color:#a9d0ff}
+  .word.main{background:rgba(255,224,163,.1);border:1px solid rgba(255,224,163,.4);color:#ffe0a3}
+  .word.main .lbl{color:#ffe0a3}
+  .siglocks{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+  .lockrow{display:flex;gap:9px;align-items:center;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:7px 11px;font-size:.82rem;color:var(--ink-soft);flex-wrap:wrap}
+  .lockrow b{color:var(--ink)} .lockrow .lw{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-weight:700}
+  .sig .snote{margin-top:11px;font-size:.82rem;color:var(--ink-faint)}
+  .sig .snote b{color:var(--ink)}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.24rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .vb{color:#ffe0a3;font-weight:700}
+  .tm{color:#ffc79e;font-weight:700}
+  .st{color:#a9d0ff;font-weight:700}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+
+  /* 四形态 */
+  .forms4{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 6px}
+  .f4{flex:1;min-width:130px;border-radius:10px;border:1px solid var(--line);background:var(--panel);padding:11px 12px;text-align:center}
+  .f4 .l{font-family:"SF Mono",Consolas,monospace;font-size:.66rem;text-transform:uppercase;margin-bottom:5px;color:var(--ink-faint)}
+  .f4 .w{font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:1rem;color:#ffe0a3}
+  .f4.solo{border-color:rgba(52,211,153,.5)} .f4.solo .l{color:#34d399}
+  .f4.dep{border-color:rgba(251,113,133,.4)} .f4.dep .l{color:#fb7185}
+
+  /* 三时并列 */
+  .three{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .t3{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;flex-wrap:wrap}
+  .t3 .k{flex:0 0 96px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.82rem;color:#ffc79e}
+  .t3 .f{flex:0 0 auto;font-family:"SF Mono",Consolas,monospace;font-size:.86rem;color:#8ce99a;font-weight:700}
+  .t3 .ex{flex:1;min-width:180px;font-size:.85rem;color:var(--ink-soft)} .t3 .ex .zh{color:var(--zh);font-size:.79rem;display:block}
+
+  /* 结构公式 */
+  .formula{background:var(--code);border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin:12px 0;text-align:center;font-family:"SF Mono",Consolas,monospace;font-size:1.05rem}
+  .formula .p+ {color:var(--ink-faint)}
+  .formula .aux{color:#7ee0b8;font-weight:800}
+  .formula .frm{color:#ffe0a3;font-weight:800}
+  .formula .note{display:block;font-family:inherit;font-size:.78rem;color:var(--ink-faint);margin-top:8px}
+
+  /* 12宫格矩阵 */
+  .matrix{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.mx{border-collapse:collapse;width:100%;min-width:760px;font-size:.84rem}
+  table.mx th,table.mx td{padding:10px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  table.mx thead th{background:var(--panel-2);color:var(--ink);font-size:.72rem;font-family:"SF Mono",Consolas,monospace;text-align:center}
+  table.mx thead th.st1{color:#7ec8a0} table.mx thead th.st2{color:#7ab8ff} table.mx thead th.st3{color:#ffce7a} table.mx thead th.st4{color:#c9a6ff}
+  table.mx tbody th{background:var(--panel-2);color:#ffc79e;font-family:"SF Mono",Consolas,monospace;font-weight:800;text-align:left;white-space:nowrap;font-size:.78rem}
+  table.mx td{color:var(--ink)}
+  table.mx td code{font-family:"SF Mono",Consolas,monospace;color:#ffe0a3;font-size:.82rem;font-weight:700}
+  table.mx td .zh{color:var(--zh);font-size:.74rem;display:block;margin-top:2px}
+  table.mx tr:last-child th,table.mx tr:last-child td{border-bottom:0}
+  table.mx th:last-child,table.mx td:last-child{border-right:0}
+  .mxcap{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.82rem;color:var(--ink-soft)}
+  .mxcap b{color:var(--ink)}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+    .t3 .k{flex-basis:80px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>时态</h1>
+    <div class="sub">tenses · derived from first principles</div>
+    <p class="lead">12 个时态,不是 12 条要背的规则,而是<b>两个信息维度相乘</b>再由<b>助动词层层拼装</b>出来的。谓语要同时交代两件事——<b class="tm">什么时候(时间)</b>和 <b class="st">动作处于什么阶段(状态)</b>。单个动词形态提供不了全部信息,于是引入助动词帮忙。这一册,顺着这条推导,把 12 时态一步步"长"出来。</p>
+    <div class="byline">✍️ <b>本册按"自己推导"的路径展开:</b>谓语的双信息任务 → 动词四形态 → 一般时 → 进行时(现在分词篇) → 完成时(过去分词篇) → 完成进行时。每一阶都用到上一阶。</div>
+    <div class="termhint"><span class="pill t">时间信息</span> 橙色＝什么时候。<span class="pill s">状态信息</span> 蓝色＝动作阶段。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>时态体现在<span class="q">谓语</span>上,而谓语的核心任务是提供两种信息——<b class="tm">时间</b>(过去/现在/将来)+ <b class="st">状态</b>(一般/进行/完成)。<span class="q">3 种时间 × 3 种主要状态,再叠加"完成进行",就是全部时态。</span>谓语靠动词充当,但单个动词形态扛不动全部信息,<b>于是请助动词来帮忙分担</b>——而分担的规则,最后会收敛成一条惊人简单的核心律(第五阶)。
+  </div>
+
+  <!-- ===== 招牌 ===== -->
+  <div class="sig">
+    <div class="scap">全篇最终会收敛到这一条律：谁站最左，谁扛时间；每个词锁定下一个的形态</div>
+    <div class="ssub">以最复杂的 <b>will have been working</b>（将来完成进行时）为例——再复杂的时态，都是这条律拼出来的。</div>
+    <div class="sigsent">
+      <span class="word leftmost">will<span class="lbl">扛时间·将来</span></span>
+      <span class="word mid">have<span class="lbl">被锁→原形</span></span>
+      <span class="word mid">been<span class="lbl">被锁→过去分词</span></span>
+      <span class="word main">working<span class="lbl">被锁→现在分词</span></span>
+    </div>
+    <div class="siglocks">
+      <div class="lockrow"><b>will</b> 站最左 → 扛"将来"这个<span class="tm" style="font-weight:700">时间</span>，并锁定下一个用原形 → <span class="lw">have</span></div>
+      <div class="lockrow"><b>have</b> 表"完成" → 锁定下一个用过去分词 → be 变 <span class="lw">been</span></div>
+      <div class="lockrow"><b>been</b> 表"进行" → 锁定下一个用现在分词 → work 变 <span class="lw">working</span></div>
+    </div>
+    <div class="snote">→ 时间信息永远由<b>最左边那个词</b>承载；后面每个词只管状态、并被前一个"锁定"形态。<b>这条律，你在推导的最后会自己撞见。</b></div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">地基</span>谓语的双任务 & 四形态 → 一般时<span class="chip">time + state</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">时态到底"变"的是什么?——变的是<b>谓语</b>。谓语要交代<b class="tm">什么时候</b> + <b class="st">动作什么阶段</b>。先从最简单的"一般"状态入手。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">谓语靠动词充当。而动词只有<b>四种形态</b>可用。先看清这四个"零件",才知道怎么拼时态。</div></div>
+      </div>
+
+      <div class="callout">🧱 <b>动词的四种形态(拼时态的全部零件):</b></div>
+      <div class="forms4">
+        <div class="f4 solo"><div class="l">原形 ✓能独立</div><div class="w">work</div></div>
+        <div class="f4 solo"><div class="l">过去式 ✓能独立</div><div class="w">worked</div></div>
+        <div class="f4 dep"><div class="l">过去分词 ✗需帮忙</div><div class="w">worked</div></div>
+        <div class="f4 dep"><div class="l">现在分词 ✗需帮忙</div><div class="w">working</div></div>
+      </div>
+
+      <div class="callout" style="border-color:var(--base)">🔑 <b>关键观察:只有原形和过去式能"自己"作谓语</b>(自带时间);过去分词、现在分词<b>不能独立</b>,它们没有时间信息,必须找助动词帮忙(这是第二、三阶的引子)。所以"一般"状态,用能独立的两个就够了。</div>
+
+      <div class="three">
+        <div class="t3"><div class="k">一般现在</div><div class="f">原形/三单</div><div class="ex">She works in a bank. <span class="zh">她在银行工作。（直接用，什么都不加）</span></div></div>
+        <div class="t3"><div class="k">一般过去</div><div class="f">过去式</div><div class="ex">She worked yesterday. <span class="zh">她昨天工作了。（动词换成过去式即可）</span></div></div>
+        <div class="t3"><div class="k">一般将来</div><div class="f">will+原形</div><div class="ex">She will work tomorrow. <span class="zh">她明天将工作。（原形前加 will 提供"将来"）</span></div></div>
+      </div>
+
+      <div class="callout">💡 <b>注意"将来"是怎么来的:</b>动词没有专门的"将来形态",所以<b>将来这个时间信息,得靠 will 来提供</b>。这是第一次出现"动词自己给不了信息 → 找个词来帮忙"——这个思路,是后面所有复杂时态的<b>母题</b>。</div>
+
+      <div class="sum">📍 <b>小结:</b>一般时(现在/过去/将来)解决了:能独立的两个形态直接用,将来靠 will 帮忙。但"一般"只是状态之一。想表达<b>"正在进行"</b>,就要用到那个"不能独立"的现在分词了——逼出第二阶。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">现在分词篇</span>进行时：be 提供时间 + 现在分词<span class="chip">be + -ing</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">想表达"<b>正在</b>做"(进行状态)。现在分词(working)正好表"进行中的动作"——但它<b>不提供时间</b>,光有它句子站不住。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">既然现在分词给不了时间,就<b>请 be 来提供时间</b>。be 自己会变(is/was/will be),扛起过去/现在/将来;现在分词专心表"进行"。分工完成。</div></div>
+      </div>
+
+      <div class="formula"><span class="aux">be</span>（提供时间）<span class="p">+</span> <span class="frm">现在分词</span>（表进行）<span class="note">be 变成什么时间，整句就是什么时间</span></div>
+
+      <div class="three">
+        <div class="t3"><div class="k">现在进行</div><div class="f">am/is/are+ing</div><div class="ex">She is working now. <span class="zh">她现在正在工作。（is 提供"现在"）</span></div></div>
+        <div class="t3"><div class="k">过去进行</div><div class="f">was/were+ing</div><div class="ex">She was working then. <span class="zh">她那时正在工作。（was 提供"过去"）</span></div></div>
+        <div class="t3"><div class="k">将来进行</div><div class="f">will be+ing</div><div class="ex">She will be working then. <span class="zh">她那时将在工作。（见下方精妙处）</span></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 将来进行时最精妙：will be working 是怎么"逼"出来的</summary>
+        <div class="tbody">
+          <p>将来进行,需要同时满足两个要求,但它们<b>打架</b>:</p>
+          <p><b>· 要"将来"</b> → 得用 will，而 <b>will 后面必须跟原形</b>。</p>
+          <p><b>· 要"进行"</b> → 得用现在分词 working。</p>
+          <p>矛盾:will 要原形，进行要 -ing，到底听谁的?<b>英语的解法:让 be 出面当"缓冲"。</b></p>
+          <p><code>will + <b>be</b>（原形，满足 will）+ working（现在分词，满足进行）</code></p>
+          <div class="warn">🔑 will be working = will 拿到了它要的原形(be)、进行也拿到了它要的 -ing(working)。<b>be 一身兼两职,化解了矛盾。</b>这正是你会在第五阶看到的"层层锁定"的雏形。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>进行时=be 供时间 + 现在分词表进行。核心手法是"<b>请一个会变时间的助动词，替不能独立的分词扛时间</b>"。同样的困境也发生在另一个分词身上——过去分词。它对应"完成"状态,逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">过去分词篇</span>完成时：have 提供时间 + 过去分词<span class="chip">have + p.p.</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">想表达"<b>已经</b>做完"(完成状态)。过去分词(worked/done)正好表"完成了的动作"——但它和现在分词一样,<b>不提供时间</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">同一个套路:<b>请 have 来提供时间</b>。have 自己会变(had/have/will have),扛起过去/现在/将来;过去分词专心表"完成"。</div></div>
+      </div>
+
+      <div class="formula"><span class="aux">have</span>（提供时间）<span class="p">+</span> <span class="frm">过去分词</span>（表完成）<span class="note">have 变成什么时间，整句就是什么时间</span></div>
+
+      <div class="three">
+        <div class="t3"><div class="k">现在完成</div><div class="f">have/has+p.p.</div><div class="ex">She has worked hard. <span class="zh">她（到现在）一直努力工作。（has 提供"现在"）</span></div></div>
+        <div class="t3"><div class="k">过去完成</div><div class="f">had+p.p.</div><div class="ex">She had worked before I came. <span class="zh">我来之前她已工作过。（had 提供"过去"）</span></div></div>
+        <div class="t3"><div class="k">将来完成</div><div class="f">will have+p.p.</div><div class="ex">She will have worked by then. <span class="zh">到那时她将已工作完。（will have 提供"将来"）</span></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 为什么"完成"偏偏用 have + 过去分词？（不是碰巧）</summary>
+        <div class="tbody">
+          <p>不是"过去分词天生属于完成",而是英语<b>选了 have + 过去分词</b>来表达完成,且有内在道理:</p>
+          <p><b>· have</b> 本义"拥有"。<b>· 过去分词</b>(done)表"动作完成后的状态"。</p>
+          <p>两者合起来:<code>have + done</code> = "<b>拥有一个已完成的动作</b>" = 完成。</p>
+          <div class="warn">🔑 所以 have 在这里不表"拥有"实义,但它的"拥有"味道 + 过去分词的"已完成"味道,合成了"完成"这个概念。理解了这个，你就不会把 have 的完成用法和"拥有"用法搞混。</div>
+        </div>
+      </details>
+
+      <div class="callout">🔭 <b>注意到没有:进行(第二阶)和完成(第三阶)是"同一个套路"的两次应用</b>——都是"分词不能独立 → 请一个会变时间的助动词(be / have)来扛时间"。be 管进行、have 管完成。你已经掌握了造时态的<b>通用方法</b>。</div>
+
+      <div class="sum">📍 <b>小结:</b>完成时=have 供时间 + 过去分词表完成。现在你手上有两个"状态积木"了:be+ing(进行)、have+过分(完成)。如果想同时表达"<b>既完成又进行</b>"呢?两块积木叠起来——逼出第四阶。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">叠加 · 高级</span>完成进行时：两块积木叠起来<span class="chip">have + been + -ing</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">想表达"<b>一直在做、并且还在做</b>"——既有"完成"的持续感,又有"进行"的动态感。单独一块积木不够,得<b>两块叠用</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">把完成(have+过分)和进行(be+ing)<b>拼在一起</b>。但拼的时候会触发一个连锁反应——这正是理解时态最深的地方。</div></div>
+      </div>
+
+      <div class="callout">🧩 <b>推导过程(你自己推的,完全正确):</b>
+        <br>完成 = <span style="color:#7ee0b8;font-weight:700">have</span> + <span style="color:#ffe0a3;font-weight:700">过去分词</span>
+        <br>进行 = <span style="color:#7ee0b8;font-weight:700">be</span> + <span style="color:#ffe0a3;font-weight:700">现在分词</span>
+        <br>叠起来,把"进行"整个塞进"完成"的过去分词位置 → <span style="color:#7ee0b8;font-weight:700">have</span> + <span style="color:#ffe0a3;font-weight:700">be的过去分词</span> + <span style="color:#ffe0a3;font-weight:700">现在分词</span>
+      </div>
+
+      <div class="formula"><span class="aux">have</span> <span class="p">+</span> <span class="frm">been</span>（be 的过去分词）<span class="p">+</span> <span class="frm">现在分词</span><span class="note">have 供时间 → 锁定 be 变过去分词 been → been 锁定动词变 -ing</span></div>
+
+      <div class="three">
+        <div class="t3"><div class="k">现在完成进行</div><div class="f">have/has been+ing</div><div class="ex">She has been working all day. <span class="zh">她一整天一直在工作。（has 供"现在"）</span></div></div>
+        <div class="t3"><div class="k">过去完成进行</div><div class="f">had been+ing</div><div class="ex">She had been working for hours. <span class="zh">她（那时）已连续工作数小时。（had 供"过去"）</span></div></div>
+        <div class="t3"><div class="k">将来完成进行</div><div class="f">will have been+ing</div><div class="ex">She will have been working for a year. <span class="zh">到那时她将已连续工作一年。（will have 供"将来"）</span></div></div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r4)">💡 <b>你推导时那句"时间信息被迫向上转移",就是这里的钥匙:</b>当两块积木叠起来,原来管时间的 be 被 have "压"到了后面(变成 been,交出了时间),<b>时间信息只好交给最前面的 have 来扛</b>(have→had→will have)。时间"被迫向上转移到最左边"——你自己发现了整个时态系统最核心的那条律。第五阶把它彻底点明。</div>
+
+      <div class="sum">📍 <b>小结:</b>完成进行=have+been+现在分词,是两块积木叠加的结果。到这里 12 时态<b>全部推完了</b>。而你在叠加中撞见的"时间向最左转移",不是巧合,是贯穿所有时态的总规律——第五阶收口。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">顿悟 · 收口</span>核心律：谁站最左谁扛时间 + 层层锁定<span class="chip">the one law</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">12 时态推完了,但你不想记 12 个。有没有<b>一条总律</b>,能一次解释所有时态的拼装?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">有。你在第四阶已经撞见它了。把它明确出来,12 时态就<b>塌缩成一条规则</b>,再也不用死记。</div></div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r5)"><b>🔑 时态核心律(两句话):</b>
+        <br>① <b class="tm">时间信息，永远由谓语里"最左边那个词"承载。</b>(现在 have→过去 had→将来 will have：变的都是最左边)
+        <br>② <b>每个词只负责锁定"紧跟它的下一个词"的形态。</b>be 后必 -ing、have 后必过去分词、will 后必原形——一环扣一环。
+      </div>
+
+      <div class="callout">🎯 <b>用这条律,回看最复杂的 will have been working:</b>
+        <br><span class="tm" style="font-weight:700">will</span>(站最左，扛"将来") → 锁定 → <span style="color:#8ce99a">have</span>(原形) → have 表完成，锁定 → <span style="color:#8ce99a">been</span>(be的过去分词) → been 表进行，锁定 → <span style="color:#8ce99a">working</span>(现在分词)。
+        <br>从左到右,<b>一个扛时间、其余层层锁定</b>。任何时态,都这样拆、这样拼。</div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 这条律为什么能统一 12 个时态？</summary>
+        <div class="tbody">
+          <p>你验证一下,每个时态都服从这两条:</p>
+          <p><b>· 一般现在</b> works：最左=works 本身，它自己扛"现在"。</p>
+          <p><b>· 现在进行</b> is working：最左=is 扛"现在"，锁定 work→working。</p>
+          <p><b>· 现在完成</b> has worked：最左=has 扛"现在"，锁定 work→过去分词 worked。</p>
+          <p><b>· 将来完成进行</b> will have been working：最左=will 扛"将来"，其余层层锁定。</p>
+          <div class="warn">🔑 变时间，只动最左边那个词；变状态，改后面的结构。<b>12 时态 = 3 个"最左时间" × 4 种"后续结构"。你只需掌握这一条律 + 四种结构。</b></div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>全篇收口:谓语要供时间+状态(地基)→ 能独立的形态做一般时(1)→ 分词不能独立，请 be 做进行(2)、请 have 做完成(3)→ 两块叠加做完成进行(4)→ 而这一切服从一条律:<b>最左扛时间，层层锁形态</b>(5)。你不是背了 12 个时态，你是掌握了一台能拼出全部时态的机器。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 12宫格总览 ===== -->
+  <section class="overview">
+    <h3 class="block">总览：12 时态矩阵（时间 × 状态）</h3>
+    <p class="sectlead" style="margin-top:8px"><b>竖看</b>（时间）＝只变最左边那个词；<b>横看</b>（状态）＝只变后面的结构。以 work 为例，全表都是你推导的结果。</p>
+    <div class="matrix">
+      <table class="mx">
+        <thead>
+          <tr><th></th><th class="st1">一般</th><th class="st2">进行 be+ing</th><th class="st3">完成 have+p.p.</th><th class="st4">完成进行 have been+ing</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>现在</th>
+            <td><code>works</code><span class="zh">她工作</span></td>
+            <td><code>is working</code><span class="zh">正在工作</span></td>
+            <td><code>has worked</code><span class="zh">已工作</span></td>
+            <td><code>has been working</code><span class="zh">一直在工作</span></td>
+          </tr>
+          <tr>
+            <th>过去</th>
+            <td><code>worked</code><span class="zh">工作了</span></td>
+            <td><code>was working</code><span class="zh">当时在工作</span></td>
+            <td><code>had worked</code><span class="zh">早已工作过</span></td>
+            <td><code>had been working</code><span class="zh">已连续工作</span></td>
+          </tr>
+          <tr>
+            <th>将来</th>
+            <td><code>will work</code><span class="zh">将工作</span></td>
+            <td><code>will be working</code><span class="zh">那时将在工作</span></td>
+            <td><code>will have worked</code><span class="zh">将已工作完</span></td>
+            <td><code>will have been working</code><span class="zh">将已连续工作</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mxcap">
+      <span>🟠 <b>最左边的词</b>决定时间：现在 <code style="color:#8ce99a">have/is</code> → 过去 <code style="color:#8ce99a">had/was</code> → 将来 <code style="color:#8ce99a">will have/will be</code></span>
+      <span>🔵 <b>后面的结构</b>决定状态：一般 → +be+ing → +have+p.p. → +have+been+ing</span>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：造一个时态，两步定位</h3>
+    <p class="sectlead" style="margin-top:8px">想表达某个时间+状态，就查两个坐标：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">① 什么时间？→ 定"最左边的词"</div><div class="arm"><b class="tm">现在</b>→have/is/原形｜<b class="tm">过去</b>→had/was/过去式｜<b class="tm">将来</b>→will…（时间只由最左边承载）</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">② 什么状态？→ 定"后面的结构"</div><div class="arm"><b class="st">一般</b>→直接｜<b class="st">进行</b>→be+ing｜<b class="st">完成</b>→have+过去分词｜<b class="st">完成进行</b>→have+been+ing</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">③ 拼装时，从左往右锁形态</div><div class="arm">will 后原形、have 后过去分词、be 后 -ing —— 一个锁一个，得到最终形态</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿:</b>时态 = <b class="tm">时间</b>(坐标一，定最左的词) × <b class="st">状态</b>(坐标二，定后面的结构)。任何一个时态，都是这两个坐标的交点，再用"层层锁定"拼出形态。<b>你不需要背 12 个，只需要定两个坐标 + 记四种状态结构。</b></div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>12 时态看着吓人，其实是你自己推出来的一台机器：谓语要交代<b class="tm">时间</b>和<b class="st">状态</b>两种信息；能独立的动词形态搞定"一般"，不能独立的分词各请一个助动词扛时间（be 管进行、have 管完成），两块积木叠起来就是完成进行。而这一切最后收敛成一条律——<b>谁站最左谁扛时间，每个词锁定下一个的形态</b>。你不是在背 12 张表，你是掌握了"两个坐标 + 一条拼装律"。剩下的，只是把每个时态<b>什么时候用</b>（现在完成 vs 一般过去等）在实战中练熟——那是下一步的事，机制你已经彻底通了。<br><br><span style="color:var(--ink-faint)">注：被动语态（is done / has been done 等）是在这套时态结构上再叠一层 be+过去分词，属"语态"专册；本册只讲主动。</span>
+  </footer>
+
+</div>
+</body>
+</html>

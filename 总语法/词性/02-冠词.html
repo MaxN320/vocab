@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冠词 · 阶梯式笔记 v2</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;
+    --aan:#fbbf24;
+    --the:#60a5fa;
+    --zero:#9aa6b3;
+    --cap:#c084fc;
+    --term:#818cf8;
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+  .termhint{flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:#e0913d}
+
+  /* 元规则条 */
+  .meta{margin:22px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .meta .mt{font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:14px}
+  .mgrid{display:flex;gap:12px;flex-wrap:wrap}
+  .mbox{flex:1;min-width:250px;border-radius:11px;padding:13px 15px;border:1px solid var(--line)}
+  .mbox .h{font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.9rem;margin-bottom:5px}
+  .mbox p{margin:0;font-size:.85rem;color:var(--ink-soft)} .mbox p b{color:var(--ink)}
+  .mbox.derive{border-left:3px solid var(--term);background:rgba(129,140,248,.05)} .mbox.derive .h{color:#a5b4fc}
+  .mbox.convb{border-left:3px solid #e0913d;background:rgba(224,145,61,.06)} .mbox.convb .h{color:#ffc078}
+  .meta .mnote{margin-top:14px;font-size:.85rem;color:var(--ink-soft);padding-top:12px;border-top:1px solid var(--line)} .meta .mnote b{color:var(--ink)}
+
+  /* 纯约定框（橙，区别于蓝色术语框） */
+  details.conv{margin:12px 0;border:1px solid var(--line);border-left:3px solid #e0913d;border-radius:10px;background:rgba(224,145,61,.055);overflow:hidden}
+  details.conv>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#ffc078;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.conv>summary::-webkit-details-marker{display:none}
+  details.conv>summary .caret{transition:transform .2s;color:#e0913d;font-size:.72rem}
+  details.conv[open]>summary .caret{transform:rotate(90deg)}
+  details.conv>summary:hover{background:rgba(224,145,61,.1)}
+  details.conv .tbody{border-top-color:rgba(224,145,61,.25)}
+  details.conv .tbody code{color:#ffd9a8}
+  details.conv .tbody .warn{background:rgba(224,145,61,.1);border-color:rgba(224,145,61,.3);color:#ffd9a8}
+  details.conv .tbody .warn b{color:#fff}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* 招牌 */
+  .mind{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .mind .mcap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .mind .msub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .mcards{display:flex;gap:10px;flex-wrap:wrap}
+  .mcard{flex:1;min-width:170px;border-radius:12px;border:1px solid var(--line);background:var(--panel-2);padding:14px 14px;position:relative;border-top:3px solid var(--line)}
+  .mcard.z{border-top-color:var(--zero);border-style:dashed} .mcard.a{border-top-color:var(--aan)} .mcard.t{border-top-color:var(--the)}
+  .mcard .art{font-size:1.4rem;font-weight:800;font-family:"SF Mono",Consolas,monospace;margin-bottom:2px}
+  .mcard.z .art{color:var(--zero)} .mcard.a .art{color:var(--aan)} .mcard.t .art{color:var(--the)}
+  .mcard .lab{font-size:.72rem;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:9px}
+  .mcard .head{font-size:1.5rem;line-height:1;margin-bottom:6px}
+  .mcard .state{font-size:.84rem;color:var(--ink);margin-bottom:6px} .mcard .state b{color:#fff}
+  .mcard .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a}
+  .mcard .zh{color:var(--zh);font-size:.75rem;margin-top:2px}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--aan),var(--the),var(--zero),var(--cap));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--aan);color:#3a2c00}
+  .r3 .dot{background:var(--the);color:#08213f} .r4 .dot{background:var(--zero);color:#1b2330} .r5 .dot{background:var(--cap);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.28rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--aan)} .r3 h2 .tag{color:var(--the)} .r4 h2 .tag{color:var(--zero)} .r5 h2 .tag{color:var(--cap)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .the{color:#7ab8ff;font-weight:700}
+  .aan{color:#ffce7a;font-weight:700}
+  .zart{color:var(--zero);font-weight:700;border:1px dashed var(--zero);border-radius:5px;padding:0 5px;font-size:.82em}
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+  .ipa{font-family:"SF Mono",Consolas,monospace;color:#a5b4fc;font-weight:700}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--aan);background:rgba(251,191,36,.06)}
+  .r3 .sum{border-left:3px solid var(--the);background:rgba(96,165,250,.06)}
+  .r4 .sum{border-left:3px solid var(--zero);background:rgba(154,166,179,.07)}
+  .r5 .sum{border-left:3px solid var(--cap);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  /* 三处应用小表 */
+  .apps{width:100%;border-collapse:collapse;margin:12px 0 2px;font-size:.84rem}
+  .apps th,.apps td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+  .apps th{background:var(--panel-2);color:var(--ink);font-family:"SF Mono",Consolas,monospace;font-size:.74rem}
+  .apps td code{color:#8ce99a}
+
+  .sources{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+  .src{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--the)}
+  .src .n{flex:0 0 22px;height:22px;border-radius:6px;background:rgba(96,165,250,.15);color:var(--the);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.78rem;margin-top:1px}
+  .src .bd{flex:1;font-size:.85rem;color:var(--ink-soft)} .src .bd b{color:var(--ink)}
+  .src .ex{font-family:"SF Mono",Consolas,monospace;font-size:.79rem;color:#8ce99a;margin-top:3px}
+
+  /* 相对唯一：三个动态例子 */
+  .rel{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+  .relc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--the)}
+  .relc .t{font-size:.85rem;color:var(--ink);font-weight:700;margin-bottom:3px}
+  .relc .b{font-size:.83rem;color:var(--ink-soft)} .relc .b b{color:var(--ink)}
+  .relc .ex{font-family:"SF Mono",Consolas,monospace;font-size:.79rem;color:#8ce99a;margin-top:4px} .relc .ex .zh{color:var(--zh);font-family:inherit}
+
+  .zgrid{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+  .zc{background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:11px 13px}
+  .zc h5{margin:0 0 3px;font-size:.87rem;color:var(--ink-soft)} .zc h5 b{color:#cdd6df}
+  .zc .ex{font-family:"SF Mono",Consolas,monospace;font-size:.79rem;color:#8ce99a} .zc .ex .zh{color:var(--zh);font-family:inherit}
+
+  .faces{display:flex;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+  .face{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px;border-top:3px solid var(--cap)}
+  .face .fa{font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:1rem;margin-bottom:5px}
+  .face.fa1 .fa{color:var(--aan)} .face.fa2 .fa{color:var(--the)} .face.fa3 .fa{color:var(--zero)}
+  .face .img{font-size:.82rem;color:var(--ink);margin-bottom:6px} .face .img b{color:#fff}
+  .face .ex{font-family:"SF Mono",Consolas,monospace;font-size:.79rem;color:#8ce99a} .face .ex .zh{color:var(--zh);font-family:inherit;display:block}
+
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--aan)}
+  tr[data-r="3"] td.stage{color:var(--the)} tr[data-r="4"] td.stage{color:var(--zero)}
+  tr[data-r="5"] td.stage{color:var(--cap)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>冠词</h1>
+    <div class="sub">articles · a / an / the / ∅ · v3</div>
+    <p class="lead">冠词是中文里<b>完全没有</b>的东西,所以最难。但它其实只干一件事:在每个名词前,<b>替听者回答一个问题</b>——"你说的这个,我是已经知道哪个了,还是刚听说?"。整份笔记就围绕这一个问题,把 a / the / ∅ 三种答案<b>一层层拆开</b>。</p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能用第一性原理讲透的概念，点开看逻辑。<span class="pill conv">🧷 纯约定</span> 橙框：没有逻辑、只能背的固定用法，也会明说"为什么没逻辑"。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>冠词<b>不描述名词本身</b>,它描述的是——<span class="q">在你我之间,关于这个名词的"共同认知状态"</span>。听者心里对它是"一片空白的新东西"?"知道是哪个的老熟人"?还是"根本不指某一个,而是这类东西"?这三种心理状态,分别对应 <b style="color:var(--aan)">a</b> / <b style="color:var(--the)">the</b> / <b style="color:var(--zero)">∅</b>。选冠词,本质是<b>在替听者的脑袋做判断</b>。
+  </div>
+
+  <div class="meta">
+    <div class="mt">⚖️ 读这份笔记前，先立一条元规则：英语里有两种规则，别用同一种态度对待</div>
+    <div class="mgrid">
+      <div class="mbox derive"><div class="h">📖 可推导</div><p>背后有一条能自洽的道理(如：<b>锁得定 → the</b>)。这种值得用第一性原理<b>推到底、理解透</b>，理解了就不必背。</p></div>
+      <div class="mbox convb"><div class="h">🧷 纯约定</div><p>没有能一路自洽的逻辑，是历史留下的固定习惯(如 <b>go to school</b> 不加 the、<b>the Pacific</b>)。<b>语言先于语法</b>，硬推会被问穿——正确态度是认出"这里没逻辑"，直接背。</p></div>
+    </div>
+    <div class="mnote">本笔记给两类内容<b>不同颜色的框</b>：蓝框=可推导、橙框=纯约定。<b>能分清"哪个该推、哪个该背"，本身就是最费曼的一步</b>——因为它要求你对"自己到底懂不懂"绝对诚实。</div>
+  </div>
+
+  <div class="mind">
+    <div class="mcap">同一个名词 dog，听者脑中的三种状态，决定用哪个冠词</div>
+    <div class="msub">冠词是说话人发给听者的一个"指认信号"——它报告的是<b style="color:var(--ink)">听者能不能锁定"哪一个"</b>。</div>
+    <div class="mcards">
+      <div class="mcard z">
+        <div class="art">∅</div><div class="lab">零冠词 · 泛指</div>
+        <div class="head">🌫️🐕</div>
+        <div class="state">脑中是<b>"狗这类东西"</b>,不指任何一只具体的</div>
+        <div class="ex">Dogs are loyal.<div class="zh">狗很忠诚。（泛指整类）</div></div>
+      </div>
+      <div class="mcard a">
+        <div class="art">a</div><div class="lab">不定冠词 · 不定指</div>
+        <div class="head">❓🐕</div>
+        <div class="state">是<b>某一只具体的狗</b>,但你<b>还不知道</b>是哪只(新信息)</div>
+        <div class="ex">I saw a dog.<div class="zh">我看见一只狗。（一只，你还不知哪只）</div></div>
+      </div>
+      <div class="mcard t">
+        <div class="art">the</div><div class="lab">定冠词 · 定指</div>
+        <div class="head">🎯🐕</div>
+        <div class="state">你我<b>都清楚是哪一只</b>,能精确锁定(已知/唯一)</div>
+        <div class="ex">The dog was cute.<div class="zh">那只狗很可爱。（刚说的那只）</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>指认轴：一个名词，听者"锁不锁得定"<span class="chip">the master switch</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">中文没有冠词,靠语境默认。但英语强制:每个名词前都得<b>先表个态</b>——这东西对听者是新的,还是已知的?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这是整个系统的<b>总开关</b>。一切冠词选择,都先落在这条轴上:<b>不定指</b>(听者锁不定,是新的)↔ <b>定指</b>(听者锁得定,是那个)。轴定了,冠词才谈得上。</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 术语：「定指 / 不定指」到底指什么？(别和"泛指"搞混)</summary>
+        <div class="tbody">
+          <p>判断标准只有一条:<b>听者此刻能不能锁定"你说的到底是哪一个"</b>。</p>
+          <p><b>· 不定指(indefinite):</b> 听者<b>锁不定</b>。要么是刚提到的新东西,要么是"随便一个、众多之一"。→ 走 <code>a / an</code>。</p>
+          <p><b>· 定指(definite):</b> 听者<b>锁得定</b>那唯一的一个。可能因为上文提过、情境唯一、或世界上就一个。→ 走 <code>the</code>。</p>
+          <div class="warn">🔑 <b>a 是"不定指",不是"泛指"!</b> I saw <b>a</b> dog——那只狗当然是<b>具体真实</b>的,只是你(听者)还锁不定是哪只,所以叫不定指。真正的"泛指整类"(狗都忠诚)主力是<b>零冠词</b>(Dogs…),不是 a。这个区别理顺了,整个冠词观就正了。</div>
+        </div>
+      </details>
+
+      <div class="egs">
+        <div class="eg"><div class="en">I saw <span class="aan">a</span> <span class="noun">dog</span>. <span class="the">The</span> <span class="noun">dog</span> was cute.</div><div class="zh">我看见一只狗。那只狗很可爱。（第一次：你锁不定→a；第二次：就是刚说那只→the）</div></div>
+      </div>
+
+      <div class="callout">📌 这句话就是冠词的"原子模型":<b>同一只狗,第一次 a,第二次 the</b>。变的不是狗,是<b>听者的认知状态</b>——从"锁不定"变成了"锁得定"。抓住这个,后面全通。</div>
+
+      <div class="sum">📍 <b>小结:</b>第一阶立起唯一的轴:<b>锁不定(不定指)↔ 锁得定(定指)</b>。接下来两阶,把这两端各自落地:先讲"锁不定"怎么说(阶2),再讲"锁得定"怎么说(阶3)。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">怎么用 · 不定端</span>a / an：介绍一个"新的、其中一个"<span class="chip">indefinite</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">轴的<b>不定指</b>那一端怎么落地成词。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">a/an 的本质就是数字 <b>one</b> 的弱化:"<b>一个,众多之中随便的一个</b>"。正因为它=一个,所以<b>只能配单数、可数</b>名词(回扣名词篇)。至于用 a 还是 an,是个<b>发音</b>问题,不是拼写问题。</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 铁律：「看音不看字母」——同一条规则，三处都在用</summary>
+        <div class="tbody">
+          <p>a/an 的选择、the 的读音、名词复数 -s 的读音——<b>本质是同一条规则的三次应用</b>:看<b>相邻那个音</b>是元音还是辅音,和拼成什么字母无关。</p>
+          <table class="apps">
+            <thead><tr><th>场景</th><th>辅音音</th><th>元音音</th></tr></thead>
+            <tbody>
+              <tr><td><b style="color:var(--ink)">① a / an</b></td><td><code>a book, a dog</code></td><td><code>an apple, an egg</code></td></tr>
+              <tr><td><b style="color:var(--ink)">② the 读音</b></td><td><code>the book /ðə/</code></td><td><code>the apple /ðiː/</code></td></tr>
+              <tr><td><b style="color:var(--ink)">③ -s 读音</b>(名词篇)</td><td>清/浊定 /s/ /z/</td><td>——</td></tr>
+            </tbody>
+          </table>
+          <div class="warn">⚠️ <b>字母会骗你,音不会</b>(同一个例外池):<br>· a <b>university</b> / the university <span class="ipa">/ðə/</span> —— u 读 /ˈjuː-/,开头辅音音 /j/。<br>· an <b>hour</b> / the hour <span class="ipa">/ðiː/</span> —— h 不发音,开头元音音。<br>· an <b>honest</b> man —— h 不发音。<br>和名词篇 house/judge 是<b>同一条铁律</b>。<b>听力里这几处最容易打断思路而丢分,务必念一遍确认。</b></div>
+        </div>
+      </details>
+
+      <div class="egs">
+        <div class="eg"><div class="en">She wants to be <span class="aan">a</span> <span class="noun">doctor</span>.</div><div class="zh">她想当一名医生。（职业·众多医生中的一员→a）</div></div>
+        <div class="eg"><div class="en">He waited for <span class="aan">an</span> <span class="noun">hour</span>.</div><div class="zh">他等了一个小时。（hour 首音是元音→an，尽管字母是 h）</div></div>
+      </div>
+
+      <div class="callout">📌 <b>为什么只配单数可数?</b> a=one,自带"一个"的意思。所以 ❌ a waters、❌ a advice(不可数没"一个")、❌ a books(复数不是一个)都不成立。想说不定指的复数或不可数,冠词位置就<b>空着</b>(→ 这正是阶4)。</div>
+
+      <div class="sum">📍 <b>小结:</b>不定端搞定:新的、单数可数的一个 → a/an,按音选。但一旦这东西变成"你我都知道的那个",就得切到轴的另一端。这逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">怎么用 · 定指端</span>the：指向"你能锁定的那一个"<span class="chip">definite</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">轴的<b>定指</b>那一端怎么落地。the 看似情况繁多(上文提过、独一无二、后面带定语……),背起来很乱。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">但这些情况其实是<b>同一个原理的不同触发</b>:<b>"我有把握,你能锁定到唯一的那个"</b>。下面五个"来源",全是这一句的变体——不是五条规则,是一个原理的五种触发方式。</div></div>
+      </div>
+
+      <div class="sources">
+        <div class="src"><div class="n">1</div><div class="bd"><b>上文提过(第二次提到)</b>——刚引入过,现在成了已知。<div class="ex">I bought a book. <span class="the">The</span> book is good. 我买了本书，这书很好。</div></div></div>
+        <div class="src"><div class="n">2</div><div class="bd"><b>情境里唯一</b>——当下环境只有这一个,不言自明。<div class="ex">Please close <span class="the">the</span> door. 请关门。（这里就一扇门）</div></div></div>
+        <div class="src"><div class="n">3</div><div class="bd"><b>世界上唯一</b>——独一无二的事物。<div class="ex"><span class="the">The</span> sun is bright today. 今天太阳很亮。（sun/moon/earth/sky）</div></div></div>
+        <div class="src"><div class="n">4</div><div class="bd"><b>后面加了限定,锁死了</b>——用定语把它缩到唯一。<div class="ex"><span class="the">The</span> book you gave me is here. 你给我的那本书在这。</div></div></div>
+        <div class="src"><div class="n">5</div><div class="bd"><b>最高级 / 序数 / only / same</b>——语义上天然唯一。<div class="ex">She is <span class="the">the</span> best. / <span class="the">the</span> first day. 她是最棒的。／第一天。</div></div></div>
+      </div>
+
+      <div class="callout">🧩 <b>五合一:</b>不管哪条,底层都是听者能<b>精确锁定到那唯一一个</b>。判断用不用 the,别去背这五条,只问一句:<b>"我说出口,对方脑中能不能立刻定位到唯一的那个?"</b> 能 → the。</div>
+
+      <!-- 应用A：go to school —— 纯约定，直接背 -->
+      <details class="conv">
+        <summary><span class="caret">▸</span>🧷 纯约定（无逻辑·直接背）：go to school 不加，go to the cinema 加 the</summary>
+        <div class="tbody">
+          <p><b>先说清:这一条不要用逻辑推,推不通。</b> 它是英语历史留下的<b>约定俗成</b>——恰好有一小撮"地点词"被固定成可以省 the,没有能一路自洽的道理(你想"去电影院不也是过看电影的生活吗",没错,但英语就是没把 cinema 收进这份名单)。<b>属于"语言先于语法",当固定搭配背即可。</b></p>
+          <p><b>① ✅ 不加 the（一份短名单，背下来）:</b><br><code>go to school</code>·<code>go to bed</code>·<code>go to church</code>·<code>go to work</code>·<code>go to hospital</code>(英式)·<code>in prison</code></p>
+          <p><b>② ➕ 普通名词地点 → 加 the:</b><br><code>go to the cinema</code>·<code>the bank</code>·<code>the park</code>·<code>the gym</code>·<code>the station</code>·<code>the doctor</code>·<code>the post office</code></p>
+          <p><b>③ 🏷️ 专有名词 / 字母缩写地点 → 不加(当名字看):</b><br><code>go to McDonald's</code>·<code>go to Starbucks</code>·<code>go to KTV</code>。<br>注意:<b>KTV 是中式说法,老外基本不用</b>;想说"去唱歌",地道说法是 <code>go to karaoke</code> 或 <code>go to a karaoke bar</code>。</p>
+          <div class="warn">🔑 <b>三步判断:</b> 先看在不在①那份短名单里(在→不加)；不在,再看它是<b>普通名词</b>(→加 the) 还是<b>专有名词/缩写</b>(→不加，当名字)。<b>第①条别问为什么，纯约定，背。</b></div>
+        </div>
+      </details>
+
+      <!-- 应用B：唯一是相对的 -->
+      <div class="callout" style="border-color:var(--the)">🎓 <b>高阶洞察:「唯一」是相对的,冠词忠实地跟着浮动。</b> 一个默认"唯一/抽象"的词,一旦被语境切出"某一个具体版本",就立刻能被冠词锁定。这不是例外,恰恰证明了全篇的核心——冠词跟着"能不能锁定"走。</div>
+      <div class="rel">
+        <div class="relc"><div class="t">早餐:抽象活动 → 具象一顿</div><div class="b">breakfast 单用是抽象概念(∅);但用 big、for today <b>限定成某一顿</b>,它就成了可锁定的那顿 → the。(回扣来源④)</div><div class="ex">I had <span class="zart">∅</span> breakfast. → <span class="the">The</span> big breakfast for today was great. <span class="zh">我吃了早餐。→ 今天这顿丰盛早餐很棒。</span></div></div>
+        <div class="relc"><div class="t">北京:默认唯一 → 时间线切出多个</div><div class="b">Beijing 默认唯一(∅);但一旦<b>引入时间线</b>,"50年前的北京"和"现在的北京"同时存在,就需要冠词指定是<b>哪个版本</b>。</div><div class="ex"><span class="the">The</span> Beijing of 50 years ago was poor. <span class="zh">50年前的北京很落后。（切出了一个特定时间的北京）</span></div></div>
+      </div>
+
+      <div class="sum">📍 <b>小结:</b>轴的两端都落地了:锁不定 → a/an,锁得定 → the。但还有一大类情况,<b>两端都不属于</b>——我压根不在说"某一个",而是在说"这类东西"。这逼出第四阶。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">特殊情况</span>∅ 零冠词：根本不指"某一个"<span class="chip">zero article</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">a 和 the 都在指<b>具体的实例</b>(一个 / 那个)。但"我喜欢音乐""狗很忠诚"里,我<b>没有</b>在挑某一个实例。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">当你说的是<b>"这类东西本身"或"一整坨物质"</b>时,没有实例可挑,冠词位置就<b>空着</b>(∅)。零冠词不是"忘了加",而是一个<b>有意义的选择:此处无实例</b>。</div></div>
+      </div>
+
+      <div class="zgrid">
+        <div class="zc"><h5>① <b>泛指的复数</b>——整类,不是某几个</h5><div class="ex"><span class="zart">∅</span> Dogs are loyal. <span class="zh">狗很忠诚。（狗这一类）</span></div></div>
+        <div class="zc"><h5>② <b>泛指的不可数 / 抽象概念</b>——一整坨</h5><div class="ex"><span class="zart">∅</span> Water is important. / Love is blind. <span class="zh">水很重要。／爱是盲目的。</span></div></div>
+        <div class="zc"><h5>③ <b>专有名词</b>——名字本身就唯一,无需 the</h5><div class="ex"><span class="zart">∅</span> Tom lives in China. <span class="zh">汤姆住在中国。（人名／多数国名／城市）</span></div></div>
+        <div class="zc"><h5>④ <b>一日三餐 · 运动 · 学科 · 语言</b>——都是抽象活动/概念</h5><div class="ex">have <span class="zart">∅</span> breakfast · play <span class="zart">∅</span> football · study <span class="zart">∅</span> physics · speak <span class="zart">∅</span> English <span class="zh">吃早餐·踢球·学物理·说英语</span></div></div>
+        <div class="zc"><h5>⑤ <b>日期 · 月份 · 季节 · 年份</b></h5><div class="ex">in <span class="zart">∅</span> May · in <span class="zart">∅</span> summer · in <span class="zart">∅</span> 2026 <span class="zh">五月·夏天·2026年</span></div></div>
+      </div>
+
+      <!-- 限定词互斥 -->
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 另一个零冠词来源：位置被「限定词」占了(互斥)</summary>
+        <div class="tbody">
+          <p>名词前那个"决定指认状态"的坑,叫<b>限定词位</b>。冠词(a/the)只是限定词的一种;它和下面这些<b>抢同一个坑,只能站一个</b>:</p>
+          <p><b>· 物主代词</b>(my/your/his)<b>· 指示代词</b>(this/that)<b>· 不定代词/量词</b>(some/any/no/every)<b>· 数词</b>。</p>
+          <p>所以很多"零冠词",<b>不是不需要冠词,而是坑被占了</b>:</p>
+          <p>❌ <code>the my book</code> / ❌ <code>a this dog</code> —— 冲突<br>✅ <code>my book</code> · ✅ <code>this dog</code> · ✅ <code>no water</code>(no 也是限定词,自带"零个"义)</p>
+          <div class="warn">🔑 换个视角看:选冠词前先问一句——<b>这个坑,是不是已经被 my/this/some/no 占了?</b> 占了,就没冠词的事了。</div>
+        </div>
+      </details>
+
+      <!-- 专有名词的 the -->
+      <details class="conv">
+        <summary><span class="caret">▸</span>🧷 半约定：哪些专有名词偏偏要加 the？(the Pacific 之谜)</summary>
+        <div class="tbody">
+          <p>专有名词<b>默认零冠词</b>(China, Paris, Tom, Mount Everest)。但一批"像描述、成复数、带 of"的名字要加 the:</p>
+          <p><b>· 加 the:</b> 复数国名/群岛(<code>the Netherlands, the Philippines</code>)、带 of 或 states/kingdom(<code>the United States, the UK</code>)、江河海洋运河(<code>the Nile, the Pacific</code>)、山脉沙漠(<code>the Alps, the Sahara</code>)、报纸(<code>the Times</code>)、一家人(<code>the Smiths</code>)。</p>
+          <p><b>· 不加 the:</b> 单个国家/城市(<code>China, Tokyo</code>)、单座山/湖(<code>Mount Fuji, Lake Erie</code>)、街道(<code>Oxford Street</code>)、洲(<code>Asia</code>)、人名。</p>
+          <p><b>为什么 the Pacific?</b> 它其实是 the Pacific <b>Ocean</b> 省略了 Ocean。深层原因:"洋、河"本身是个<b>大类别</b>,the 修饰的是"(太平洋这个)洋"——太平洋是"众多洋里那个特定的",所以定指加 the。<b>语言先于语法</b>,这类约定不必强求逻辑,记住手感即可。</p>
+          <div class="warn">🔑 <b>手感口诀:</b> 名字若<b>本身是"描述"或"复数集合"</b>(合众国、群岛、山脉、某某洋),配 the;若是<b>光秃秃的单名</b>,零冠词。口语里对这条并不苛求,写作时留意。</div>
+        </div>
+      </details>
+
+      <div class="callout">📌 <b>回扣名词篇:</b> 那本笔记里说 "Water is important" 前面什么都不加——现在你知道为什么了:water 既<b>不可数</b>、又<b>泛指</b>,没有实例可挑,所以零冠词。冠词系统和名词系统在这里<b>咬合上了</b>。</div>
+
+      <div class="sum">📍 <b>小结:</b>三种答案齐了:a(锁不定的一个)、the(锁得定的那个)、∅(不挑实例的整类,或坑被限定词占了)。但这里藏着一个反直觉的事实——<b>同一个"泛指整类",其实 a、the、∅ 都能表达</b>。这逼出最后的高阶回环。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">高级技巧 · 回环</span>泛指的三副面孔：a / the / ∅ 殊途同归<span class="chip">the lens</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前四阶给你一个整齐印象:a=不定、the=定、∅=泛指。但你会撞见 "A dog is loyal""The dog is loyal""Dogs are loyal"——<b>三个都在说"狗很忠诚"</b>,却用了三个不同冠词。矛盾吗?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">不矛盾。这揭示了更深的一层:冠词编码的不是死属性,而是<b>你选择用哪种"心理图像"去表示这一整类</b>。同一个"泛指",可以从三个不同角度构建——于是三个冠词殊途同归。</div></div>
+      </div>
+
+      <div class="faces">
+        <div class="face fa1">
+          <div class="fa">A dog…</div>
+          <div class="img"><b>随手抓一只当代表</b>:"任取一只狗,它都……"。以个体代整类。</div>
+          <div class="ex">A dog is loyal.<span class="zh">狗（任何一只）都忠诚。</span></div>
+        </div>
+        <div class="face fa2">
+          <div class="fa">The dog…</div>
+          <div class="img"><b>把整个物种当一个"类"</b>:"狗这个物种"。偏正式/科普腔。</div>
+          <div class="ex">The dog is a loyal animal.<span class="zh">狗（这一物种）是忠诚的动物。</span></div>
+        </div>
+        <div class="face fa3">
+          <div class="fa">Dogs…</div>
+          <div class="img"><b>把全体成员一网打尽</b>:"所有的狗"。最自然、最日常。</div>
+          <div class="ex">Dogs are loyal.<span class="zh">狗（们）都忠诚。</span></div>
+        </div>
+      </div>
+
+      <div class="callout">🧠 <b>这一步把整个系统升级了:</b>你以为在背"a=不定、the=定",其实你真正在做的,是<b>选一个视角去构建你说的对象</b>——挑一个代表(a)、当成一个类(the)、还是罗列全体(∅)。<b>冠词是"构建方式"的选择,不是贴在名词上的固定标签。</b>(这和名词篇"可数不可数是视角"是同一种顿悟。)<br><br><b>实用建议:</b>想表达泛指,<b>默认用 ∅ 复数</b>(Dogs are loyal)最稳、最自然;a/the 的泛指有特定语气,读多了自然会用。</div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流:一条轴(锁不定↔锁得定)撑起 a 与 the,∅ 补上"不挑实例"的整类,而最后你看清——<b>连"泛指"都能被三个冠词从不同角度表达</b>。冠词从头到尾,都是在替听者的脑袋、按你选的视角,标注"这是哪一个/哪一类"。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读,是听者认知状态的三种答案 + 一次视角升级</b>。</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>听者的状态</th><th>冠词</th><th>核心例句</th><th>依赖 / 打破</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 指认轴</td><td>锁得定 ↔ 锁不定</td><td><code>—（总开关）</code></td><td><code>a dog → the dog</code><span class="mini">同一只，认知变了</span></td><td>——（一切的源头）</td></tr>
+          <tr data-r="2"><td class="stage">2 · a / an</td><td>锁不定：新的、其中一个</td><td><code>a / an</code><span class="mini">=one，按音选</span></td><td><code>She is a doctor.</code><span class="mini">她是医生。</span></td><td>依赖：只配单数可数</td></tr>
+          <tr data-r="3"><td class="stage">3 · the</td><td>锁得定：唯一那个</td><td><code>the</code><span class="mini">五源→一理；/ðə//ðiː/</span></td><td><code>Close the door.</code><span class="mini">关门。</span></td><td>依赖：轴的另一端</td></tr>
+          <tr data-r="4"><td class="stage">4 · ∅ 零冠词</td><td>不挑实例：整类/一坨/坑被占</td><td><code>∅</code><span class="mini">此处无实例</span></td><td><code>Water is important.</code><span class="mini">水很重要。</span></td><td>依赖：a/the 之外的情形</td></tr>
+          <tr data-r="5"><td class="stage">5 · 泛指三面</td><td>同一整类，三种构建</td><td><code>a / the / ∅ 皆可</code><span class="mini">视角选择</span></td><td><code>Dogs are loyal.</code><span class="mini">狗很忠诚。</span></td><td>升级：冠词=构建方式</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：名词前，三问定冠词</h3>
+    <p class="sectlead" style="margin-top:8px">开口或写作，对着名词从上往下问，冠词自动落位（先确认那个坑没被 my/this/no 占）：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我说的是"某一个具体实例"，还是"这类东西/一整坨"？</div><div class="arm"><span class="no">整类/物质(泛指)</span> → <b>∅</b>（默认用复数或不可数：Dogs… / Water…）｜<span class="yes">某个具体实例</span> → Q2</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">听者能锁定"是哪一个"吗？(上文提过 / 情境唯一 / 世界唯一 / 有定语锁死)</div><div class="arm"><span class="yes">能锁定(定指)</span> → <b>the</b>（读音：辅音音 /ðə/、元音音 /ðiː/）｜<span class="no">锁不定，是新的/其中一个</span> → Q3</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">(不定指)它是"单数可数"吗？</div><div class="arm"><span class="yes">是</span> → <b>a / an</b>（按开头的<b>音</b>选！a university / an hour）｜<span class="no">复数 或 不可数</span> → <b>∅</b>（I bought books. / I drank water.）</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿三问:</b>先分 <b>"具体实例 vs 整类"</b>(Q1)，再对具体实例问 <b>"听者锁不锁得定"</b>(Q2→Q3)。核心永远是那句话——<b>替听者判断:你说的这个，他心里能不能定位到"哪一个/哪一类"。</b> 能锁定→the，锁不定→a/∅，不挑实例→∅。这正是名词篇"先决定怎么看一个东西"的思想，落到了冠词上。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>冠词之所以让中国人头疼，是因为我们的母语把"你知不知道哪一个"交给了语境，而英语把它<b>硬编码成一个必选的词</b>。但它的逻辑极其单纯:冠词从不描述名词，它描述的是<b>你和听者之间、关于这个名词的共同认知</b>——锁得定就 the，锁不定就 a，不挑某一个就 ∅。连"唯一"都是相对的，冠词只是忠实地跟着"能不能锁定"浮动。你不是在背 a/an/the 的用法清单，你是在学会一件事:<b>每次开口，替对方的脑袋判断一次"这是哪一个"。</b>
+  </footer>
+
+</div>
+</body>
+</html>

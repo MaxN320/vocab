@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名词篇 · 普通名词与名词化 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0c1015;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;
+    --a1:#60a5fa;
+    --a2:#38bdf8;
+    --b3:#fbbf24;
+    --b4:#fb923c;
+    --b5:#f472b6;
+    --b6:#fb7185;
+    --nom:#a78bfa;
+    --term:#818cf8;   /* 术语解释框 */
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #10222a 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #1a1424 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* 术语提示条 */
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.02rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .noun{color:#8ce99a;font-weight:600}
+  .mk{color:#7ac0ff;font-weight:700}
+  .q1{color:#ffce7a;font-weight:600}
+  .hl{color:#f0a6e0;font-weight:600}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  /* ===== 术语解释框（可折叠）===== */
+  .term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  .term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  .term>summary::-webkit-details-marker{display:none}
+  .term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem;flex:0 0 auto}
+  .term[open]>summary .caret{transform:rotate(90deg)}
+  .term>summary:hover{background:rgba(129,140,248,.09)}
+  .term>summary .bk{font-size:.95rem}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+
+  /* 迷你音表 */
+  .snd{width:100%;border-collapse:collapse;margin:12px 0 2px;font-size:.83rem}
+  .snd th,.snd td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  .snd th{background:var(--panel-2);color:var(--ink);font-family:"SF Mono",Consolas,monospace;font-size:.75rem}
+  .snd .ipa{font-family:"SF Mono",Consolas,monospace;color:var(--term);font-weight:700;white-space:nowrap}
+  .snd .ex code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.82rem}
+
+  /* 清浊配对芯片 */
+  .voice{display:flex;flex-direction:column;gap:8px;margin:12px 0 2px}
+  .vrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .vlab{flex:0 0 70px;font-size:.8rem;font-weight:700}
+  .vlab.cl{color:#7ac0ff} .vlab.zh2{color:#ff9db0}
+  .vchip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:3px 9px;border-radius:7px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink)}
+
+  /* 地基 */
+  .foundation{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--base);border-radius:14px;padding:20px 22px}
+  .foundation .htitle{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:2px}
+  .foundation h2{margin:0;font-size:1.3rem;font-weight:750;color:var(--base)}
+  .buckets{display:flex;gap:12px;margin:14px 0 4px;flex-wrap:wrap}
+  .bucket{flex:1;min-width:240px;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .bucket.count{border-top:3px solid var(--a1)} .bucket.mass{border-top:3px solid var(--b3)}
+  .bucket h4{margin:0 0 6px;font-size:.98rem} .bucket.count h4{color:var(--a1)} .bucket.mass h4{color:var(--b3)}
+  .bucket p{margin:0;font-size:.87rem;color:var(--ink-soft)}
+  .bucket .list{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:var(--ink);margin-top:8px}
+
+  .forkhint{text-align:center;color:var(--ink-faint);font-size:.82rem;margin:22px 0 6px;font-family:"SF Mono",Consolas,monospace;letter-spacing:.08em}
+  .forkhint .a{color:var(--a1)} .forkhint .b{color:var(--b3)}
+
+  .branches{display:flex;gap:20px;margin-top:10px;align-items:flex-start}
+  .branch{flex:1;min-width:0;position:relative;padding-top:8px}
+  .branchhead{padding:6px 0 12px;margin-bottom:2px}
+  .branchhead .tagbig{font-size:1.05rem;font-weight:800;letter-spacing:.02em}
+  .branch.A .tagbig{color:var(--a1)} .branch.B .tagbig{color:var(--b3)}
+  .branchhead .desc{font-size:.82rem;color:var(--ink-faint)}
+
+  .track{position:relative;padding-left:44px}
+  .track::before{content:"";position:absolute;left:15px;top:6px;bottom:24px;width:2px;opacity:.5}
+  .branch.A .track::before{background:linear-gradient(var(--a1),var(--a2))}
+  .branch.B .track::before{background:linear-gradient(var(--b3),var(--b4),var(--b5),var(--b6))}
+
+  .step{position:relative;margin-bottom:30px}
+  .dot{position:absolute;left:-44px;top:0;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.85rem;box-shadow:0 0 0 5px var(--bg),0 0 20px -4px currentColor;z-index:2}
+  .d-a1{background:var(--a1);color:#08213f} .d-a2{background:var(--a2);color:#04283a}
+  .d-b3{background:var(--b3);color:#3a2c00} .d-b4{background:var(--b4);color:#3a1f00}
+  .d-b5{background:var(--b5);color:#4a0f34} .d-b6{background:var(--b6);color:#4a0f1c}
+
+  .step h2{margin:0 0 3px;font-size:1.12rem;font-weight:750;letter-spacing:-.01em}
+  .step .role{font-family:"SF Mono",Consolas,monospace;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;display:inline-block;margin-bottom:4px;padding:1px 8px;border-radius:12px;border:1px solid var(--line)}
+  .A .role{color:var(--a1)} .B .role{color:var(--b3)}
+
+  .rules{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .rule{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .rule .tg{flex:0 0 66px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.9rem;color:var(--a1)}
+  .rule .bd{flex:1;font-size:.86rem;color:var(--ink-soft)}
+  .rule .bd b{color:var(--ink)} .rule .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a;margin-top:3px}
+
+  .pron{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .pcase{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .pcase .ipa{flex:0 0 52px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.95rem;color:var(--a2);text-align:center}
+  .pcase .bd{flex:1;font-size:.85rem;color:var(--ink-soft)} .pcase .bd b{color:var(--ink)}
+  .pcase .ex{font-family:"SF Mono",Consolas,monospace;font-size:.78rem;color:#8ce99a}
+
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 6px}
+  .cell{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .cell h5{margin:0 0 3px;font-size:.86rem;color:var(--b3)}
+  .cell p{margin:0;font-size:.8rem;color:var(--ink-soft)} .cell .ex{font-family:"SF Mono",Consolas,monospace;font-size:.78rem;color:var(--ink);margin-top:4px}
+
+  .transfer{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0 6px;font-size:.86rem}
+  .transfer .box{padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);font-family:"SF Mono",Consolas,monospace;font-size:.82rem}
+  .transfer .box.u{color:#ffce7a;border-color:rgba(251,191,36,.4)}
+  .transfer .box.c{color:#7ac0ff;border-color:rgba(122,192,255,.4)}
+  .transfer .arr{color:var(--ink-faint)}
+
+  .pairs{columns:2;column-gap:14px;margin:12px 0 6px}
+  @media(max-width:520px){.pairs{columns:1}}
+  .pair{break-inside:avoid;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 11px;margin-bottom:8px}
+  .pair .w{font-family:"SF Mono",Consolas,monospace;font-weight:700;color:var(--b5);font-size:.86rem}
+  .pair .m{font-size:.8rem;color:var(--ink-soft);margin-top:1px}
+
+  .cases{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .case{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .case .ct{font-size:.9rem;color:var(--b6);font-weight:700;margin-bottom:2px}
+  .case .cb{font-size:.84rem;color:var(--ink-soft)} .case .cb b{color:var(--ink)}
+  .case .ce{font-family:"SF Mono",Consolas,monospace;font-size:.78rem;color:#8ce99a;margin-top:4px}
+  .case .ce .zh{color:var(--zh);font-family:inherit}
+
+  .module{margin-top:34px;border:1.5px dashed var(--nom);border-radius:16px;padding:22px 22px 18px;background:linear-gradient(180deg,rgba(167,139,250,.06),transparent 60%)}
+  .module .mhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .module h2{margin:0;font-size:1.3rem;font-weight:800;color:var(--nom)}
+  .module .mtag{font-family:"SF Mono",Consolas,monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);border-radius:12px;padding:1px 9px}
+  .three{display:flex;gap:10px;margin:14px 0 6px;flex-wrap:wrap}
+  .src{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px;border-top:3px solid var(--nom)}
+  .src h5{margin:0 0 4px;font-size:.9rem;color:var(--nom)}
+  .src .conv{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink);margin-bottom:6px}
+  .src .conv b{color:#8ce99a}
+  .src .eg2{font-size:.82rem;color:var(--ink-soft)} .src .eg2 .zh{color:var(--zh);display:block;font-size:.78rem;margin-top:2px}
+
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.88rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-b="base"] td.stage{color:var(--base)}
+  tr[data-b="a"] td.stage{color:var(--a1)} tr[data-b="a2"] td.stage{color:var(--a2)}
+  tr[data-b="b3"] td.stage{color:var(--b3)} tr[data-b="b4"] td.stage{color:var(--b4)}
+  tr[data-b="b5"] td.stage{color:var(--b5)} tr[data-b="b6"] td.stage{color:var(--b6)}
+  tr[data-b="nom"] td.stage{color:var(--nom)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:760px){
+    .branches{flex-direction:column;gap:34px}
+    .grid4{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>名词篇：普通名词 &amp; 名词化</h1>
+    <div class="sub">countable · uncountable · nominalization</div>
+    <p class="lead">这一册把"名词"拆到底。名词所有看似零散的规则——加 s、变 ves、量词、主谓一致——<b>其实都从同一个总开关长出来</b>,并沿着两条泾渭分明的支路生长。最后再单独看"名词化"这门<b>制造名词</b>的高级手艺。</p>
+    <div class="termhint"><span class="pill">📖 术语</span> 凡是我用到的"隐藏概念"(咝音、清浊辅音、浊化……),都做成了可点开的蓝色小方块。想深究就点开,不想看主线照读不误。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>拿到任何一个普通名词,英语先逼你答一问 —— <span class="q">它能不能一个一个地数?</span> 这一问的答案,决定了它接下来<b>走哪条完全不同的规则支路</b>。可数支要处理"变几个、怎么读";不可数支要处理"怎么量、配单还是配复"。先分桶,再谈别的。
+  </div>
+
+  <!-- ============ 地基 ============ -->
+  <div class="foundation">
+    <div class="htitle">
+      <h2>第 0 阶 · 总开关：先把名词丢进两个桶</h2>
+      <span class="chip">the master switch</span>
+    </div>
+    <div class="why">
+      <div class="row"><div class="lab">要解决</div><div class="val">得先有"分桶"这个动作,两条支路才谈得上。它是下面一切分支的共同源头。</div></div>
+      <div class="row"><div class="lab">为什么</div><div class="val">中文说"一个苹果""一些水"语法无差别;英语却在源头就把名词劈开,<b>进错桶,后面全错</b>。</div></div>
+    </div>
+    <div class="buckets">
+      <div class="bucket count">
+        <h4>🔢 可数(Countable)</h4>
+        <p>有清晰的<b>个体边界</b>,能直接放数字。→ 走<b>左侧冷色支</b>:处理"变几个、怎么读"。</p>
+        <div class="list">apple · book · leaf · city</div>
+      </div>
+      <div class="bucket mass">
+        <h4>🌊 不可数(Uncountable)</h4>
+        <p>是<b>一整坨/一种物质或概念</b>,不能直接数。→ 走<b>右侧暖色支</b>:处理"怎么量、配单配复"。</p>
+        <div class="list">water · sugar · homework · love</div>
+      </div>
+    </div>
+    <div class="callout"><b>判断直觉:</b>名词前面试放 "one / two"。放得顺(one leaf)是可数;放不上、要借容器(❌ one water → ✅ one <b>bottle of</b> water)是不可数。<b>"能否直接数"就是分桶的唯一标准。</b></div>
+  </div>
+
+  <div class="forkhint">┌─── 分叉：<span class="a">可数支（冷）</span> ┊ <span class="b">不可数支（暖）</span> ───┐</div>
+
+  <!-- ============ 双支 ============ -->
+  <div class="branches">
+
+    <!-- ===== 支路 A：可数 ===== -->
+    <div class="branch A">
+      <div class="branchhead">
+        <div class="tagbig">🔢 支路 A · 可数名词</div>
+        <div class="desc">能数 → 就得处理"变成几个"以及"怎么读出来"</div>
+      </div>
+
+      <div class="track">
+
+        <!-- A1 拼写 -->
+        <section class="step A">
+          <div class="dot d-a1">1</div>
+          <span class="role">是什么 → 怎么变形</span>
+          <h2>复数拼写：四条规则，一个原因</h2>
+          <div class="why">
+            <div class="row"><div class="lab">解决</div><div class="val">既然能数,就有单/复数;复数在拼写上怎么改。</div></div>
+            <div class="row"><div class="lab">为什么</div><div class="val">四条规则不是四个孤立例外——它们<b>全为了同一件事:好发音</b>。记 1 原则 + 3 触发场景即可。</div></div>
+          </div>
+
+          <div class="rules">
+            <div class="rule"><div class="tg">+s</div><div class="bd"><b>默认</b>·最省事,直接加。<div class="ex">book → books · cat → cats</div></div></div>
+            <div class="rule"><div class="tg">+es</div><div class="bd">结尾是<b>咝音</b>,硬加 s 会挤在一起发不出 → 垫个 e。<div class="ex">bus → buses · box → boxes · watch → watches</div></div></div>
+            <div class="rule"><div class="tg">-ies</div><div class="bd"><b>辅音字母 + y</b>,y 夹中间不好读 → 变 y 为 i 再加 es。<div class="ex">city → cities · baby → babies</div></div></div>
+            <div class="rule"><div class="tg">-ves</div><div class="bd">结尾 <b>f / fe</b> → 发生<b>浊化</b>,变 f 为 v 再加 es。<div class="ex">leaf → leaves · knife → knives</div></div></div>
+          </div>
+
+          <!-- 术语：咝音 -->
+          <details class="term">
+            <summary><span class="caret">▸</span><span class="bk">📖</span> 术语：什么是「咝音」？(s、x 之外还有哪些?)</summary>
+            <div class="tbody">
+              <p><b>咝音(sibilant)</b>＝发音时,气流从舌头与上颚之间的<b>窄缝</b>挤出去,产生"嘶嘶 / 嗤嗤"摩擦声的辅音。"咝"这个字本身就是拟声——就是那个 sssss 的声音。</p>
+              <p>英语咝音一共 <b>6 个音</b>(不止 s、x)。凡是词尾落在这 6 个音上,加复数就要垫 e、读 /ɪz/:</p>
+              <table class="snd">
+                <thead><tr><th>音标</th><th>常见拼写</th><th>例词(词尾)</th></tr></thead>
+                <tbody>
+                  <tr><td class="ipa">/s/</td><td>s, ss, x(=ks)</td><td class="ex"><code>bus, box</code></td></tr>
+                  <tr><td class="ipa">/z/</td><td>z, -se</td><td class="ex"><code>quiz, rose</code></td></tr>
+                  <tr><td class="ipa">/ʃ/</td><td>sh, -ti, -ci</td><td class="ex"><code>dish, wash</code></td></tr>
+                  <tr><td class="ipa">/ʒ/</td><td>-ge, -si</td><td class="ex"><code>garage</code></td></tr>
+                  <tr><td class="ipa">/tʃ/</td><td>ch, -tch</td><td class="ex"><code>watch, church</code></td></tr>
+                  <tr><td class="ipa">/dʒ/</td><td>j, -ge, -dge</td><td class="ex"><code>judge, age</code></td></tr>
+                </tbody>
+              </table>
+              <p>所以你想到的 <b>s、x 都算</b>(x 尾音是 /ks/,带 /s/);但更容易漏的是 <b>sh、ch、以及 -ge/-dge 这一类</b>。</p>
+              <div class="warn">⚠️ <b>看"音"不看"字母"!</b> 判断的是词尾发什么<b>音</b>,不是末尾的字母。<br>· <b>house</b> 末字母是 e,但尾音是 /s/(咝音)→ houses 读 /ˈhaʊzɪz/,加 /ɪz/。<br>· <b>judge</b> 末字母是 e,但尾音是 /dʒ/(咝音)→ judges 读 /ˈdʒʌdʒɪz/,加 /ɪz/。<br>盯着字母 e 会判断错——把嘴放上去念一下最可靠。</div>
+            </div>
+          </details>
+
+          <div class="egs">
+            <div class="eg"><div class="en">She washe<span class="mk">s</span> the dishe<span class="mk">s</span>.</div><div class="zh">她洗盘子。（wash /ʃ/、dish /ʃ/ 皆咝音 → +es）</div></div>
+            <div class="eg"><div class="en">The lea<span class="mk">ves</span> are green.</div><div class="zh">叶子是绿色的。（leaf → leaves,f 浊化为 v）</div></div>
+          </div>
+
+          <div class="callout">📌 <b>点破的纲:</b>英语在"拼写规整"和"读得顺口"之间,<b>永远选读得顺口</b>。后三条规则都是这个选择在不同结尾下的表现。</div>
+          <div class="sum">📍 <b>小结:</b>A1 把 s 写对了。但写对≠读对——同一个 s 在不同词后读音不同。这就逼出 A2。</div>
+        </section>
+
+        <!-- A2 发音 -->
+        <section class="step A">
+          <div class="dot d-a2">2</div>
+          <span class="role">怎么用 → 读出来</span>
+          <h2>词尾 -s 的三种读音</h2>
+          <div class="why">
+            <div class="row"><div class="lab">解决</div><div class="val">A1 解决了"看"(拼写),A2 解决"听说"(发音)——它是 A1 的自然延续。</div></div>
+            <div class="row"><div class="lab">为什么</div><div class="val">共享<b>同一个底层逻辑:发音省力</b>。让词尾跟前一个音"同类",嘴巴最省事。</div></div>
+          </div>
+
+          <!-- 术语：清浊辅音 -->
+          <details class="term">
+            <summary><span class="caret">▸</span><span class="bk">📖</span> 术语：「清辅音 / 浊辅音」怎么一秒分辨？</summary>
+            <div class="tbody">
+              <p>差别只有一个:发音时<b>声带振不振动</b>。</p>
+              <p><b>👉 手指测试法:</b>把手指轻按喉咙,先念 "sss",再念 "zzz"。<b>没有嗡嗡振动的 = 清辅音;明显在振的 = 浊辅音。</b>元音(a/e/i/o/u 的音)也都是振动的,归浊的一边。</p>
+              <div class="voice">
+                <div class="vrow"><span class="vlab cl">清(不振)</span>
+                  <span class="vchip">/p/</span><span class="vchip">/t/</span><span class="vchip">/k/</span><span class="vchip">/f/</span><span class="vchip">/s/</span><span class="vchip">/ʃ/</span></div>
+                <div class="vrow"><span class="vlab zh2">浊(振动)</span>
+                  <span class="vchip">/b/</span><span class="vchip">/d/</span><span class="vchip">/g/</span><span class="vchip">/v/</span><span class="vchip">/z/</span><span class="vchip">/ʒ/</span></div>
+              </div>
+              <p style="margin-top:12px">上下一一对应,是同一个口型的"清/浊双胞胎"(p↔b、t↔d、k↔g、f↔v、s↔z……)。口型一样,只差声带开不开——记住这个,发音和后面的"浊化"都通了。</p>
+            </div>
+          </details>
+
+          <div class="pron">
+            <div class="pcase"><div class="ipa">/ɪz/</div><div class="bd">前面是<b>咝音</b> → 加个元音隔开,否则两咝音黏死。<div class="ex">buses · boxes · watches</div></div></div>
+            <div class="pcase"><div class="ipa">/s/</div><div class="bd">前面是<b>清辅音</b> → 跟着清,省力。<div class="ex">books · cats · cups</div></div></div>
+            <div class="pcase"><div class="ipa">/z/</div><div class="bd">前面是<b>浊辅音 / 元音</b> → 跟着浊,省力。<div class="ex">dogs · pens · boys</div></div></div>
+          </div>
+
+          <div class="callout">🔗 <b>A1 与 A2 是同一枚硬币:</b>都是"让前后音协调、发音省力"。一个作用在拼写,一个作用在读音。</div>
+          <div class="sum">📍 <b>小结:</b>可数支到此闭环——能数、会变、会读。可数名词的形态问题全部解决。</div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ===== 支路 B：不可数 ===== -->
+    <div class="branch B">
+      <div class="branchhead">
+        <div class="tagbig">🌊 支路 B · 不可数名词</div>
+        <div class="desc">不能数 → 于是长出一套完全不同的逻辑</div>
+      </div>
+
+      <div class="track">
+
+        <!-- B3 分类 -->
+        <section class="step B">
+          <div class="dot d-b3">3</div>
+          <span class="role">是什么</span>
+          <h2>哪些东西会被看成"不可数"</h2>
+          <div class="why">
+            <div class="row"><div class="lab">解决</div><div class="val">为什么 water、love 不能数?四类背后有没有共性?</div></div>
+            <div class="row"><div class="lab">为什么</div><div class="val"><b>它们都"没有清晰的个体边界"</b>——四类只是"无边界"的四种表现,不是四条要背的清单。</div></div>
+          </div>
+
+          <div class="grid4">
+            <div class="cell"><h5>① 液体 / 气体</h5><p>本身连续,没有"一个"。</p><div class="ex">water · air · milk</div></div>
+            <div class="cell"><h5>② 颗粒太小</h5><p>小到不值得一颗颗数。</p><div class="ex">sugar · sand · rice</div></div>
+            <div class="cell"><h5>③ 集合统称</h5><p>一堆东西的总名。</p><div class="ex">fruit · clothing · furniture</div></div>
+            <div class="cell"><h5>④ 抽象概念</h5><p>根本没有实体。</p><div class="ex">love · happiness · advice</div></div>
+          </div>
+
+          <!-- 术语：集合统称 vs 集体名词 -->
+          <details class="term">
+            <summary><span class="caret">▸</span><span class="bk">📖</span> 易混警告：这里的「集合统称」≠ 后面 B6 的「集体名词」</summary>
+            <div class="tbody">
+              <p>两个词长得像,却是<b>两类完全不同</b>的东西,别混:</p>
+              <p><b>· 集合统称(这里 ③,不可数):</b> 一堆东西的"物质化总名",如 furniture(家具)、clothing(衣物)、fruit(水果)。<b>不可数、没有复数、配单数动词</b>,要数得借量词——a <b>piece</b> of furniture。它把一堆东西看成"没有边界的一坨"。</p>
+              <p><b>· 集体名词(后面 B6,可数):</b> 指"一群人/成员"的团体,如 family(家庭)、team(队)、class(班)。<b>它是可数的</b>——a family、two families——而且能配单数<b>或</b>复数动词(看你把它当整体还是当成员)。</p>
+              <div class="warn">🔑 <b>一句话分清:</b> furniture 这类<b>不能加 s、只配单数</b>(集合统称);family 这类<b>能加 s、单复动词都行</b>(集体名词)。前者是"物",后者是"人的团体"。</div>
+            </div>
+          </details>
+
+          <div class="callout">📌 <b>一句话统摄四类:</b>它们的共同点是<b>"无法自然切出一个"</b>。这正是它们不能加 s、不能配数字的根本原因——不是英语规定,是逻辑使然。</div>
+          <div class="sum">📍 <b>小结:</b>知道它无边界了。但生活里就是要说"一份、两杯"——没有边界,怎么表达数量?这逼出 B4。</div>
+        </section>
+
+        <!-- B4 量词 -->
+        <section class="step B">
+          <div class="dot d-b4">4</div>
+          <span class="role">怎么用</span>
+          <h2>量词：借一个容器，切出边界</h2>
+          <div class="why">
+            <div class="row"><div class="lab">解决</div><div class="val">B3 说它没有"一个"的边界。但要表达数量,就得<b>借一个可数的单位/容器</b>去切边界。</div></div>
+            <div class="row"><div class="lab">为什么</div><div class="val">这是 B3 的直接后果:自身不可数 → 找外援。piece / cup / bottle 就是这些外援。</div></div>
+          </div>
+
+          <div class="transfer">
+            <span class="box u">advice（不可数·不变）</span>
+            <span class="arr">＋</span>
+            <span class="box c">two piece<b style="color:#7ac0ff">s</b>（量词·可变复数）</span>
+            <span class="arr">→</span>
+            <span>two <b style="color:#7ac0ff">pieces</b> of advice</span>
+          </div>
+
+          <div class="egs">
+            <div class="eg"><div class="en">He gave me a <span class="hl">piece</span> of advice.</div><div class="zh">他给了我一条建议。</div></div>
+            <div class="eg"><div class="en">She drank two <span class="hl">cups</span> of water.</div><div class="zh">她喝了两杯水。</div></div>
+          </div>
+
+          <div class="callout">💡 <b>你的洞察,点透:</b>不可数名词<b>自己没有复数,但复数的担子转嫁给了量词</b>——变的是 piece→pieces,不是 advice。另外 <b>piece 能覆盖约 90% 的场景</b>,是最万能的量词。</div>
+          <div class="sum">📍 <b>小结:</b>量词解决了"怎么量"。但接下来会撞见怪事:有些不可数词居然有复数、还换了意思(works / times)。→ B5。</div>
+        </section>
+
+        <!-- B5 相对性 -->
+        <section class="step B">
+          <div class="dot d-b5">5</div>
+          <span class="role">特殊情况</span>
+          <h2>相对性：变复数后，意思根本变了</h2>
+          <div class="why">
+            <div class="row"><div class="lab">解决</div><div class="val">前面说不可数没有复数,但 works / times 又确实有,还换了义。用"相对性"化解这个表面矛盾。</div></div>
+            <div class="row"><div class="lab">为什么</div><div class="val">这是对前面规则的<b>打破与升级</b>。<b>定义:单数义与复数义"相对"着看,意思发生根本变化。</b></div></div>
+          </div>
+
+          <div class="egs">
+            <div class="eg"><div class="en">His <span class="noun">work</span> is hard. / I read his <span class="noun">work<span class="mk">s</span></span>.</div><div class="zh">他的工作很辛苦。／ 我读了他的著作。（work 工作 → works 著作）</div></div>
+            <div class="eg"><div class="en">I have no <span class="noun">time</span>. / We live in modern <span class="noun">time<span class="mk">s</span></span>.</div><div class="zh">我没时间。／ 我们生活在现代。（time 时间 → times 时代）</div></div>
+          </div>
+
+          <div class="pairs">
+            <div class="pair"><div class="w">airs</div><div class="m">摆架子、神气</div></div>
+            <div class="pair"><div class="w">ashes</div><div class="m">骨灰、废墟</div></div>
+            <div class="pair"><div class="w">customs</div><div class="m">海关、关税</div></div>
+            <div class="pair"><div class="w">damages</div><div class="m">赔偿金（法律）</div></div>
+            <div class="pair"><div class="w">greens</div><div class="m">绿叶蔬菜</div></div>
+            <div class="pair"><div class="w">grounds</div><div class="m">理由；渣滓；庭院</div></div>
+            <div class="pair"><div class="w">sands</div><div class="m">沙滩；（沙漏的）时光</div></div>
+            <div class="pair"><div class="w">papers</div><div class="m">文件、证件、论文</div></div>
+            <div class="pair"><div class="w">works</div><div class="m">著作；工厂；工事</div></div>
+            <div class="pair"><div class="w">times</div><div class="m">时代；次数</div></div>
+          </div>
+
+          <div class="callout">🧩 <b>本质:</b>复数在这里不是"多个",而是开启了词的<b>另一层含义</b>。所以别把 works 当 work 的复数——把它当一个"共用词形的新词"来记。</div>
+          <div class="sum">📍 <b>小结:</b>以上都在讲名词<b>自身</b>的形态。但还有个独立问题:这名词逼句子用单数动词还是复数动词?→ B6。</div>
+        </section>
+
+        <!-- B6 主谓一致 -->
+        <section class="step B">
+          <div class="dot d-b6">6</div>
+          <span class="role">高级技巧</span>
+          <h2>主谓一致：它逼动词用单还是复</h2>
+          <div class="why">
+            <div class="row"><div class="lab">解决</div><div class="val">前面讲名词形态;这一阶跳到<b>名词与句子的关系</b>——它决定动词单复数。</div></div>
+            <div class="row"><div class="lab">为什么</div><div class="val">我把它<b>从"相对性"下面提出来独立成阶</b>:相对性讲"名词自身变义",主谓一致讲"名词管动词",两者并列。</div></div>
+          </div>
+
+          <div class="cases">
+            <div class="case"><div class="ct">① 集体名词 family / team（可数·指人群）</div><div class="cb">看成<b>整体</b> → 单数动词;看成<b>一个个成员</b> → 复数动词。<b>取决于你的视角。</b>(与 B3 的"集合统称"不同,详见 B3 里的易混警告)</div><div class="ce">My family <b>is</b> big. <span class="zh">（我家人多，整体）</span><br>My family <b>are</b> all doctors. <span class="zh">（家人都是医生，个体）</span></div></div>
+            <div class="case"><div class="ct">② 单复同形 sheep / fish</div><div class="cb">词形不给线索 → <b>只能看语境</b>判断单复。</div><div class="ce">The sheep <b>is</b> eating. / The sheep <b>are</b> eating. <span class="zh">（一只／多只）</span></div></div>
+            <div class="case"><div class="ct">③ 形式复数 physics / customs / goods</div><div class="cb">再分两小类：<b>实物可拆的</b>(goods, customs)→ 复数;<b>学科/抽象的</b>(physics, maths)→ 其实当单数。</div><div class="ce">Physics <b>is</b> hard. <span class="zh">（物理学，单数）</span><br>The goods <b>are</b> heavy. <span class="zh">（货物，复数）</span></div></div>
+            <div class="case"><div class="ct">④ A and B 结构</div><div class="cb">通常当<b>复数</b>;但指"同一体/同一概念"时当<b>单数</b>。</div><div class="ce">Tom and Jerry <b>are</b> friends. <span class="zh">（两人）</span><br>Bread and butter <b>is</b> my breakfast. <span class="zh">（黄油面包，一体）</span></div></div>
+          </div>
+
+          <div class="callout">🧭 <b>点破的纲:</b>主谓一致不是背四条,而是一个判断——<b>这个名词此刻在说话人眼里,是"一个"还是"多个"?</b> 又回到"视角决定形态"这条主线。</div>
+          <div class="sum">📍 <b>小结:</b>不可数支到此走完:分类 → 量词 → 相对性 → 主谓一致,层层是上一层的"未尽之问"。</div>
+        </section>
+
+      </div>
+    </div>
+
+  </div><!-- /branches -->
+
+  <!-- ============ 名词化模块 ============ -->
+  <div class="module">
+    <div class="mhead">
+      <h2>独立模块 · 名词化（Nominalization）</h2>
+      <span class="mtag">制造名词，而非运作名词</span>
+    </div>
+    <p class="sectlead" style="margin-top:8px">
+      <b style="color:var(--ink)">为什么单独拎出来:</b>前六阶讲"一个<b>已经是名词</b>的词怎么运作";名词化讲"<b>怎么把别的词变成名词</b>"——方向相反,是入口不是内部,所以它是一个平行的高级模块。
+    </p>
+
+    <div class="three">
+      <div class="src">
+        <h5>① 动词 → 名词</h5>
+        <div class="conv">decide → <b>decision</b>　discover → <b>discovery</b></div>
+        <div class="eg2">Her <b style="color:#8ce99a">decision</b> was wise.<span class="zh">她的决定很明智。</span></div>
+      </div>
+      <div class="src">
+        <h5>② 形容词 → 名词</h5>
+        <div class="conv">happy → <b>happiness</b>　free → <b>freedom</b></div>
+        <div class="eg2"><b style="color:#8ce99a">Happiness</b> matters most.<span class="zh">幸福最重要。</span></div>
+      </div>
+      <div class="src">
+        <h5>③ 副词 → 名词（较罕见）</h5>
+        <div class="conv">why → <b>the why</b>　up/down → <b>ups and downs</b></div>
+        <div class="eg2">Life has its <b style="color:#8ce99a">ups and downs</b>.<span class="zh">生活有起有落。</span></div>
+      </div>
+    </div>
+
+    <div class="callout" style="border-style:solid;border-color:var(--nom)">
+      🎁 <b>核心 · 加分秘籍:</b>名词化的价值不在"换词性",而在——<b>名词是英语里承重能力最强的容器</b>。把一个动作或性质打包成名词,你就能在它前后挂一整串修饰语(冠词、形容词、of 短语、定语从句…),让表达瞬间凝练、书面。对比感受:
+    </div>
+    <div class="egs">
+      <div class="eg"><div class="en" style="color:var(--ink-soft)">They decided to leave, and it surprised everyone.</div><div class="zh">他们决定离开，这让所有人吃惊。（两个小句，松散）</div></div>
+      <div class="eg"><div class="en">Their sudden <span style="color:var(--nom);font-weight:700">decision</span> to leave surprised everyone.</div><div class="zh">他们突然离开的决定让所有人吃惊。（动作被打包进 decision，前挂 sudden、后挂 to leave，一句搞定）</div></div>
+    </div>
+  </div>
+
+  <!-- ============ 总览表 ============ -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">第 0 阶是根;可数、不可数是两条支路;名词化是另开的一枝。<b>横着读,是每一层如何回应上一层的"未尽之问"。</b></p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶 / 支</th><th>回答什么</th><th>机制</th><th>核心例句</th><th>依赖 / 打破了什么</th></tr></thead>
+        <tbody>
+          <tr data-b="base"><td class="stage">第0阶 · 地基</td><td>能不能数?</td><td><code>可数 / 不可数分桶</code></td><td><code>one leaf ✅ / one water ❌</code><span class="mini">总开关</span></td><td>——（一切的源头）</td></tr>
+          <tr data-b="a"><td class="stage">A1 · 可数</td><td>怎么变形?</td><td><code>s / es / ies / ves</code><span class="mini">全为发音顺口</span></td><td><code>leaf → leaves</code><span class="mini">叶子</span></td><td>依赖：能数才有复数</td></tr>
+          <tr data-b="a2"><td class="stage">A2 · 可数</td><td>怎么读?</td><td><code>/s/ /z/ /ɪz/</code><span class="mini">发音省力</span></td><td><code>boxes /ɪz/ · dogs /z/</code></td><td>依赖：与 A1 同一原理</td></tr>
+          <tr data-b="b3"><td class="stage">B3 · 不可数</td><td>为何不可数?</td><td><code>无边界的四类</code></td><td><code>water · sugar · love</code><span class="mini">水／糖／爱</span></td><td>依赖：地基的另一支</td></tr>
+          <tr data-b="b4"><td class="stage">B4 · 不可数</td><td>怎么量?</td><td><code>量词 piece / cup</code><span class="mini">复数转嫁给量词</span></td><td><code>a piece of advice</code><span class="mini">一条建议</span></td><td>依赖：无边界 → 借容器</td></tr>
+          <tr data-b="b5"><td class="stage">B5 · 不可数</td><td>为何又有复数?</td><td><code>相对性</code><span class="mini">单复义根本不同</span></td><td><code>work → works（著作）</code></td><td>打破：B3/B4 的"无复数"</td></tr>
+          <tr data-b="b6"><td class="stage">B6 · 不可数</td><td>动词单还是复?</td><td><code>主谓一致</code><span class="mini">看视角/语境/类型</span></td><td><code>My family are doctors.</code><span class="mini">家人都是医生</span></td><td>升级：从名词形态→管动词</td></tr>
+          <tr data-b="nom"><td class="stage">模块 · 名词化</td><td>怎么造名词?</td><td><code>动/形/副 → 名词</code><span class="mini">承重容器</span></td><td><code>decide → decision</code><span class="mini">决定</span></td><td>平行：制造名词，非运作</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 判断流程 ============ -->
+  <section class="overview">
+    <h3 class="block">判断/应用：用一个名词，五问定装</h3>
+    <p class="sectlead" style="margin-top:8px">开口或写作前，对着名词从上往下问，形态、量词、动词全都自动落位：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">它能一个一个数吗？（放 one/two 试试）</div><div class="arm"><span class="yes">能</span> → 走 <b>可数支</b>(Q2)｜<span class="no">不能</span> → 走 <b>不可数支</b>(Q4)</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">（可数）我要说的是多个吗？</div><div class="arm"><span class="yes">是</span> → 按 <b>s/es/ies/ves</b> 变形 → Q3｜<span class="no">一个</span> → 用原形</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">（已加 s）词尾该怎么读？看前一个音。</div><div class="arm">咝音→<b>/ɪz/</b>｜清辅音→<b>/s/</b>｜浊辅音/元音→<b>/z/</b>（不确定就点开上面 A1、A2 的术语框）</div></div></div>
+      <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">（不可数）我要表达数量吗？</div><div class="arm"><span class="yes">要</span> → 借量词 <b>a piece / cup of…</b>（复数变量词）｜<span class="no">不要</span> → 直接用</div></div></div>
+      <div class="qnode"><div class="qq">Q5</div><div class="body"><div class="ask">它配单数还是复数动词？问：此刻它在我眼里是"一个"还是"多个"？</div><div class="arm">整体/学科/一体 → <b>单数</b>｜个体/可拆实物/多方 → <b>复数</b>；单复同形则<b>看语境</b></div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿五问:</b>先答 Q1 <b>"能不能数"</b>(定支路),可数支管"形与音",不可数支管"量与谓"。而 B5 相对性、B6 主谓一致、乃至集体名词的单复选择,底层都是同一个动作——<b>说话人此刻把这东西看成"一个整体"还是"一堆个体"</b>。视角一定，规则自己跑完。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>名词篇所有的枝繁叶茂——加 s 的四条规则、三种读音、四类不可数、量词、相对性、主谓一致——都从一个总开关生长:<b>它能不能一个个数</b>。可数与不可数是主干的两次分叉,名词化则是另开一枝的"造词术"。你不是在背一堆零散规则,你是在反复运用两件事:<b>"能否切出一个"</b> 与 <b>"此刻你把它看成一个还是多个"</b>。
+  </footer>
+
+</div>
+</body>
+</html>

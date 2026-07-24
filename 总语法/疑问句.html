@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>疑问句 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 陈述句 */
+    --r2:#60a5fa;     /* 一般疑问 */
+    --r3:#fbbf24;     /* 特殊疑问 */
+    --r4:#34d399;     /* 疑问词家族 */
+    --r5:#c084fc;     /* 特殊规则 */
+    --term:#818cf8;
+    --conv:#e0913d;
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:var(--conv)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* ===== 招牌：两步操作演化 ===== */
+  .evo{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .evo .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .evo .ssub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .evo .ssub b{color:var(--ink)}
+  .estep{display:flex;flex-direction:column;gap:0}
+  .erow{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .erow .el{font-family:"SF Mono",Consolas,monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:5px}
+  .erow.s1{border-left:3px solid var(--base)} .erow.s1 .el{color:var(--base)}
+  .erow.s2{border-left:3px solid var(--r2)} .erow.s2 .el{color:var(--r2)}
+  .erow.s3{border-left:3px solid var(--r3)} .erow.s3 .el{color:var(--r3)}
+  .erow .txt{font-family:"SF Mono",Consolas,monospace;font-size:1.02rem;color:var(--ink)}
+  .erow .zh{color:var(--zh);font-size:.8rem;margin-top:2px}
+  .qw{color:#ffce7a;font-weight:800}
+  .ax{color:#7ee0b8;font-weight:800}
+  .earrow{text-align:center;color:var(--ink-faint);font-size:.78rem;padding:6px 0;font-family:"SF Mono",Consolas,monospace}
+  .earrow b{color:var(--ink-soft)}
+  .evo .snote{margin-top:11px;font-size:.82rem;color:var(--ink-faint)}
+  .evo .snote b{color:var(--ink)}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.26rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .vb{color:#ffe0a3;font-weight:700}
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+
+  /* 高频问句列表 */
+  .qlist{display:flex;flex-direction:column;gap:7px;margin:12px 0 6px}
+  .qi{display:flex;gap:12px;align-items:baseline;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 13px;border-left:3px solid var(--r2)}
+  .qi .a{flex:0 0 64px;font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#7ee0b8;font-size:.86rem}
+  .qi .m{flex:1;font-size:.88rem;color:var(--ink)} .qi .m .zh{color:var(--zh);font-size:.8rem;display:block}
+
+  /* 生成过程 */
+  .gen{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin:12px 0 6px}
+  .grow{display:flex;gap:10px;align-items:center;background:var(--code);border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-bottom:7px;flex-wrap:wrap}
+  .grow:last-child{margin-bottom:0}
+  .grow .gn{flex:0 0 auto;width:22px;height:22px;border-radius:6px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.76rem;color:var(--ink-soft)}
+  .grow .gt{flex:1;min-width:180px;font-family:"SF Mono",Consolas,monospace;font-size:1rem;color:var(--ink)}
+  .grow .gd{flex:0 0 auto;font-size:.78rem;color:var(--ink-soft)}
+
+  /* 疑问词家族 */
+  .wh{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .wc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--r4)}
+  .wc .top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .wc .w{font-family:"SF Mono",Consolas,monospace;font-weight:800;color:#8ce99a;font-size:.95rem}
+  .wc .role{font-size:.78rem;color:var(--ink-faint)}
+  .wc .ex{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:#8ce99a;margin-top:5px} .wc .ex .zh{color:var(--zh);font-family:inherit}
+
+  /* 特殊规则卡 */
+  .rule{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin:14px 0;border-left:3px solid var(--r5)}
+  .rule h4{margin:0 0 4px;font-size:1rem;color:#d4a6ff;display:flex;align-items:center;gap:8px}
+  .rule .desc{font-size:.88rem;color:var(--ink-soft);margin-bottom:10px} .rule .desc b{color:var(--ink)}
+  .rule .exs{display:flex;flex-direction:column;gap:8px}
+  .rule .ex{background:var(--code);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+  .rule .ex .en{font-size:1rem;color:var(--ink)} .rule .ex .zh{color:var(--zh);font-size:.82rem;margin-top:2px}
+  .ok{color:#8ce99a;font-weight:700} .bad{color:#fb7185;font-weight:700}
+  .rule .cmp{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .rule .cmp>div{flex:1;min-width:180px;border-radius:8px;padding:9px 11px;font-size:.82rem}
+  .rule .cmp .c1{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3)}
+  .rule .cmp .c2{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)}
+  .rule .cmp .h{font-family:"SF Mono",Consolas,monospace;font-size:.72rem;margin-bottom:4px;color:var(--ink)}
+  .rule .cmp code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.82rem}
+  .warnbox{margin-top:10px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .warnbox b{color:#fff}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+    .qi .a{flex-basis:52px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>疑问句</h1>
+    <div class="sub">questions · 在陈述句上叠加"提问操作"</div>
+    <p class="lead">疑问句不是另起炉灶,而是<b>在陈述句上做叠加操作</b>。最多两步:第一步<b>把助动词提到主语前</b>→ 得到"是不是"的一般疑问句;第二步<b>把想问的成分换成疑问词、提到句首</b>→ 得到"问具体什么"的特殊疑问句。抓住这两步,疑问句几乎没有需要死记的东西。</p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。<span class="pill conv">🧷 纯约定</span> 橙框：靠记的（延续系列规矩）。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>提问 = 在陈述句上<span class="q">叠加操作</span>。<b>第①步:助动词提到主语前</b>(得到一般疑问句,回答 yes/no);<b>第②步:疑问词换掉某成分、提到最前</b>(得到特殊疑问句,问具体信息)。<span class="q">助动词管"问句的结构",疑问词管"问什么内容"——两者叠加,不是二选一。</span>这条主线一通,what/where 和助动词的关系就清楚了:它们负责两个不同的层次。
+  </div>
+
+  <!-- ===== 招牌：两步操作 ===== -->
+  <div class="evo">
+    <div class="scap">一句话，三种形态 —— 每往下一层，多叠一个操作</div>
+    <div class="ssub">以 <b>You work here</b> 为例，看它怎么一步步变成问句。</div>
+    <div class="estep">
+      <div class="erow s1"><div class="el">① 陈述句 · 平铺直叙</div><div class="txt">You work here.</div><div class="zh">你在这儿工作。</div></div>
+      <div class="earrow">▼ 第①步操作：把助动词 <b>do</b> 提到主语前</div>
+      <div class="erow s2"><div class="el">② 一般疑问句 · 问"是不是"</div><div class="txt"><span class="ax">Do</span> you work here?</div><div class="zh">你在这儿工作吗？（回答 Yes/No）</div></div>
+      <div class="earrow">▼ 第②步操作：把地点 here 换成 <b>where</b>，提到最前</div>
+      <div class="erow s3"><div class="el">③ 特殊疑问句 · 问"具体哪里"</div><div class="txt"><span class="qw">Where</span> <span class="ax">do</span> you work?</div><div class="zh">你在哪儿工作？（问具体信息）</div></div>
+    </div>
+    <div class="snote">→ 注意③里 <span class="ax">do</span> <b>没有消失</b>——助动词还在，只是前面又加了个疑问词 where。<b>特殊疑问句 = 疑问词 + 一般疑问句。</b></div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">地基</span>陈述句：一切的起点<span class="chip">statement</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">先立起点。陈述句就是<b>平铺直叙一件事</b>,没有任何"提问操作",主动词自己就位。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">因为疑问句是<b>从陈述句"变"出来的</b>——你得先有一个陈述句,才能对它做操作。它是后面两阶的原料。</div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">You <span class="vb">work</span> here.</div><div class="zh">你在这儿工作。</div></div>
+        <div class="eg"><div class="en">She <span class="vb">is</span> happy.</div><div class="zh">她很开心。</div></div>
+        <div class="eg"><div class="en">They <span class="vb">have</span> finished.</div><div class="zh">他们已经完成了。</div></div>
+      </div>
+
+      <div class="callout">📌 <b>留意句子里的"主语"和"动词":</b>做提问操作时,关键就是看这个句子<b>靠什么动词</b>(是实义动词 work,还是已经有 be/have/情态)——这决定第①步请谁出场。下一阶就用到。</div>
+
+      <div class="sum">📍 <b>小结:</b>陈述句=起点。现在对它做第一个操作:把它变成一个"能用 yes/no 回答"的问句。这就是一般疑问句,第二阶。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">第①步操作</span>一般疑问句：助动词提到主语前<span class="chip">yes / no</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">想问一个"是不是"的问题(对方用 yes/no 回答)。怎么把陈述句变成它?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">规则只有一条:<b>把助动词提到主语前面</b>。句子里有 be/have/情态就直接提;只有实义动词(work)就请 do 出场来提。</div></div>
+      </div>
+
+      <div class="callout">🔧 <b>高频一般疑问句(覆盖各种助动词,都是"提到主语前"):</b></div>
+      <div class="qlist">
+        <div class="qi"><div class="a">do</div><div class="m">Do you work here? <span class="zh">你在这儿工作吗？（实义动词，请 do 出场）</span></div></div>
+        <div class="qi"><div class="a">does</div><div class="m">Does she like it? <span class="zh">她喜欢吗？（主语三单，用 does）</span></div></div>
+        <div class="qi"><div class="a">did</div><div class="m">Did you go home? <span class="zh">你回家了吗？（过去，用 did）</span></div></div>
+        <div class="qi"><div class="a">be</div><div class="m">Are you working? <span class="zh">你在工作吗？（已有 be，直接提前）</span></div></div>
+        <div class="qi"><div class="a">be</div><div class="m">Is she happy? <span class="zh">她开心吗？（be 作系动词，直接提前）</span></div></div>
+        <div class="qi"><div class="a">have</div><div class="m">Have you finished? <span class="zh">你完成了吗？（已有 have，直接提前）</span></div></div>
+        <div class="qi"><div class="a">can</div><div class="m">Can you swim? <span class="zh">你会游泳吗？（情态动词，直接提前）</span></div></div>
+        <div class="qi"><div class="a">will</div><div class="m">Will you go? <span class="zh">你会去吗？（will，直接提前）</span></div></div>
+      </div>
+
+      <div class="callout" style="border-color:var(--r2)">💬 <b>怎么回答:用回那个助动词。</b><br>Do you…? → <b>Yes, I do. / No, I don't.</b><br>Are you…? → <b>Yes, I am. / No, I'm not.</b><br>Can you…? → <b>Yes, I can. / No, I can't.</b><br>（问句用什么助动词，答句就用回它——顺手，见几次就熟。）</div>
+
+      <div class="sum">📍 <b>小结:</b>第①步操作(助动词提前)= 一般疑问句。但它只能问"是不是"。想问"在哪儿、什么时候、是什么"这些<b>具体信息</b>,得再加第②步操作——疑问词。逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">第②步操作</span>特殊疑问句：疑问词提到最前<span class="chip">wh- questions</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">一般疑问句只能问"是不是"。但你常想问<b>具体信息</b>:在哪?什么时候?什么东西?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">在一般疑问句基础上,<b>把想问的那个成分换成疑问词、提到最前面</b>。关键:特殊疑问句是<b>站在一般疑问句肩膀上</b>造的,助动词依然在。</div></div>
+      </div>
+
+      <div class="callout">⚙️ <b>生成过程(三步看清"疑问词 + 一般疑问句"):想问"你在哪儿工作"</b></div>
+      <div class="gen">
+        <div class="grow"><div class="gn">1</div><div class="gt">You work <span style="color:#7ab8ff">here</span>.</div><div class="gd">陈述句（here=你想问的地点）</div></div>
+        <div class="grow"><div class="gn">2</div><div class="gt"><span class="ax">Do</span> you work here?</div><div class="gd">先变一般疑问（助动词 do 提前）</div></div>
+        <div class="grow"><div class="gn">3</div><div class="gt"><span class="qw">Where</span> <span class="ax">do</span> you work?</div><div class="gd">here 换成 where，提到最前 ✓</div></div>
+      </div>
+
+      <div class="callout">🔑 <b>看第 3 步的结果:<code>Where do you work?</code></b> 里面 <b>where</b>(疑问词，问哪里)和 <b>do</b>(助动词，构成问句)<b>同时存在</b>。这就回答了你的疑惑:疑问词和助动词<b>不是二选一,是叠加</b>——疑问词管"问什么内容"，助动词管"问句结构"。</div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="vb" style="color:#ffce7a">What</span> <span class="vb" style="color:#7ee0b8">do</span> you want?</div><div class="zh">你想要什么？（what 顶替宾语 + do 构成问句）</div></div>
+        <div class="eg"><div class="en"><span class="vb" style="color:#ffce7a">When</span> <span class="vb" style="color:#7ee0b8">did</span> she come?</div><div class="zh">她什么时候来的？（when 顶替时间 + did）</div></div>
+      </div>
+
+      <div class="sum">📍 <b>小结:</b>第②步操作(疑问词提前)= 特殊疑问句。那疑问词有哪些、各问什么?这是第四阶——把常用疑问词一次列清,你会发现它们各自"顶替"句子里不同的成分。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">工具箱</span>疑问词家族：各顶替一种成分<span class="chip">wh- words</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">特殊疑问句要用疑问词。有哪些?各问什么?</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">每个疑问词,都是去<b>顶替陈述句里的某一类成分</b>:问地点用 where(顶替地点)、问东西用 what(顶替宾语)…理解这个"顶替"关系,就不用背了。</div></div>
+      </div>
+
+      <div class="wh">
+        <div class="wc"><div class="top"><span class="w">what</span><span class="role">顶替"事物"(宾语等)</span></div><div class="ex">What do you want? <span class="zh">你想要什么？</span></div></div>
+        <div class="wc"><div class="top"><span class="w">where</span><span class="role">顶替"地点"</span></div><div class="ex">Where do you live? <span class="zh">你住在哪儿？</span></div></div>
+        <div class="wc"><div class="top"><span class="w">when</span><span class="role">顶替"时间"</span></div><div class="ex">When did you come? <span class="zh">你什么时候来的？</span></div></div>
+        <div class="wc"><div class="top"><span class="w">who</span><span class="role">顶替"人"</span></div><div class="ex">Who is that man? <span class="zh">那个男人是谁？</span></div></div>
+        <div class="wc"><div class="top"><span class="w">why</span><span class="role">顶替"原因"</span></div><div class="ex">Why are you late? <span class="zh">你为什么迟到？</span></div></div>
+        <div class="wc"><div class="top"><span class="w">how</span><span class="role">顶替"方式"</span></div><div class="ex">How do you go to work? <span class="zh">你怎么去上班？</span></div></div>
+        <div class="wc"><div class="top"><span class="w">which</span><span class="role">顶替"哪一个"(有范围的选择)</span></div><div class="ex">Which do you like? <span class="zh">你喜欢哪一个？</span></div></div>
+        <div class="wc"><div class="top"><span class="w">whose</span><span class="role">顶替"谁的"</span></div><div class="ex">Whose book is this? <span class="zh">这是谁的书？</span></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 how 的扩展：how + 形容词/副词，问"程度"</summary>
+        <div class="tbody">
+          <p>how 后面可以跟一个词,问具体程度,超级高频:</p>
+          <p><code>How old are you?</code> 你多大？<br><code>How many books do you have?</code> 你有多少本书？<br><code>How much is it?</code> 多少钱？<br><code>How long will you stay?</code> 你要待多久？</p>
+          <div class="warn">🔑 记法:how = "多么/怎样",后面跟形容词(old/long)或 many/much,就是问"多…"。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>疑问词工具箱齐了,各顶替一种成分。到这里,疑问句的<b>常规内容</b>就全了——机制(两步)+ 工具(疑问词)。但有几个"不知道就一定错"的特殊规则,单独拎出来,第五阶。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">必记 · 三个坑</span>特殊规则：错了也不自知<span class="chip">must-know traps</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">前面的机制"照着套"就行。但有三个点,<b>不知道就会一直错、还不知道为什么</b>——不适合"遇到再记",现在就记死。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">它们都是<b>违反"常规套路"的例外</b>:要么不用助动词、要么中英相反。每个都给你专门的例句,对照记牢。</div></div>
+      </div>
+
+      <div class="rule">
+        <h4>坑 ① · who/what 作主语时，不用助动词、不倒装</h4>
+        <div class="desc">当你问的<b>就是主语本身</b>(谁做了这事、什么发生了),句子<b>语序不变、不加 do/did</b>——因为疑问词已经站在主语的位置了,没有东西需要"提前"。</div>
+        <div class="exs">
+          <div class="ex"><div class="en"><span class="ok">Who broke</span> the window?</div><div class="zh">谁打破了窗户？（✓ 直接用 broke，who 就是主语）</div></div>
+          <div class="ex"><div class="en"><span class="ok">What happened</span>?</div><div class="zh">发生了什么？（✓ 直接用 happened）</div></div>
+        </div>
+        <div class="cmp">
+          <div class="c1"><div class="h">问主语 → 不用助动词</div><code>Who broke it?</code><br><span style="color:var(--zh);font-size:.78rem">谁打破的？(who=主语)</span></div>
+          <div class="c2"><div class="h">问宾语 → 正常用助动词</div><code>What did you break?</code><br><span style="color:var(--zh);font-size:.78rem">你打破了什么？(what=宾语)</span></div>
+        </div>
+        <div class="warnbox">⚠️ 最易错:<code class="bad">Who did break the window?</code> ❌ → <code class="ok">Who broke the window?</code> ✓。问主语时加 did 是中国学生高频错误。</div>
+      </div>
+
+      <div class="rule">
+        <h4>坑 ② · 一般疑问句的回答，用回那个助动词</h4>
+        <div class="desc">回答 yes/no 时,<b>不要用 yes/no 加别的词</b>,而是<b>用回问句里那个助动词</b>。这个不难,但要形成习惯。</div>
+        <div class="exs">
+          <div class="ex"><div class="en">— Do you like coffee? — <span class="ok">Yes, I do.</span> / <span class="ok">No, I don't.</span></div><div class="zh">你喜欢咖啡吗？——是的／不。（用回 do）</div></div>
+          <div class="ex"><div class="en">— Are you a student? — <span class="ok">Yes, I am.</span> / <span class="ok">No, I'm not.</span></div><div class="zh">你是学生吗？——是／不是。（用回 am）</div></div>
+          <div class="ex"><div class="en">— Can she swim? — <span class="ok">Yes, she can.</span> / <span class="ok">No, she can't.</span></div><div class="zh">她会游泳吗？——会／不会。（用回 can）</div></div>
+        </div>
+        <div class="warnbox">⚠️ 别用错助动词回答:问 <code>Are you…?</code> 却答 <code class="bad">Yes, I do.</code> ❌ → 应 <code class="ok">Yes, I am.</code> ✓。<b>问句用啥，答句用回啥。</b></div>
+      </div>
+
+      <div class="rule">
+        <h4>坑 ③ · 否定疑问的回答，Yes/No 看"事实"（中英相反！）</h4>
+        <div class="desc">这是<b>最坑中国人</b>的一条。英文的 Yes/No <b>只看事实</b>——<b>做/是就 Yes，不做/不是就 No</b>,完全不管问句是肯定还是否定。中文的"不"是回应对方的问法，英文不是。</div>
+        <div class="exs">
+          <div class="ex"><div class="en">— Don't you like it? （你不喜欢吗？）</div><div class="zh">下面看你想表达什么 ↓</div></div>
+          <div class="ex"><div class="en">想说"其实我喜欢" → <span class="ok">Yes, I do.</span></div><div class="zh">（喜欢=Yes，哪怕中文说"不，我喜欢"）</div></div>
+          <div class="ex"><div class="en">想说"对，我不喜欢" → <span class="ok">No, I don't.</span></div><div class="zh">（不喜欢=No，哪怕中文说"对/是的"）</div></div>
+        </div>
+        <div class="warnbox">⚠️ 死记这句:<b>英文 Yes/No 只跟"事实"走,不跟问句走。</b>喜欢就 Yes、不喜欢就 No，无论问句怎么问。中文习惯("不，我喜欢")会把你带沟里。</div>
+      </div>
+
+      <div class="sum">📍 <b>小结:</b>三个坑记牢,疑问句就没有会"暗中出错"的地方了。全册合流:陈述句(1)→ 助动词提前=一般疑问(2)→ 疑问词提前=特殊疑问(3)→ 疑问词各顶替一种成分(4)→ 三个必记的例外(5)。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读，是"陈述句 + 两步操作 + 三个例外"的完整地图</b>。</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>是什么</th><th>关键操作</th><th>核心例句</th><th>备注</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 陈述句</td><td>起点</td><td><code>平铺直叙</code></td><td><code>You work here.</code><span class="mini">你在这儿工作</span></td><td>提问的原料</td></tr>
+          <tr data-r="2"><td class="stage">2 · 一般疑问</td><td>问"是不是"</td><td><code>助动词提到主语前</code></td><td><code>Do you work here?</code><span class="mini">你工作吗</span></td><td>回答用回助动词</td></tr>
+          <tr data-r="3"><td class="stage">3 · 特殊疑问</td><td>问"具体什么"</td><td><code>疑问词提到最前</code></td><td><code>Where do you work?</code><span class="mini">你在哪工作</span></td><td>=疑问词+一般疑问</td></tr>
+          <tr data-r="4"><td class="stage">4 · 疑问词</td><td>工具箱</td><td><code>各顶替一种成分</code></td><td><code>What / Where / When / Who…</code><span class="mini">什么/哪/何时/谁</span></td><td>how+形容词问程度</td></tr>
+          <tr data-r="5"><td class="stage">5 · 三个坑</td><td>必记例外</td><td><code>主语who不用助动词等</code></td><td><code>Who broke it?</code><span class="mini">谁打破的</span></td><td>否定疑问Yes/No看事实</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：造一个问句，三步走</h3>
+    <p class="sectlead" style="margin-top:8px">从陈述句出发：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我要问"是不是"，还是问"具体信息"？</div><div class="arm"><b>是不是</b> → 只做第①步(一般疑问)｜<b>具体信息</b> → 做第①+②步(特殊疑问)</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">第①步：句子靠什么动词？</div><div class="arm">有 <b>be/have/情态</b> → 直接提到主语前｜只有<b>实义动词</b> → 请 <b>do/does/did</b> 出场提前</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">第②步(若问具体信息)：问的是哪种成分？</div><div class="arm">选对疑问词(地点where/事物what/时间when/人who…)，<b>提到最前</b>。⚠️ 若问的就是<b>主语</b> → 不用助动词(Who broke it?)</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿:</b>疑问句 = 陈述句 + <b>叠加操作</b>。想问是非，就把助动词提前(①)；想问具体，就再把疑问词提前(②)。助动词管结构、疑问词管内容，<b>二者叠加不冲突</b>。最后别忘三个坑：<b>问主语不用助动词、回答用回助动词、否定疑问 Yes/No 看事实</b>。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>疑问句看着形式多，其实只有<b>两步操作</b>叠在陈述句上:<b>助动词提前</b>→问是非，<b>疑问词再提前</b>→问具体。你之前困惑的"助动词管提问，那 what/where 又管什么"——答案是它们<b>负责两个不同层次，叠加使用</b>：<code>Where do you work?</code> 里 where 和 do 同时在场。常规内容理解了就能套用，不必死记；真正要背死的只有三个"暗中出错"的坑——<b>问主语的 who 不用助动词、回答用回助动词、否定疑问的 Yes/No 只看事实</b>。你不是在背一堆问句句型，你是掌握了"在陈述句上叠加提问操作"这一个机制。
+  </footer>
+
+</div>
+</body>
+</html>

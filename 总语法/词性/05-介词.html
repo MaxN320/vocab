@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>介词 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 地基 · 关系词 */
+    --r2:#60a5fa;     /* 核心机制 · 位置决定功能 */
+    --r3:#fbbf24;     /* 时间 */
+    --r4:#34d399;     /* 地点方向 */
+    --r5:#c084fc;     /* 作定语 */
+    --term:#818cf8;   /* 可推导框 */
+    --conv:#e0913d;   /* 纯约定框 */
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+  .termhint .pill.conv{color:#ffc078;border-color:var(--conv)}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* ===== 招牌：同一个介词短语，位置决定功能 ===== */
+  .sig{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .sig .scap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:6px}
+  .sig .ssub{font-size:.86rem;color:var(--ink-soft);margin-bottom:14px}
+  .sig .ssub b{color:var(--ink)}
+  .sigrow{display:flex;flex-direction:column;gap:9px}
+  .sline{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .sline .txt{font-size:1.05rem;color:var(--ink)}
+  .pp{color:#ffe0a3;font-weight:700;border-bottom:2px solid rgba(255,224,163,.4);padding-bottom:1px}
+  .role{margin-left:auto;font-family:"SF Mono",Consolas,monospace;font-size:.74rem;padding:2px 10px;border-radius:20px;white-space:nowrap}
+  .role.attr{color:#c084fc;border:1px solid rgba(192,132,252,.5)}
+  .role.pred{color:#34d399;border:1px solid rgba(52,211,153,.5)}
+  .role.advb{color:#60a5fa;border:1px solid rgba(96,165,250,.5)}
+  .sline .zh{flex-basis:100%;color:var(--zh);font-size:.8rem}
+  .sig .snote{margin-top:11px;font-size:.82rem;color:var(--ink-faint)}
+  .sig .snote b{color:var(--ink)}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#08213f}
+  .r3 .dot{background:var(--r3);color:#3a2c00} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.28rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .prep{color:#ffe0a3;font-weight:700}
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  details.conv{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--conv);border-radius:10px;background:rgba(224,145,61,.055);overflow:hidden}
+  details.conv>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#ffc078;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.conv>summary::-webkit-details-marker{display:none}
+  details.conv>summary .caret{transition:transform .2s;color:var(--conv);font-size:.72rem}
+  details.conv[open]>summary .caret{transform:rotate(90deg)}
+  details.conv>summary:hover{background:rgba(224,145,61,.1)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.85rem}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+  details.conv .tbody{border-top-color:rgba(224,145,61,.25)} details.conv .tbody code{color:#ffd9a8}
+  details.conv .tbody .warn{background:rgba(224,145,61,.1);border-color:rgba(224,145,61,.3);color:#ffd9a8}
+  details.conv .tbody .warn b{color:#fff}
+
+  /* 大中小 三档 */
+  .tier{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .tr{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .tr .k{flex:0 0 68px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:1rem}
+  .tr.a .k{color:#7ab8ff} .tr.o .k{color:#ffce7a} .tr.i .k{color:#8ce99a}
+  .tr .b{flex:1;font-size:.86rem;color:var(--ink-soft)} .tr .b b{color:var(--ink)}
+  .tr .ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:#8ce99a;margin-top:4px} .tr .ex .zh{color:var(--zh);font-family:inherit}
+
+  /* 词条网格(时间其他介词/方向介词) */
+  .grid{display:flex;flex-direction:column;gap:7px;margin:12px 0 6px}
+  .gi{display:flex;gap:12px;align-items:baseline;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 13px}
+  .gi .w{flex:0 0 96px;font-family:"SF Mono",Consolas,monospace;font-weight:700;color:#ffe0a3;font-size:.9rem}
+  .gi .m{flex:1;font-size:.85rem;color:var(--ink-soft)} .gi .m .en{font-family:"SF Mono",Consolas,monospace;color:#8ce99a} .gi .m .zh{color:var(--zh)}
+
+  /* in/on/at 双线表 */
+  .dual{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:.85rem}
+  .dual th,.dual td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  .dual thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;font-family:"SF Mono",Consolas,monospace}
+  .dual .w{font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:1rem}
+  .dual tr.at .w{color:#7ab8ff} .dual tr.on .w{color:#ffce7a} .dual tr.in .w{color:#8ce99a}
+  .dual td .en{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.82rem}
+  .dual td .zh{color:var(--zh);font-size:.78rem;display:block}
+
+  /* 后置定语还原 */
+  .reduce{display:flex;flex-direction:column;gap:8px;margin:12px 0 6px}
+  .rc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;border-left:3px solid var(--r5)}
+  .rc .p{font-size:.95rem;color:var(--ink)} .rc .p .pp{color:#ffe0a3;border:0}
+  .rc .zh{color:var(--zh);font-size:.8rem;margin-top:2px}
+  .rc .eq{font-family:"SF Mono",Consolas,monospace;font-size:.78rem;color:var(--ink-faint);margin-top:4px}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+    .gi .w{flex-basis:74px}
+    .role{margin-left:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>介词</h1>
+    <div class="sub">prepositions · relationship words</div>
+    <p class="lead">介词是一小批短词(in / on / at / to / with…),干一件事:<b>标出一个名词和句子其他部分之间的"关系"</b>——在什么时间、什么位置、朝什么方向、以什么方式。<b>介词 + 名词</b> 打包成一块"介词短语",像积木一样插进句子。而它插在哪儿,就决定了它是什么成分。</p>
+    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。<span class="pill conv">🧷 纯约定</span> 橙框：没逻辑、只能记的（延续系列规矩）。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>介词本身不表意,它表<span class="q">"关系"</span>——把一个名词接到句子里,说明它和别的东西是<b>时间、地点、方向、方式</b>上的什么关系。<code style="color:#ffe0a3">介词 + 名词 = 介词短语</code>,这是一块<b>没有固定身份的积木</b>:<span class="q">它当定语、表语还是状语,完全由它在句子里的位置决定。</span>这条(你会在第二阶看到它的威力)就是理解介词的总钥匙。
+  </div>
+
+  <!-- ===== 招牌：位置决定功能 ===== -->
+  <div class="sig">
+    <div class="scap">同一个介词短语 on the wall，放在三个位置 = 三种成分</div>
+    <div class="ssub">介词短语<b>本身没有固定功能</b> —— 它是什么成分，<b>由它在句中的位置决定</b>。这是全篇最重要的一句话。</div>
+    <div class="sigrow">
+      <div class="sline">
+        <span class="txt">The picture <span class="pp">on the wall</span> is beautiful.</span>
+        <span class="role attr">定语 · 修饰 picture</span>
+        <span class="zh">墙上的那幅画很美。（紧跟名词 picture → 修饰它）</span>
+      </div>
+      <div class="sline">
+        <span class="txt">The picture is <span class="pp">on the wall</span>.</span>
+        <span class="role pred">表语 · 在 be 之后</span>
+        <span class="zh">画在墙上。（跟在 is 后面 → 说明主语在哪）</span>
+      </div>
+      <div class="sline">
+        <span class="txt">I hung the picture <span class="pp">on the wall</span>.</span>
+        <span class="role advb">状语 · 修饰 hung</span>
+        <span class="zh">我把画挂到了墙上。（修饰动词 hung → 挂在哪）</span>
+      </div>
+    </div>
+    <div class="snote">→ 三句里 <b>on the wall</b> 一个字没变，功能却从定语→表语→状语。<b>记住这块积木的"随位而变"，后面所有用法都是它的展开。</b></div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>关系词：把名词接进句子<span class="chip">prep + noun</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">句子里的名词,常常需要交代它和别的东西的关系:书<b>在</b>桌上、<b>在</b>七点、<b>去</b>学校。这个"在/去"就是介词。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">介词永远<b>后面跟一个名词</b>(它的宾语),两者合成介词短语。<code style="color:#8ce99a">on + the table</code>、<code style="color:#8ce99a">to + school</code>。这块短语才是句子里真正使用的单位。</div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">The book is <span class="prep">on</span> the <span class="noun">table</span>.</div><div class="zh">书在桌上。（on 标出"书"和"桌"的位置关系）</div></div>
+        <div class="eg"><div class="en">I go <span class="prep">to</span> <span class="noun">school</span> every day.</div><div class="zh">我每天去学校。（to 标出"方向"关系）</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 铁律：介词后面只能跟"名词性"的东西，不能直接跟动词原形</summary>
+        <div class="tbody">
+          <p>介词的宾语必须是<b>名词、代词、或动词的 -ing 形式(动名词)</b>——<b>不能是光秃秃的动词</b>。</p>
+          <p>✅ 名词:<code>good at English</code>　✅ 代词:<code>listen to me</code></p>
+          <p>✅ 动名词:<code>good at swimming</code>(擅长游泳)</p>
+          <p>❌ 动词原形:<code>good at swim</code> —— 错!介词后面动词要变 -ing。</p>
+          <div class="warn">🔑 高频错点:<code>Thank you for come.</code> ❌ → <code>Thank you for coming.</code> ✅。<b>看到"介词 + 想放动词",先把动词改成 -ing。</b></div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>介词=关系词,`介词+名词`成短语。那这块短语在句子里<b>算什么成分</b>?答案不唯一——取决于它站在哪。这正是第二阶的核心机制。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">核心机制</span>位置决定功能：同一块积木，随位而变<span class="chip">position = role</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">初学者总想问"介词短语是定语还是状语?"——<b>这个问题本身问错了</b>。它没有固定答案。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">因为介词短语<b>本身不带身份</b>,它的成分<b>由位置赋予</b>:紧跟名词就修饰名词(定语);在 be 后就说明主语(表语);修饰动词就是状语。<b>一块积木,三个插槽,三种角色。</b></div></div>
+      </div>
+
+      <div class="callout">🎯 <b>回到招牌那三句(把 on the wall 换个位置):</b>
+        <br>· 跟在名词 picture 后 → <b style="color:#c084fc">定语</b>:the picture <span class="prep">on the wall</span>(墙上的画)
+        <br>· 跟在 be 后 → <b style="color:#34d399">表语</b>:the picture is <span class="prep">on the wall</span>(画在墙上)
+        <br>· 修饰动词 hung → <b style="color:#60a5fa">状语</b>:I hung it <span class="prep">on the wall</span>(挂到墙上)
+        <br>判断一个介词短语是什么成分,<b>不看介词本身,看它挨着谁</b>。
+      </div>
+
+      <div class="callout" style="border-color:var(--r2)">🧩 <b>这条为什么是总钥匙:</b>接下来两阶(时间、地点方向)讲的是<b>介词短语的"内容"</b>(表什么关系);而这一阶讲的是它的<b>"用法"</b>(在句子里当什么)。内容 + 位置,合起来才是一个介词短语的完整身份。所以先把这条吃透,后面只是往里填不同的介词。</div>
+
+      <div class="sum">📍 <b>小结:</b>机制立好了:介词短语随位而变。接下来该填"内容"了——介词到底能表哪些关系?最主要的两大类是<b>时间</b>和<b>地点/方向</b>。先看时间。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">内容一 · 时间</span>表时间：in / on / at 的"大中小"<span class="chip">time</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">"在某个时间"该用哪个介词?in / on / at 三个最常用,中国学生最爱混。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">有一条<b>好记的主线</b>:按时间范围的<b>大小</b>选——<b>范围越小越用 at,越大越用 in</b>。记住"大 in / 中 on / 小 at"这条尺子,大部分场合就对了。</div></div>
+      </div>
+
+      <div class="tier">
+        <div class="tr a">
+          <div class="k">at 小</div>
+          <div class="b"><b>时间点、时刻</b>(最小)。<div class="ex">at 7 o'clock 在7点 · at noon 在中午 · at night 在夜里<span class="zh"></span></div></div>
+        </div>
+        <div class="tr o">
+          <div class="k">on 中</div>
+          <div class="b"><b>具体某一天 / 某个日期</b>(中等)。<div class="ex">on Monday 在周一 · on May 1st 在5月1日 · on my birthday 在我生日那天</div></div>
+        </div>
+        <div class="tr i">
+          <div class="k">in 大</div>
+          <div class="b"><b>大段时间</b>:月、季、年、早中晚(较大)。<div class="ex">in May 在五月 · in summer 在夏天 · in 2026 在2026年 · in the morning 在早上</div></div>
+        </div>
+      </div>
+
+      <div class="callout">📌 <b>再给你几个高频的其他时间介词(都接名词):</b></div>
+      <div class="grid">
+        <div class="gi"><div class="w">before</div><div class="m"><span class="en">before lunch</span> <span class="zh">午饭前</span></div></div>
+        <div class="gi"><div class="w">after</div><div class="m"><span class="en">after class</span> <span class="zh">下课后</span></div></div>
+        <div class="gi"><div class="w">from … to</div><div class="m"><span class="en">from 9 to 5</span> <span class="zh">从9点到5点</span></div></div>
+        <div class="gi"><div class="w">since</div><div class="m"><span class="en">since 2020</span> <span class="zh">自2020年（到现在）</span></div></div>
+        <div class="gi"><div class="w">until / till</div><div class="m"><span class="en">until Friday</span> <span class="zh">直到周五</span></div></div>
+        <div class="gi"><div class="w">for</div><div class="m"><span class="en">for two hours</span> <span class="zh">持续两小时</span></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 易混：in two hours（两小时后）不是 after！</summary>
+        <div class="tbody">
+          <p><code>in + 一段时间</code> 在将来语境里,意思是<b>"(过)多久之后"</b>,不是"之内":</p>
+          <p><code>I will be back <b>in</b> two hours.</code> = 我两小时<b>后</b>回来。</p>
+          <p>· 表"从现在起过多久" → 用 <b>in</b>(in two hours = 两小时后)</p>
+          <p>· 表"在某事之后" → 才用 <b>after</b>(after lunch = 午饭后)</p>
+          <div class="warn">🔑 别把"两小时后"写成 after two hours(那通常指"某个过去时点的两小时后")。将来说"多久之后",地道的是 <code>in</code>。</div>
+        </div>
+      </details>
+
+      <details class="conv">
+        <summary><span class="caret">▸</span>🧷 约定：at night 却 in the morning——这几个记住就行</summary>
+        <div class="tbody">
+          <p>"大中小"这条尺子好用,但有<b>几个不讲道理的固定搭配</b>,是习惯,直接记:</p>
+          <p>· <code>in the morning / in the afternoon / in the evening</code>(早上/下午/晚上用 in)</p>
+          <p>· <b>但</b> <code>at night</code>(夜里却用 at)、<code>at noon</code>(正午用 at)</p>
+          <p>· <code>at the weekend</code>(英式)/ <code>on the weekend</code>(美式)</p>
+          <div class="warn">🔑 这几个不用推理,和"大中小"的主线冲突也没关系——<b>它们是约定,背下来即可。</b></div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>时间搞定,主线是"大 in / 中 on / 小 at"。有意思的是,in/on/at 这三个词<b>不只管时间,还管地点</b>——而且规律惊人地一致。这自然引到第四阶。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">内容二 · 地点方向</span>表地点与方向<span class="chip">place & direction</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">"在某处"和"往某处",是介词另一大用途。分两小类:<b>静态的位置</b>(在哪)和<b>动态的方向</b>(往哪去)。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">位置用 in/on/at,规律和时间<b>如出一辙</b>:<b>点用 at,面用 on,里用 in</b>。方向则另有一组词(to/into/through…)表示"移动的路线"。</div></div>
+      </div>
+
+      <div class="callout">📍 <b>静态位置:in / on / at(和时间同一把尺子)</b></div>
+      <div class="tier">
+        <div class="tr a">
+          <div class="k">at 点</div>
+          <div class="b"><b>把地点看成一个"点"</b>(某处、某地址)。<div class="ex">at the door 在门口 · at the bus stop 在公交站 · at home 在家</div></div>
+        </div>
+        <div class="tr o">
+          <div class="k">on 面</div>
+          <div class="b"><b>在一个"面"上</b>(接触表面)。<div class="ex">on the table 在桌上 · on the wall 在墙上 · on the floor 在地上</div></div>
+        </div>
+        <div class="tr i">
+          <div class="k">in 里</div>
+          <div class="b"><b>在一个"空间里"</b>(内部)。<div class="ex">in the box 在盒子里 · in the room 在房间里 · in China 在中国</div></div>
+        </div>
+      </div>
+
+      <div class="callout">🧭 <b>动态方向:表示"移动的路线"(都接名词)</b></div>
+      <div class="grid">
+        <div class="gi"><div class="w">to</div><div class="m"><span class="en">go to school</span> <span class="zh">去学校（朝向目标）</span></div></div>
+        <div class="gi"><div class="w">from</div><div class="m"><span class="en">come from China</span> <span class="zh">来自中国（起点）</span></div></div>
+        <div class="gi"><div class="w">into</div><div class="m"><span class="en">walk into the room</span> <span class="zh">走进房间（进入里面）</span></div></div>
+        <div class="gi"><div class="w">out of</div><div class="m"><span class="en">run out of the house</span> <span class="zh">跑出房子（从里出来）</span></div></div>
+        <div class="gi"><div class="w">through</div><div class="m"><span class="en">go through the door</span> <span class="zh">穿过门（从中穿过）</span></div></div>
+        <div class="gi"><div class="w">across</div><div class="m"><span class="en">walk across the street</span> <span class="zh">走过街（横过表面）</span></div></div>
+        <div class="gi"><div class="w">along</div><div class="m"><span class="en">walk along the river</span> <span class="zh">沿着河走（沿着）</span></div></div>
+        <div class="gi"><div class="w">up / down</div><div class="m"><span class="en">go up the hill</span> <span class="zh">上山 / 下山（向上/向下）</span></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 双线总表：in / on / at 一手管时间、一手管地点（对照记）</summary>
+        <div class="tbody">
+          <p>这三个词是介词里最"劳模"的——<b>时间和地点两条线都用它们,而且逻辑一致</b>(小/点→at,中/面→on,大/里→in)。对照记最省力:</p>
+          <table class="dual">
+            <thead><tr><th>词</th><th>表时间</th><th>表地点</th></tr></thead>
+            <tbody>
+              <tr class="at"><td class="w">at</td><td><span class="en">at 7 o'clock</span><span class="zh">时刻（小）</span></td><td><span class="en">at the door</span><span class="zh">一个点</span></td></tr>
+              <tr class="on"><td class="w">on</td><td><span class="en">on Monday</span><span class="zh">某一天（中）</span></td><td><span class="en">on the wall</span><span class="zh">一个面</span></td></tr>
+              <tr class="in"><td class="w">in</td><td><span class="en">in May</span><span class="zh">大时段（大）</span></td><td><span class="en">in the box</span><span class="zh">一个空间</span></td></tr>
+            </tbody>
+          </table>
+          <div class="warn">🔑 记忆钩子:<b>at 是一个点,on 是一个面,in 是一个空间</b>——这个"点→面→体"的直觉,时间和地点通用。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>内容两大类(时间、地点方向)都填完了。回到第二阶那条总钥匙——这些介词短语造好后,还能进入一个特别有用的位置:<b>跟在名词后面当定语</b>。这是第五阶。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">高级用法</span>介词短语作后置定语：给名词补细节<span class="chip">postpositive</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">想给名词加信息,形容词只能放前面(a red car)。但"<b>有红门的</b>房子""<b>墙上的</b>画"这种,得用一整个介词短语——它只能放名词<b>后面</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这就是第二阶"紧跟名词=定语"的应用。<b>介词短语放在名词后修饰它</b>,叫后置定语。而且回扣形容词篇:它本质是<b>定语从句的省略</b>。</div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">the house <span class="prep">with a red door</span></div><div class="zh">有红门的房子（with 短语修饰 house）</div></div>
+        <div class="eg"><div class="en">the hotel <span class="prep">opposite the station</span></div><div class="zh">火车站对面的酒店</div></div>
+        <div class="eg"><div class="en">the man <span class="prep">in the black coat</span></div><div class="zh">穿黑大衣的那个男人</div></div>
+        <div class="eg"><div class="en">the books <span class="prep">on the table</span></div><div class="zh">桌上的那些书</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 回扣形容词篇：它就是"定语从句省略"</summary>
+        <div class="tbody">
+          <p>形容词篇讲过:后置定语 = 定语从句省掉"which/who + be"。<b>介词短语作定语,正是这个机制</b>:</p>
+          <div class="reduce">
+            <div class="rc"><div class="p">the picture <span class="pp">on the wall</span></div><div class="zh">墙上的画</div><div class="eq">= the picture <b>which is</b> on the wall（省掉 which is）</div></div>
+            <div class="rc"><div class="p">the man <span class="pp">in black</span></div><div class="zh">穿黑衣的男人</div><div class="eq">= the man <b>who is</b> in black（省掉 who is）</div></div>
+          </div>
+          <div class="warn">🔑 所以这不是新语法,是你学过的两块拼在一起:<b>介词短语(本册)+ 后置定语(形容词篇)</b>。把 which/who is 补回去,意思立刻清楚。</div>
+        </div>
+      </details>
+
+      <div class="callout">✍️ <b>写作用处:</b>介词短语作定语,能让你<b>不动用从句就给名词加一层细节</b>——the girl <span class="prep">with long hair</span>(长发女孩)、a city <span class="prep">in the north</span>(北方的城市)。比起从句更简洁,是描写时的常用手法。</div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流:介词=关系词(1)→ 位置决定功能(2)→ 填入时间(3)→ 填入地点方向(4)→ 作定语给名词补细节(5)。所有用法,都从"一块随位而变的介词短语积木"生长出来。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读，是"一块介词短语积木"被逐步说清：先定机制，再填内容，最后用起来</b>。🧷 标记纯约定项。</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>解决什么</th><th>要点</th><th>核心例句</th><th>依赖 / 备注</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 是什么</td><td>介词是啥</td><td><code>关系词；后接名词/-ing</code></td><td><code>on the table</code><span class="mini">在桌上</span></td><td>后不接动词原形</td></tr>
+          <tr data-r="2"><td class="stage">2 · 核心机制</td><td>短语算什么成分</td><td><code>位置决定功能</code><span class="mini">定语/表语/状语</span></td><td><code>the picture on the wall</code><span class="mini">墙上的画</span></td><td>★总钥匙</td></tr>
+          <tr data-r="3"><td class="stage">3 · 时间</td><td>表时间</td><td><code>大in / 中on / 小at</code></td><td><code>at 7 · on Monday · in May</code><span class="mini">点/天/月</span></td><td>at night🧷等约定</td></tr>
+          <tr data-r="4"><td class="stage">4 · 地点方向</td><td>表位置/方向</td><td><code>点at/面on/里in；to/into/through</code></td><td><code>in the box · walk into</code><span class="mini">在里/走进</span></td><td>与时间同一把尺</td></tr>
+          <tr data-r="5"><td class="stage">5 · 作定语</td><td>给名词补细节</td><td><code>介词短语后置</code></td><td><code>the house with a red door</code><span class="mini">有红门的房子</span></td><td>=定语从句省略</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：用一个介词，四问搞定</h3>
+    <p class="sectlead" style="margin-top:8px">从上往下问，介词怎么选、短语当什么成分就清楚了：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我要表达什么关系？</div><div class="arm"><b>时间</b>→看范围(大in/中on/小at)｜<b>位置</b>→看形状(点at/面on/里in)｜<b>方向</b>→to/from/into/through…</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">介词后面要放动词？</div><div class="arm">→ 必须改成 <b>-ing</b>(good at <b>swimming</b>)，不能用原形；放名词/代词则直接放</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">这个介词短语在句中当什么成分？</div><div class="arm"><b>不看介词，看它挨着谁</b>：跟名词后→<b>定语</b>｜be 后→<b>表语</b>｜修饰动词→<b>状语</b></div></div></div>
+      <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">想给名词加细节又不想用从句？</div><div class="arm">→ 用<b>介词短语作后置定语</b>(the girl with long hair)，= 定语从句省掉 who/which is</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿:</b>介词短语是<b>一块随位而变的积木</b>——先想清<b>表什么关系</b>(Q1，选对介词)，再看它<b>在句中挨着谁</b>(Q3，定成分)。内容 + 位置，就是一个介词短语的完整身份。时间/地点用 in/on/at 记住"大中小、点面体"这把尺，方向另记一组路线词。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>介词看着琐碎——几十个小词、时间地点各一套、还有 at night 这种例外——但它只做一件事:<b>标出名词与句子其他部分的关系</b>。而 <code style="color:#ffe0a3">介词+名词</code> 这块积木<b>没有固定身份，插在哪儿就是什么成分</b>(定语/表语/状语)——这条总钥匙，比背任何搭配都重要。你不是在背几十个介词，你是在掌握一块<b>能随位置变身的积木</b>：先让它表对关系，再把它放对位置。<br><br><span style="color:var(--ink-faint)">注：when / while / as / once、以及 before/after 接整句时，是<b>连词</b>不是介词（后面跟句子而非名词），留待"连词/从句"一册专讲。</span>
+  </footer>
+
+</div>
+</body>
+</html>

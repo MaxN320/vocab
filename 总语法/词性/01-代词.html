@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>代词 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#151b23;
+    --panel-2:#1b2330;
+    --ink:#e7eef5;
+    --ink-soft:#9aa6b3;
+    --ink-faint:#69727f;
+    --line:#28313d;
+
+    --base:#2dd4bf;   /* 地基 · 替身 */
+    --r2:#fbbf24;     /* 身份维度 */
+    --r3:#60a5fa;     /* 角色/格 */
+    --r4:#34d399;     /* 归属/物主 */
+    --r5:#c084fc;     /* 反身 */
+    --mod:#fb7185;    /* 其他家族模块 */
+    --term:#818cf8;   /* 术语框 */
+
+    --zh:#7e8794;
+    --code:#090d12;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+      radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:56px 22px 120px}
+
+  .kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.32em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:64ch}
+  .lead b{color:var(--ink)}
+  .termhint{margin:14px 0 0;font-size:.84rem;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+  .termhint .pill{color:#a5b4fc;border:1px solid var(--term);border-radius:20px;padding:1px 10px;font-size:.78rem;font-family:"SF Mono",Consolas,monospace}
+
+  .thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--base);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+  .thesis b{color:var(--base)} .thesis .q{color:var(--ink);font-weight:700}
+
+  /* ===== 招牌视觉：变形条 ===== */
+  .morph{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px}
+  .morph .mcap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:14px}
+  .morph .mcap b{color:var(--r2)}
+  .mstrip{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+  .ident{flex:0 0 auto;align-self:center;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;border-radius:12px;border:1px dashed var(--r2);background:rgba(251,191,36,.06)}
+  .ident .face{font-size:1.7rem;line-height:1}
+  .ident .who{font-size:.72rem;color:var(--r2);font-family:"SF Mono",Consolas,monospace}
+  .marrow{align-self:center;color:var(--ink-faint);font-size:1rem}
+  .mform{flex:1;min-width:118px;border-radius:11px;border:1px solid var(--line);background:var(--panel-2);padding:11px 12px;position:relative;border-top:3px solid var(--line)}
+  .mform.f3{border-top-color:var(--r3)} .mform.f4a{border-top-color:var(--r4)} .mform.f4b{border-top-color:var(--r4)} .mform.f5{border-top-color:var(--r5)} .mform.f1{border-top-color:var(--base)}
+  .mform .w{font-size:1.2rem;font-weight:800}
+  .mform.f1 .w{color:var(--base)} .mform.f3 .w{color:var(--r3)} .mform.f4a .w,.mform.f4b .w{color:var(--r4)} .mform.f5 .w{color:var(--r5)}
+  .mform .role{font-size:.7rem;color:var(--ink-faint);font-family:"SF Mono",Consolas,monospace;margin:2px 0 5px;text-transform:uppercase}
+  .mform .mini{font-size:.78rem;color:var(--ink-soft)} .mform .mini .zh{color:var(--zh);display:block;font-size:.72rem}
+
+  h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+  .sectlead{color:var(--ink-soft);font-size:.95rem;margin:8px 0 0;max-width:64ch}
+  .chip{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;padding:2px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+  /* 阶梯竖轴 */
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--base),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+  .step{position:relative;padding-left:56px;margin-bottom:42px}
+  .dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+  .r1 .dot{background:var(--base);color:#053b34} .r2 .dot{background:var(--r2);color:#3a2c00}
+  .r3 .dot{background:var(--r3);color:#08213f} .r4 .dot{background:var(--r4);color:#053d2b} .r5 .dot{background:var(--r5);color:#2f0f4a}
+
+  .step h2{margin:0 0 4px;font-size:1.28rem;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .r1 h2 .tag{color:var(--base)} .r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)} .r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+
+  .why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .why .row{display:flex;border-bottom:1px solid var(--line)} .why .row:last-child{border-bottom:0}
+  .why .lab{flex:0 0 92px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  .why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)} .why .val b{color:var(--ink)}
+
+  .egs{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+  .eg{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .eg .en{font-size:1.04rem} .eg .zh{color:var(--zh);font-size:.84rem;margin-top:3px}
+  .pS{color:#7ac0ff;font-weight:700}    /* 主格 */
+  .pO{color:#ff9d7a;font-weight:700}    /* 宾格 */
+  .pP{color:#8ce99a;font-weight:700}    /* 物主 */
+  .pR{color:#d4a6ff;font-weight:700}    /* 反身 */
+  .noun{color:#cdd6df;font-weight:600;border-bottom:1px dotted var(--ink-faint)}
+
+  .sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+  .r1 .sum{border-left:3px solid var(--base);background:rgba(45,212,191,.06)}
+  .r2 .sum{border-left:3px solid var(--r2);background:rgba(251,191,36,.06)}
+  .r3 .sum{border-left:3px solid var(--r3);background:rgba(96,165,250,.06)}
+  .r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+  .r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+  .sum b{color:var(--ink)}
+  .callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+  .callout b{color:var(--ink)}
+
+  /* 术语框 */
+  details.term{margin:12px 0;border:1px solid var(--line);border-left:3px solid var(--term);border-radius:10px;background:rgba(129,140,248,.05);overflow:hidden}
+  details.term>summary{cursor:pointer;padding:11px 15px;font-size:.88rem;font-weight:650;color:#a5b4fc;list-style:none;display:flex;align-items:center;gap:9px;user-select:none;transition:background .15s}
+  details.term>summary::-webkit-details-marker{display:none}
+  details.term>summary .caret{transition:transform .2s;color:var(--term);font-size:.72rem}
+  details.term[open]>summary .caret{transform:rotate(90deg)}
+  details.term>summary:hover{background:rgba(129,140,248,.09)}
+  .tbody{padding:4px 16px 15px;font-size:.87rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+  .tbody b{color:var(--ink)} .tbody p{margin:10px 0 0} .tbody p:first-child{margin-top:12px}
+  .tbody .warn{margin-top:12px;padding:9px 12px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);color:#ffb3c0;font-size:.84rem}
+  .tbody .warn b{color:#fff}
+
+  /* 身份维度小表 */
+  .dims{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:.86rem}
+  .dims th,.dims td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+  .dims th{background:var(--panel-2);color:var(--ink);font-size:.76rem;font-family:"SF Mono",Consolas,monospace}
+  .dims td.rh{background:var(--panel-2);color:var(--r2);font-weight:700;font-family:"SF Mono",Consolas,monospace;font-size:.78rem;text-align:left}
+  .dims code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-weight:700}
+
+  /* 格对照表 */
+  .casetbl{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:.86rem}
+  .casetbl th,.casetbl td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+  .casetbl th{background:var(--panel-2);color:var(--ink);font-size:.75rem;font-family:"SF Mono",Consolas,monospace}
+  .casetbl .s{color:#7ac0ff;font-weight:700;font-family:"SF Mono",Consolas,monospace}
+  .casetbl .o{color:#ff9d7a;font-weight:700;font-family:"SF Mono",Consolas,monospace}
+  .casetbl td.zh{color:var(--zh);font-size:.8rem}
+
+  /* 物主两类对照 */
+  .poss{display:flex;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+  .pcol{flex:1;min-width:230px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px;border-top:3px solid var(--r4)}
+  .pcol h5{margin:0 0 5px;font-size:.9rem;color:var(--r4)}
+  .pcol .list{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:var(--ink);margin:6px 0}
+  .pcol .rule{font-size:.82rem;color:var(--ink-soft)} .pcol .rule b{color:var(--ink)}
+
+  /* 反身对照卡 */
+  .refcmp{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+  .refcmp .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .refcmp .card.bad{border-left:3px solid #fb7185} .refcmp .card.good{border-left:3px solid #34d399}
+  .refcmp .tt{font-size:.82rem;font-weight:700;margin-bottom:3px} .refcmp .bad .tt{color:#fb7185} .refcmp .good .tt{color:#34d399}
+  .refcmp .en{font-family:inherit;font-size:1rem} .refcmp .zh{color:var(--zh);font-size:.8rem;margin-top:2px}
+
+  /* 模块 */
+  .module{margin-top:36px;border:1.5px dashed var(--mod);border-radius:16px;padding:22px 22px 18px;background:linear-gradient(180deg,rgba(251,113,133,.06),transparent 60%)}
+  .module .mhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .module h2{margin:0;font-size:1.3rem;font-weight:800;color:var(--mod)}
+  .module .mtag{font-family:"SF Mono",Consolas,monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);border-radius:12px;padding:1px 9px}
+  .fam{display:flex;flex-direction:column;gap:10px;margin:14px 0 4px}
+  .famcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px;border-left:3px solid var(--mod)}
+  .famcard h5{margin:0 0 3px;font-size:.94rem;color:#ffb3c0}
+  .famcard .desc{font-size:.83rem;color:var(--ink-soft);margin-bottom:6px} .famcard .desc b{color:var(--ink)}
+  .famcard .words{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:var(--ink);margin-bottom:6px}
+  .famcard .eg2{font-size:.84rem;color:var(--ink-soft)} .famcard .eg2 .en b{color:#8ce99a} .famcard .eg2 .zh{color:var(--zh);display:block;font-size:.78rem}
+
+  /* 总览 */
+  .overview{margin-top:40px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table.big{border-collapse:collapse;width:100%;min-width:720px;font-size:.87rem}
+  table.big th,table.big td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  table.big tbody tr:last-child td{border-bottom:0}
+  td.stage{font-weight:800;white-space:nowrap}
+  tr[data-r="1"] td.stage{color:var(--base)} tr[data-r="2"] td.stage{color:var(--r2)}
+  tr[data-r="3"] td.stage{color:var(--r3)} tr[data-r="4"] td.stage{color:var(--r4)}
+  tr[data-r="5"] td.stage{color:var(--r5)} tr[data-r="m"] td.stage{color:var(--mod)}
+  table.big td code{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ink)}
+  table.big td .mini{color:var(--zh);font-size:.77rem;display:block;margin-top:2px}
+
+  .flow{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .qnode .qq{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.8rem;color:var(--ink-soft)}
+  .qnode .body{flex:1} .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .arm{font-size:.88rem;margin-top:2px;color:var(--ink-soft)} .qnode .arm b{font-weight:700}
+  .yes{color:#8ce99a} .no{color:var(--ink-faint)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:560px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+    .marrow{transform:rotate(90deg)}
+    .ident{flex-direction:row}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>代词</h1>
+    <div class="sub">pronouns · one identity, many shapes</div>
+    <p class="lead">代词的全部复杂,其实来自一件事:它是一个<b>替身</b>,而替身每换一个岗位,就得换一副样子。整份笔记只做一件事——把这个替身<b>每一步要多背上的一样信息</b>,一层层加上去:先有身份,再有角色,再有归属,最后能指回自己。</p>
+    <div class="termhint"><span class="pill">📖 术语</span> 先行词、格、人称这些"隐藏概念",都做成了可点开的蓝色小方块,想深究就点开。</div>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基:</b>一句话里同一个名词反复出现会很蠢——"<span class="q">Tom 喜欢 Tom 的狗,Tom 每天喂 Tom 的狗</span>"。代词就是来<b>顶替这个重复名词的替身</b>。但替身只有在"大家都知道它指谁"时才有意义。所以整个代词系统,都是在给这个替身<b>补足信息</b>:它指谁?它在句子里干什么?它属于谁?下面五阶,每阶just补一样。
+  </div>
+
+  <!-- ===== 招牌变形条 ===== -->
+  <div class="morph">
+    <div class="mcap">同一个身份 <b>她（第三人称·单数·阴性）</b>，在不同岗位上变成五副样子 —— 这就是代词系统的全貌</div>
+    <div class="mstrip">
+      <div class="ident"><div class="face">👩</div><div class="who">她</div></div>
+      <div class="marrow">→</div>
+      <div class="mform f3"><div class="w">she</div><div class="role">主格 · 做动作</div><div class="mini">She works.<span class="zh">她工作。</span></div></div>
+      <div class="mform f3" style="border-top-color:var(--r3)"><div class="w" style="color:var(--r3)">her</div><div class="role">宾格 · 受动作</div><div class="mini">I like her.<span class="zh">我喜欢她。</span></div></div>
+      <div class="mform f4a"><div class="w">her</div><div class="role">物主·形 · 修饰名词</div><div class="mini">her dog<span class="zh">她的狗</span></div></div>
+      <div class="mform f4b"><div class="w">hers</div><div class="role">物主·名 · 独立成词</div><div class="mini">It's hers.<span class="zh">这是她的。</span></div></div>
+      <div class="mform f5"><div class="w">herself</div><div class="role">反身 · 指回自己</div><div class="mini">She hurt herself.<span class="zh">她伤了自己。</span></div></div>
+    </div>
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step r1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>替身：一个词，顶替重复的名词<span class="chip">a stand-in</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">语言的经济需求:同一个名词在句子里<b>反复出现太笨重</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这是地基本身。所有代词,本质都是"<b>别再重复那个名词了,我来替它</b>"。但替身要成立,必须有个<b>大家已知的对象</b>供它指回。</div></div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="noun">Tom</span> is tired, so <span class="pS">he</span> went home.</div><div class="zh">汤姆累了，所以他回家了。（he 顶替 Tom，不必再说一遍 Tom）</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 术语：什么是「先行词」？(代词成立的前提)</summary>
+        <div class="tbody">
+          <p><b>先行词(antecedent)</b>＝代词所指向、通常在它<b>前面先出现</b>的那个名词。代词是"影子",先行词是"本体"。</p>
+          <p>例:<b>Tom</b> is tired, so <b>he</b> went home. —— 这里 he 的先行词就是 Tom。</p>
+          <div class="warn">⚠️ 没有清晰先行词,代词就<b>悬空、无意义</b>。突然说 "He went home."(他回家了),听者会一脸问号:"他"是谁?所以用代词前,先确认"它指的那个人/物,对方清楚吗"。</div>
+        </div>
+      </details>
+
+      <div class="sum">📍 <b>小结:</b>第一阶只确立一件事——代词=名词的替身,且必须锚定一个已知的先行词。但光说"替身"还不够:替 <b>谁</b> 的身?这就逼出第二阶。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step r2">
+      <div class="dot">2</div>
+      <h2><span class="tag">加维度①</span>身份：替身得携带"我指谁"的信息<span class="chip">person · number · gender</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">第一阶的局限:一个笼统的"替身"没法让人知道<b>到底替的是谁</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">于是英语把<b>三样身份信息</b>压进代词:① 人称(说话人/听话人/别人)、② 数(一个/多个)、③ 性(他/她/它)。I / you / he / she / it / we / they,其实是<b>同一个"替身槽"调到不同身份</b>的产物。</div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 术语：「人称」是什么？(第一/二/三人称)</summary>
+        <div class="tbody">
+          <p>"人称"就是<b>从说话现场的角度,给三方分个位</b>:</p>
+          <p><b>· 第一人称</b>＝说话的人自己 → I / we<br><b>· 第二人称</b>＝正在听的对方 → you<br><b>· 第三人称</b>＝被谈论的第三方 → he / she / it / they</p>
+          <p>所以"人称"不是玄学,就是"这个替身,站在说话圈子的哪个位置"。</p>
+        </div>
+      </details>
+
+      <table class="dims">
+        <thead><tr><th>人称 \ 数</th><th>单数(一个)</th><th>复数(多个)</th></tr></thead>
+        <tbody>
+          <tr><td class="rh">第一(我方)</td><td><code>I</code></td><td><code>we</code></td></tr>
+          <tr><td class="rh">第二(你方)</td><td><code>you</code></td><td><code>you</code></td></tr>
+          <tr><td class="rh">第三(他方)</td><td><code>he / she / it</code></td><td><code>they</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="pS">He</span> works, and <span class="pS">they</span> work too.</div><div class="zh">他工作，他们也工作。（同一个"替身槽"，一个是第三人称单数，一个是复数）</div></div>
+      </div>
+
+      <div class="callout">📌 <b>注意第三人称单数才分性别:</b>he(他)/ she(她)/ it(它)。其他人称都不分——I、you、we、they 男女通用。这是英语的"最小必要标记":只在最容易混的地方(谈论的第三方)才动用性别信息。</div>
+
+      <div class="sum">📍 <b>小结:</b>第二阶给替身装上"身份"三维,现在能说清"指谁"了。但还有个问题:同一个"她",在"她打他"和"他打她"里,该长一个样吗?英语说——不。这逼出第三阶。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step r3">
+      <div class="dot">3</div>
+      <h2><span class="tag">加维度②</span>格：替身还得携带"我在句中干什么"<span class="chip">主格 / 宾格</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">第二阶知道了"指谁",但没说这个替身在句子里<b>是干活的还是被处置的</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">英语用<b>换形态</b>来标记角色:做动作(坐在句型的 S 位)用<b>主格</b> he;受动作(坐在 O 位)用<b>宾格</b> him。<b>这正是句型笔记里 S 和 O 的延续——代词会根据它坐在哪个坑,变一副样子。</b></div></div>
+      </div>
+
+      <details class="term">
+        <summary><span class="caret">▸</span>📖 术语：什么是「格」？(为什么中文没有这东西)</summary>
+        <div class="tbody">
+          <p><b>格(case)</b>＝用词的<b>形态变化</b>,来标记它在句子里担任什么角色。</p>
+          <p>中文的"他"永远是"他":<b>他</b>打<b>他</b>——两个"他"长得一样,靠位置区分。</p>
+          <p>英语不然:主格 <b>he</b>(施动)、宾格 <b>him</b>(受动),<b>换了个词形</b>。He hit him. = 他打他。第一个 he 是打人的,him 是挨打的,一看形态就知道谁是谁。</p>
+          <div class="warn">🔑 这是中国学习者最常错的点:因为母语"他"不变形,容易脱口 "Me and him went…"。正确是主格 <b>He and I went…</b>(他和我去了)——做动作,得用主格。</div>
+        </div>
+      </details>
+
+      <table class="casetbl">
+        <thead><tr><th>身份</th><th>主格(做动作·S位)</th><th>宾格(受动作·O位)</th><th>对应中文</th></tr></thead>
+        <tbody>
+          <tr><td class="s">我</td><td class="s">I</td><td class="o">me</td><td class="zh">我</td></tr>
+          <tr><td class="s">你</td><td class="s">you</td><td class="o">you</td><td class="zh">你</td></tr>
+          <tr><td class="s">他</td><td class="s">he</td><td class="o">him</td><td class="zh">他</td></tr>
+          <tr><td class="s">她</td><td class="s">she</td><td class="o">her</td><td class="zh">她</td></tr>
+          <tr><td class="s">它</td><td class="s">it</td><td class="o">it</td><td class="zh">它</td></tr>
+          <tr><td class="s">我们</td><td class="s">we</td><td class="o">us</td><td class="zh">我们</td></tr>
+          <tr><td class="s">他们</td><td class="s">they</td><td class="o">them</td><td class="zh">他们</td></tr>
+        </tbody>
+      </table>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="pS">He</span> loves <span class="pO">her</span>.</div><div class="zh">他爱她。（he 在 S 位→主格；her 在 O 位→宾格）</div></div>
+        <div class="eg"><div class="en"><span class="pS">She</span> loves <span class="pO">him</span>.</div><div class="zh">她爱他。（反过来，谁在 S 位谁就用主格）</div></div>
+      </div>
+
+      <div class="callout">🔗 <b>接上句型笔记:</b>主格 = 坐在 <span class="pS">S</span> 坑里的替身;宾格 = 坐在 <span class="pO">O</span> 坑里的替身。所以判断用 he 还是 him,先问一句"<b>它在这句里是主语还是宾语</b>",答案自然浮现。</div>
+
+      <div class="sum">📍 <b>小结:</b>第三阶让替身随"角色"变形(主格↔宾格)。可"做/受动作"还不够——生活里还常要说"这是<b>谁的</b>"。归属这层还没着落,逼出第四阶。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step r4">
+      <div class="dot">4</div>
+      <h2><span class="tag">加维度③</span>物主：替身还得能表达"归属"<span class="chip">my / mine 两类</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">主格/宾格解决了"谁做谁受",但表达不了"<b>这东西是谁的</b>"——总不能一直说 Tom's、Tom's。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">于是有了物主代词。而英语在这里逼你分<b>两种</b>:一种<b>必须挂在名词前</b>(my dog),一种<b>能独自顶一整个"…的东西"</b>(This is mine)。</div></div>
+      </div>
+
+      <div class="poss">
+        <div class="pcol">
+          <h5>A · 形容词性物主代词</h5>
+          <div class="rule"><b>必须后接名词</b>,像形容词一样修饰它。不能单独用。</div>
+          <div class="list">my · your · his · her · its · our · their</div>
+          <div class="rule">✅ This is <b>my</b> dog. / ❌ This is my.</div>
+        </div>
+        <div class="pcol">
+          <h5>B · 名词性物主代词</h5>
+          <div class="rule"><b>独立成词</b>,自身=「…的+那个东西」,后面<b>不接</b>名词。</div>
+          <div class="list">mine · yours · his · hers · its · ours · theirs</div>
+          <div class="rule">✅ This dog is <b>mine</b>. / ❌ This is mine dog.</div>
+        </div>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">This is <span class="pP">my</span> book, and that one is <span class="pP">yours</span>.</div><div class="zh">这是我的书，那本是你的。（my 挂在 book 前；yours 独立顶替"你的书"）</div></div>
+      </div>
+
+      <div class="callout">📌 <b>一招判断用哪类:</b>看它<b>后面还跟不跟名词</b>。跟名词 → 用 A 类(my/your/her);句子到它为止、后面空了 → 用 B 类(mine/yours/hers)。<br><b>坑:</b>his 两类同形(his dog / It's his);its 几乎只作 A 类,且注意 <b>its(它的)≠ it's(它是)</b>。</div>
+
+      <div class="sum">📍 <b>小结:</b>到这里,替身能指谁(阶2)、能标角色(阶3)、能表归属(阶4)。但所有这些都指向"<b>别人/别的东西</b>"。要是动作的承受者<b>就是发出者本人</b>呢?这是替身的终极情形,逼出第五阶。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step r5">
+      <div class="dot">5</div>
+      <h2><span class="tag">高级技巧</span>反身：当宾语，正好等于主语<span class="chip">herself / himself</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">解决</div><div class="val">第三阶的宾格(her/him)默认指"<b>另一个人</b>"。但当"受动作的"和"发动作的"是<b>同一个人</b>时,用宾格就会指错人。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">"She hurt <b>her</b>." 里的 her 指<b>别的女人</b>——不是自己!要表达"伤了她<b>自己</b>",英语专门造了一个<b>指回主语</b>的宾语形态:herself。它是第三阶宾语的<b>特例:宾语 = 主语</b>。</div></div>
+      </div>
+
+      <div class="refcmp">
+        <div class="card bad">
+          <div class="tt">✗ 用宾格 → 指向别人</div>
+          <div class="en">She hurt <span class="pO">her</span>.</div>
+          <div class="zh">她伤了她。（另一个女人——两个人）</div>
+        </div>
+        <div class="card good">
+          <div class="tt">✓ 用反身 → 指回自己</div>
+          <div class="en">She hurt <span class="pR">herself</span>.</div>
+          <div class="zh">她伤了自己。（施动与受动是同一人）</div>
+        </div>
+      </div>
+
+      <div class="callout">🧩 <b>形态怎么来的:</b>反身代词 = 物主/宾格 + <b>-self / -selves</b>。myself · yourself · himself · herself · itself / ourselves · yourselves · themselves。单数 -self,复数 -selves——又是名词篇那个 f→ves 的老规矩在起作用。<br><b>额外用法(强调):</b>I did it <span class="pR">myself</span>.(我<b>亲自</b>做的)——不改变对象,只强调"就是本人"。</div>
+
+      <div class="sum">📍 <b>小结:</b>五阶合流成一条链:替身先有身份(阶2)→ 标角色(阶3)→ 表归属(阶4)→ 能指回自己(阶5)。每一阶,都只是给同一个替身<b>多加一样必带的信息</b>。这条主线上的代词,全都指向"一个已知的具体对象"。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ===== 平行模块：另一个家族 ===== -->
+  <div class="module">
+    <div class="mhead">
+      <h2>平行模块 · 另一类代词：不替"具体某个"，而是"指方向"</h2>
+      <span class="mtag">按距离 / 数量 / 疑问 来指</span>
+    </div>
+    <p class="sectlead" style="margin-top:8px">
+      <b style="color:var(--ink)">为什么单独拎出来:</b>前五阶的代词都在替<b>一个已知的具体名词</b>(先行词)。但还有一批代词,压根不指向某个具体的人/物,而是靠<b>"远近、多少、疑问"</b>来指——它们遵循另一套逻辑,所以另立模块。
+    </p>
+
+    <div class="fam">
+      <div class="famcard">
+        <h5>① 指示代词 · 按「距离」指</h5>
+        <div class="desc">用<b>远近</b>把东西点出来,还带单复数。近 this/these,远 that/those。</div>
+        <div class="words">this · that · these · those</div>
+        <div class="eg2"><div class="en"><b>This</b> is my book; <b>those</b> are hers.</div><div class="zh">这是我的书；那些是她的。</div></div>
+      </div>
+      <div class="famcard">
+        <h5>② 不定代词 · 按「数量/模糊」指</h5>
+        <div class="desc">指不特定的人或物,由 some/any/every/no + one/body/thing 拼成。<b>它们做主语时配单数动词</b>(回扣名词篇的主谓一致)。</div>
+        <div class="words">someone · anything · everybody · nothing · one</div>
+        <div class="eg2"><div class="en"><b>Everyone</b> is here, but <b>nothing</b> is ready.</div><div class="zh">大家都到了，但什么都没准备好。（is，单数）</div></div>
+      </div>
+      <div class="famcard">
+        <h5>③ 疑问代词 · 指向「未知」</h5>
+        <div class="desc">代词充当句子里那个<b>待填的空</b>,用来发问。</div>
+        <div class="words">who · whom · what · which · whose</div>
+        <div class="eg2"><div class="en"><b>Who</b> is she? <b>What</b> do you want?</div><div class="zh">她是谁？你想要什么？</div></div>
+      </div>
+      <div class="famcard">
+        <h5>④ 相互代词 · 指「彼此」</h5>
+        <div class="desc">表示动作在双方之间来回,和反身(指回自己)刚好相对。</div>
+        <div class="words">each other · one another</div>
+        <div class="eg2"><div class="en">They love <b>each other</b>.</div><div class="zh">他们彼此相爱。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 总览表 ===== -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读,是同一个替身每一步多背上的那样信息</b>。最后一行是走另一套逻辑的平行家族。</p>
+    <div class="tbl-wrap">
+      <table class="big">
+        <thead><tr><th>阶</th><th>多加了什么信息</th><th>形态(以"她/复数"为例)</th><th>核心例句</th><th>依赖上一阶</th></tr></thead>
+        <tbody>
+          <tr data-r="1"><td class="stage">1 · 替身</td><td>能替代重复名词</td><td><code>—（需先行词）</code></td><td><code>Tom is tired, so he left.</code><span class="mini">汤姆累了，所以他走了。</span></td><td>——（地基）</td></tr>
+          <tr data-r="2"><td class="stage">2 · 身份</td><td>指谁(人称·数·性)</td><td><code>she / they</code></td><td><code>He works, they work too.</code><span class="mini">他工作，他们也工作。</span></td><td>替身要能识别先行词</td></tr>
+          <tr data-r="3"><td class="stage">3 · 格</td><td>句中角色(主/宾)</td><td><code>she → her</code></td><td><code>She loves him.</code><span class="mini">她爱他。</span></td><td>身份 + 坐进 S/O 坑</td></tr>
+          <tr data-r="4"><td class="stage">4 · 物主</td><td>归属(挂名词/独立)</td><td><code>her / hers</code></td><td><code>This is mine.</code><span class="mini">这是我的。</span></td><td>同一身份，换成"…的"</td></tr>
+          <tr data-r="5"><td class="stage">5 · 反身</td><td>宾语=主语(指回自己)</td><td><code>herself</code></td><td><code>She hurt herself.</code><span class="mini">她伤了自己。</span></td><td>第3阶宾语的特例</td></tr>
+          <tr data-r="m"><td class="stage">模块 · 其他</td><td>按距离/数量/疑问指</td><td><code>this · someone · who</code></td><td><code>Who is she?</code><span class="mini">她是谁？</span></td><td>平行：不指具体先行词</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 判断流程 ===== -->
+  <section class="overview">
+    <h3 class="block">判断/应用：要用一个代词，四问定形</h3>
+    <p class="sectlead" style="margin-top:8px">先定身份(人称·数·性),再顺着往下问,形态自动落位：</p>
+    <div class="flow">
+      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我是在替一个"已知的具体名词"吗？</div><div class="arm"><span class="no">不是，是指远近/数量/疑问</span> → 用<b>模块</b>(this / someone / who)｜<span class="yes">是</span> → 进 Q2</div></div></div>
+      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">它在这句里担任什么角色？</div><div class="arm">做动作(S位) → <b>主格</b>(she)｜受动作(O位) → 先看 Q3｜表"…的" → 看 Q4</div></div></div>
+      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">（它是宾语）这个宾语，正好就是本句主语本人吗？</div><div class="arm"><span class="yes">是，同一人</span> → <b>反身</b>(herself)｜<span class="no">不是，是别人</span> → <b>宾格</b>(her)</div></div></div>
+      <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">（它表归属）后面还跟名词吗？</div><div class="arm"><span class="yes">跟</span> → <b>形容词性</b>(my/her)｜<span class="no">不跟，独立</span> → <b>名词性</b>(mine/hers)</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿四问:</b>身份(人称·数·性)是<b>始终要选</b>的底色;在此之上,只问一件事——<b>这个替身在句中扮演什么角色</b>(做动作/受动作/表归属/指回自己),角色一定,该用主格、宾格、物主还是反身,就全定了。这正是句型笔记里"谁坐哪个坑"的思想,搬到了代词上。</div>
+  </section>
+
+  <footer>
+    <b>回看地基:</b>代词的全部形态——I/me、he/him、my/mine、herself——都不是要死记的零散清单,而是<b>同一个"替身"在不同岗位上的变形</b>。第一阶给它一个存在的理由(替代重复);此后每一阶,只往它身上多加一样必带的信息:指谁 → 干什么 → 谁的 → 是不是自己。你不是在背几十个代词,你是在追踪<b>一个身份,如何随角色一次次换装</b>。
+  </footer>
+
+</div>
+</body>
+</html>
