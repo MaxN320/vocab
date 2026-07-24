@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单词解析卡片</title>
+<style>
+  :root{
+    --bg:#11131a;
+    --card:#191c26;
+    --card-2:#1f2330;
+    --line:#2a2f3d;
+    --ink:#e9ecf4;
+    --ink-soft:#aeb4c5;
+    --ink-mute:#6f7689;
+    --accent:#7c9cff;
+    --accent-soft:#2d3658;
+    --green:#5ec59a;
+    --rose:#e08aa0;
+    --pos:#7c9cff;
+    --radius:16px;
+    --maxw:100%;               /* 卡片/顶栏宽度：全屏铺满（所有设备都占满可用宽度） */
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 60px}
+
+  /* top bar */
+  .topbar{width:100%;max-width:var(--maxw);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:30;background:var(--bg);padding:12px 0 10px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .counter{font-family:var(--mono);font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .counter b{color:var(--ink);font-weight:600}
+  .nav{display:flex;gap:8px}
+  .nav button{
+    appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+    font-size:14px;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:var(--sans);
+    transition:.15s;display:flex;align-items:center;gap:6px;
+  }
+  .nav button:hover:not(:disabled){border-color:var(--accent);color:var(--ink);background:var(--card-2)}
+  .nav button:active:not(:disabled){transform:translateY(1px)}
+  .nav button:disabled{opacity:.35;cursor:not-allowed}
+  .nav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* jump 跳转下拉框 */
+  .jump{
+    appearance:none;-webkit-appearance:none;
+    flex:1 1 130px;min-width:110px;max-width:280px;
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font-size:13.5px;font-family:var(--sans);padding:8px 30px 8px 12px;border-radius:10px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aeb4c5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;
+  }
+  .jump:hover{border-color:var(--accent)}
+  .jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .jump option{background:var(--card);color:var(--ink)}
+
+  /* card */
+  .card{
+    width:100%;max-width:var(--maxw);background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px 26px 28px;
+  }
+
+  /* headword */
+  .head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .head-left{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .word{font-size:36px;font-weight:700;letter-spacing:-.01em;line-height:1.05}
+  .ipa-line{display:flex;align-items:center;gap:8px}
+  .ipa{font-family:var(--mono);font-size:16px;color:var(--ink-soft)}
+  .copy-struct{
+    appearance:none;border:1px solid var(--line);background:var(--card-2);color:var(--ink-soft);
+    font-size:12.5px;padding:7px 13px;border-radius:9px;cursor:pointer;font-family:var(--sans);
+    transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:6px;flex-shrink:0;
+  }
+  .copy-struct:hover{border-color:var(--accent);color:var(--ink)}
+  .copy-struct:active{transform:translateY(1px)}
+  .copy-struct:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* speaker */
+  .spk{
+    appearance:none;border:none;background:transparent;cursor:pointer;padding:3px;border-radius:8px;
+    color:var(--ink-mute);display:inline-flex;align-items:center;justify-content:center;transition:.15s;line-height:0;
+  }
+  .spk:hover{color:var(--accent)}
+  .spk.playing{color:var(--accent)}
+  .spk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .spk svg{width:18px;height:18px}
+
+  /* defs */
+  .defs{margin:20px 0 4px;display:flex;flex-direction:column;gap:7px}
+  .def-row{display:flex;align-items:baseline;gap:10px;font-size:16px}
+  .pos{
+    font-family:var(--mono);font-size:12px;color:var(--accent);background:var(--accent-soft);
+    padding:2px 8px;border-radius:6px;flex-shrink:0;min-width:34px;text-align:center;font-weight:600;
+  }
+  .def-zh{color:var(--ink)}
+
+  /* chunk */
+  .chunk{
+    margin-top:18px;background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  }
+  .chunk-head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .chunk-phrase{font-size:17px;font-weight:600;color:var(--ink)}
+  .chunk-zh{font-size:14px;color:var(--ink-soft)}
+
+  /* section label */
+  .sec-label{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-mute);margin:24px 0 10px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* example block */
+  .ex{background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+  .ex + .ex{margin-top:0}
+  .ex-en{font-size:16px;line-height:1.55;color:var(--ink)}
+  .ex-en b{color:var(--accent);font-weight:700}
+  .ex-zh{font-size:13.5px;color:var(--ink-mute);margin-top:5px;line-height:1.5}
+  .ex-actions{display:flex;gap:8px;margin-top:11px}
+  .mini{
+    appearance:none;border:1px solid var(--line);background:transparent;color:var(--ink-mute);
+    font-size:11.5px;padding:5px 11px;border-radius:8px;cursor:pointer;font-family:var(--sans);transition:.15s;
+    display:flex;align-items:center;gap:5px;
+  }
+  .mini:hover{border-color:var(--accent);color:var(--ink-soft)}
+  .mini:active{transform:translateY(1px)}
+  .mini:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .mini svg{width:12px;height:12px}
+
+  /* grammar */
+  .gram{margin-top:11px;border-top:1px dashed var(--line);padding-top:11px}
+  .gram-tag{font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);margin-bottom:6px}
+  .clause{margin-bottom:9px}
+  .clause:last-child{margin-bottom:0}
+  .clause-label{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:5px}
+  .roles{display:flex;flex-wrap:wrap;gap:6px}
+  .role{
+    background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:5px 9px;font-size:12.5px;
+    color:var(--ink-soft);line-height:1.4;
+  }
+  .role .r-form{display:block;color:var(--ink-mute);font-family:var(--mono);font-size:10.5px;margin-top:2px}
+  .role .r-note{display:block;color:var(--green);font-size:10.5px;margin-top:2px}
+
+  /* relations */
+  .rel{display:flex;gap:11px;background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+  .rel-sym{font-size:18px;font-weight:700;flex-shrink:0;line-height:1.5;width:20px;text-align:center}
+  .rel.syn .rel-sym{color:var(--green)}
+  .rel.ant .rel-sym{color:var(--rose)}
+  .rel-body{flex:1;min-width:0}
+  .rel-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .rel-word{font-size:16px;font-weight:600;color:var(--ink)}
+  .rel-ipa{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute)}
+  .rel-pos{font-family:var(--mono);font-size:11px;color:var(--accent);background:var(--accent-soft);padding:1px 7px;border-radius:5px;font-weight:600}
+  .rel-zh{font-size:13px;color:var(--ink-soft)}
+  .rel-diff{font-size:13px;color:var(--ink-soft);margin-top:5px;line-height:1.5}
+
+  /* toast */
+  .toast{
+    position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);
+    background:var(--accent);color:#0d1018;font-size:13.5px;font-weight:600;padding:10px 20px;border-radius:10px;
+    opacity:0;pointer-events:none;transition:.22s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:520px){
+    .word{font-size:30px}
+    .card{padding:20px 18px 22px}
+    body{padding:18px 12px 50px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="counter"><b id="cur">1</b> / <span id="total">5</span></div>
+  <select id="jump" class="jump" aria-label="跳转到某个单词"></select>
+  <div class="nav">
+    <button id="prev" aria-label="上一个">‹ 上一个</button>
+    <button id="next" aria-label="下一个">下一个 ›</button>
+  </div>
+</div>
+
+<div class="card" id="card"></div>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+/* ============ 数据区：往这里塞 JSON ============ */
+const DATA = [
+/* ===== 第1批：slope ~ foundation（词库第 1–10 个）===== */
+{
+  "word":"slope","ipa":"/sləʊp/",
+  "defs":[{"pos":"n.","zh":"斜坡，坡面"},{"pos":"v.","zh":"倾斜，成斜坡"}],
+  "chunk":{
+    "pos":"n.","phrase":"a steep slope","zh":"陡坡，陡峭的斜坡",
+    "example":{
+      "en":"Their house is built on <b>a steep slope</b>.","zh":"他们的房子建在一处陡坡上。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Their house","form":null,"note":null},
+        {"text":"谓语: is built","form":"助动词be+过去分词 | build /bɪld/ 建造","note":null},
+        {"text":"状语: on a steep slope","form":null,"note":"adj. 陡峭的 /stiːp/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"We walked down the <b>slope</b> to the river.","zh":"我们沿着斜坡走到河边。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: We","form":null,"note":null},
+      {"text":"谓语: walked","form":"过去式 | walk /wɔːk/ 走","note":null},
+      {"text":"状语: down the slope","form":null,"note":null},
+      {"text":"状语: to the river","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Children love to slide down the snowy <b>slope</b>.","zh":"孩子们喜欢从雪坡上滑下来。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Children","form":null,"note":null},
+      {"text":"谓语: love","form":"原形 | love /lʌv/ 喜欢","note":null},
+      {"text":"宾语: to slide down the snowy slope","form":"不定式(to+原形): slide /slaɪd/ 滑行","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"hill","ipa":"/hɪl/","zh":"小山，山丘","diff":"hill指自然隆起、独立成形的小山；slope强调“倾斜的坡面”这一特征，可以是山坡、路面或屋顶的斜面，不一定是独立的山。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"incline","ipa":"/ˈɪnklaɪn/","zh":"斜坡，倾斜面","diff":"incline较正式、书面，泛指任何倾斜的表面；slope是日常口语最常用词，含义相同但更通俗。"}
+  ]
+},
+{
+  "word":"relief","ipa":"/rɪˈliːf/",
+  "defs":[{"pos":"n.","zh":"宽慰，如释重负"},{"pos":"n.","zh":"减轻，缓解"}],
+  "chunk":{
+    "pos":"n.","phrase":"to my relief","zh":"令我宽慰的是",
+    "example":{
+      "en":"<b>To my relief</b>, the test was quite easy.","zh":"令我宽慰的是，考试相当简单。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: To my relief","form":null,"note":null},
+        {"text":"主语: the test","form":null,"note":null},
+        {"text":"谓语: was","form":"过去式 | be 是","note":null},
+        {"text":"状语: quite","form":null,"note":null},
+        {"text":"表语: easy","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She felt great <b>relief</b> after the exam.","zh":"考试之后她感到极大的宽慰。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: felt","form":"过去式 | feel /fiːl/ 感到","note":null},
+      {"text":"宾语: great relief","form":null,"note":null},
+      {"text":"状语: after the exam","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The medicine brought quick <b>relief</b> from the pain.","zh":"这种药很快缓解了疼痛。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The medicine","form":null,"note":"n. 药 /ˈmedsn/"},
+      {"text":"谓语: brought","form":"过去式 | bring /brɪŋ/ 带来","note":null},
+      {"text":"宾语: quick relief","form":null,"note":null},
+      {"text":"状语: from the pain","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"comfort","ipa":"/ˈkʌmfət/","zh":"安慰，慰藉","diff":"comfort指身心上持续的舒适或被安慰的状态；relief更强调痛苦、担忧、压力“被消除后”那一刻的轻松感。"},
+    {"type":"ant","sym":"≠","pos":"n.","word":"worry","ipa":"/ˈwʌri/","zh":"担忧，忧虑","diff":"relief是烦恼解除后的轻松；worry指对可能发生的坏事持续的担心，二者情绪正好相反。"}
+  ]
+},
+{
+  "word":"epidemic","ipa":"/ˌepɪˈdemɪk/",
+  "defs":[{"pos":"n.","zh":"流行病，(疫病)流行"},{"pos":"adj.","zh":"流行性的，盛行的"}],
+  "chunk":{
+    "pos":"n.","phrase":"an epidemic of","zh":"…的流行，大量的…",
+    "example":{
+      "en":"There was <b>an epidemic of</b> flu last winter.","zh":"去年冬天爆发了一场流感。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"引导词: There","form":null,"note":null},
+        {"text":"谓语: was","form":"过去式 | be 有","note":null},
+        {"text":"主语: an epidemic of flu","form":null,"note":null},
+        {"text":"状语: last winter","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The <b>epidemic</b> spread quickly across the country.","zh":"这场疫情在全国迅速蔓延。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The epidemic","form":null,"note":null},
+      {"text":"谓语: spread","form":"过去式 | spread /spred/ 蔓延","note":null},
+      {"text":"状语: quickly","form":null,"note":null},
+      {"text":"状语: across the country","form":null,"note":"n. 国家 /ˈkʌntri/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Doctors worked hard to stop the <b>epidemic</b>.","zh":"医生们努力阻止疫情蔓延。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Doctors","form":null,"note":null},
+      {"text":"谓语: worked","form":"过去式 | work /wɜːk/ 努力","note":null},
+      {"text":"状语: hard","form":null,"note":null},
+      {"text":"状语: to stop the epidemic","form":"不定式(to+原形): stop /stɒp/ 阻止","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"outbreak","ipa":"/ˈaʊtbreɪk/","zh":"(疾病、战争等的)爆发","diff":"outbreak指坏事(疾病/战争)突然“开始爆发”的那个事件，是起点；epidemic指疾病已在人群中“大范围流行”的状态，是过程。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"disease","ipa":"/dɪˈziːz/","zh":"疾病","diff":"disease泛指任何一种“疾病”本身；epidemic特指某种疾病在某地大规模、快速地传播流行。"}
+  ]
+},
+{
+  "word":"aspire","ipa":"/əˈspaɪə/",
+  "defs":[{"pos":"v.","zh":"渴望，立志，追求"}],
+  "chunk":{
+    "pos":"v.","phrase":"aspire to","zh":"渴望，追求，有志于",
+    "example":{
+      "en":"Many students <b>aspire to</b> become doctors.","zh":"许多学生立志成为医生。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Many students","form":null,"note":null},
+        {"text":"谓语: aspire","form":"原形","note":null},
+        {"text":"宾语: to become doctors","form":"不定式(to+原形): become /bɪˈkʌm/ 成为","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She <b>aspires</b> to a career in music.","zh":"她渴望从事音乐事业。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: aspires","form":"第三人称单数","note":null},
+      {"text":"状语: to a career in music","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Young people often <b>aspire</b> to change the world.","zh":"年轻人常常渴望改变世界。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Young people","form":null,"note":null},
+      {"text":"状语: often","form":null,"note":null},
+      {"text":"谓语: aspire","form":"原形","note":null},
+      {"text":"宾语: to change the world","form":"不定式(to+原形): change /tʃeɪndʒ/ 改变","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"desire","ipa":"/dɪˈzaɪə/","zh":"渴望，想要","diff":"desire泛指想要得到某物(可具体可抽象)，语气一般；aspire特指怀有远大志向、追求较高的目标，常搭配to，更正式。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"long","ipa":"/lɒŋ/","zh":"渴望，盼望","diff":"long(for)强调因缺失而强烈思念、盼望某物；aspire更强调对崇高目标或成就的主动追求。"}
+  ]
+},
+{
+  "word":"limit","ipa":"/ˈlɪmɪt/",
+  "defs":[{"pos":"n.","zh":"限度，极限"},{"pos":"v.","zh":"限制，限定"}],
+  "chunk":{
+    "pos":"n.","phrase":"a speed limit","zh":"限速",
+    "example":{
+      "en":"There is <b>a speed limit</b> on this road.","zh":"这条路上有限速规定。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"引导词: There","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 有","note":null},
+        {"text":"主语: a speed limit","form":null,"note":null},
+        {"text":"状语: on this road","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"We must know our own <b>limits</b>.","zh":"我们必须了解自己的极限。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: We","form":null,"note":null},
+      {"text":"谓语: must know","form":"情态+原形 | know /nəʊ/ 知道","note":null},
+      {"text":"宾语: our own limits","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The teacher set a time <b>limit</b> for the test.","zh":"老师给这次考试设定了时间限制。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The teacher","form":null,"note":null},
+      {"text":"谓语: set","form":"过去式 | set /set/ 设定","note":null},
+      {"text":"宾语: a time limit","form":null,"note":null},
+      {"text":"状语: for the test","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"boundary","ipa":"/ˈbaʊndri/","zh":"边界，界限","diff":"boundary多指地理或领域上明确的分界线；limit更强调数量、程度上“不能超过的最大限度、极限”。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"restrict","ipa":"/rɪˈstrɪkt/","zh":"限制，约束","diff":"restrict强调用规则、权力主动“管控、约束”(常指行动自由)；limit作动词泛指把数量/范围“限定在某个界限内”，语气更中性。"}
+  ]
+},
+{
+  "word":"limited","ipa":"/ˈlɪmɪtɪd/",
+  "defs":[{"pos":"adj.","zh":"有限的，受限制的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"a limited number of","zh":"数量有限的…",
+    "example":{
+      "en":"Only <b>a limited number of</b> tickets are left.","zh":"只剩下数量有限的票了。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: Only","form":null,"note":null},
+        {"text":"主语: a limited number of tickets","form":null,"note":null},
+        {"text":"谓语: are left","form":"助动词be+过去分词 | leave /liːv/ 剩下","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"My knowledge of French is quite <b>limited</b>.","zh":"我的法语知识相当有限。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: My knowledge of French","form":null,"note":"n. 知识 /ˈnɒlɪdʒ/"},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"状语: quite","form":null,"note":null},
+      {"text":"表语: limited","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The shop has a <b>limited</b> choice of goods.","zh":"这家店的商品种类有限。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The shop","form":null,"note":null},
+      {"text":"谓语: has","form":"第三人称单数 | have 有","note":null},
+      {"text":"宾语: a limited choice of goods","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"ant","sym":"≠","pos":"adj.","word":"unlimited","ipa":"/ʌnˈlɪmɪtɪd/","zh":"无限的，无限制的","diff":"unlimited指没有限制、无穷尽的；与limited(有限的)构成直接反义。"},
+    {"type":"syn","sym":"≈","pos":"adj.","word":"restricted","ipa":"/rɪˈstrɪktɪd/","zh":"受限制的，受管制的","diff":"restricted强调被规则或权力主动“限制、管控”(如禁止进入)；limited强调在数量、程度上“数目不多、有限”。"}
+  ]
+},
+{
+  "word":"limitation","ipa":"/ˌlɪmɪˈteɪʃn/",
+  "defs":[{"pos":"n.","zh":"局限性，缺陷"},{"pos":"n.","zh":"限制，限定"}],
+  "chunk":{
+    "pos":"v.","phrase":"have limitations","zh":"有局限性",
+    "example":{
+      "en":"Every plan <b>has limitations</b>.","zh":"每一个计划都有其局限性。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Every plan","form":null,"note":null},
+        {"text":"谓语: has","form":"第三人称单数 | have 有","note":null},
+        {"text":"宾语: limitations","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The main <b>limitation</b> is the lack of time.","zh":"主要的局限在于时间不足。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The main limitation","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: the lack of time","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"We should know the <b>limitations</b> of this method.","zh":"我们应该了解这种方法的局限性。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: We","form":null,"note":null},
+      {"text":"谓语: should know","form":"情态+原形 | know /nəʊ/ 了解","note":null},
+      {"text":"宾语: the limitations of this method","form":null,"note":"n. 方法 /ˈmeθəd/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"limit","ipa":"/ˈlɪmɪt/","zh":"限度，极限","diff":"limit指具体的“最大限度、界线”(如速度上限)；limitation指造成限制的“局限、不足”，或限制这一行为本身，更抽象。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"weakness","ipa":"/ˈwiːknəs/","zh":"弱点，缺点","diff":"weakness泛指人或事物的弱点、不足；limitation特指受客观条件所限而无法超越的局限。"}
+  ]
+},
+{
+  "word":"outcome","ipa":"/ˈaʊtkʌm/",
+  "defs":[{"pos":"n.","zh":"结果，结局，成果"}],
+  "chunk":{
+    "pos":"n.","phrase":"the outcome of","zh":"…的结果",
+    "example":{
+      "en":"We are waiting for <b>the outcome of</b> the meeting.","zh":"我们在等待会议的结果。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: We","form":null,"note":null},
+        {"text":"谓语: are waiting","form":"助动词be+现在分词 | wait /weɪt/ 等待","note":null},
+        {"text":"状语: for the outcome of the meeting","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The <b>outcome</b> of the game surprised everyone.","zh":"比赛的结果让所有人吃惊。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The outcome of the game","form":null,"note":null},
+      {"text":"谓语: surprised","form":"过去式 | surprise /səˈpraɪz/ 使惊讶","note":null},
+      {"text":"宾语: everyone","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Nobody could predict the final <b>outcome</b>.","zh":"没人能预测最终的结果。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Nobody","form":null,"note":null},
+      {"text":"谓语: could predict","form":"情态+原形 | predict /prɪˈdɪkt/ 预测","note":null},
+      {"text":"宾语: the final outcome","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"result","ipa":"/rɪˈzʌlt/","zh":"结果","diff":"result泛指由某原因直接产生的结果，是最常用词；outcome更强调一系列过程或事件“最终的”结局，常含不确定性。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"consequence","ipa":"/ˈkɒnsɪkwəns/","zh":"后果，结果","diff":"consequence多指(常为负面的)后果、影响；outcome为中性词，指最终结果，可好可坏。"}
+  ]
+},
+{
+  "word":"accept","ipa":"/əkˈsept/",
+  "defs":[{"pos":"v.","zh":"接受，收下"},{"pos":"v.","zh":"认可，同意"}],
+  "chunk":{
+    "pos":"v.","phrase":"accept an offer","zh":"接受提议，接受录用",
+    "example":{
+      "en":"She decided to <b>accept an offer</b> from the company.","zh":"她决定接受这家公司的录用。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语: decided","form":"过去式 | decide /dɪˈsaɪd/ 决定","note":null},
+        {"text":"宾语: to accept an offer","form":"不定式(to+原形)","note":null},
+        {"text":"状语: from the company","form":null,"note":"n. 公司 /ˈkʌmpəni/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"I <b>accept</b> your apology.","zh":"我接受你的道歉。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: I","form":null,"note":null},
+      {"text":"谓语: accept","form":"原形","note":null},
+      {"text":"宾语: your apology","form":null,"note":"n. 道歉 /əˈpɒlədʒi/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"He was happy to <b>accept</b> the job.","zh":"他很高兴地接受了这份工作。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: was","form":"过去式 | be 是","note":null},
+      {"text":"表语: happy","form":null,"note":null},
+      {"text":"状语: to accept the job","form":"不定式(to+原形)","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"receive","ipa":"/rɪˈsiːv/","zh":"收到，接到","diff":"receive只是客观上“收到”某物，不含态度；accept含主观上“愿意接受、认可”的意思。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"refuse","ipa":"/rɪˈfjuːz/","zh":"拒绝","diff":"refuse指拒绝接受(提议、请求)；与accept(接受)直接相反。"}
+  ]
+},
+{
+  "word":"foundation","ipa":"/faʊnˈdeɪʃn/",
+  "defs":[{"pos":"n.","zh":"基础，根基"},{"pos":"n.","zh":"地基；基金会"}],
+  "chunk":{
+    "pos":"v.","phrase":"lay the foundation","zh":"打基础，奠定基础",
+    "example":{
+      "en":"Hard work <b>lays the foundation</b> for success.","zh":"努力为成功打下基础。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Hard work","form":null,"note":null},
+        {"text":"谓语: lays","form":"第三人称单数 | lay /leɪ/ 奠定","note":null},
+        {"text":"宾语: the foundation","form":null,"note":null},
+        {"text":"状语: for success","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"A good education is the <b>foundation</b> of a career.","zh":"良好的教育是事业的基础。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: A good education","form":null,"note":"n. 教育 /ˌedʒuˈkeɪʃn/"},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: the foundation of a career","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Workers are building the <b>foundation</b> of the house.","zh":"工人们正在建造房子的地基。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Workers","form":null,"note":null},
+      {"text":"谓语: are building","form":"助动词be+现在分词 | build /bɪld/ 建造","note":null},
+      {"text":"宾语: the foundation of the house","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"base","ipa":"/beɪs/","zh":"基础，底部","diff":"base指具体的底部/根基，也可指抽象基础，是通用词；foundation更强调建筑的地基，或事物赖以建立的“根本基础”。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"basis","ipa":"/ˈbeɪsɪs/","zh":"基础，依据","diff":"basis多指抽象的“根据、原理”(如 on the basis of)；foundation侧重能支撑整体的根基，具体、抽象均可。"}
+  ]
+},
+/* ===== 第2批：found ~ dialect（词库第 11–20 个）===== */
+{
+  "word":"found","ipa":"/faʊnd/",
+  "defs":[{"pos":"v.","zh":"建立，创办，创立"}],
+  "chunk":{
+    "pos":"v.","phrase":"found a company","zh":"创办一家公司",
+    "example":{
+      "en":"They want to <b>found a company</b> together.","zh":"他们想一起创办一家公司。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: They","form":null,"note":null},
+        {"text":"谓语: want","form":"原形 | want /wɒnt/ 想要","note":null},
+        {"text":"宾语: to found a company","form":"不定式(to+原形)","note":"n. 公司 /ˈkʌmpəni/"},
+        {"text":"状语: together","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He <b>founded</b> the school in 1990.","zh":"他于1990年创办了这所学校。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: founded","form":"过去式","note":null},
+      {"text":"宾语: the school","form":null,"note":null},
+      {"text":"状语: in 1990","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The company was <b>founded</b> over fifty years ago.","zh":"这家公司创立于五十多年前。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The company","form":null,"note":"n. 公司 /ˈkʌmpəni/"},
+      {"text":"谓语: was founded","form":"助动词be+过去分词","note":null},
+      {"text":"状语: over fifty years ago","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"establish","ipa":"/ɪˈstæblɪʃ/","zh":"建立，创立","diff":"establish泛指建立(公司、关系、制度等)，用法广、较正式；found特指“创办、创立”一个机构或组织，强调从无到有地设立。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"create","ipa":"/kriˈeɪt/","zh":"创造，创建","diff":"create泛指创造出原本不存在的事物(可具体可抽象)；found专指创办机构、组织，对象通常是公司、学校、城市等。"}
+  ]
+},
+{
+  "word":"founder","ipa":"/ˈfaʊndə/",
+  "defs":[{"pos":"n.","zh":"创始人，创办者"}],
+  "chunk":{
+    "pos":"n.","phrase":"the founder of","zh":"…的创始人",
+    "example":{
+      "en":"He is <b>the founder of</b> this company.","zh":"他是这家公司的创始人。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+        {"text":"表语: the founder of this company","form":null,"note":"n. 公司 /ˈkʌmpəni/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The <b>founder</b> of the school was a great teacher.","zh":"这所学校的创办人是位了不起的老师。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The founder of the school","form":null,"note":null},
+      {"text":"谓语: was","form":"过去式 | be 是","note":null},
+      {"text":"表语: a great teacher","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"As the <b>founder</b>, she made all the key choices.","zh":"作为创始人，她做出了所有关键决定。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: As the founder","form":null,"note":null},
+      {"text":"主语: she","form":null,"note":null},
+      {"text":"谓语: made","form":"过去式 | make /meɪk/ 做出","note":null},
+      {"text":"宾语: all the key choices","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"creator","ipa":"/kriˈeɪtə/","zh":"创造者，创作者","diff":"creator指创造出某作品/事物的人(如作品、发明的创作者)；founder特指创办机构、组织的人(公司、学校的创始人)。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"pioneer","ipa":"/ˌpaɪəˈnɪə/","zh":"先驱，开拓者","diff":"pioneer指某领域的先驱、开路人，强调“第一个做某事”；founder强调具体“创办”了某个机构或组织。"}
+  ]
+},
+{
+  "word":"basis","ipa":"/ˈbeɪsɪs/",
+  "defs":[{"pos":"n.","zh":"基础，根据"},{"pos":"n.","zh":"(办事的)方式，原则"}],
+  "chunk":{
+    "pos":"n.","phrase":"on the basis of","zh":"根据，在…的基础上",
+    "example":{
+      "en":"We chose him <b>on the basis of</b> his skills.","zh":"我们根据他的能力选中了他。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: We","form":null,"note":null},
+        {"text":"谓语: chose","form":"过去式 | choose /tʃuːz/ 选择","note":null},
+        {"text":"宾语: him","form":null,"note":null},
+        {"text":"状语: on the basis of his skills","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Trust is the <b>basis</b> of any friendship.","zh":"信任是任何友谊的基础。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Trust","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: the basis of any friendship","form":null,"note":"n. 友谊 /ˈfrendʃɪp/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"They meet on a regular <b>basis</b>.","zh":"他们定期见面。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: They","form":null,"note":null},
+      {"text":"谓语: meet","form":"原形 | meet /miːt/ 见面","note":null},
+      {"text":"状语: on a regular basis","form":null,"note":"adj. 定期的 /ˈreɡjələ/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"foundation","ipa":"/faʊnˈdeɪʃn/","zh":"基础，根基","diff":"foundation侧重能支撑整体的“根基”，具体、抽象均可(如地基、事业基础)；basis多指抽象的“根据、原理、方式”(如 on the basis of)。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"ground","ipa":"/ɡraʊnd/","zh":"根据，理由","diff":"ground(常用复数 grounds)指做某事的“理由、依据”；basis更强调事物赖以建立、成立的“基础”。"}
+  ]
+},
+{
+  "word":"acceptable","ipa":"/əkˈseptəbl/",
+  "defs":[{"pos":"adj.","zh":"可接受的，令人满意的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"acceptable to","zh":"为…所接受的",
+    "example":{
+      "en":"This plan is <b>acceptable to</b> everyone.","zh":"这个计划人人都能接受。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: This plan","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+        {"text":"表语: acceptable to everyone","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Your work is of an <b>acceptable</b> standard.","zh":"你的作品达到了合格的标准。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Your work","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: of an acceptable standard","form":null,"note":"n. 标准 /ˈstændəd/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Is it <b>acceptable</b> to arrive a little late?","zh":"迟到一会儿可以吗？",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"谓语: Is","form":"第三人称单数 | be 是","note":null},
+      {"text":"形式主语: it","form":null,"note":null},
+      {"text":"表语: acceptable","form":null,"note":null},
+      {"text":"真正主语: to arrive a little late","form":"不定式(to+原形): arrive /əˈraɪv/ 到达","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"ant","sym":"≠","pos":"adj.","word":"unacceptable","ipa":"/ˌʌnəkˈseptəbl/","zh":"不可接受的","diff":"unacceptable指无法容忍、不能接受的；与acceptable直接反义。"},
+    {"type":"syn","sym":"≈","pos":"adj.","word":"satisfactory","ipa":"/ˌsætɪsˈfæktri/","zh":"令人满意的","diff":"satisfactory强调达到要求、令人满意(积极评价)；acceptable语气较弱，指“可以接受、还过得去”，不一定很好。"}
+  ]
+},
+{
+  "word":"acceptance","ipa":"/əkˈseptəns/",
+  "defs":[{"pos":"n.","zh":"接受，接纳"},{"pos":"n.","zh":"认可，赞同"}],
+  "chunk":{
+    "pos":"v.","phrase":"gain acceptance","zh":"获得认可，被接纳",
+    "example":{
+      "en":"New ideas often <b>gain acceptance</b> slowly.","zh":"新观念往往缓慢地获得认可。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: New ideas","form":null,"note":null},
+        {"text":"状语: often","form":null,"note":null},
+        {"text":"谓语: gain","form":"原形 | gain /ɡeɪn/ 获得","note":null},
+        {"text":"宾语: acceptance","form":null,"note":null},
+        {"text":"状语: slowly","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Her <b>acceptance</b> of the job made us happy.","zh":"她接受这份工作让我们很高兴。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Her acceptance of the job","form":null,"note":null},
+      {"text":"谓语: made","form":"过去式 | make /meɪk/ 使","note":null},
+      {"text":"宾语: us","form":null,"note":null},
+      {"text":"宾补: happy","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"He wrote a letter of <b>acceptance</b> to the school.","zh":"他给学校写了一封接受录取的回信。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: wrote","form":"过去式 | write /raɪt/ 写","note":null},
+      {"text":"宾语: a letter of acceptance","form":null,"note":null},
+      {"text":"状语: to the school","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"approval","ipa":"/əˈpruːvl/","zh":"批准，赞同","diff":"approval指(正式的)批准或对某事的赞同；acceptance强调“接纳、接受”某人/某物/某观点，含认可其存在或价值。"},
+    {"type":"ant","sym":"≠","pos":"n.","word":"rejection","ipa":"/rɪˈdʒekʃn/","zh":"拒绝，否决","diff":"rejection指拒绝、不接纳；与acceptance(接受、接纳)直接相反。"}
+  ]
+},
+{
+  "word":"man-made","ipa":"/ˌmænˈmeɪd/",
+  "defs":[{"pos":"adj.","zh":"人造的，人工的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"a man-made lake","zh":"人工湖",
+    "example":{
+      "en":"There is <b>a man-made lake</b> in the park.","zh":"公园里有一个人工湖。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"引导词: There","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 有","note":null},
+        {"text":"主语: a man-made lake","form":null,"note":null},
+        {"text":"状语: in the park","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Plastic is a <b>man-made</b> material.","zh":"塑料是一种人造材料。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Plastic","form":null,"note":"n. 塑料 /ˈplæstɪk/"},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: a man-made material","form":null,"note":"n. 材料 /məˈtɪəriəl/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"This <b>man-made</b> island took ten years to build.","zh":"这座人工岛花了十年才建成。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: This man-made island","form":null,"note":"n. 岛 /ˈaɪlənd/"},
+      {"text":"谓语: took","form":"过去式 | take /teɪk/ 花费","note":null},
+      {"text":"宾语: ten years","form":null,"note":null},
+      {"text":"状语: to build","form":"不定式(to+原形): build /bɪld/ 建造","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"adj.","word":"artificial","ipa":"/ˌɑːtɪˈfɪʃl/","zh":"人造的，人工的","diff":"artificial泛指人工制造、非天然的，也可指“虚假、做作的”(如 artificial smile)；man-made专指“由人类制造的”，多用于物体、材料、建筑，不含贬义。"},
+    {"type":"ant","sym":"≠","pos":"adj.","word":"natural","ipa":"/ˈnætʃrəl/","zh":"自然的，天然的","diff":"natural指自然形成、天然存在的；与man-made(人造的)直接相反。"}
+  ]
+},
+{
+  "word":"misunderstand","ipa":"/ˌmɪsʌndəˈstænd/",
+  "defs":[{"pos":"v.","zh":"误解，误会"}],
+  "chunk":{
+    "pos":"v.","phrase":"misunderstand each other","zh":"相互误解",
+    "example":{
+      "en":"Sometimes friends <b>misunderstand each other</b>.","zh":"有时朋友之间会互相误解。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: Sometimes","form":null,"note":null},
+        {"text":"主语: friends","form":null,"note":null},
+        {"text":"谓语: misunderstand","form":"原形","note":null},
+        {"text":"宾语: each other","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"I think you <b>misunderstand</b> me.","zh":"我想你误会我了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: I","form":null,"note":null},
+        {"text":"谓语: think","form":"原形 | think /θɪŋk/ 认为","note":null}
+      ]},
+      {"label":"宾语从句(that省略)","roles":[
+        {"text":"主语: you","form":null,"note":null},
+        {"text":"谓语: misunderstand","form":"原形","note":null},
+        {"text":"宾语: me","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"People often <b>misunderstand</b> his words.","zh":"人们常常误解他的话。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: People","form":null,"note":null},
+      {"text":"状语: often","form":null,"note":null},
+      {"text":"谓语: misunderstand","form":"原形","note":null},
+      {"text":"宾语: his words","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"mistake","ipa":"/mɪˈsteɪk/","zh":"弄错，误解","diff":"mistake(sb/sth for...)指把A错当成B，认错对象；misunderstand指没有正确理解意思、意图，理解错了。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"understand","ipa":"/ˌʌndəˈstænd/","zh":"理解，明白","diff":"understand指正确地理解、明白；与misunderstand(误解)直接相反。"}
+  ]
+},
+{
+  "word":"misunderstood","ipa":"/ˌmɪsʌndəˈstʊd/",
+  "defs":[{"pos":"adj.","zh":"被误解的"},{"pos":"v.","zh":"误解(misunderstand 的过去式/过去分词)"}],
+  "chunk":{
+    "pos":"v.","phrase":"be misunderstood","zh":"被误解",
+    "example":{
+      "en":"His silence was <b>misunderstood</b> as anger.","zh":"他的沉默被误解为生气。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: His silence","form":null,"note":"n. 沉默 /ˈsaɪləns/"},
+        {"text":"谓语: was misunderstood","form":"助动词be+过去分词","note":null},
+        {"text":"状语: as anger","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He felt <b>misunderstood</b> by his parents.","zh":"他觉得被父母误解了。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: felt","form":"过去式 | feel /fiːl/ 感到","note":null},
+      {"text":"表语: misunderstood","form":null,"note":null},
+      {"text":"状语: by his parents","form":null,"note":"n. 父母 /ˈpeərənts/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"She is a <b>misunderstood</b> artist.","zh":"她是一位被误解的艺术家。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: a misunderstood artist","form":null,"note":"n. 艺术家 /ˈɑːtɪst/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"adj.","word":"mistaken","ipa":"/mɪˈsteɪkən/","zh":"错误的，弄错的","diff":"mistaken指(人)搞错了、(想法)错误的；misunderstood强调(人或事)“被别人误解”，重点在他人理解有误。"},
+    {"type":"ant","sym":"≠","pos":"adj.","word":"understood","ipa":"/ˌʌndəˈstʊd/","zh":"被理解的，被领会的","diff":"understood指被正确理解、明白的；与misunderstood(被误解的)直接相反。"}
+  ]
+},
+{
+  "word":"dial","ipa":"/ˈdaɪəl/",
+  "defs":[{"pos":"v.","zh":"拨(电话号码)"},{"pos":"n.","zh":"表盘，刻度盘"}],
+  "chunk":{
+    "pos":"v.","phrase":"dial the number","zh":"拨号码",
+    "example":{
+      "en":"Please <b>dial the number</b> slowly.","zh":"请慢慢地拨号码。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"谓语: (Please) dial","form":"原形","note":null},
+        {"text":"宾语: the number","form":null,"note":null},
+        {"text":"状语: slowly","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He <b>dialed</b> the wrong number.","zh":"他拨错了号码。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: dialed","form":"过去式","note":null},
+      {"text":"宾语: the wrong number","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"In an emergency, <b>dial</b> for help right away.","zh":"紧急情况下，立刻拨打电话求助。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: In an emergency","form":null,"note":"n. 紧急情况 /iˈmɜːdʒənsi/"},
+      {"text":"谓语: dial","form":"原形","note":null},
+      {"text":"状语: for help","form":null,"note":null},
+      {"text":"状语: right away","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"call","ipa":"/kɔːl/","zh":"打电话给","diff":"call指“打电话(给某人)”，是最常用的通用词，宾语常是人；dial强调“拨(具体号码)”这一动作，宾语常是号码。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"ring","ipa":"/rɪŋ/","zh":"(英式)打电话","diff":"ring(英式口语)指打电话给某人，同call；dial专指“拨号”这个具体动作本身。"}
+  ]
+},
+{
+  "word":"dialect","ipa":"/ˈdaɪəlekt/",
+  "defs":[{"pos":"n.","zh":"方言，地方话"}],
+  "chunk":{
+    "pos":"n.","phrase":"a local dialect","zh":"当地方言",
+    "example":{
+      "en":"They speak <b>a local dialect</b> at home.","zh":"他们在家说当地方言。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: They","form":null,"note":null},
+        {"text":"谓语: speak","form":"原形 | speak /spiːk/ 说","note":null},
+        {"text":"宾语: a local dialect","form":null,"note":null},
+        {"text":"状语: at home","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Many people cannot understand this <b>dialect</b>.","zh":"很多人听不懂这种方言。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Many people","form":null,"note":null},
+      {"text":"谓语: cannot understand","form":"情态+原形 | understand /ˌʌndəˈstænd/ 理解","note":null},
+      {"text":"宾语: this dialect","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Every region has its own <b>dialect</b>.","zh":"每个地区都有自己的方言。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Every region","form":null,"note":null},
+      {"text":"谓语: has","form":"第三人称单数 | have 有","note":null},
+      {"text":"宾语: its own dialect","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"accent","ipa":"/ˈæksent/","zh":"口音，腔调","diff":"accent指说话时的“口音、腔调”(发音特点)，同一种语言可有不同口音；dialect指“方言”，除发音外还包括不同的词汇和语法，差异更大。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"language","ipa":"/ˈlæŋɡwɪdʒ/","zh":"语言","diff":"language指一种完整、独立的“语言”(如英语、汉语)；dialect指某种语言内部因地区不同而形成的“方言”变体。"}
+  ]
+},
+/* ===== 第3批：dialectal ~ trumpet（词库第 21–30 个）===== */
+{
+  "word":"dialectal","ipa":"/ˌdaɪəˈlektl/",
+  "defs":[{"pos":"adj.","zh":"方言的，土语的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"dialectal words","zh":"方言词，土语词汇",
+    "example":{
+      "en":"Some <b>dialectal words</b> are hard to understand.","zh":"有些方言词很难懂。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Some dialectal words","form":null,"note":null},
+        {"text":"谓语: are","form":"原形 | be 是","note":null},
+        {"text":"表语: hard","form":null,"note":null},
+        {"text":"状语: to understand","form":"不定式(to+原形): understand /ˌʌndəˈstænd/ 理解","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"This word has a <b>dialectal</b> meaning.","zh":"这个词有一个方言含义。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: This word","form":null,"note":null},
+      {"text":"谓语: has","form":"第三人称单数 | have 有","note":null},
+      {"text":"宾语: a dialectal meaning","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The writer used many <b>dialectal</b> expressions in the story.","zh":"作者在故事里用了许多方言表达。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The writer","form":null,"note":null},
+      {"text":"谓语: used","form":"过去式 | use /juːz/ 使用","note":null},
+      {"text":"宾语: many dialectal expressions","form":null,"note":"n. 表达 /ɪkˈspreʃn/"},
+      {"text":"状语: in the story","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"adj.","word":"regional","ipa":"/ˈriːdʒənl/","zh":"地区的，区域性的","diff":"regional指“地区的、区域性的”，是范围概念；dialectal特指与“方言”相关的(如方言词汇、发音)，范围更窄。"},
+    {"type":"syn","sym":"≈","pos":"adj.","word":"local","ipa":"/ˈləʊkl/","zh":"当地的，地方的","diff":"local泛指“当地的、本地的”，指地点；dialectal专指语言层面“方言的”特征。"}
+  ]
+},
+{
+  "word":"dialogue","ipa":"/ˈdaɪəlɒɡ/",
+  "defs":[{"pos":"n.","zh":"对话，交谈"},{"pos":"n.","zh":"(作品中的)对白"}],
+  "chunk":{
+    "pos":"n.","phrase":"a dialogue between","zh":"…之间的对话",
+    "example":{
+      "en":"The film shows <b>a dialogue between</b> two old friends.","zh":"这部电影展现了两位老友之间的对话。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The film","form":null,"note":null},
+        {"text":"谓语: shows","form":"第三人称单数 | show /ʃəʊ/ 展现","note":null},
+        {"text":"宾语: a dialogue between two old friends","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The two leaders held a <b>dialogue</b> about peace.","zh":"两位领导人就和平进行了对话。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The two leaders","form":null,"note":"n. 领导人 /ˈliːdə/"},
+      {"text":"谓语: held","form":"过去式 | hold /həʊld/ 举行","note":null},
+      {"text":"宾语: a dialogue about peace","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Good <b>dialogue</b> can solve many problems.","zh":"良好的对话能解决许多问题。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Good dialogue","form":null,"note":null},
+      {"text":"谓语: can solve","form":"情态+原形 | solve /sɒlv/ 解决","note":null},
+      {"text":"宾语: many problems","form":null,"note":"n. 问题 /ˈprɒbləm/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"conversation","ipa":"/ˌkɒnvəˈseɪʃn/","zh":"谈话，交谈","diff":"conversation指日常随意的“交谈、聊天”；dialogue更正式，常指双方(尤指有分歧的各方)为沟通、解决问题而进行的“对话”，也指作品中的“对白”。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"talk","ipa":"/tɔːk/","zh":"谈话，交谈","diff":"talk泛指“谈话”，口语常用、较随意；dialogue更强调双向的、正式的交流。"}
+  ]
+},
+{
+  "word":"minor","ipa":"/ˈmaɪnə/",
+  "defs":[{"pos":"adj.","zh":"较小的，次要的"},{"pos":"n.","zh":"未成年人"}],
+  "chunk":{
+    "pos":"adj.","phrase":"a minor problem","zh":"小问题，次要问题",
+    "example":{
+      "en":"It is only <b>a minor problem</b>.","zh":"这只是个小问题。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: It","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+        {"text":"状语: only","form":null,"note":null},
+        {"text":"表语: a minor problem","form":null,"note":"n. 问题 /ˈprɒbləm/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She played only a <b>minor</b> role in the film.","zh":"她在电影里只演了一个次要角色。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: played","form":"过去式 | play /pleɪ/ 扮演","note":null},
+      {"text":"状语: only","form":null,"note":null},
+      {"text":"宾语: a minor role in the film","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The law protects <b>minors</b> from harm.","zh":"法律保护未成年人免受伤害。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The law","form":null,"note":null},
+      {"text":"谓语: protects","form":"第三人称单数 | protect /prəˈtekt/ 保护","note":null},
+      {"text":"宾语: minors","form":null,"note":null},
+      {"text":"状语: from harm","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"ant","sym":"≠","pos":"adj.","word":"major","ipa":"/ˈmeɪdʒə/","zh":"主要的，重大的","diff":"major指“主要的、重大的”；与minor(次要的、较小的)直接反义。"},
+    {"type":"syn","sym":"≈","pos":"adj.","word":"small","ipa":"/smɔːl/","zh":"小的，微小的","diff":"small泛指体积、数量上“小”；minor侧重重要性上“次要、不严重”(如minor injury小伤)，而非单纯体积小。"}
+  ]
+},
+{
+  "word":"practice","ipa":"/ˈpræktɪs/",
+  "defs":[{"pos":"n.","zh":"练习，实践"},{"pos":"n.","zh":"惯例，做法"},{"pos":"v.","zh":"练习，训练"}],
+  "chunk":{
+    "pos":"n.","phrase":"in practice","zh":"在实践中，实际上",
+    "example":{
+      "en":"The idea sounds good, but <b>in practice</b> it is hard.","zh":"这主意听起来不错，但实际操作起来很难。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"第一分句","roles":[
+          {"text":"主语: The idea","form":null,"note":null},
+          {"text":"谓语: sounds","form":"第三人称单数 | sound /saʊnd/ 听起来","note":null},
+          {"text":"表语: good","form":null,"note":null}
+        ]},
+        {"label":"第二分句","roles":[
+          {"text":"状语: but in practice","form":null,"note":null},
+          {"text":"主语: it","form":null,"note":null},
+          {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+          {"text":"表语: hard","form":null,"note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"You need more <b>practice</b> to improve your English.","zh":"你需要更多练习来提高英语。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: You","form":null,"note":null},
+      {"text":"谓语: need","form":"原形 | need /niːd/ 需要","note":null},
+      {"text":"宾语: more practice","form":null,"note":null},
+      {"text":"状语: to improve your English","form":"不定式(to+原形): improve /ɪmˈpruːv/ 提高","note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"She goes to piano <b>practice</b> every week.","zh":"她每周去练钢琴。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: goes","form":"第三人称单数 | go /ɡəʊ/ 去","note":null},
+      {"text":"状语: to piano practice","form":null,"note":null},
+      {"text":"状语: every week","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"exercise","ipa":"/ˈeksəsaɪz/","zh":"练习，锻炼","diff":"exercise指为提高技能而做的“练习题”，或身体“锻炼”；practice强调为熟练掌握而“反复练习、实践”的过程。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"training","ipa":"/ˈtreɪnɪŋ/","zh":"训练，培训","diff":"training指有系统、有指导的“训练、培训”；practice侧重个人自主的“反复练习”。"}
+  ]
+},
+{
+  "word":"practical","ipa":"/ˈpræktɪkl/",
+  "defs":[{"pos":"adj.","zh":"实际的，实用的"},{"pos":"adj.","zh":"讲求实际的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"practical experience","zh":"实践经验",
+    "example":{
+      "en":"This job needs <b>practical experience</b>.","zh":"这份工作需要实践经验。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: This job","form":null,"note":null},
+        {"text":"谓语: needs","form":"第三人称单数 | need /niːd/ 需要","note":null},
+        {"text":"宾语: practical experience","form":null,"note":"n. 经验 /ɪkˈspɪəriəns/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Her advice was very <b>practical</b> and useful.","zh":"她的建议非常实用有用。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Her advice","form":null,"note":null},
+      {"text":"谓语: was","form":"过去式 | be 是","note":null},
+      {"text":"表语: very practical and useful","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"We need a <b>practical</b> way to save money.","zh":"我们需要一个切实可行的省钱办法。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: We","form":null,"note":null},
+      {"text":"谓语: need","form":"原形 | need /niːd/ 需要","note":null},
+      {"text":"宾语: a practical way","form":null,"note":null},
+      {"text":"状语: to save money","form":"不定式(to+原形): save /seɪv/ 节省","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"adj.","word":"useful","ipa":"/ˈjuːsfl/","zh":"有用的","diff":"useful强调“有用、能派上用场”；practical强调“实用、切实可行、注重实际效果”，常与理论相对。"},
+    {"type":"ant","sym":"≠","pos":"adj.","word":"theoretical","ipa":"/ˌθɪəˈretɪkl/","zh":"理论(上)的","diff":"theoretical指“理论上的”(未必能实行)；与practical(实际的、可行的)相对。"}
+  ]
+},
+{
+  "word":"exercise","ipa":"/ˈeksəsaɪz/",
+  "defs":[{"pos":"n.","zh":"运动，锻炼"},{"pos":"n.","zh":"练习(题)"},{"pos":"v.","zh":"锻炼(身体)"}],
+  "chunk":{
+    "pos":"v.","phrase":"take exercise","zh":"进行锻炼，运动",
+    "example":{
+      "en":"Doctors say we should <b>take exercise</b> every day.","zh":"医生说我们应该每天锻炼。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"主句","roles":[
+          {"text":"主语: Doctors","form":null,"note":null},
+          {"text":"谓语: say","form":"原形 | say /seɪ/ 说","note":null}
+        ]},
+        {"label":"宾语从句","roles":[
+          {"text":"主语: we","form":null,"note":null},
+          {"text":"谓语: should take","form":"情态+原形 | take /teɪk/ 进行","note":null},
+          {"text":"宾语: exercise","form":null,"note":null},
+          {"text":"状语: every day","form":null,"note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"Running is a good form of <b>exercise</b>.","zh":"跑步是一种很好的锻炼方式。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Running","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: a good form of exercise","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The teacher gave us some grammar <b>exercises</b>.","zh":"老师给了我们一些语法练习。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The teacher","form":null,"note":null},
+      {"text":"谓语: gave","form":"过去式 | give /ɡɪv/ 给","note":null},
+      {"text":"间接宾语: us","form":null,"note":null},
+      {"text":"直接宾语: some grammar exercises","form":null,"note":"n. 语法 /ˈɡræmə/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"practice","ipa":"/ˈpræktɪs/","zh":"练习","diff":"practice强调为掌握技能而“反复练习”的过程；exercise作“练习”时多指具体的“练习题”，作“运动”时指身体锻炼。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"sport","ipa":"/spɔːt/","zh":"体育运动","diff":"sport指具体的“体育项目”(足球、游泳)；exercise泛指以健身为目的的“身体锻炼”，不一定是竞技项目。"}
+  ]
+},
+{
+  "word":"practicality","ipa":"/ˌpræktɪˈkæləti/",
+  "defs":[{"pos":"n.","zh":"实用性，可行性"}],
+  "chunk":{
+    "pos":"n.","phrase":"the practicality of","zh":"…的可行性/实用性",
+    "example":{
+      "en":"We should think about <b>the practicality of</b> the plan.","zh":"我们应该考虑这个计划的可行性。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: We","form":null,"note":null},
+        {"text":"谓语: should think","form":"情态+原形 | think /θɪŋk/ 考虑","note":null},
+        {"text":"状语: about the practicality of the plan","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"I doubt the <b>practicality</b> of his idea.","zh":"我怀疑他这个想法的可行性。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: I","form":null,"note":null},
+      {"text":"谓语: doubt","form":"原形 | doubt /daʊt/ 怀疑","note":null},
+      {"text":"宾语: the practicality of his idea","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The design looks nice, but its <b>practicality</b> is low.","zh":"这个设计好看，但实用性不高。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: The design","form":null,"note":null},
+        {"text":"谓语: looks","form":"第三人称单数 | look /lʊk/ 看起来","note":null},
+        {"text":"表语: nice","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"状语: but","form":null,"note":null},
+        {"text":"主语: its practicality","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+        {"text":"表语: low","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"usefulness","ipa":"/ˈjuːsflnəs/","zh":"有用，实用","diff":"usefulness指“有用的程度、用处”；practicality更强调“切实可行、实际操作起来是否管用”。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"convenience","ipa":"/kənˈviːniəns/","zh":"便利，方便","diff":"convenience指“方便、便利”(省时省力)；practicality指“实用性、可行性”(能否切实做到、管用)，侧重点不同。"}
+  ]
+},
+{
+  "word":"smash","ipa":"/smæʃ/",
+  "defs":[{"pos":"v.","zh":"打碎，粉碎"},{"pos":"v.","zh":"猛烈撞击"}],
+  "chunk":{
+    "pos":"v.","phrase":"smash into","zh":"猛撞上，撞向",
+    "example":{
+      "en":"The car <b>smashed into</b> a wall.","zh":"汽车猛地撞上了一堵墙。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The car","form":null,"note":null},
+        {"text":"谓语: smashed into","form":"过去式","note":null},
+        {"text":"宾语: a wall","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He <b>smashed</b> the glass by accident.","zh":"他不小心打碎了玻璃杯。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: smashed","form":"过去式","note":null},
+      {"text":"宾语: the glass","form":null,"note":null},
+      {"text":"状语: by accident","form":null,"note":"n. 意外 /ˈæksɪdənt/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The angry man <b>smashed</b> the door with his fist.","zh":"那个愤怒的男人用拳头砸门。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The angry man","form":null,"note":null},
+      {"text":"谓语: smashed","form":"过去式","note":null},
+      {"text":"宾语: the door","form":null,"note":null},
+      {"text":"状语: with his fist","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"break","ipa":"/breɪk/","zh":"打破，弄破","diff":"break泛指使某物“破碎、损坏”(中性)；smash强调“猛力地、粉碎性地”打碎，力度和声响更大。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"crash","ipa":"/kræʃ/","zh":"碰撞，撞毁","diff":"crash指(车辆等)“撞毁、坠毁”，强调事故；smash强调用力“砸碎、猛撞”某物，可以是人为的。"}
+  ]
+},
+{
+  "word":"pull through","ipa":"/pʊl θruː/",
+  "defs":[{"pos":"v.","zh":"渡过难关，脱离险境"},{"pos":"v.","zh":"(大病后)康复"}],
+  "chunk":{
+    "pos":"v.","phrase":"pull through a hard time","zh":"渡过难关",
+    "example":{
+      "en":"With help, she can <b>pull through this hard time</b>.","zh":"有了帮助，她能渡过这段艰难时期。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: With help","form":null,"note":null},
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"谓语: can pull through","form":"情态+原形","note":null},
+        {"text":"宾语: this hard time","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The doctors were sure he would <b>pull through</b>.","zh":"医生们确信他会康复。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: The doctors","form":null,"note":null},
+        {"text":"谓语: were","form":"过去式 | be 是","note":null},
+        {"text":"表语: sure","form":null,"note":null}
+      ]},
+      {"label":"宾语从句","roles":[
+        {"text":"主语: he","form":null,"note":null},
+        {"text":"谓语: would pull through","form":"情态+原形","note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"It was a hard year, but the family <b>pulled through</b>.","zh":"那是艰难的一年，但这家人挺过来了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: It","form":null,"note":null},
+        {"text":"谓语: was","form":"过去式 | be 是","note":null},
+        {"text":"表语: a hard year","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"状语: but","form":null,"note":null},
+        {"text":"主语: the family","form":null,"note":null},
+        {"text":"谓语: pulled through","form":"过去式","note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"recover","ipa":"/rɪˈkʌvə/","zh":"恢复，康复","diff":"recover指从疾病、困难中“恢复、康复”(通用词)；pull through特指在“危险、重病”等严重情况下艰难地“挺过来、脱险”。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"survive","ipa":"/səˈvaɪv/","zh":"幸存，活下来","diff":"survive强调在危险/灾难中“存活下来”；pull through侧重经过努力或救治后“渡过难关、转危为安”。"}
+  ]
+},
+{
+  "word":"trumpet","ipa":"/ˈtrʌmpɪt/",
+  "defs":[{"pos":"n.","zh":"小号(乐器)"},{"pos":"v.","zh":"吹嘘，鼓吹"}],
+  "chunk":{
+    "pos":"v.","phrase":"play the trumpet","zh":"吹小号",
+    "example":{
+      "en":"He learned to <b>play the trumpet</b> as a child.","zh":"他小时候学过吹小号。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: learned","form":"过去式 | learn /lɜːn/ 学","note":null},
+        {"text":"宾语: to play the trumpet","form":"不定式(to+原形): play /pleɪ/ 演奏","note":null},
+        {"text":"状语: as a child","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She plays the <b>trumpet</b> in a band.","zh":"她在一个乐队里吹小号。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: plays","form":"第三人称单数 | play /pleɪ/ 演奏","note":null},
+      {"text":"宾语: the trumpet","form":null,"note":null},
+      {"text":"状语: in a band","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The <b>trumpet</b> made a loud, clear sound.","zh":"小号发出响亮清澈的声音。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The trumpet","form":null,"note":null},
+      {"text":"谓语: made","form":"过去式 | make /meɪk/ 发出","note":null},
+      {"text":"宾语: a loud, clear sound","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"horn","ipa":"/hɔːn/","zh":"号角，喇叭","diff":"horn泛指“号角”或车辆“喇叭”，种类广；trumpet特指铜管乐器“小号”。"}
+  ]
+},
+/* ===== 第4批：encounter ~ asset（词库第 31–40 个）===== */
+{
+  "word":"encounter","ipa":"/ɪnˈkaʊntə/",
+  "defs":[{"pos":"v.","zh":"遭遇，遇到(困难等)"},{"pos":"n.","zh":"相遇，遭遇"}],
+  "chunk":{
+    "pos":"v.","phrase":"encounter problems","zh":"遇到问题，遭遇困难",
+    "example":{
+      "en":"New workers often <b>encounter problems</b> at first.","zh":"新员工起初常会遇到问题。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: New workers","form":null,"note":null},
+        {"text":"状语: often","form":null,"note":null},
+        {"text":"谓语: encounter","form":"原形","note":null},
+        {"text":"宾语: problems","form":null,"note":"n. 问题 /ˈprɒbləm/"},
+        {"text":"状语: at first","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"We <b>encountered</b> heavy rain on the way.","zh":"我们在路上遇到了大雨。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: We","form":null,"note":null},
+      {"text":"谓语: encountered","form":"过去式","note":null},
+      {"text":"宾语: heavy rain","form":null,"note":null},
+      {"text":"状语: on the way","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"She <b>encountered</b> an old friend at the station.","zh":"她在车站偶遇了一位老朋友。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: encountered","form":"过去式","note":null},
+      {"text":"宾语: an old friend","form":null,"note":null},
+      {"text":"状语: at the station","form":null,"note":"n. 车站 /ˈsteɪʃn/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"meet","ipa":"/miːt/","zh":"遇见，相遇","diff":"meet泛指“遇见、见面”(可约好也可偶然)，中性常用；encounter更正式，常指“意外地遇到”某人，或“遭遇”困难、危险。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"face","ipa":"/feɪs/","zh":"面对，面临","diff":"face指主动“面对、正视”(问题、困难)，含应对之意；encounter强调“(偶然)遇到、遭遇”，侧重相遇本身。"}
+  ]
+},
+{
+  "word":"despite","ipa":"/dɪˈspaɪt/",
+  "defs":[{"pos":"prep.","zh":"尽管，不管"}],
+  "chunk":{
+    "pos":"prep.","phrase":"despite everything","zh":"尽管如此，不顾一切",
+    "example":{
+      "en":"<b>Despite everything</b>, she never gave up.","zh":"尽管如此，她从未放弃。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: Despite everything","form":null,"note":null},
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"状语: never","form":null,"note":null},
+        {"text":"谓语: gave up","form":"过去式 | give up 放弃","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"<b>Despite</b> the rain, we enjoyed the trip.","zh":"尽管下着雨，我们仍玩得很开心。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: Despite the rain","form":null,"note":null},
+      {"text":"主语: we","form":null,"note":null},
+      {"text":"谓语: enjoyed","form":"过去式 | enjoy /ɪnˈdʒɔɪ/ 享受","note":null},
+      {"text":"宾语: the trip","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"He passed the exam <b>despite</b> his poor health.","zh":"尽管身体不好，他还是通过了考试。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: passed","form":"过去式 | pass /pɑːs/ 通过","note":null},
+      {"text":"宾语: the exam","form":null,"note":null},
+      {"text":"状语: despite his poor health","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"prep.","word":"in spite of","ipa":"/ɪn ˈspaɪt ɒv/","zh":"尽管，不顾","diff":"in spite of与despite意思、用法几乎完全相同(后接名词)；区别仅在despite后不加of、更简洁正式，in spite of略偏口语。"},
+    {"type":"syn","sym":"≈","pos":"conj.","word":"although","ipa":"/ɔːlˈðəʊ/","zh":"虽然，尽管","diff":"although是连词，后接“主语+谓语”的从句；despite是介词，后只能接名词或动名词。中国学习者最易把二者用错(误写 despite he was tired)。"}
+  ]
+},
+{
+  "word":"opportunity","ipa":"/ˌɒpəˈtjuːnəti/",
+  "defs":[{"pos":"n.","zh":"机会，时机"}],
+  "chunk":{
+    "pos":"n.","phrase":"have the opportunity to","zh":"有机会做某事",
+    "example":{
+      "en":"I finally <b>had the opportunity to</b> travel abroad.","zh":"我终于有机会出国旅行了。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: I","form":null,"note":null},
+        {"text":"状语: finally","form":null,"note":null},
+        {"text":"谓语: had","form":"过去式 | have 有","note":null},
+        {"text":"宾语: the opportunity","form":null,"note":null},
+        {"text":"定语: to travel abroad","form":"不定式(to+原形): travel /ˈtrævl/ 旅行","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"This is a great <b>opportunity</b> to learn.","zh":"这是一个很好的学习机会。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: This","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: a great opportunity","form":null,"note":null},
+      {"text":"定语: to learn","form":"不定式(to+原形): learn /lɜːn/ 学习","note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Don't miss this <b>opportunity</b> to make new friends.","zh":"别错过这个结识新朋友的机会。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"谓语: Don't miss","form":"原形 | miss /mɪs/ 错过","note":null},
+      {"text":"宾语: this opportunity","form":null,"note":null},
+      {"text":"定语: to make new friends","form":"不定式(to+原形): make /meɪk/ 结交","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"chance","ipa":"/tʃɑːns/","zh":"机会","diff":"chance泛指“机会”，常含“运气、偶然”成分，较口语；opportunity指“(有利的)机会、良机”，更正式，常指经努力可把握的时机。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"occasion","ipa":"/əˈkeɪʒn/","zh":"时机，场合","diff":"occasion指某事发生的“时机、场合”(特定时刻或活动)；opportunity指做某事的“有利机会”，能带来好处。"}
+  ]
+},
+{
+  "word":"quote","ipa":"/kwəʊt/",
+  "defs":[{"pos":"v.","zh":"引用，引述"},{"pos":"n.","zh":"引文，引语"}],
+  "chunk":{
+    "pos":"v.","phrase":"quote from","zh":"引用自，引述(某处)",
+    "example":{
+      "en":"She often <b>quotes from</b> famous books.","zh":"她常常引用名著中的句子。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"状语: often","form":null,"note":null},
+        {"text":"谓语: quotes from","form":"第三人称单数","note":null},
+        {"text":"宾语: famous books","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He <b>quoted</b> a line from the poem.","zh":"他引用了这首诗中的一句。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: He","form":null,"note":null},
+      {"text":"谓语: quoted","form":"过去式","note":null},
+      {"text":"宾语: a line from the poem","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The teacher <b>quoted</b> a wise saying in class.","zh":"老师在课上引用了一句名言。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The teacher","form":null,"note":null},
+      {"text":"谓语: quoted","form":"过去式","note":null},
+      {"text":"宾语: a wise saying","form":null,"note":null},
+      {"text":"状语: in class","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"cite","ipa":"/saɪt/","zh":"引用，引证","diff":"cite多用于正式、学术场合“引用”文献、事例作为依据；quote指“(逐字)引用”某人说的话或书中原文，更常用、更口语。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"saying","ipa":"/ˈseɪɪŋ/","zh":"谚语，名言","diff":"saying指流传的“谚语、格言”(固定说法)；quote作名词指从某处“引用来的一段话、引文”，来源明确。"}
+  ]
+},
+{
+  "word":"conservation","ipa":"/ˌkɒnsəˈveɪʃn/",
+  "defs":[{"pos":"n.","zh":"(自然环境/资源的)保护"},{"pos":"n.","zh":"保存，保护"}],
+  "chunk":{
+    "pos":"n.","phrase":"energy conservation","zh":"能源节约，节能",
+    "example":{
+      "en":"<b>Energy conservation</b> helps protect the earth.","zh":"节约能源有助于保护地球。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Energy conservation","form":null,"note":null},
+        {"text":"谓语: helps","form":"第三人称单数 | help /help/ 有助于","note":null},
+        {"text":"宾语: protect the earth","form":"原形(help后省to): protect /prəˈtekt/ 保护","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Water <b>conservation</b> is important in dry areas.","zh":"在干旱地区，节约用水很重要。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Water conservation","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: important","form":null,"note":null},
+      {"text":"状语: in dry areas","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The group works for the <b>conservation</b> of forests.","zh":"这个团体致力于森林保护。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The group","form":null,"note":null},
+      {"text":"谓语: works","form":"第三人称单数 | work /wɜːk/ 致力","note":null},
+      {"text":"状语: for the conservation of forests","form":null,"note":"n. 森林 /ˈfɒrɪst/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"protection","ipa":"/prəˈtekʃn/","zh":"保护，防护","diff":"protection泛指对人或物的“保护、防护”(免受伤害)；conservation特指对自然环境、资源、文物的“保护、保存”(防止被破坏或耗尽)。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"preservation","ipa":"/ˌprezəˈveɪʃn/","zh":"保存，保护","diff":"preservation指“保存、维持原样”(使不损坏、不消失)；conservation更强调对资源、环境的“合理保护与节约利用”。"}
+  ]
+},
+{
+  "word":"conserve","ipa":"/kənˈsɜːv/",
+  "defs":[{"pos":"v.","zh":"保护(资源/环境)"},{"pos":"v.","zh":"节约，节省"}],
+  "chunk":{
+    "pos":"v.","phrase":"conserve energy","zh":"节约能源，保存体力",
+    "example":{
+      "en":"We should <b>conserve energy</b> at home.","zh":"我们在家应该节约能源。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: We","form":null,"note":null},
+        {"text":"谓语: should conserve","form":"情态+原形","note":null},
+        {"text":"宾语: energy","form":null,"note":null},
+        {"text":"状语: at home","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"These rules help <b>conserve</b> water.","zh":"这些规定有助于节约用水。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: These rules","form":null,"note":null},
+      {"text":"谓语: help","form":"原形 | help /help/ 有助于","note":null},
+      {"text":"宾语: conserve water","form":"原形(help后省to)","note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The park was set up to <b>conserve</b> rare plants.","zh":"这个公园是为保护稀有植物而建的。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The park","form":null,"note":null},
+      {"text":"谓语: was set up","form":"助动词be+过去分词 | set up 建立","note":null},
+      {"text":"状语: to conserve rare plants","form":"不定式(to+原形)","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"protect","ipa":"/prəˈtekt/","zh":"保护","diff":"protect泛指“保护”人或物免受伤害；conserve特指“保护并合理利用”自然资源、环境，或“节约”(能源、体力)。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"save","ipa":"/seɪv/","zh":"节省，节约","diff":"save指“节省、省下”(钱、时间、资源)，口语常用；conserve更正式，强调有意识地“节约、保护”有限资源以免耗尽。"}
+  ]
+},
+{
+  "word":"insert","ipa":"/ɪnˈsɜːt/",
+  "defs":[{"pos":"v.","zh":"插入，嵌入"}],
+  "chunk":{
+    "pos":"v.","phrase":"insert into","zh":"把…插入(到)…中",
+    "example":{
+      "en":"Please <b>insert</b> the coin <b>into</b> the machine.","zh":"请把硬币投入机器。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"谓语: Please insert","form":"原形","note":null},
+        {"text":"宾语: the coin","form":null,"note":null},
+        {"text":"状语: into the machine","form":null,"note":"n. 机器 /məˈʃiːn/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She <b>inserted</b> a photo into the letter.","zh":"她在信里夹了一张照片。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: inserted","form":"过去式","note":null},
+      {"text":"宾语: a photo","form":null,"note":null},
+      {"text":"状语: into the letter","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"You can <b>insert</b> a picture into your document.","zh":"你可以在文档里插入一张图片。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: You","form":null,"note":null},
+      {"text":"谓语: can insert","form":"情态+原形","note":null},
+      {"text":"宾语: a picture","form":null,"note":"n. 图片 /ˈpɪktʃə/"},
+      {"text":"状语: into your document","form":null,"note":"n. 文档 /ˈdɒkjumənt/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"put in","ipa":"/pʊt ɪn/","zh":"放入，插入","diff":"put in是“放入、插入”最口语、通用的说法；insert更正式，强调“(小心地)把某物插进/嵌入”一个位置或空隙。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"remove","ipa":"/rɪˈmuːv/","zh":"移开，取出","diff":"remove指“移开、取出、去除”；与insert(插入、放入)动作相反。"}
+  ]
+},
+{
+  "word":"symbol","ipa":"/ˈsɪmbl/",
+  "defs":[{"pos":"n.","zh":"象征"},{"pos":"n.","zh":"符号，标志"}],
+  "chunk":{
+    "pos":"n.","phrase":"a symbol of","zh":"…的象征",
+    "example":{
+      "en":"The red rose is <b>a symbol of</b> love.","zh":"红玫瑰是爱情的象征。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The red rose","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+        {"text":"表语: a symbol of love","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"This <b>symbol</b> means danger.","zh":"这个符号表示危险。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: This symbol","form":null,"note":null},
+      {"text":"谓语: means","form":"第三人称单数 | mean /miːn/ 表示","note":null},
+      {"text":"宾语: danger","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The heart shape is a common <b>symbol</b> of love.","zh":"心形是爱的常见象征。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The heart shape","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: a common symbol of love","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"sign","ipa":"/saɪn/","zh":"标志，符号；迹象","diff":"sign指“标志、指示牌”或“迹象、征兆”(表明某事)；symbol指“象征”(用具体事物代表抽象概念，如鸽子象征和平)或“(约定的)符号”。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"mark","ipa":"/mɑːk/","zh":"记号，标记","diff":"mark指“做出的记号、痕迹、标记”(实际的印记)；symbol更强调“象征意义”或代表某含义的“符号”。"}
+  ]
+},
+{
+  "word":"assess","ipa":"/əˈses/",
+  "defs":[{"pos":"v.","zh":"评估，评定"},{"pos":"v.","zh":"估价，核定"}],
+  "chunk":{
+    "pos":"v.","phrase":"assess the situation","zh":"评估形势，判断情况",
+    "example":{
+      "en":"Managers must <b>assess the situation</b> before acting.","zh":"管理者行动前必须评估形势。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Managers","form":null,"note":"n. 经理，管理者 /ˈmænɪdʒə/"},
+        {"text":"谓语: must assess","form":"情态+原形","note":null},
+        {"text":"宾语: the situation","form":null,"note":"n. 形势，情况 /ˌsɪtʃuˈeɪʃn/"},
+        {"text":"状语: before acting","form":"现在分词: act /ækt/ 行动","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Teachers <b>assess</b> students' work every week.","zh":"老师每周评估学生的作业。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Teachers","form":null,"note":null},
+      {"text":"谓语: assess","form":"原形","note":null},
+      {"text":"宾语: students' work","form":null,"note":null},
+      {"text":"状语: every week","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"It is hard to <b>assess</b> the value of the painting.","zh":"很难评估这幅画的价值。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"形式主语: It","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: hard","form":null,"note":null},
+      {"text":"真实主语: to assess the value of the painting","form":"不定式(to+原形)","note":"n. 画作 /ˈpeɪntɪŋ/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"evaluate","ipa":"/ɪˈvæljueɪt/","zh":"评价，评估","diff":"evaluate指“评价、评估”(判断价值、质量、效果)，与assess很近；assess更侧重“(为定级/定量而)评定、核算”(如评估损失、成绩、税额)。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"judge","ipa":"/dʒʌdʒ/","zh":"判断，评判","diff":"judge指凭主观“判断、评判”(下结论)；assess更强调依据事实、标准“系统地评估、衡量”，较客观。"}
+  ]
+},
+{
+  "word":"asset","ipa":"/ˈæset/",
+  "defs":[{"pos":"n.","zh":"资产，财产"},{"pos":"n.","zh":"有用的人或物，宝贵财富"}],
+  "chunk":{
+    "pos":"n.","phrase":"a valuable asset","zh":"宝贵的财富/资产",
+    "example":{
+      "en":"Good health is <b>a valuable asset</b>.","zh":"健康是宝贵的财富。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Good health","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+        {"text":"表语: a valuable asset","form":null,"note":"adj. 宝贵的 /ˈvæljuəbl/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Her <b>assets</b> include a house and a car.","zh":"她的资产包括一栋房子和一辆车。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Her assets","form":null,"note":null},
+      {"text":"谓语: include","form":"原形 | include /ɪnˈkluːd/ 包括","note":null},
+      {"text":"宾语: a house and a car","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"A hard-working person is an <b>asset</b> to any team.","zh":"勤奋的人对任何团队都是宝贵的财富。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: A hard-working person","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: an asset to any team","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"ant","sym":"≠","pos":"n.","word":"liability","ipa":"/ˌlaɪəˈbɪləti/","zh":"负债；累赘","diff":"liability指“负债、债务”，或(人/物成为)“累赘、不利因素”；与asset(资产；有价值的人/物)在财务和价值上都相对。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"property","ipa":"/ˈprɒpəti/","zh":"财产，房产","diff":"property指“财产、所有物”，尤指“房产、地产”；asset指“资产”(可变现的财物)，常用复数，也可指“宝贵的人/物、优势”。"}
+  ]
+},
+/* ===== 第5批：demand ~ attract（词库第 41–48 个，最后一批）===== */
+{
+  "word":"demand","ipa":"/dɪˈmɑːnd/",
+  "defs":[{"pos":"v.","zh":"强烈要求，要求"},{"pos":"n.","zh":"需求，需要"}],
+  "chunk":{
+    "pos":"n.","phrase":"in demand","zh":"有需求，受欢迎，吃香",
+    "example":{
+      "en":"Good English teachers are always <b>in demand</b>.","zh":"优秀的英语老师总是很吃香。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Good English teachers","form":null,"note":null},
+        {"text":"谓语: are","form":"原形 | be 是","note":null},
+        {"text":"状语: always","form":null,"note":null},
+        {"text":"表语: in demand","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The workers <b>demanded</b> higher pay.","zh":"工人们要求提高工资。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The workers","form":null,"note":null},
+      {"text":"谓语: demanded","form":"过去式","note":null},
+      {"text":"宾语: higher pay","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"There is a growing <b>demand</b> for clean energy.","zh":"对清洁能源的需求日益增长。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"引导词: There","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 有","note":null},
+      {"text":"主语: a growing demand for clean energy","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"require","ipa":"/rɪˈkwaɪə/","zh":"需要，要求","diff":"require指(客观情况)“需要”某物，或(规定)“要求”，语气正式中性；demand指“强烈而坚决地要求”，语气强，常含不容拒绝之意。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"request","ipa":"/rɪˈkwest/","zh":"(礼貌地)请求","diff":"request指“(客气地)请求、要求”，语气委婉；demand语气强硬，是“强烈要求、命令式地要求”。"}
+  ]
+},
+{
+  "word":"normal","ipa":"/ˈnɔːml/",
+  "defs":[{"pos":"adj.","zh":"正常的，一般的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"a normal day","zh":"平常的一天",
+    "example":{
+      "en":"It started as <b>a normal day</b> at work.","zh":"那天上班一开始很平常。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: It","form":null,"note":null},
+        {"text":"谓语: started","form":"过去式 | start /stɑːt/ 开始","note":null},
+        {"text":"状语: as a normal day","form":null,"note":null},
+        {"text":"状语: at work","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"It is <b>normal</b> to feel nervous before a test.","zh":"考试前感到紧张是正常的。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"形式主语: It","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: normal","form":null,"note":null},
+      {"text":"真实主语: to feel nervous before a test","form":"不定式(to+原形): feel /fiːl/ 感到","note":"adj. 紧张的 /ˈnɜːvəs/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"After the storm, life slowly returned to <b>normal</b>.","zh":"暴风雨过后，生活慢慢恢复了正常。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: After the storm","form":null,"note":null},
+      {"text":"主语: life","form":null,"note":null},
+      {"text":"状语: slowly","form":null,"note":null},
+      {"text":"谓语: returned","form":"过去式 | return /rɪˈtɜːn/ 恢复","note":null},
+      {"text":"状语: to normal","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"adj.","word":"usual","ipa":"/ˈjuːʒuəl/","zh":"通常的，惯常的","diff":"usual强调“通常的、惯常发生的”(与个人习惯/常规相符)；normal强调“正常的、符合标准的”(未偏离常态、无异常)。"},
+    {"type":"ant","sym":"≠","pos":"adj.","word":"abnormal","ipa":"/æbˈnɔːml/","zh":"反常的，不正常的","diff":"abnormal指“反常的、不正常的”(偏离常态)；与normal(正常的)直接反义。"}
+  ]
+},
+{
+  "word":"script","ipa":"/skrɪpt/",
+  "defs":[{"pos":"n.","zh":"剧本，脚本"},{"pos":"n.","zh":"手迹，字迹"}],
+  "chunk":{
+    "pos":"v.","phrase":"write a script","zh":"写剧本，写脚本",
+    "example":{
+      "en":"It takes time to <b>write a good script</b>.","zh":"写好一个剧本需要时间。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"形式主语: It","form":null,"note":null},
+        {"text":"谓语: takes","form":"第三人称单数 | take /teɪk/ 花费","note":null},
+        {"text":"宾语: time","form":null,"note":null},
+        {"text":"真实主语: to write a good script","form":"不定式(to+原形): write /raɪt/ 写","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The actors read the <b>script</b> together.","zh":"演员们一起读剧本。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The actors","form":null,"note":null},
+      {"text":"谓语: read","form":"过去式 | read /red/ 读","note":null},
+      {"text":"宾语: the script","form":null,"note":null},
+      {"text":"状语: together","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"She wrote a <b>script</b> for the school play.","zh":"她为学校话剧写了一个剧本。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: wrote","form":"过去式 | write /raɪt/ 写","note":null},
+      {"text":"宾语: a script","form":null,"note":null},
+      {"text":"状语: for the school play","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"text","ipa":"/tekst/","zh":"文本，正文","diff":"text指“文本、文字内容”(书面文字)；script特指“剧本、脚本”(供表演/朗读用)，或“手写体、字迹”。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"handwriting","ipa":"/ˈhændraɪtɪŋ/","zh":"笔迹，手写字","diff":"handwriting指个人“书写的笔迹、手写字”；script作“字迹”解时义近，但script还常指“剧本、脚本”，含义更广。"}
+  ]
+},
+{
+  "word":"navigate","ipa":"/ˈnævɪɡeɪt/",
+  "defs":[{"pos":"v.","zh":"导航，确定路线"},{"pos":"v.","zh":"航行，行驶"}],
+  "chunk":{
+    "pos":"v.","phrase":"navigate through","zh":"穿行于，浏览操作",
+    "example":{
+      "en":"A map helps you <b>navigate through</b> the city.","zh":"地图帮你穿行于城市之中。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: A map","form":null,"note":null},
+        {"text":"谓语: helps","form":"第三人称单数 | help /help/ 帮助","note":null},
+        {"text":"宾语: you","form":null,"note":null},
+        {"text":"宾补: navigate through the city","form":"原形(help后省to)","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Sailors learned to <b>navigate</b> by the stars.","zh":"水手们学会了靠星星导航。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Sailors","form":null,"note":"n. 水手 /ˈseɪlə/"},
+      {"text":"谓语: learned","form":"过去式 | learn /lɜːn/ 学会","note":null},
+      {"text":"宾语: to navigate by the stars","form":"不定式(to+原形)","note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"It can be hard to <b>navigate</b> a new website.","zh":"浏览一个新网站可能会很费劲。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"形式主语: It","form":null,"note":null},
+      {"text":"谓语: can be","form":"情态+原形 | be 是","note":null},
+      {"text":"表语: hard","form":null,"note":null},
+      {"text":"真实主语: to navigate a new website","form":"不定式(to+原形)","note":"n. 网站 /ˈwebsaɪt/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"guide","ipa":"/ɡaɪd/","zh":"引导，带路","diff":"guide指“带领、引导”某人(去某地或做某事)；navigate强调“确定路线、导航”，自己找到并沿正确路径前进。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"steer","ipa":"/stɪə/","zh":"驾驶，掌舵","diff":"steer指“驾驶、掌控方向”(车、船)；navigate强调“规划路线、导航”，决定往哪走。"}
+  ]
+},
+{
+  "word":"custom","ipa":"/ˈkʌstəm/",
+  "defs":[{"pos":"n.","zh":"习俗，风俗"},{"pos":"n.","zh":"(个人的)习惯"}],
+  "chunk":{
+    "pos":"n.","phrase":"an old custom","zh":"一个古老的习俗",
+    "example":{
+      "en":"Shaking hands is <b>an old custom</b> in many countries.","zh":"握手在许多国家是一种古老的习俗。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Shaking hands","form":null,"note":null},
+        {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+        {"text":"表语: an old custom","form":null,"note":null},
+        {"text":"状语: in many countries","form":null,"note":"n. 国家 /ˈkʌntri/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"It is a local <b>custom</b> to give red packets.","zh":"送红包是当地的一种习俗。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"形式主语: It","form":null,"note":null},
+      {"text":"谓语: is","form":"第三人称单数 | be 是","note":null},
+      {"text":"表语: a local custom","form":null,"note":null},
+      {"text":"真实主语: to give red packets","form":"不定式(to+原形): give /ɡɪv/ 给","note":"n. 小包 /ˈpækɪt/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Every country has its own <b>customs</b> and traditions.","zh":"每个国家都有自己的风俗和传统。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Every country","form":null,"note":null},
+      {"text":"谓语: has","form":"第三人称单数 | have 有","note":null},
+      {"text":"宾语: its own customs and traditions","form":null,"note":"n. 传统 /trəˈdɪʃn/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"tradition","ipa":"/trəˈdɪʃn/","zh":"传统","diff":"tradition指世代相传的“传统”(信仰、习俗、做法)，历史久、意义重；custom指一个社会或个人“惯常的做法、习俗”，范围更广，可大可小。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"habit","ipa":"/ˈhæbɪt/","zh":"习惯","diff":"habit指“(个人的)习惯”(不自觉、常重复的行为)；custom多指“(群体的)风俗、惯例”，也可指个人长期养成的做法，更强调约定俗成。"}
+  ]
+},
+{
+  "word":"practice","ipa":"/ˈpræktɪs/",
+  "defs":[{"pos":"v.","zh":"练习，反复训练"},{"pos":"v.","zh":"从事(某职业)"}],
+  "chunk":{
+    "pos":"n.","phrase":"practice makes perfect","zh":"熟能生巧",
+    "example":{
+      "en":"In sports, <b>practice makes perfect</b>.","zh":"在体育运动中，熟能生巧。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: In sports","form":null,"note":null},
+        {"text":"主语: practice","form":null,"note":null},
+        {"text":"谓语: makes","form":"第三人称单数 | make /meɪk/ 造就","note":null},
+        {"text":"宾语: perfect","form":null,"note":"习语：使(人)完美"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"You must <b>practice</b> every day to improve.","zh":"你必须每天练习才能进步。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: You","form":null,"note":null},
+      {"text":"谓语: must practice","form":"情态+原形","note":null},
+      {"text":"状语: every day","form":null,"note":null},
+      {"text":"状语: to improve","form":"不定式(to+原形): improve /ɪmˈpruːv/ 提高","note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"She <b>practices</b> the piano for an hour daily.","zh":"她每天练一小时钢琴。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: practices","form":"第三人称单数","note":null},
+      {"text":"宾语: the piano","form":null,"note":null},
+      {"text":"状语: for an hour daily","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"train","ipa":"/treɪn/","zh":"训练，培养","diff":"train指有系统地“训练、培养”(技能、能力)，常有目标或指导；practice强调“反复练习”某项技能使之熟练，侧重重复动作。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"drill","ipa":"/drɪl/","zh":"反复操练","diff":"drill指通过“反复操练、机械重复”来训练(常指集体、军事化)；practice指为掌握技能而“练习”，不一定机械重复。"}
+  ]
+},
+{
+  "word":"illusion","ipa":"/ɪˈluːʒn/",
+  "defs":[{"pos":"n.","zh":"错觉，幻觉"},{"pos":"n.","zh":"幻想，错误观念"}],
+  "chunk":{
+    "pos":"n.","phrase":"an optical illusion","zh":"视错觉，光学错觉",
+    "example":{
+      "en":"The picture creates <b>an optical illusion</b>.","zh":"这幅图制造出一种视错觉。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The picture","form":null,"note":"n. 图片 /ˈpɪktʃə/"},
+        {"text":"谓语: creates","form":"第三人称单数 | create /kriˈeɪt/ 制造","note":null},
+        {"text":"宾语: an optical illusion","form":null,"note":"adj. 视觉的 /ˈɒptɪkl/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"The magician created a clever <b>illusion</b>.","zh":"魔术师制造了一个巧妙的错觉。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The magician","form":null,"note":"n. 魔术师 /məˈdʒɪʃn/"},
+      {"text":"谓语: created","form":"过去式 | create /kriˈeɪt/ 制造","note":null},
+      {"text":"宾语: a clever illusion","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"He had the <b>illusion</b> that everyone liked him.","zh":"他有一种人人都喜欢他的错觉。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: had","form":"过去式 | have 有","note":null},
+        {"text":"宾语: the illusion","form":null,"note":null}
+      ]},
+      {"label":"同位语从句","roles":[
+        {"text":"引导词: that","form":null,"note":null},
+        {"text":"主语: everyone","form":null,"note":null},
+        {"text":"谓语: liked","form":"过去式 | like /laɪk/ 喜欢","note":null},
+        {"text":"宾语: him","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"fantasy","ipa":"/ˈfæntəsi/","zh":"幻想，想象","diff":"fantasy指“(愉快的)幻想、白日梦”(明知不真实的想象)；illusion指“错觉、假象”(误以为真的错误感知)，或“不切实际的幻想、错误观念”。"},
+    {"type":"ant","sym":"≠","pos":"n.","word":"reality","ipa":"/riˈæləti/","zh":"现实，真实","diff":"reality指“现实、真实情况”；与illusion(错觉、假象)相对。"}
+  ]
+},
+{
+  "word":"attract","ipa":"/əˈtrækt/",
+  "defs":[{"pos":"v.","zh":"吸引"},{"pos":"v.","zh":"引起(注意、兴趣)"}],
+  "chunk":{
+    "pos":"v.","phrase":"attract attention","zh":"吸引注意",
+    "example":{
+      "en":"The bright colors <b>attract attention</b> quickly.","zh":"鲜艳的颜色能迅速吸引注意。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The bright colors","form":null,"note":null},
+        {"text":"谓语: attract","form":"原形","note":null},
+        {"text":"宾语: attention","form":null,"note":"n. 注意 /əˈtenʃn/"},
+        {"text":"状语: quickly","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Flowers <b>attract</b> bees and butterflies.","zh":"花朵吸引蜜蜂和蝴蝶。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Flowers","form":null,"note":null},
+      {"text":"谓语: attract","form":"原形","note":null},
+      {"text":"宾语: bees and butterflies","form":null,"note":"n. 蝴蝶 /ˈbʌtəflaɪ/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The new shop <b>attracted</b> many customers.","zh":"这家新店吸引了许多顾客。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The new shop","form":null,"note":null},
+      {"text":"谓语: attracted","form":"过去式","note":null},
+      {"text":"宾语: many customers","form":null,"note":"n. 顾客 /ˈkʌstəmə/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"draw","ipa":"/drɔː/","zh":"吸引","diff":"draw作“吸引”解时，常指“吸引(人群、注意)”(draw a crowd/attention)，较正式生动；attract是“吸引”最通用的词，可指吸引人、物或注意力。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"repel","ipa":"/rɪˈpel/","zh":"排斥，使反感","diff":"repel指“排斥、驱赶”或“使人反感、厌恶”；与attract(吸引)直接相反。"}
+  ]
+}
+];
+/* ============ 数据区结束 ============ */
+
+/* ---------- 发音：有道真人录音 ---------- */
+let curAudio=null, curSpk=null;
+function playWord(word, btn){
+  // 正在播：再点同一个喇叭 = 停止
+  if(curSpk===btn){
+    if(curAudio){ curAudio.pause(); curAudio=null; }
+    btn.classList.remove('playing'); curSpk=null; return;
+  }
+  // 切到别的词：先停掉上一个
+  if(curAudio){ curAudio.pause(); curAudio=null; }
+  if(curSpk){ curSpk.classList.remove('playing'); }
+  const a=new Audio('https://dict.youdao.com/dictvoice?audio='+encodeURIComponent(word)+'&type=2');
+  a.loop=true; // 一直循环念，直到再点一次才停
+  curAudio=a; curSpk=btn; btn.classList.add('playing');
+  a.onerror=()=>{ btn.classList.remove('playing'); curSpk=null; curAudio=null; toast('发音加载失败'); };
+  a.play().catch(()=>{ btn.classList.remove('playing'); curSpk=null; curAudio=null; });
+}
+
+/* ---------- 复制 ---------- */
+function copy(text){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>toast('已复制')).catch(()=>fallbackCopy(text));
+  }else{ fallbackCopy(text); }
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('已复制'); }catch(e){ toast('复制失败'); }
+  document.body.removeChild(ta);
+}
+let toastTimer=null;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1400);
+}
+
+/* ---------- 结构复制文本（每行首加Tab，粘进Obsidian callout用） ---------- */
+function buildStruct(d){
+  const T='\t';
+  const L=[];
+  // 1) 单词  音标
+  L.push(d.word + '  ' + d.ipa);
+  // 2..) 词性  释义（逐条）
+  d.defs.forEach(x=> L.push(x.pos + '  ' + x.zh));
+  // 语块  词性  释义
+  L.push(d.chunk.phrase + '  ' + d.chunk.pos + '  ' + d.chunk.zh);
+  // 近义/反义：两行制 —— 第1行: 符号 词 音标 词性 释义；第2行: 差异说明
+  d.relations.forEach(r=>{
+    L.push('');                                                  // 空行
+    L.push(r.sym + ' ' + r.word + '  ' + r.ipa + '  ' + r.pos + '  ' + (r.zh||''));
+    L.push(r.diff);                                              // 差异说明
+  });
+  // 每行首加 Tab（空行也加，保持 callout 连续）
+  return L.map(line => T + line).join('\n');
+}
+
+/* ---------- 渲染 ---------- */
+const SVG_SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>';
+const SVG_COPY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function stripTags(s){return s.replace(/<\/?b>/g,'');}
+
+function spk(word){
+  return '<button class="spk" title="点击发音" data-spk="'+esc(word)+'">'+SVG_SPK+'</button>';
+}
+
+function renderGrammar(g){
+  if(!g||!g.clauses) return '';
+  let h='<div class="gram"><div class="gram-tag">'+(g.compound?'复合句 / 并列句':'简单句')+'</div>';
+  g.clauses.forEach(c=>{
+    h+='<div class="clause">';
+    if(c.label) h+='<div class="clause-label">'+esc(c.label)+'</div>';
+    h+='<div class="roles">';
+    c.roles.forEach(r=>{
+      h+='<span class="role">'+esc(r.text);
+      if(r.form) h+='<span class="r-form">'+esc(r.form)+'</span>';
+      if(r.note) h+='<span class="r-note">'+esc(r.note)+'</span>';
+      h+='</span>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function renderExample(ex,label){
+  const enPlain=stripTags(ex.en);
+  return ''
+    +'<div class="ex">'
+    +'<div class="ex-en">'+ex.en+'</div>'
+    +'<div class="ex-zh">'+esc(ex.zh)+'</div>'
+    +'<div class="ex-actions">'
+    +'<button class="mini" data-copy="'+encodeURIComponent('	'+enPlain)+'">'+SVG_COPY+'复制英文</button>'
+    +'<button class="mini" data-copy="'+encodeURIComponent('	'+ex.zh)+'">'+SVG_COPY+'复制中文</button>'
+    +'</div>'
+    +renderGrammar(ex.grammar)
+    +'</div>';
+}
+
+function render(i){
+  const d=DATA[i];
+  let h='';
+  // head
+  h+='<div class="head"><div class="head-left">';
+  h+='<div class="word">'+esc(d.word)+'</div>';
+  h+='<div class="ipa-line"><span class="ipa">'+esc(d.ipa)+'</span>'+spk(d.word)+'</div>';
+  h+='</div>';
+  h+='<button class="copy-struct" data-struct="'+i+'">'+SVG_COPY+'复制释义结构</button>';
+  h+='</div>';
+  // defs
+  h+='<div class="defs">';
+  d.defs.forEach(x=>{h+='<div class="def-row"><span class="pos">'+esc(x.pos)+'</span><span class="def-zh">'+esc(x.zh)+'</span></div>';});
+  h+='</div>';
+  // chunk
+  h+='<div class="chunk"><div class="chunk-head"><span class="pos">'+esc(d.chunk.pos)+'</span><span class="chunk-phrase">'+esc(d.chunk.phrase)+'</span><span class="chunk-zh">'+esc(d.chunk.zh)+'</span></div></div>';
+  // examples
+  h+='<div class="sec-label">语块例句</div>'+renderExample(d.chunk.example);
+  h+='<div class="sec-label">单词例句</div>'+renderExample(d.wordExample);
+  h+='<div class="sec-label">高频场景句</div>'+renderExample(d.sceneExample);
+  // relations
+  h+='<div class="sec-label">近义 / 反义辨析</div>';
+  d.relations.forEach(r=>{
+    h+='<div class="rel '+(r.type==='syn'?'syn':'ant')+'">';
+    h+='<div class="rel-sym">'+esc(r.sym)+'</div>';
+    h+='<div class="rel-body"><div class="rel-top"><span class="rel-word">'+esc(r.word)+'</span>'+spk(r.word)+'<span class="rel-ipa">'+esc(r.ipa)+'</span><span class="rel-pos">'+esc(r.pos)+'</span>'+(r.zh?'<span class="rel-zh">'+esc(r.zh)+'</span>':'')+'</div>';
+    h+='<div class="rel-diff">'+esc(r.diff)+'</div></div></div>';
+  });
+
+  const card=document.getElementById('card');
+  card.innerHTML=h;
+  window.scrollTo(0,0);
+
+  // bind speakers
+  card.querySelectorAll('[data-spk]').forEach(b=>{
+    b.addEventListener('click',()=>playWord(b.getAttribute('data-spk'),b));
+  });
+  // bind example copy
+  card.querySelectorAll('[data-copy]').forEach(b=>{
+    b.addEventListener('click',()=>copy(decodeURIComponent(b.getAttribute('data-copy'))));
+  });
+  // bind struct copy
+  card.querySelector('[data-struct]').addEventListener('click',()=>{
+    copy(buildStruct(DATA[parseInt(card.querySelector('[data-struct]').getAttribute('data-struct'))]));
+  });
+
+  // counter + nav
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===DATA.length-1);
+  const _j=document.getElementById('jump'); if(_j) _j.value=i;   // 同步跳转下拉框选中项
+}
+
+/* ---------- nav ---------- */
+let idx=0;
+document.getElementById('total').textContent=DATA.length;
+document.getElementById('prev').addEventListener('click',()=>{ if(idx>0){idx--;render(idx);} });
+document.getElementById('next').addEventListener('click',()=>{ if(idx<DATA.length-1){idx++;render(idx);} });
+// 跳转下拉框：填充全部单词，选择即跳转（复用同一 idx / render）
+const _jump=document.getElementById('jump');
+if(_jump){
+  _jump.innerHTML=DATA.map((d,i)=>'<option value="'+i+'">'+(i+1)+'. '+esc(d.word)+'</option>').join('');
+  _jump.addEventListener('change',()=>{ idx=parseInt(_jump.value,10); render(idx); });
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'&&idx>0){idx--;render(idx);}
+  if(e.key==='ArrowRight'&&idx<DATA.length-1){idx++;render(idx);}
+});
+render(0);
+</script>
+</body>
+</html>
