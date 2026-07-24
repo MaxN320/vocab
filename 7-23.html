@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单词解析卡片</title>
+<style>
+  :root{
+    --bg:#11131a;
+    --card:#191c26;
+    --card-2:#1f2330;
+    --line:#2a2f3d;
+    --ink:#e9ecf4;
+    --ink-soft:#aeb4c5;
+    --ink-mute:#6f7689;
+    --accent:#7c9cff;
+    --accent-soft:#2d3658;
+    --green:#5ec59a;
+    --rose:#e08aa0;
+    --pos:#7c9cff;
+    --radius:16px;
+    --maxw:100%;               /* 卡片/顶栏宽度：全屏铺满（所有设备都占满可用宽度） */
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 60px}
+
+  /* top bar */
+  .topbar{width:100%;max-width:var(--maxw);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:30;background:var(--bg);padding:12px 0 10px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .counter{font-family:var(--mono);font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .counter b{color:var(--ink);font-weight:600}
+  .nav{display:flex;gap:8px}
+  .nav button{
+    appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+    font-size:14px;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:var(--sans);
+    transition:.15s;display:flex;align-items:center;gap:6px;
+  }
+  .nav button:hover:not(:disabled){border-color:var(--accent);color:var(--ink);background:var(--card-2)}
+  .nav button:active:not(:disabled){transform:translateY(1px)}
+  .nav button:disabled{opacity:.35;cursor:not-allowed}
+  .nav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* jump 跳转下拉框 */
+  .jump{
+    appearance:none;-webkit-appearance:none;
+    flex:1 1 130px;min-width:110px;max-width:280px;
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font-size:13.5px;font-family:var(--sans);padding:8px 30px 8px 12px;border-radius:10px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aeb4c5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;
+  }
+  .jump:hover{border-color:var(--accent)}
+  .jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .jump option{background:var(--card);color:var(--ink)}
+
+  /* card */
+  .card{
+    width:100%;max-width:var(--maxw);background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px 26px 28px;
+  }
+
+  /* headword */
+  .head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .head-left{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .word{font-size:36px;font-weight:700;letter-spacing:-.01em;line-height:1.05}
+  .ipa-line{display:flex;align-items:center;gap:8px}
+  .ipa{font-family:var(--mono);font-size:16px;color:var(--ink-soft)}
+  .copy-struct{
+    appearance:none;border:1px solid var(--line);background:var(--card-2);color:var(--ink-soft);
+    font-size:12.5px;padding:7px 13px;border-radius:9px;cursor:pointer;font-family:var(--sans);
+    transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:6px;flex-shrink:0;
+  }
+  .copy-struct:hover{border-color:var(--accent);color:var(--ink)}
+  .copy-struct:active{transform:translateY(1px)}
+  .copy-struct:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* speaker */
+  .spk{
+    appearance:none;border:none;background:transparent;cursor:pointer;padding:3px;border-radius:8px;
+    color:var(--ink-mute);display:inline-flex;align-items:center;justify-content:center;transition:.15s;line-height:0;
+  }
+  .spk:hover{color:var(--accent)}
+  .spk.playing{color:var(--accent)}
+  .spk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .spk svg{width:18px;height:18px}
+
+  /* defs */
+  .defs{margin:20px 0 4px;display:flex;flex-direction:column;gap:7px}
+  .def-row{display:flex;align-items:baseline;gap:10px;font-size:16px}
+  .pos{
+    font-family:var(--mono);font-size:12px;color:var(--accent);background:var(--accent-soft);
+    padding:2px 8px;border-radius:6px;flex-shrink:0;min-width:34px;text-align:center;font-weight:600;
+  }
+  .def-zh{color:var(--ink)}
+
+  /* chunk */
+  .chunk{
+    margin-top:18px;background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  }
+  .chunk-head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .chunk-phrase{font-size:17px;font-weight:600;color:var(--ink)}
+  .chunk-zh{font-size:14px;color:var(--ink-soft)}
+
+  /* section label */
+  .sec-label{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-mute);margin:24px 0 10px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* example block */
+  .ex{background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+  .ex + .ex{margin-top:0}
+  .ex-en{font-size:16px;line-height:1.55;color:var(--ink)}
+  .ex-en b{color:var(--accent);font-weight:700}
+  .ex-zh{font-size:13.5px;color:var(--ink-mute);margin-top:5px;line-height:1.5}
+  .ex-actions{display:flex;gap:8px;margin-top:11px}
+  .mini{
+    appearance:none;border:1px solid var(--line);background:transparent;color:var(--ink-mute);
+    font-size:11.5px;padding:5px 11px;border-radius:8px;cursor:pointer;font-family:var(--sans);transition:.15s;
+    display:flex;align-items:center;gap:5px;
+  }
+  .mini:hover{border-color:var(--accent);color:var(--ink-soft)}
+  .mini:active{transform:translateY(1px)}
+  .mini:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .mini svg{width:12px;height:12px}
+
+  /* grammar */
+  .gram{margin-top:11px;border-top:1px dashed var(--line);padding-top:11px}
+  .gram-tag{font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);margin-bottom:6px}
+  .clause{margin-bottom:9px}
+  .clause:last-child{margin-bottom:0}
+  .clause-label{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:5px}
+  .roles{display:flex;flex-wrap:wrap;gap:6px}
+  .role{
+    background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:5px 9px;font-size:12.5px;
+    color:var(--ink-soft);line-height:1.4;
+  }
+  .role .r-form{display:block;color:var(--ink-mute);font-family:var(--mono);font-size:10.5px;margin-top:2px}
+  .role .r-note{display:block;color:var(--green);font-size:10.5px;margin-top:2px}
+
+  /* trans (vt./vi.) 及物性胶囊 */
+  .trans{font-family:var(--mono);font-size:11px;color:var(--green);background:rgba(95,211,154,.12);padding:2px 7px;border-radius:6px;flex-shrink:0;font-weight:600;line-height:1.5}
+
+  /* contrast 同台对比 */
+  .contrast{background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px;display:flex;flex-direction:column;gap:9px}
+  .contrast-frame{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute);letter-spacing:.02em}
+  .ct-item{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .ct-mark{font-size:15px;font-weight:700;flex-shrink:0;width:16px;text-align:center;line-height:1.4}
+  .ct-en{font-size:15px;font-weight:600;color:var(--ink)}
+  .ct-note{font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+  .ct-item.ok .ct-mark{color:var(--green)}
+  .ct-item.ok .ct-en{color:var(--green)}
+  .ct-item.meh .ct-mark{color:#e2b23c}
+  .ct-item.no .ct-mark{color:var(--rose)}
+
+  /* relations */
+  .rel{display:flex;gap:11px;background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+  .rel-sym{font-size:18px;font-weight:700;flex-shrink:0;line-height:1.5;width:20px;text-align:center}
+  .rel.syn .rel-sym{color:var(--green)}
+  .rel.ant .rel-sym{color:var(--rose)}
+  .rel-body{flex:1;min-width:0}
+  .rel-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .rel-word{font-size:16px;font-weight:600;color:var(--ink)}
+  .rel-ipa{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute)}
+  .rel-pos{font-family:var(--mono);font-size:11px;color:var(--accent);background:var(--accent-soft);padding:1px 7px;border-radius:5px;font-weight:600}
+  .rel-zh{font-size:13px;color:var(--ink-soft)}
+  .rel-diff{font-size:13px;color:var(--ink-soft);margin-top:5px;line-height:1.5}
+
+  /* ---- 英/美 双音标 ---- */
+  .ipa-line{flex-wrap:wrap;gap:14px}
+  .ipa-grp{display:inline-flex;align-items:center;gap:6px}
+  .ipa-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:5px;flex-shrink:0}
+  .ipa-tag.gb{color:var(--accent);background:var(--accent-soft)}
+  .ipa-tag.us{color:var(--green);background:rgba(94,197,154,.14)}
+  .rel-ipa .rt{font-size:10px;font-weight:700;margin-right:3px;opacity:.8}
+  .rel-ipa.gb .rt{color:var(--accent)}
+  .rel-ipa.us .rt{color:var(--green)}
+
+  /* ---- TTS 朗读 ---- */
+  .ttsbar{width:100%;max-width:var(--maxw);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;display:flex;flex-direction:column;gap:9px}
+  .ttsbar[hidden]{display:none}
+  .tts-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .tts-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);flex-shrink:0}
+  .tts-meta{font-size:12px;color:var(--ink-mute);line-height:1.55}
+  .tts-hint{font-size:11.5px;color:var(--ink-mute);line-height:1.5}
+  #ttsVoice{flex:1 1 200px;max-width:none}
+  .mini.on{border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
+  .nav button.icon{padding:8px 11px}
+  .nav button.icon svg{width:17px;height:17px}
+  .nav button.icon.on{border-color:var(--accent);color:var(--accent);background:var(--card-2)}
+  .ex-en .w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s}
+  .ex-en .w:hover{background:var(--accent-soft)}
+  .ex-en .w.on,.ex-en .w.playing{background:var(--accent-soft)}
+  .mini.playing{border-color:var(--accent);color:var(--accent)}
+
+  /* toast */
+  .toast{
+    position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);
+    background:var(--accent);color:#0d1018;font-size:13.5px;font-weight:600;padding:10px 20px;border-radius:10px;
+    opacity:0;pointer-events:none;transition:.22s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:520px){
+    .word{font-size:30px}
+    .card{padding:20px 18px 22px}
+    body{padding:18px 12px 50px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="counter"><b id="cur">1</b> / <span id="total">5</span></div>
+  <select id="jump" class="jump" aria-label="跳转到某个单词"></select>
+  <div class="nav">
+    <button id="ttsBtn" class="icon" aria-label="朗读设置" title="朗读设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg></button>
+    <button id="prev" aria-label="上一个">‹ 上一个</button>
+    <button id="next" aria-label="下一个">下一个 ›</button>
+  </div>
+</div>
+
+<div class="ttsbar" id="ttsbar" hidden>
+  <div class="tts-row">
+    <span class="tts-label">口音</span>
+    <button class="mini tscope on" data-s="gb">英音</button>
+    <button class="mini tscope" data-s="us">美音</button>
+    <button class="mini tscope" data-s="all">全部</button>
+  </div>
+  <div class="tts-row">
+    <span class="tts-label">语音</span>
+    <select id="ttsVoice" class="jump" aria-label="选择朗读语音"></select>
+  </div>
+  <div class="tts-row">
+    <span class="tts-label">语速</span>
+    <button class="mini trate" data-r="0.6">0.6×</button>
+    <button class="mini trate" data-r="0.8">0.8×</button>
+    <button class="mini trate on" data-r="1">1.0×</button>
+    <button class="mini trate" data-r="1.25">1.25×</button>
+    <button class="mini on" id="ttsLoop">循环：开</button>
+  </div>
+  <div class="tts-meta" id="ttsMeta">正在读取系统语音…</div>
+  <div class="tts-hint">这里管「例句朗读」和「点例句里的单词」；音标旁边的 英 / 美 小喇叭各自固定口音，不受这里影响。</div>
+</div>
+
+<div class="card" id="card"></div>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+/* ============ 数据区：往这里塞 JSON ============ */
+const DATA = [
+{
+  "word":"extinguish","ipa":"/ɪkˈstɪŋɡwɪʃ/","ipaUS":"/ɪkˈstɪŋɡwɪʃ/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"扑灭，熄灭（火、灯）"},{"pos":"v.","trans":"vt.","zh":"使（希望、感情）破灭、消失"}],
+  "chunk":{
+    "pos":"v.","phrase":"extinguish a fire","zh":"扑灭一场火",
+    "example":{
+      "en":"Firefighters worked all night to <b>extinguish the fire</b> in the old market.","zh":"消防员们通宵工作，才扑灭了老市场的那场大火。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Firefighters","form":null,"note":null},
+        {"text":"谓语: worked","form":"过去式 | 原形: work /wɜːk/ 工作","note":null},
+        {"text":"状语: all night","form":null,"note":null},
+        {"text":"状语: to extinguish the fire in the old market","form":"不定式(to+原形)","note":"n. 市场 /ˈmɑːkɪt/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He poured a whole bottle of water on the candle to <b>extinguish</b> it before his mother came in.","zh":"他把一整瓶水倒在蜡烛上，赶在妈妈进来前把它熄灭了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: poured","form":"过去式 | 原形: pour /pɔː/ 倒","note":null},
+        {"text":"宾语: a whole bottle of water","form":null,"note":"n. 瓶子 /ˈbɒtl/"},
+        {"text":"状语: on the candle","form":null,"note":"n. 蜡烛 /ˈkændl/"},
+        {"text":"状语: to extinguish it","form":"不定式(to+原形)","note":null}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: before","form":null,"note":null},
+        {"text":"主语: his mother","form":null,"note":null},
+        {"text":"谓语: came in","form":"过去式 | 原形: come in /kʌm/ 进来","note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"One cold email from the company <b>extinguished</b> all her hope of getting the job.","zh":"公司一封冷冰冰的邮件，浇灭了她拿到这份工作的全部希望。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: One cold email from the company","form":null,"note":"n. 公司 /ˈkʌmpəni/"},
+      {"text":"谓语: extinguished","form":"过去式","note":null},
+      {"text":"宾语: all her hope of getting the job","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"put out","ipa":"/pʊt aʊt/","ipaUS":"/pʊt aʊt/","zh":"扑灭，熄灭","diff":"put out 是日常口语里的首选说法，对象是火、烟、灯；extinguish 更正式书面，常见于新闻报道、消防标识和考试写作。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"blow out","ipa":"/bləʊ aʊt/","ipaUS":"/bloʊ aʊt/","zh":"吹灭","diff":"blow out 特指用嘴吹灭，对象只能是蜡烛、火柴这类小火苗；extinguish 不限手段，大火小火都能用，也能引申用于希望、热情。"}
+  ],
+  "contrast":{
+    "frame":"____ the fire",
+    "items":[
+      {"mark":"✓","word":"extinguish","en":"extinguish the fire","note":"正式用词，消防、新闻语域里的标准搭配，最贴切"},
+      {"mark":"~","word":"put out","en":"put out the fire","note":"意思一样但语域更口语，日常说话首选，正式文书里略随意"},
+      {"mark":"✗","word":"blow out","en":"blow out the fire","note":"别扭，blow out 只能对蜡烛这类能一口吹灭的小火苗"}
+    ]
+  }
+},
+{
+  "word":"resist","ipa":"/rɪˈzɪst/","ipaUS":"/rɪˈzɪst/",
+  "defs":[{"pos":"v.","trans":"vt./vi.","zh":"抵制，反抗，抵挡"},{"pos":"v.","trans":"vt.","zh":"忍住，抵挡住（诱惑）"}],
+  "chunk":{
+    "pos":"v.","phrase":"resist the temptation to do sth","zh":"忍住做某事的诱惑",
+    "example":{
+      "en":"She had to <b>resist the temptation to</b> check her phone during the exam.","zh":"考试时她只能忍住看手机的冲动。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语: had to resist","form":"过去式+原形","note":null},
+        {"text":"宾语: the temptation to check her phone","form":"不定式(to+原形)作定语","note":"n. 诱惑 /tempˈteɪʃn/"},
+        {"text":"状语: during the exam","form":null,"note":"n. 考试 /ɪɡˈzæm/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He could not <b>resist</b> one last piece of cake, and later regretted it.","zh":"他没忍住又吃了最后一块蛋糕，事后很后悔。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: could not resist","form":"情态+原形","note":null},
+        {"text":"宾语: one last piece of cake","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: and","form":null,"note":null},
+        {"text":"状语: later","form":null,"note":null},
+        {"text":"谓语: regretted","form":"过去式 | 原形: regret /rɪˈɡret/ 后悔","note":null},
+        {"text":"宾语: it","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Workers at the factory <b>resisted</b> the new rules for weeks before the boss finally listened.","zh":"工厂工人抵制了新规定好几周，老板才终于肯听。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: Workers at the factory","form":null,"note":"n. 工厂 /ˈfæktri/"},
+        {"text":"谓语: resisted","form":"过去式","note":null},
+        {"text":"宾语: the new rules","form":null,"note":null},
+        {"text":"状语: for weeks","form":null,"note":null}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: before","form":null,"note":null},
+        {"text":"主语: the boss","form":null,"note":null},
+        {"text":"状语: finally","form":null,"note":null},
+        {"text":"谓语: listened","form":"过去式 | 原形: listen /ˈlɪsn/ 听","note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"oppose","ipa":"/əˈpəʊz/","ipaUS":"/əˈpoʊz/","zh":"反对，反抗","diff":"oppose 重在表态“不赞成”，对象是计划、政策、想法，可以只是口头反对；resist 强调实际用力顶住、不屈从，还能用于抵挡诱惑、疾病，oppose 不能。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"accept","ipa":"/əkˈsept/","ipaUS":"/əkˈsept/","zh":"接受，接纳","diff":"accept 是心里认了、收下了；resist 是顶住不接受。同一个对象（新规定、变化）用哪个，取决于你是顺从还是对抗。"}
+  ],
+  "contrast":{
+    "frame":"____ the new rules",
+    "items":[
+      {"mark":"✓","word":"resist","en":"resist the new rules","note":"强调实际不配合、顶着不执行，带行动色彩，最贴"},
+      {"mark":"~","word":"oppose","en":"oppose the new rules","note":"可以，但偏“表态反对”，未必有实际抵抗动作"},
+      {"mark":"✗","word":"refuse","en":"refuse the new rules","note":"别扭，refuse 的对象通常是请求、邀请、帮助，不搭配规定"}
+    ]
+  }
+},
+{
+  "word":"confront","ipa":"/kənˈfrʌnt/","ipaUS":"/kənˈfrʌnt/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"直面，正视（困难、问题）"},{"pos":"v.","trans":"vt.","zh":"当面质问，对峙"}],
+  "chunk":{
+    "pos":"v.","phrase":"be confronted with","zh":"面临，面对（问题、困难）",
+    "example":{
+      "en":"Every new manager <b>is confronted with</b> the same problem: too much work, too little time.","zh":"每个新经理都会面临同一个问题：活太多，时间太少。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Every new manager","form":null,"note":"n. 经理 /ˈmænɪdʒə/"},
+        {"text":"谓语: is confronted with","form":"助动词be+过去分词","note":null},
+        {"text":"宾语: the same problem","form":null,"note":"n. 问题 /ˈprɒbləm/"},
+        {"text":"同位语: too much work, too little time","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She finally <b>confronted</b> her roommate about the missing money.","zh":"她终于就那笔不见的钱当面质问了室友。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"状语: finally","form":null,"note":null},
+      {"text":"谓语: confronted","form":"过去式","note":null},
+      {"text":"宾语: her roommate","form":null,"note":"n. 室友 /ˈruːmmeɪt/"},
+      {"text":"状语: about the missing money","form":null,"note":"adj. 不见的 /ˈmɪsɪŋ/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Instead of running away, he decided to <b>confront</b> his fear of speaking in public.","zh":"他没有逃避，而是决定直面自己当众讲话的恐惧。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: Instead of running away","form":"现在分词","note":null},
+      {"text":"主语: he","form":null,"note":null},
+      {"text":"谓语: decided","form":"过去式 | 原形: decide /dɪˈsaɪd/ 决定","note":null},
+      {"text":"宾语: to confront his fear of speaking in public","form":"不定式(to+原形)","note":"n. 公众 /ˈpʌblɪk/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"face","ipa":"/feɪs/","ipaUS":"/feɪs/","zh":"面对，面临","diff":"face 中性，只说“面对着”，可以被动承受；confront 带主动迎上去的劲儿，还能表示当面质问某人，face 没有这层意思。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"avoid","ipa":"/əˈvɔɪd/","ipaUS":"/əˈvɔɪd/","zh":"避免，回避","diff":"avoid 是绕开、不去碰；confront 是迎上去处理。谈论问题、恐惧、矛盾时，这两个词常成对出现。"}
+  ],
+  "contrast":{
+    "frame":"____ your fear",
+    "items":[
+      {"mark":"✓","word":"confront","en":"confront your fear","note":"强调主动迎上去、正面处理，最贴心理成长语境"},
+      {"mark":"~","word":"face","en":"face your fear","note":"也常说，但语气更平，只表示“面对着”，主动性弱一些"},
+      {"mark":"✗","word":"meet","en":"meet your fear","note":"别扭，meet 的对象多是人、需求、标准，用于恐惧不自然"}
+    ]
+  }
+},
+{
+  "word":"observe","ipa":"/əbˈzɜːv/","ipaUS":"/əbˈzɜːrv/",
+  "defs":[{"pos":"v.","trans":"vt./vi.","zh":"观察，注意到"},{"pos":"v.","trans":"vt.","zh":"遵守（规则、法律）"},{"pos":"v.","trans":"vt.","zh":"评论说，评述"}],
+  "chunk":{
+    "pos":"v.","phrase":"observe sb doing sth","zh":"观察到某人正在做某事",
+    "example":{
+      "en":"The teacher <b>observed</b> the boy quietly <b>copying</b> answers from his neighbour.","zh":"老师观察到那个男孩正在悄悄抄邻座的答案。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The teacher","form":null,"note":"n. 老师 /ˈtiːtʃə/"},
+        {"text":"谓语: observed","form":"过去式","note":null},
+        {"text":"宾语: the boy","form":null,"note":null},
+        {"text":"宾补: quietly copying answers from his neighbour","form":"现在分词","note":"n. 邻座 /ˈneɪbə/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"After weeks of <b>observing</b> the birds, she noticed one nest was always empty at noon.","zh":"观察了几周之后，她发现有个鸟窝一到中午总是空的。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"状语: After weeks of observing the birds","form":"现在分词","note":null},
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"谓语: noticed","form":"过去式 | 原形: notice /ˈnəʊtɪs/ 注意到","note":null}
+      ]},
+      {"label":"从句(宾语从句)","roles":[
+        {"text":"主语: one nest","form":null,"note":null},
+        {"text":"状语: always","form":null,"note":null},
+        {"text":"系动词: was","form":"过去式 | 原形: be 是","note":null},
+        {"text":"表语: empty","form":null,"note":null},
+        {"text":"状语: at noon","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Drivers must <b>observe</b> the speed limit here, or they will lose their licence.","zh":"司机在这里必须遵守限速，否则会被吊销驾照。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: Drivers","form":null,"note":"n. 司机 /ˈdraɪvə/"},
+        {"text":"谓语: must observe","form":"情态+原形","note":null},
+        {"text":"宾语: the speed limit","form":null,"note":"n. 限制 /ˈlɪmɪt/"},
+        {"text":"状语: here","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: or","form":null,"note":null},
+        {"text":"主语: they","form":null,"note":null},
+        {"text":"谓语: will lose","form":"情态+原形","note":null},
+        {"text":"宾语: their licence","form":null,"note":"n. 执照 /ˈlaɪsns/"}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"watch","ipa":"/wɒtʃ/","ipaUS":"/wɑːtʃ/","zh":"看，注视","diff":"watch 是日常“看着”，可能只是消遣（watch TV）；observe 带研究、留意细节的目的，多用于科学、教学、法律场景，还能表示遵守规则。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"notice","ipa":"/ˈnəʊtɪs/","ipaUS":"/ˈnoʊtɪs/","zh":"注意到，察觉","diff":"notice 是无意中察觉到，一瞬间的事；observe 是有意识地持续看、并从中得出结论，常带时间跨度。"}
+  ],
+  "contrast":{
+    "frame":"____ the rules",
+    "items":[
+      {"mark":"✓","word":"observe","en":"observe the rules","note":"正式语域里“遵守规则”的标准搭配，法律、交通、校规都用"},
+      {"mark":"~","word":"follow","en":"follow the rules","note":"日常口语首选，意思一样但更随意，正式文书里略轻"},
+      {"mark":"✗","word":"watch","en":"watch the rules","note":"出错，watch 只有“看”的意思，不能表示遵守"}
+    ]
+  }
+},
+{
+  "word":"acquaintance","ipa":"/əˈkweɪntəns/","ipaUS":"/əˈkweɪntəns/",
+  "defs":[{"pos":"n.","trans":null,"zh":"熟人，泛泛之交"},{"pos":"n.","trans":null,"zh":"了解，认识（对某事物）"}],
+  "chunk":{
+    "pos":"n.","phrase":"a close acquaintance","zh":"一位相熟的人",
+    "example":{
+      "en":"He met an old <b>acquaintance</b> from high school on the morning train.","zh":"他在早班火车上碰到了一位高中时的老熟人。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: met","form":"过去式 | 原形: meet /miːt/ 遇见","note":null},
+        {"text":"宾语: an old acquaintance from high school","form":null,"note":"n. 学校 /skuːl/"},
+        {"text":"状语: on the morning train","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She invited fifty guests, but half of them were only <b>acquaintances</b> she barely knew.","zh":"她请了五十位客人，其中一半只是些几乎不认识的泛泛之交。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语: invited","form":"过去式 | 原形: invite /ɪnˈvaɪt/ 邀请","note":null},
+        {"text":"宾语: fifty guests","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: but","form":null,"note":null},
+        {"text":"主语: half of them","form":null,"note":null},
+        {"text":"系动词: were","form":"过去式 | 原形: be 是","note":null},
+        {"text":"表语: only acquaintances she barely knew","form":null,"note":"adv. 几乎不 /ˈbeəli/"}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"In a new city, a work <b>acquaintance</b> can slowly become a real friend.","zh":"在一座新城市里，一个工作上认识的人可能慢慢变成真朋友。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: In a new city","form":null,"note":null},
+      {"text":"主语: a work acquaintance","form":null,"note":null},
+      {"text":"谓语: can become","form":"情态+原形","note":null},
+      {"text":"状语: slowly","form":null,"note":null},
+      {"text":"表语: a real friend","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"friend","ipa":"/frend/","ipaUS":"/frend/","zh":"朋友","diff":"friend 有感情、有来往；acquaintance 只是认识、点头之交，说某人是 acquaintance 其实是在划清距离。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"stranger","ipa":"/ˈstreɪndʒə/","ipaUS":"/ˈstreɪndʒər/","zh":"陌生人","diff":"stranger 是完全不认识的人；acquaintance 是认识但不熟。两者是“认识程度”上的相邻两档，别混用。"}
+  ],
+  "contrast":{
+    "frame":"He is just an ____ of mine",
+    "items":[
+      {"mark":"✓","word":"acquaintance","en":"just an acquaintance of mine","note":"精确表达“只是认识，不熟”，社交场合划距离的标准说法"},
+      {"mark":"~","word":"contact","en":"just a contact of mine","note":"可以，但偏工作人脉、通讯录里的联系人，少了人际温度层面的意思"},
+      {"mark":"✗","word":"stranger","en":"just a stranger of mine","note":"出错，stranger 指完全不认识的人，不能用 of mine 表示“我的”"}
+    ]
+  }
+},
+{
+  "word":"cope","ipa":"/kəʊp/","ipaUS":"/koʊp/",
+  "defs":[{"pos":"v.","trans":"vi.","zh":"（成功地）应付，处理，对付"}],
+  "chunk":{
+    "pos":"v.","phrase":"cope with sth","zh":"应付、处理某事",
+    "example":{
+      "en":"New parents have to <b>cope with</b> broken sleep for months.","zh":"新手父母得应付好几个月的睡眠不足。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: New parents","form":null,"note":"n. 父母 /ˈpeərənt/"},
+        {"text":"谓语: have to cope with","form":"原形","note":null},
+        {"text":"宾语: broken sleep","form":null,"note":"adj. 断续的 /ˈbrəʊkən/"},
+        {"text":"状语: for months","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"When both her parents fell ill, she had to <b>cope</b> alone at nineteen.","zh":"父母双双病倒时，她十九岁就得独自扛下一切。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: When","form":null,"note":null},
+        {"text":"主语: both her parents","form":null,"note":null},
+        {"text":"谓语: fell ill","form":"过去式 | 原形: fall /fɔːl/ 变得","note":null}
+      ]},
+      {"label":"主句","roles":[
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"谓语: had to cope","form":"过去式+原形","note":null},
+        {"text":"状语: alone","form":null,"note":null},
+        {"text":"状语: at nineteen","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"The small shop could not <b>cope</b> with so many orders and had to close early.","zh":"那家小店应付不了这么多订单，只好提早关门。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: The small shop","form":null,"note":null},
+        {"text":"谓语: could not cope with","form":"情态+原形","note":null},
+        {"text":"宾语: so many orders","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: and","form":null,"note":null},
+        {"text":"谓语: had to close","form":"过去式+原形","note":null},
+        {"text":"状语: early","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"deal with","ipa":"/diːl wɪð/","ipaUS":"/diːl wɪð/","zh":"处理，对付","diff":"deal with 中性，只说“去处理”，对象可以是任何事务；cope with 暗含事情有难度、压力大，重点在“撑住、扛下来”。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"manage","ipa":"/ˈmænɪdʒ/","ipaUS":"/ˈmænɪdʒ/","zh":"设法做到，勉强应付","diff":"manage 强调最终做成了、办到了，常接 to do；cope 是不及物，必须说 cope with sth，且重在“顶住压力”而不是“完成任务”。"}
+  ],
+  "contrast":{
+    "frame":"____ the pressure",
+    "items":[
+      {"mark":"✓","word":"cope with","en":"cope with the pressure","note":"自带“压力很大但撑住了”的意味，最贴"},
+      {"mark":"~","word":"deal with","en":"deal with the pressure","note":"可以，但语气中性，只说去处理，少了“扛住”的分量"},
+      {"mark":"✗","word":"cope","en":"cope the pressure","note":"出错，cope 是不及物动词，后面必须加 with 才能接宾语"}
+    ]
+  }
+},
+{
+  "word":"suspicion","ipa":"/səˈspɪʃn/","ipaUS":"/səˈspɪʃn/",
+  "defs":[{"pos":"n.","trans":null,"zh":"怀疑，嫌疑"},{"pos":"n.","trans":null,"zh":"（隐约的）感觉，猜想"}],
+  "chunk":{
+    "pos":"n.","phrase":"have a suspicion that...","zh":"隐约觉得……，怀疑……",
+    "example":{
+      "en":"I <b>have a suspicion that</b> he is not telling us the whole story.","zh":"我隐隐觉得他没把事情全说出来。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"主句","roles":[
+          {"text":"主语: I","form":null,"note":null},
+          {"text":"谓语: have","form":"原形","note":null},
+          {"text":"宾语: a suspicion","form":null,"note":null}
+        ]},
+        {"label":"从句(同位语从句)","roles":[
+          {"text":"连词: that","form":null,"note":null},
+          {"text":"主语: he","form":null,"note":null},
+          {"text":"谓语: is not telling","form":"助动词be+现在分词","note":null},
+          {"text":"宾语: us the whole story","form":null,"note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"His sudden wealth raised <b>suspicion</b> among the neighbours.","zh":"他突然有了钱，引起了邻居们的怀疑。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: His sudden wealth","form":null,"note":"n. 财富 /welθ/"},
+      {"text":"谓语: raised","form":"过去式 | 原形: raise /reɪz/ 引起","note":null},
+      {"text":"宾语: suspicion","form":null,"note":null},
+      {"text":"状语: among the neighbours","form":null,"note":"n. 邻居 /ˈneɪbə/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The manager was under <b>suspicion</b> for weeks before the missing money was finally found.","zh":"那笔钱最终被找到之前，经理被怀疑了好几周。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: The manager","form":null,"note":"n. 经理 /ˈmænɪdʒə/"},
+        {"text":"谓语: was under suspicion","form":"过去式 | 原形: be 是","note":null},
+        {"text":"状语: for weeks","form":null,"note":null}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: before","form":null,"note":null},
+        {"text":"主语: the missing money","form":null,"note":"adj. 不见的 /ˈmɪsɪŋ/"},
+        {"text":"谓语: was finally found","form":"助动词be+过去分词","note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"doubt","ipa":"/daʊt/","ipaUS":"/daʊt/","zh":"怀疑，疑问","diff":"doubt 是“不确定某事是否真、是否行”，指向事情本身；suspicion 是“觉得某人可能干了坏事”，多指向人，常与犯罪、欺骗有关。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"trust","ipa":"/trʌst/","ipaUS":"/trʌst/","zh":"信任","diff":"trust 是相信对方不会骗你；suspicion 正相反，是暗中提防。谈人际关系时这两个词常成对出现。"}
+  ],
+  "contrast":{
+    "frame":"He was under ____",
+    "items":[
+      {"mark":"✓","word":"suspicion","en":"under suspicion","note":"固定搭配，专指“被怀疑做了坏事”，法律和职场语境的标准说法"},
+      {"mark":"✗","word":"doubt","en":"under doubt","note":"出错，doubt 不与 under 搭配；说“有疑问”要用 in doubt"}
+    ]
+  }
+},
+{
+  "word":"pretend","ipa":"/prɪˈtend/","ipaUS":"/prɪˈtend/",
+  "defs":[{"pos":"v.","trans":"vt./vi.","zh":"假装，装作"},{"pos":"v.","trans":"vi.","zh":"（小孩）扮演，玩假装游戏"}],
+  "chunk":{
+    "pos":"v.","phrase":"pretend to do sth","zh":"假装做某事",
+    "example":{
+      "en":"He <b>pretended to</b> read the paper while listening to their talk.","zh":"他假装在看报纸，其实在听他们谈话。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: pretended","form":"过去式","note":null},
+        {"text":"宾语: to read the paper","form":"不定式(to+原形)","note":null},
+        {"text":"状语: while listening to their talk","form":"现在分词","note":"v. 听 /ˈlɪsn/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She opened the gift and <b>pretended</b> to love it, though she already had two.","zh":"她拆开礼物，装作很喜欢，其实她已经有两个了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语1: opened","form":"过去式 | 原形: open /ˈəʊpən/ 打开","note":null},
+        {"text":"宾语: the gift","form":null,"note":null},
+        {"text":"谓语2: pretended to love it","form":"过去式+不定式","note":null}
+      ]},
+      {"label":"从句(让步状语从句)","roles":[
+        {"text":"连词: though","form":null,"note":null},
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"谓语: had","form":"过去式 | 原形: have /hæv/ 有","note":null},
+        {"text":"宾语: two","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"In the meeting he <b>pretended</b> to agree, but that evening he sent a long email against the plan.","zh":"会上他假装同意，当天晚上却发了封长邮件反对这个方案。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"状语: In the meeting","form":null,"note":"n. 会议 /ˈmiːtɪŋ/"},
+        {"text":"主语: he","form":null,"note":null},
+        {"text":"谓语: pretended to agree","form":"过去式+不定式","note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: but","form":null,"note":null},
+        {"text":"状语: that evening","form":null,"note":null},
+        {"text":"主语: he","form":null,"note":null},
+        {"text":"谓语: sent","form":"过去式 | 原形: send /send/ 发送","note":null},
+        {"text":"宾语: a long email against the plan","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"act","ipa":"/ækt/","ipaUS":"/ækt/","zh":"表演，装出（某种样子）","diff":"act 强调外在表现出某种样子（act like a child），常带 like/as if；pretend 直接点明“并非事实”，后面多接 to do 或 that 从句。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"lie","ipa":"/laɪ/","ipaUS":"/laɪ/","zh":"说谎","diff":"lie 特指用话说假话，一定要开口；pretend 靠表情、动作、态度就能完成，不一定说话。"}
+  ],
+  "contrast":{
+    "frame":"____ to be asleep",
+    "items":[
+      {"mark":"✓","word":"pretend","en":"pretend to be asleep","note":"标准搭配，pretend to do 直接表达“装成某状态”"},
+      {"mark":"~","word":"act","en":"act as if he were asleep","note":"可以，但要改成 as if 结构，直接说 act to be asleep 不成立"},
+      {"mark":"✗","word":"lie","en":"lie to be asleep","note":"出错，lie 指开口说假话，不能接 to do 表示装样子"}
+    ]
+  }
+},
+{
+  "word":"punish","ipa":"/ˈpʌnɪʃ/","ipaUS":"/ˈpʌnɪʃ/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"惩罚，处罚"},{"pos":"v.","trans":"vt.","zh":"（因某事）严惩，使付出代价"}],
+  "chunk":{
+    "pos":"v.","phrase":"punish sb for sth","zh":"因某事惩罚某人",
+    "example":{
+      "en":"The school <b>punished</b> the boy <b>for</b> cheating in the final exam.","zh":"学校因为那个男孩期末考试作弊而处罚了他。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The school","form":null,"note":null},
+        {"text":"谓语: punished","form":"过去式","note":null},
+        {"text":"宾语: the boy","form":null,"note":null},
+        {"text":"状语: for cheating in the final exam","form":"现在分词","note":"n. 考试 /ɪɡˈzæm/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"His father never <b>punished</b> him for breaking things, only for lying about it.","zh":"他父亲从不因为他弄坏东西而罚他，只因为他撒谎才罚。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: His father","form":null,"note":null},
+      {"text":"状语: never","form":null,"note":null},
+      {"text":"谓语: punished","form":"过去式","note":null},
+      {"text":"宾语: him","form":null,"note":null},
+      {"text":"状语: for breaking things, only for lying about it","form":"现在分词","note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"If the company keeps sending late orders, the market will <b>punish</b> it sooner or later.","zh":"如果公司老是延迟发货，市场迟早会让它付出代价。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"从句(条件状语从句)","roles":[
+        {"text":"连词: If","form":null,"note":null},
+        {"text":"主语: the company","form":null,"note":"n. 公司 /ˈkʌmpəni/"},
+        {"text":"谓语: keeps sending","form":"第三人称单数+现在分词","note":null},
+        {"text":"宾语: late orders","form":null,"note":null}
+      ]},
+      {"label":"主句","roles":[
+        {"text":"主语: the market","form":null,"note":"n. 市场 /ˈmɑːkɪt/"},
+        {"text":"谓语: will punish","form":"情态+原形","note":null},
+        {"text":"宾语: it","form":null,"note":null},
+        {"text":"状语: sooner or later","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"fine","ipa":"/faɪn/","ipaUS":"/faɪn/","zh":"罚款","diff":"fine 只指罚钱这一种方式，常说 fine sb 100 yuan；punish 是上位词，手段不限（罚款、关禁闭、开除都算）。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"reward","ipa":"/rɪˈwɔːd/","ipaUS":"/rɪˈwɔːrd/","zh":"奖励，酬谢","diff":"reward 是因好表现给好处，punish 是因坏行为让人吃苦头。两者搭配结构对称：reward/punish sb for sth。"}
+  ],
+  "contrast":{
+    "frame":"____ him for cheating",
+    "items":[
+      {"mark":"✓","word":"punish","en":"punish him for cheating","note":"通用惩罚动词，手段不限，学校、家庭、法律语境都能用"},
+      {"mark":"~","word":"fine","en":"fine him for cheating","note":"可以但很窄，只表示罚钱，学校作弊通常不是罚款"},
+      {"mark":"✗","word":"blame","en":"blame him for cheating","note":"出错，blame 只是“怪罪、认为是他的错”，没有实际处罚动作"}
+    ]
+  }
+},
+{
+  "word":"thought","ipa":"/θɔːt/","ipaUS":"/θɔːt/",
+  "defs":[{"pos":"n.","trans":null,"zh":"想法，念头"},{"pos":"n.","trans":null,"zh":"思考，考虑"},{"pos":"n.","trans":null,"zh":"关心，挂念（对他人的）"}],
+  "chunk":{
+    "pos":"n.","phrase":"give sth some thought","zh":"好好考虑某事",
+    "example":{
+      "en":"Please <b>give</b> the offer <b>some thought</b> before you answer them.","zh":"回复他们之前，请好好考虑一下这个提议。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"主句","roles":[
+          {"text":"谓语: give","form":"原形","note":null},
+          {"text":"间接宾语: the offer","form":null,"note":null},
+          {"text":"直接宾语: some thought","form":null,"note":null}
+        ]},
+        {"label":"从句(时间状语从句)","roles":[
+          {"text":"连词: before","form":null,"note":null},
+          {"text":"主语: you","form":null,"note":null},
+          {"text":"谓语: answer","form":"原形","note":null},
+          {"text":"宾语: them","form":null,"note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"The <b>thought</b> of speaking in front of the whole class made her hands cold.","zh":"一想到要在全班面前讲话，她的手就发凉。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The thought of speaking in front of the whole class","form":"现在分词","note":null},
+      {"text":"谓语: made","form":"过去式 | 原形: make /meɪk/ 使","note":null},
+      {"text":"宾语: her hands","form":null,"note":null},
+      {"text":"宾补: cold","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"After a long walk home, a <b>thought</b> hit him: he had left the keys in the office.","zh":"走了很久回到家，一个念头突然冒出来——他把钥匙落在办公室了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"状语: After a long walk home","form":null,"note":null},
+        {"text":"主语: a thought","form":null,"note":null},
+        {"text":"谓语: hit","form":"过去式 | 原形: hit /hɪt/ 击中","note":null},
+        {"text":"宾语: him","form":null,"note":null}
+      ]},
+      {"label":"从句(同位语从句)","roles":[
+        {"text":"主语: he","form":null,"note":null},
+        {"text":"谓语: had left","form":"助动词have+过去分词","note":null},
+        {"text":"宾语: the keys","form":null,"note":null},
+        {"text":"状语: in the office","form":null,"note":"n. 办公室 /ˈɒfɪs/"}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"idea","ipa":"/aɪˈdɪə/","ipaUS":"/aɪˈdiːə/","zh":"主意，想法","diff":"idea 多指能拿来用的主意、方案（a good idea for the party）；thought 更像脑子里闪过的念头，不一定有实用价值。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"opinion","ipa":"/əˈpɪnjən/","ipaUS":"/əˈpɪnjən/","zh":"意见，看法","diff":"opinion 是对某事的立场判断，可以拿出来跟人辩；thought 更私人、更随意，常是没成形的念头。"}
+  ],
+  "contrast":{
+    "frame":"give it some ____",
+    "items":[
+      {"mark":"✓","word":"thought","en":"give it some thought","note":"固定搭配，表示“好好想想再决定”，此处 thought 是不可数名词"},
+      {"mark":"~","word":"consideration","en":"give it some consideration","note":"可以，意思接近但明显更书面，多见于正式信函"},
+      {"mark":"✗","word":"idea","en":"give it some idea","note":"出错，idea 是可数名词，且不与 give sth some 构成此固定搭配"}
+    ]
+  }
+},
+{
+  "word":"consist","ipa":"/kənˈsɪst/","ipaUS":"/kənˈsɪst/",
+  "defs":[{"pos":"v.","trans":"vi.","zh":"由……组成（consist of）"},{"pos":"v.","trans":"vi.","zh":"在于（consist in）"}],
+  "chunk":{
+    "pos":"v.","phrase":"consist of","zh":"由……组成，由……构成",
+    "example":{
+      "en":"The test <b>consists of</b> three parts, and the last one takes an hour.","zh":"这场考试由三部分组成，最后一部分要花一小时。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"第一分句","roles":[
+          {"text":"主语: The test","form":null,"note":null},
+          {"text":"谓语: consists of","form":"第三人称单数","note":null},
+          {"text":"宾语: three parts","form":null,"note":null}
+        ]},
+        {"label":"第二分句","roles":[
+          {"text":"连词: and","form":null,"note":null},
+          {"text":"主语: the last one","form":null,"note":null},
+          {"text":"谓语: takes","form":"第三人称单数 | 原形: take /teɪk/ 花费","note":null},
+          {"text":"宾语: an hour","form":null,"note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"Her whole dinner <b>consisted of</b> a cold egg and half a cup of tea.","zh":"她的整顿晚饭就是一个凉鸡蛋和半杯茶。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Her whole dinner","form":null,"note":"n. 晚饭 /ˈdɪnə/"},
+      {"text":"谓语: consisted of","form":"过去式","note":null},
+      {"text":"宾语: a cold egg and half a cup of tea","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"Good service does not <b>consist</b> in saying yes to everything a customer asks.","zh":"好的服务并不在于顾客要什么都答应。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Good service","form":null,"note":"n. 服务 /ˈsɜːvɪs/"},
+      {"text":"谓语: does not consist in","form":"助动词+原形","note":null},
+      {"text":"宾语: saying yes to everything a customer asks","form":"现在分词","note":"n. 顾客 /ˈkʌstəmə/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"be made up of","ipa":"/bi meɪd ʌp əv/","ipaUS":"/bi meɪd ʌp əv/","zh":"由……构成","diff":"be made up of 是被动结构，日常口语更常用；consist of 主动形式、永不用被动，写 is consisted of 是典型错误。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"include","ipa":"/ɪnˈkluːd/","ipaUS":"/ɪnˈkluːd/","zh":"包括，包含","diff":"include 只列出其中一部分，后面可以还有别的；consist of 必须把成分列全，说的是整体的全部构成。"}
+  ],
+  "contrast":{
+    "frame":"The team ____ five people",
+    "items":[
+      {"mark":"✓","word":"consist of","en":"The team consists of five people","note":"完整列出全部成员，正是 consist of 的用法"},
+      {"mark":"~","word":"include","en":"The team includes five people","note":"可以但意思变了：暗示除这五人外可能还有别人"},
+      {"mark":"✗","word":"be consisted of","en":"The team is consisted of five people","note":"出错，consist 是不及物动词，永远不能用被动语态"}
+    ]
+  }
+},
+{
+  "word":"consistent","ipa":"/kənˈsɪstənt/","ipaUS":"/kənˈsɪstənt/",
+  "defs":[{"pos":"adj.","trans":null,"zh":"始终如一的，稳定的"},{"pos":"adj.","trans":null,"zh":"一致的，相符的（consistent with）"}],
+  "chunk":{
+    "pos":"adj.","phrase":"be consistent with","zh":"与……一致，与……相符",
+    "example":{
+      "en":"His story <b>was</b> not <b>consistent with</b> what the camera showed.","zh":"他的说法和摄像头拍到的对不上。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"主句","roles":[
+          {"text":"主语: His story","form":null,"note":null},
+          {"text":"系动词: was not","form":"过去式 | 原形: be 是","note":null},
+          {"text":"表语: consistent with...","form":null,"note":null}
+        ]},
+        {"label":"从句(宾语从句)","roles":[
+          {"text":"连接词: what","form":null,"note":null},
+          {"text":"主语: the camera","form":null,"note":"n. 摄像头 /ˈkæmrə/"},
+          {"text":"谓语: showed","form":"过去式 | 原形: show /ʃəʊ/ 显示","note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"She is not the fastest runner, but she is the most <b>consistent</b> one on the team.","zh":"她不是跑得最快的，但她是队里最稳定的一个。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"系动词: is not","form":"第三人称单数 | 原形: be 是","note":null},
+        {"text":"表语: the fastest runner","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: but","form":null,"note":null},
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"系动词: is","form":"第三人称单数 | 原形: be 是","note":null},
+        {"text":"表语: the most consistent one on the team","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Two hours of <b>consistent</b> study every evening beats one long night before the exam.","zh":"每晚坚持学两小时，胜过考前熬一整夜。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Two hours of consistent study every evening","form":null,"note":null},
+      {"text":"谓语: beats","form":"第三人称单数 | 原形: beat /biːt/ 胜过","note":null},
+      {"text":"宾语: one long night before the exam","form":null,"note":"n. 考试 /ɪɡˈzæm/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"adj.","word":"stable","ipa":"/ˈsteɪbl/","ipaUS":"/ˈsteɪbl/","zh":"稳定的，不变的","diff":"stable 说的是状态本身不波动（stable price、stable job）；consistent 强调一次又一次表现都一样，主语常是人的行为、成绩、质量。"},
+    {"type":"ant","sym":"≠","pos":"adj.","word":"changeable","ipa":"/ˈtʃeɪndʒəbl/","ipaUS":"/ˈtʃeɪndʒəbl/","zh":"多变的，易变的","diff":"changeable 指说变就变、没准头，常用于天气、心情；consistent 正相反，强调每次都保持同一水准。"}
+  ],
+  "contrast":{
+    "frame":"a ____ performance",
+    "items":[
+      {"mark":"✓","word":"consistent","en":"a consistent performance","note":"强调每次表现都保持同一水准，体育、职场评价的标准搭配"},
+      {"mark":"~","word":"stable","en":"a stable performance","note":"可以，但 stable 更偏“数值不波动”，用于人的表现略生硬"},
+      {"mark":"✗","word":"same","en":"a same performance","note":"出错，same 前必须用 the，且只说“相同”，不含“持续保持水准”的褒义"}
+    ]
+  }
+},
+{
+  "word":"event","ipa":"/ɪˈvent/","ipaUS":"/ɪˈvent/",
+  "defs":[{"pos":"n.","trans":null,"zh":"事件，大事"},{"pos":"n.","trans":null,"zh":"（有组织的）活动，赛事"}],
+  "chunk":{
+    "pos":"n.","phrase":"in the event of","zh":"万一……发生，如果发生……",
+    "example":{
+      "en":"<b>In the event of</b> a fire, use the stairs, not the lift.","zh":"万一起火，请走楼梯，不要坐电梯。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: In the event of a fire","form":null,"note":null},
+        {"text":"谓语: use","form":"原形","note":null},
+        {"text":"宾语: the stairs, not the lift","form":null,"note":"n. 楼梯 /steəz/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Losing that job turned out to be the best <b>event</b> of her life.","zh":"丢了那份工作，最后竟成了她人生中最好的一件事。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Losing that job","form":"现在分词","note":null},
+      {"text":"谓语: turned out","form":"过去式 | 原形: turn out /tɜːn/ 结果是","note":null},
+      {"text":"表语: to be the best event of her life","form":"不定式(to+原形)","note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"The company holds a sports <b>event</b> every spring to bring staff together.","zh":"公司每年春天办一次运动会，好让员工聚一聚。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: The company","form":null,"note":"n. 公司 /ˈkʌmpəni/"},
+      {"text":"谓语: holds","form":"第三人称单数 | 原形: hold /həʊld/ 举办","note":null},
+      {"text":"宾语: a sports event","form":null,"note":null},
+      {"text":"状语: every spring","form":null,"note":null},
+      {"text":"状语: to bring staff together","form":"不定式(to+原形)","note":"n. 员工 /stɑːf/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"accident","ipa":"/ˈæksɪdənt/","ipaUS":"/ˈæksɪdənt/","zh":"事故，意外","diff":"accident 一定是意外且多半是坏事（车祸、摔伤）；event 中性，好事坏事都行，还能指有组织的活动。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"activity","ipa":"/ækˈtɪvəti/","ipaUS":"/ækˈtɪvəti/","zh":"活动","diff":"activity 指日常做的事，可以很小很随意（outdoor activities）；event 指专门安排、有时间地点的大型活动，规模和正式程度更高。"}
+  ],
+  "contrast":{
+    "frame":"a sports ____",
+    "items":[
+      {"mark":"✓","word":"event","en":"a sports event","note":"指有组织、有日期的赛事，媒体和通知里的标准说法"},
+      {"mark":"~","word":"activity","en":"a sports activity","note":"可以，但偏“做运动这件事”，规模小、不强调正式安排"},
+      {"mark":"✗","word":"accident","en":"a sports accident","note":"意思完全不同，变成“运动中发生的事故”"}
+    ]
+  }
+},
+{
+  "word":"decrease","ipa":"/dɪˈkriːs/","ipaUS":"/dɪˈkriːs/",
+  "defs":[{"pos":"v.","trans":"vt./vi.","zh":"减少，下降；使减少"},{"pos":"n.","trans":null,"zh":"减少（量），下降"}],
+  "chunk":{
+    "pos":"v.","phrase":"decrease by","zh":"减少了（多少）",
+    "example":{
+      "en":"Sales <b>decreased by</b> ten percent after the shop moved.","zh":"店铺搬迁后，销售额下降了百分之十。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Sales","form":null,"note":null},
+        {"text":"谓语: decreased by","form":"过去式","note":null},
+        {"text":"宾语: ten percent","form":null,"note":"n. 百分比 /pəˈsent/"},
+        {"text":"状语: after the shop moved","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Her sleep <b>decreased</b> to four hours a night, and soon she could not think clearly.","zh":"她的睡眠减到每晚四小时，很快就没法清晰思考了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: Her sleep","form":null,"note":null},
+        {"text":"谓语: decreased","form":"过去式","note":null},
+        {"text":"状语: to four hours a night","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: and","form":null,"note":null},
+        {"text":"状语: soon","form":null,"note":null},
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"谓语: could not think","form":"情态+原形","note":null},
+        {"text":"状语: clearly","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Walking to work every day <b>decreased</b> his monthly costs a lot.","zh":"每天步行上班，大大减少了他每月的开销。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Walking to work every day","form":"现在分词","note":null},
+      {"text":"谓语: decreased","form":"过去式","note":null},
+      {"text":"宾语: his monthly costs","form":null,"note":"adj. 每月的 /ˈmʌnθli/"},
+      {"text":"状语: a lot","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"reduce","ipa":"/rɪˈdjuːs/","ipaUS":"/rɪˈduːs/","zh":"减少，降低","diff":"reduce 必须有人或事去主动削减（reduce prices），是及物动词；decrease 既能主动减也能自己下降（Sales decreased），描述数据变化时更常见。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"increase","ipa":"/ɪnˈkriːs/","ipaUS":"/ɪnˈkriːs/","zh":"增加，增长","diff":"increase 与 decrease 是一对反义词，用法完全对称：increase/decrease by 10%、by 表示变化幅度，to 表示变到某个数值。"}
+  ],
+  "contrast":{
+    "frame":"Sales ____ by 10%",
+    "items":[
+      {"mark":"✓","word":"decrease","en":"Sales decreased by 10%","note":"数据自己下降，不及物用法，图表和报告的标准说法"},
+      {"mark":"~","word":"fall","en":"Sales fell by 10%","note":"可以，意思相同但更口语、更常见于新闻标题"},
+      {"mark":"✗","word":"reduce","en":"Sales reduced by 10%","note":"别扭，reduce 需要施动者，应说 The company reduced prices by 10%"}
+    ]
+  }
+},
+{
+  "word":"build","ipa":"/bɪld/","ipaUS":"/bɪld/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"建造，修建"},{"pos":"v.","trans":"vt.","zh":"建立，培养（关系、信心）"},{"pos":"n.","trans":null,"zh":"体格，身材"}],
+  "chunk":{
+    "pos":"v.","phrase":"build up","zh":"逐渐增强，积累起来",
+    "example":{
+      "en":"He <b>built up</b> his English by reading one short story every night.","zh":"他靠每晚读一个短篇故事，一点点提高了英语。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: built up","form":"过去式","note":null},
+        {"text":"宾语: his English","form":null,"note":null},
+        {"text":"状语: by reading one short story every night","form":"现在分词","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"They spent ten years <b>building</b> a small shop into a busy restaurant.","zh":"他们花了十年，把一家小店做成了热闹的餐厅。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: They","form":null,"note":null},
+      {"text":"谓语: spent","form":"过去式 | 原形: spend /spend/ 花费","note":null},
+      {"text":"宾语: ten years","form":null,"note":null},
+      {"text":"宾补: building a small shop into a busy restaurant","form":"现在分词","note":"n. 餐厅 /ˈrestrɒnt/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"It takes years to <b>build</b> trust with a customer, but only one lie to lose it.","zh":"和客户建立信任要好几年，毁掉它只需一次撒谎。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"形式主语: It","form":null,"note":null},
+        {"text":"谓语: takes","form":"第三人称单数 | 原形: take /teɪk/ 需要","note":null},
+        {"text":"宾语: years","form":null,"note":null},
+        {"text":"真正主语: to build trust with a customer","form":"不定式(to+原形)","note":"n. 顾客 /ˈkʌstəmə/"}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: but","form":null,"note":null},
+        {"text":"状语: only one lie to lose it","form":"不定式(to+原形)","note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"construct","ipa":"/kənˈstrʌkt/","ipaUS":"/kənˈstrʌkt/","zh":"建造，构筑","diff":"construct 明显更正式、更技术，多见于工程报告（construct a bridge）；build 日常通用，还能接抽象对象如 trust、confidence，construct 不能。"},
+    {"type":"ant","sym":"≠","pos":"v.","word":"destroy","ipa":"/dɪˈstrɔɪ/","ipaUS":"/dɪˈstrɔɪ/","zh":"摧毁，毁掉","diff":"destroy 是把已有的东西毁掉，具体（房子）抽象（信任、希望）都能接；build 正好相反，是从无到有地造起来、养起来。"}
+  ],
+  "contrast":{
+    "frame":"____ trust",
+    "items":[
+      {"mark":"✓","word":"build","en":"build trust","note":"固定搭配，强调一点点积累出来，抽象对象照样能接"},
+      {"mark":"~","word":"create","en":"create trust","note":"勉强可用，但 create 强调“凭空造出”，缺少信任需要慢慢累积的意味"},
+      {"mark":"✗","word":"construct","en":"construct trust","note":"别扭，construct 的对象是建筑、结构等实体或理论模型，不接 trust"}
+    ]
+  }
+},
+{
+  "word":"occasion","ipa":"/əˈkeɪʒn/","ipaUS":"/əˈkeɪʒn/",
+  "defs":[{"pos":"n.","trans":null,"zh":"（某事发生的）时候，场合"},{"pos":"n.","trans":null,"zh":"特殊的活动，重要场合"}],
+  "chunk":{
+    "pos":"n.","phrase":"on occasion","zh":"偶尔，有时候",
+    "example":{
+      "en":"He cooks for himself every day and eats out only <b>on occasion</b>.","zh":"他每天自己做饭，只是偶尔才出去吃。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"第一分句","roles":[
+          {"text":"主语: He","form":null,"note":null},
+          {"text":"谓语: cooks","form":"第三人称单数 | 原形: cook /kʊk/ 做饭","note":null},
+          {"text":"状语: for himself every day","form":null,"note":null}
+        ]},
+        {"label":"第二分句","roles":[
+          {"text":"连词: and","form":null,"note":null},
+          {"text":"谓语: eats out","form":"第三人称单数 | 原形: eat out /iːt/ 外出吃饭","note":null},
+          {"text":"状语: only on occasion","form":null,"note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"She wore that dress only once, on the <b>occasion</b> of her sister's wedding.","zh":"那条裙子她只穿过一次，是在她姐姐婚礼那个场合。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: She","form":null,"note":null},
+      {"text":"谓语: wore","form":"过去式 | 原形: wear /weə/ 穿","note":null},
+      {"text":"宾语: that dress","form":null,"note":null},
+      {"text":"状语: only once","form":null,"note":null},
+      {"text":"状语: on the occasion of her sister's wedding","form":null,"note":"n. 婚礼 /ˈwedɪŋ/"}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"On one <b>occasion</b> he forgot his boss's name in front of the whole office.","zh":"有一次，他当着全办公室的面忘了老板的名字。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: On one occasion","form":null,"note":null},
+      {"text":"主语: he","form":null,"note":null},
+      {"text":"谓语: forgot","form":"过去式 | 原形: forget /fəˈɡet/ 忘记","note":null},
+      {"text":"宾语: his boss's name","form":null,"note":null},
+      {"text":"状语: in front of the whole office","form":null,"note":"n. 办公室 /ˈɒfɪs/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"chance","ipa":"/tʃɑːns/","ipaUS":"/tʃæns/","zh":"机会，可能性","diff":"中国学生最容易混的一组：chance 是“可以利用的机会”；occasion 只是“某个时候、某个场合”，不含机会的意思，说 I had an occasion to study abroad 是错的。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"event","ipa":"/ɪˈvent/","ipaUS":"/ɪˈvent/","zh":"事件，活动","diff":"event 指发生的事情或办的活动本身；occasion 侧重那件事发生的“时间点与场合氛围”，所以说 a formal occasion（正式场合），不说 a formal event 表示同一意思。"}
+  ],
+  "contrast":{
+    "frame":"I had the ____ to study abroad",
+    "items":[
+      {"mark":"✓","word":"chance","en":"I had the chance to study abroad","note":"表示“得到机会”，此处必须用 chance 或 opportunity"},
+      {"mark":"✗","word":"occasion","en":"I had the occasion to study abroad","note":"出错，occasion 只表示场合、时候，不能表示可利用的机会"}
+    ]
+  }
+},
+{
+  "word":"experience","ipa":"/ɪkˈspɪəriəns/","ipaUS":"/ɪkˈspɪriəns/",
+  "defs":[{"pos":"n.","trans":null,"zh":"经验，阅历"},{"pos":"n.","trans":null,"zh":"经历，体验（一件事）"},{"pos":"v.","trans":"vt.","zh":"经历，体验到"}],
+  "chunk":{
+    "pos":"n.","phrase":"work experience","zh":"工作经验",
+    "example":{
+      "en":"Most of these jobs ask for at least two years of <b>work experience</b>.","zh":"这些岗位大多要求至少两年工作经验。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Most of these jobs","form":null,"note":null},
+        {"text":"谓语: ask for","form":"原形","note":null},
+        {"text":"宾语: at least two years of work experience","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Losing that game was a painful <b>experience</b>, but it changed the way he trained.","zh":"输掉那场比赛是段痛苦的经历，但它改变了他训练的方式。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: Losing that game","form":"现在分词","note":null},
+        {"text":"系动词: was","form":"过去式 | 原形: be 是","note":null},
+        {"text":"表语: a painful experience","form":null,"note":"adj. 痛苦的 /ˈpeɪnfl/"}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: but","form":null,"note":null},
+        {"text":"主语: it","form":null,"note":null},
+        {"text":"谓语: changed","form":"过去式 | 原形: change /tʃeɪndʒ/ 改变","note":null},
+        {"text":"宾语: the way he trained","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"She <b>experienced</b> her first winter alone in a city where no one knew her name.","zh":"她在一座没人知道她名字的城市里，独自经历了第一个冬天。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语: experienced","form":"过去式","note":null},
+        {"text":"宾语: her first winter","form":null,"note":null},
+        {"text":"状语: alone in a city","form":null,"note":null}
+      ]},
+      {"label":"从句(定语从句)","roles":[
+        {"text":"关系词: where","form":null,"note":null},
+        {"text":"主语: no one","form":null,"note":null},
+        {"text":"谓语: knew","form":"过去式 | 原形: know /nəʊ/ 知道","note":null},
+        {"text":"宾语: her name","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"experiment","ipa":"/ɪkˈsperɪmənt/","ipaUS":"/ɪkˈsperəmənt/","zh":"实验，试验","diff":"拼写相近但意思差很远：experiment 是为验证想法而做的实验，多在实验室、研究里；experience 是亲身经历、积累的经验，不含“测试”的意思。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"skill","ipa":"/skɪl/","ipaUS":"/skɪl/","zh":"技能，本领","diff":"skill 是练出来的具体能力（driving skills）；experience 是做过多久、见过多少事，招聘广告里两者常并列但不能互换。"}
+  ],
+  "contrast":{
+    "frame":"two years of ____",
+    "items":[
+      {"mark":"✓","word":"experience","en":"two years of experience","note":"此处 experience 是不可数名词，指积累的经验，招聘语境标准搭配"},
+      {"mark":"~","word":"experiences","en":"two years of experiences","note":"别扭，加 s 后变成一件件具体经历，与“时长”搭配不自然"},
+      {"mark":"✗","word":"experiment","en":"two years of experiment","note":"出错，experiment 指实验行为，不能表示工作资历"}
+    ]
+  }
+},
+{
+  "word":"experiment","ipa":"/ɪkˈsperɪmənt/","ipaUS":"/ɪkˈsperəmənt/",
+  "defs":[{"pos":"n.","trans":null,"zh":"实验，试验"},{"pos":"v.","trans":"vi.","zh":"做实验；尝试（experiment with）"}],
+  "chunk":{
+    "pos":"v.","phrase":"experiment with sth","zh":"用……做实验；尝试某种做法",
+    "example":{
+      "en":"The cook likes to <b>experiment with</b> new ways of making bread.","zh":"这位厨师喜欢尝试做面包的新方法。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The cook","form":null,"note":null},
+        {"text":"谓语: likes","form":"第三人称单数 | 原形: like /laɪk/ 喜欢","note":null},
+        {"text":"宾语: to experiment with new ways of making bread","form":"不定式(to+原形)","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"Their first <b>experiment</b> failed twice before the machine finally worked.","zh":"他们的第一个实验失败了两次，机器才终于运转起来。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: Their first experiment","form":null,"note":null},
+        {"text":"谓语: failed","form":"过去式 | 原形: fail /feɪl/ 失败","note":null},
+        {"text":"状语: twice","form":null,"note":null}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: before","form":null,"note":null},
+        {"text":"主语: the machine","form":null,"note":"n. 机器 /məˈʃiːn/"},
+        {"text":"状语: finally","form":null,"note":null},
+        {"text":"谓语: worked","form":"过去式 | 原形: work /wɜːk/ 运转","note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Students in the science class did a simple <b>experiment</b> to show how plants drink water.","zh":"科学课上，学生们做了个简单实验，展示植物是怎么吸水的。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Students in the science class","form":null,"note":"n. 科学 /ˈsaɪəns/"},
+      {"text":"谓语: did","form":"过去式 | 原形: do /duː/ 做","note":null},
+      {"text":"宾语: a simple experiment","form":null,"note":null},
+      {"text":"状语: to show how plants drink water","form":"不定式(to+原形)","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"experience","ipa":"/ɪkˈspɪəriəns/","ipaUS":"/ɪkˈspɪriəns/","zh":"经验；经历","diff":"最易混的一对：experiment 是主动设计去测试某个想法；experience 是被动经历、事后留下的阅历，二者拼写像但用法不重叠。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"test","ipa":"/test/","ipaUS":"/test/","zh":"测试，检验","diff":"test 是及物动词，直接接宾语（test the water）；experiment 是不及物，必须说 experiment with/on，且更强调探索性、结果未知。"}
+  ],
+  "contrast":{
+    "frame":"do an ____ in the lab",
+    "items":[
+      {"mark":"✓","word":"experiment","en":"do an experiment in the lab","note":"实验室场景的标准搭配，动词用 do 或 carry out"},
+      {"mark":"~","word":"test","en":"do a test in the lab","note":"可以，但 test 偏“检验已知标准是否达标”，探索性弱"},
+      {"mark":"✗","word":"experience","en":"do an experience in the lab","note":"出错，experience 不与 do 搭配，也不指实验室里的操作"}
+    ]
+  }
+},
+{
+  "word":"challenge","ipa":"/ˈtʃælɪndʒ/","ipaUS":"/ˈtʃælɪndʒ/",
+  "defs":[{"pos":"n.","trans":null,"zh":"挑战，难题"},{"pos":"v.","trans":"vt.","zh":"质疑，对……提出异议"},{"pos":"v.","trans":"vt.","zh":"向……挑战，激励"}],
+  "chunk":{
+    "pos":"n.","phrase":"face a challenge","zh":"面对一个挑战",
+    "example":{
+      "en":"Every new teacher <b>faces the same challenge</b> in the first month: keeping the class quiet.","zh":"每位新老师头一个月都面临同一个挑战：让班里安静下来。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Every new teacher","form":null,"note":"n. 老师 /ˈtiːtʃə/"},
+        {"text":"谓语: faces","form":"第三人称单数 | 原形: face /feɪs/ 面对","note":null},
+        {"text":"宾语: the same challenge","form":null,"note":null},
+        {"text":"状语: in the first month","form":null,"note":null},
+        {"text":"同位语: keeping the class quiet","form":"现在分词","note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She <b>challenged</b> her boss's plan in front of everyone, and the room went silent.","zh":"她当着所有人的面质疑老板的方案，屋里一下安静了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语: challenged","form":"过去式","note":null},
+        {"text":"宾语: her boss's plan","form":null,"note":null},
+        {"text":"状语: in front of everyone","form":null,"note":"n. 每个人 /ˈevriwʌn/"}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: and","form":null,"note":null},
+        {"text":"主语: the room","form":null,"note":null},
+        {"text":"系动词: went","form":"过去式 | 原形: go /ɡəʊ/ 变得","note":null},
+        {"text":"表语: silent","form":null,"note":"adj. 安静的 /ˈsaɪlənt/"}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Moving to a city where he knew no one was the biggest <b>challenge</b> of his life.","zh":"搬到一个谁也不认识的城市，是他人生中最大的挑战。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: Moving to a city","form":"现在分词","note":null},
+        {"text":"系动词: was","form":"过去式 | 原形: be 是","note":null},
+        {"text":"表语: the biggest challenge of his life","form":null,"note":null}
+      ]},
+      {"label":"从句(定语从句)","roles":[
+        {"text":"关系词: where","form":null,"note":null},
+        {"text":"主语: he","form":null,"note":null},
+        {"text":"谓语: knew","form":"过去式 | 原形: know /nəʊ/ 认识","note":null},
+        {"text":"宾语: no one","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"difficulty","ipa":"/ˈdɪfɪkəlti/","ipaUS":"/ˈdɪfɪkəlti/","zh":"困难，难处","diff":"difficulty 纯粹是麻烦、负面的；challenge 带正面色彩，暗示难但值得一试，所以简历和面试里说 challenge 不说 difficulty。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"question","ipa":"/ˈkwestʃən/","ipaUS":"/ˈkwestʃən/","zh":"对……表示疑问，质疑","diff":"question 语气较缓，只是心里存疑、提出疑问；challenge 更强硬，是公开表示不认可、要求对方给说法。"}
+  ],
+  "contrast":{
+    "frame":"a big ____ for young workers",
+    "items":[
+      {"mark":"✓","word":"challenge","en":"a big challenge for young workers","note":"难但值得迎上去，职场和写作里的褒义表达"},
+      {"mark":"~","word":"difficulty","en":"a big difficulty for young workers","note":"可以，但只剩“麻烦”的负面感，少了积极意味"},
+      {"mark":"✗","word":"problem","en":"a big problem for young workers","note":"语义偏了，problem 指需要解决的毛病，不含“考验能力”的意思"}
+    ]
+  }
+},
+{
+  "word":"reach","ipa":"/riːtʃ/","ipaUS":"/riːtʃ/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"到达，抵达"},{"pos":"v.","trans":"vt./vi.","zh":"伸手（去拿）；够到"},{"pos":"v.","trans":"vt.","zh":"达成，达到（协议、目标）"}],
+  "chunk":{
+    "pos":"v.","phrase":"reach an agreement","zh":"达成协议",
+    "example":{
+      "en":"After three long meetings, both sides finally <b>reached an agreement</b>.","zh":"经过三场漫长的会议，双方终于达成了协议。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: After three long meetings","form":null,"note":"n. 会议 /ˈmiːtɪŋ/"},
+        {"text":"主语: both sides","form":null,"note":null},
+        {"text":"状语: finally","form":null,"note":null},
+        {"text":"谓语: reached","form":"过去式","note":null},
+        {"text":"宾语: an agreement","form":null,"note":"n. 协议 /əˈɡriːmənt/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He <b>reached</b> for the last ticket just as another hand took it.","zh":"他伸手去拿最后一张票，正好被另一只手抢走了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: reached for","form":"过去式","note":null},
+        {"text":"宾语: the last ticket","form":null,"note":"n. 票 /ˈtɪkɪt/"}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: just as","form":null,"note":null},
+        {"text":"主语: another hand","form":null,"note":null},
+        {"text":"谓语: took","form":"过去式 | 原形: take /teɪk/ 拿","note":null},
+        {"text":"宾语: it","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"The train <b>reaches</b> the city at six, so you should leave home before five.","zh":"火车六点到城里，所以你五点前得出门。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: The train","form":null,"note":null},
+        {"text":"谓语: reaches","form":"第三人称单数","note":null},
+        {"text":"宾语: the city","form":null,"note":null},
+        {"text":"状语: at six","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: so","form":null,"note":null},
+        {"text":"主语: you","form":null,"note":null},
+        {"text":"谓语: should leave","form":"情态+原形","note":null},
+        {"text":"宾语: home","form":null,"note":null},
+        {"text":"状语: before five","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"arrive","ipa":"/əˈraɪv/","ipaUS":"/əˈraɪv/","zh":"到达，抵达","diff":"中国学生最常错的一点：arrive 是不及物，必须说 arrive in/at the city；reach 是及物，直接说 reach the city，中间不加介词。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"get to","ipa":"/ɡet tuː/","ipaUS":"/ɡet tuː/","zh":"到达，抵达","diff":"get to 是最口语的说法，日常聊天首选；reach 稍正式，且还能接抽象对象（reach a goal / an agreement），get to 不能。"}
+  ],
+  "contrast":{
+    "frame":"____ the airport at six",
+    "items":[
+      {"mark":"✓","word":"reach","en":"reach the airport at six","note":"及物动词，直接接地点，无需介词，语域中性偏正式"},
+      {"mark":"~","word":"get to","en":"get to the airport at six","note":"可以，日常口语更常用，但正式书面里略随意"},
+      {"mark":"✗","word":"arrive","en":"arrive the airport at six","note":"出错，arrive 不及物，必须写 arrive at the airport"}
+    ]
+  }
+},
+{
+  "word":"assure","ipa":"/əˈʃʊə/","ipaUS":"/əˈʃʊr/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"向……保证，使确信"},{"pos":"v.","trans":"vt.","zh":"确保，保证（结果）"}],
+  "chunk":{
+    "pos":"v.","phrase":"assure sb that...","zh":"向某人保证……",
+    "example":{
+      "en":"The doctor <b>assured</b> her <b>that</b> the pain would go away in two days.","zh":"医生向她保证，两天后疼痛就会消失。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"主句","roles":[
+          {"text":"主语: The doctor","form":null,"note":"n. 医生 /ˈdɒktə/"},
+          {"text":"谓语: assured","form":"过去式","note":null},
+          {"text":"间接宾语: her","form":null,"note":null}
+        ]},
+        {"label":"从句(宾语从句)","roles":[
+          {"text":"连词: that","form":null,"note":null},
+          {"text":"主语: the pain","form":null,"note":null},
+          {"text":"谓语: would go away","form":"情态+原形","note":null},
+          {"text":"状语: in two days","form":null,"note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"He kept <b>assuring</b> his parents he was fine, while sleeping four hours a night.","zh":"他一直向父母保证自己没事，其实每晚只睡四小时。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: kept assuring","form":"过去式+现在分词","note":null},
+        {"text":"间接宾语: his parents","form":null,"note":"n. 父母 /ˈpeərənt/"},
+        {"text":"宾语从句: he was fine","form":null,"note":null}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: while","form":null,"note":null},
+        {"text":"谓语: sleeping","form":"现在分词","note":null},
+        {"text":"状语: four hours a night","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Before the flight, the pilot <b>assured</b> everyone on board that the storm had passed.","zh":"起飞前，机长向机上所有人保证暴风雨已经过去了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"状语: Before the flight","form":null,"note":"n. 航班 /flaɪt/"},
+        {"text":"主语: the pilot","form":null,"note":"n. 飞行员 /ˈpaɪlət/"},
+        {"text":"谓语: assured","form":"过去式","note":null},
+        {"text":"间接宾语: everyone on board","form":null,"note":null}
+      ]},
+      {"label":"从句(宾语从句)","roles":[
+        {"text":"连词: that","form":null,"note":null},
+        {"text":"主语: the storm","form":null,"note":"n. 暴风雨 /stɔːm/"},
+        {"text":"谓语: had passed","form":"助动词have+过去分词","note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"ensure","ipa":"/ɪnˈʃʊə/","ipaUS":"/ɪnˈʃʊr/","zh":"确保，保证（某事发生）","diff":"结构差别是关键：ensure 后面接事情（ensure that the door is locked），不能接人；assure 必须先接人（assure sb that...），是“让某人放心”。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"promise","ipa":"/ˈprɒmɪs/","ipaUS":"/ˈprɑːmɪs/","zh":"承诺，答应","diff":"promise 是承诺自己将来会做某事，责任在说话人；assure 是消除对方疑虑、让人放心，重点在对方的情绪而非自己的义务。"}
+  ],
+  "contrast":{
+    "frame":"____ him that everything is fine",
+    "items":[
+      {"mark":"✓","word":"assure","en":"assure him that everything is fine","note":"assure 后必须直接跟人，正是“让某人放心”的标准结构"},
+      {"mark":"~","word":"promise","en":"promise him that everything is fine","note":"可以，但变成了“承诺”，暗示说话人要为结果负责"},
+      {"mark":"✗","word":"ensure","en":"ensure him that everything is fine","note":"出错，ensure 后面不能直接接人，只能接事情或 that 从句"}
+    ]
+  }
+},
+{
+  "word":"negative","ipa":"/ˈneɡətɪv/","ipaUS":"/ˈneɡətɪv/",
+  "defs":[{"pos":"adj.","trans":null,"zh":"负面的，消极的"},{"pos":"adj.","trans":null,"zh":"否定的，表示拒绝的"},{"pos":"adj.","trans":null,"zh":"（检查结果）阴性的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"a negative effect on","zh":"对……产生负面影响",
+    "example":{
+      "en":"Too much noise has <b>a negative effect on</b> children's study.","zh":"噪音太大会对孩子的学习产生负面影响。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: Too much noise","form":null,"note":null},
+        {"text":"谓语: has","form":"第三人称单数 | 原形: have /hæv/ 有","note":null},
+        {"text":"宾语: a negative effect","form":null,"note":"n. 影响 /ɪˈfekt/"},
+        {"text":"状语: on children's study","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"One <b>negative</b> comment from her teacher stayed in her mind for years.","zh":"老师的一句负面评价，在她心里留了好多年。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: One negative comment from her teacher","form":null,"note":"n. 评论 /ˈkɒment/"},
+      {"text":"谓语: stayed","form":"过去式 | 原形: stay /steɪ/ 停留","note":null},
+      {"text":"状语: in her mind for years","form":null,"note":null}
+    ]}]}
+  },
+  "sceneExample":{
+    "en":"He got a <b>negative</b> answer from the bank, so he had to sell the car.","zh":"银行给了他否定的答复，他只好把车卖了。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: got","form":"过去式 | 原形: get /ɡet/ 得到","note":null},
+        {"text":"宾语: a negative answer","form":null,"note":null},
+        {"text":"状语: from the bank","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: so","form":null,"note":null},
+        {"text":"主语: he","form":null,"note":null},
+        {"text":"谓语: had to sell","form":"过去式+原形","note":null},
+        {"text":"宾语: the car","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"ant","sym":"≠","pos":"adj.","word":"positive","ipa":"/ˈpɒzətɪv/","ipaUS":"/ˈpɑːzətɪv/","zh":"积极的，正面的；（检查）阳性的","diff":"两词在每一层意思上都成对：态度上积极/消极，答复上肯定/否定，医学检查上阳性/阴性——注意医学里 positive 反而是坏消息。"},
+    {"type":"syn","sym":"≈","pos":"adj.","word":"bad","ipa":"/bæd/","ipaUS":"/bæd/","zh":"坏的，不好的","diff":"bad 是日常口语的笼统评价；negative 更正式、更具体，多用于影响、反馈、态度、检测结果，学术写作里几乎只用 negative。"}
+  ],
+  "contrast":{
+    "frame":"a ____ effect on health",
+    "items":[
+      {"mark":"✓","word":"negative","en":"a negative effect on health","note":"学术与报告语域的标准搭配，中性客观地指出坏影响"},
+      {"mark":"~","word":"bad","en":"a bad effect on health","note":"可以，意思一样但口语化，正式写作里显得随意"},
+      {"mark":"✗","word":"wrong","en":"a wrong effect on health","note":"出错，wrong 指“错误的”，不能表示有害"}
+    ]
+  }
+},
+{
+  "word":"honest","ipa":"/ˈɒnɪst/","ipaUS":"/ˈɑːnɪst/",
+  "defs":[{"pos":"adj.","trans":null,"zh":"诚实的，不撒谎的"},{"pos":"adj.","trans":null,"zh":"坦率的，实话实说的"}],
+  "chunk":{
+    "pos":"adj.","phrase":"to be honest","zh":"说实话，老实说",
+    "example":{
+      "en":"<b>To be honest</b>, I did not read the book before the class.","zh":"老实说，上课前我没读那本书。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: To be honest","form":"不定式(to+原形)","note":null},
+        {"text":"主语: I","form":null,"note":null},
+        {"text":"谓语: did not read","form":"助动词+原形","note":null},
+        {"text":"宾语: the book","form":null,"note":null},
+        {"text":"状语: before the class","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He was <b>honest</b> enough to tell his boss about the mistake before anyone found out.","zh":"他足够诚实，在别人发现之前就把错误告诉了老板。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"系动词: was","form":"过去式 | 原形: be 是","note":null},
+        {"text":"表语: honest enough","form":null,"note":null},
+        {"text":"状语: to tell his boss about the mistake","form":"不定式(to+原形)","note":"n. 错误 /mɪˈsteɪk/"}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: before","form":null,"note":null},
+        {"text":"主语: anyone","form":null,"note":null},
+        {"text":"谓语: found out","form":"过去式 | 原形: find out /faɪnd/ 发觉","note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"The shop owner gave back the extra money, and people still call him an <b>honest</b> man.","zh":"店主把多收的钱退了回去，人们至今仍说他是个实诚人。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: The shop owner","form":null,"note":"n. 店主 /ˈəʊnə/"},
+        {"text":"谓语: gave back","form":"过去式 | 原形: give back /ɡɪv/ 归还","note":null},
+        {"text":"宾语: the extra money","form":null,"note":"adj. 额外的 /ˈekstrə/"}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: and","form":null,"note":null},
+        {"text":"主语: people","form":null,"note":null},
+        {"text":"谓语: call","form":"原形","note":null},
+        {"text":"宾语: him","form":null,"note":null},
+        {"text":"宾补: an honest man","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"adj.","word":"frank","ipa":"/fræŋk/","ipaUS":"/fræŋk/","zh":"坦率的，直言不讳的","diff":"frank 说的是“有话直说、不绕弯子”，可能说得很不客气；honest 是“不撒谎”，重点在真实，不涉及说话方式是否委婉。"},
+    {"type":"ant","sym":"≠","pos":"adj.","word":"dishonest","ipa":"/dɪsˈɒnɪst/","ipaUS":"/dɪsˈɑːnɪst/","zh":"不诚实的，骗人的","diff":"dishonest 是 honest 加否定前缀 dis- 构成的反义词，指靠撒谎或欺骗做事，常用于评价人品和商业行为。"}
+  ],
+  "contrast":{
+    "frame":"____ , I don't like it",
+    "items":[
+      {"mark":"✓","word":"To be honest","en":"To be honest, I don't like it","note":"日常口语最常用的引出真实想法的固定说法"},
+      {"mark":"~","word":"To be frank","en":"To be frank, I don't like it","note":"可以，但语气更冲，预告接下来的话可能不中听"},
+      {"mark":"✗","word":"To be true","en":"To be true, I don't like it","note":"出错，英语里没有 to be true 这个插入语说法"}
+    ]
+  }
+},
+{
+  "word":"copyright","ipa":"/ˈkɒpiraɪt/","ipaUS":"/ˈkɑːpiraɪt/",
+  "defs":[{"pos":"n.","trans":null,"zh":"版权，著作权"},{"pos":"adj.","trans":null,"zh":"受版权保护的"}],
+  "chunk":{
+    "pos":"n.","phrase":"hold the copyright","zh":"拥有版权",
+    "example":{
+      "en":"The writer still <b>holds the copyright</b> to all her early songs.","zh":"这位作者至今仍拥有她早期所有歌曲的版权。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: The writer","form":null,"note":"n. 作者 /ˈraɪtə/"},
+        {"text":"状语: still","form":null,"note":null},
+        {"text":"谓语: holds","form":"第三人称单数 | 原形: hold /həʊld/ 持有","note":null},
+        {"text":"宾语: the copyright to all her early songs","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"He used a photo without asking and later received a <b>copyright</b> letter from a law office.","zh":"他没打招呼就用了一张照片，后来收到了律师事务所的版权函。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: used","form":"过去式 | 原形: use /juːz/ 使用","note":null},
+        {"text":"宾语: a photo","form":null,"note":null},
+        {"text":"状语: without asking","form":"现在分词","note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: and","form":null,"note":null},
+        {"text":"状语: later","form":null,"note":null},
+        {"text":"谓语: received","form":"过去式 | 原形: receive /rɪˈsiːv/ 收到","note":null},
+        {"text":"宾语: a copyright letter from a law office","form":null,"note":"n. 办公室 /ˈɒfɪs/"}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Teachers must check the <b>copyright</b> before putting a whole book online for students.","zh":"老师把整本书放到网上给学生前，必须先确认版权。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Teachers","form":null,"note":"n. 老师 /ˈtiːtʃə/"},
+      {"text":"谓语: must check","form":"情态+原形","note":null},
+      {"text":"宾语: the copyright","form":null,"note":null},
+      {"text":"状语: before putting a whole book online for students","form":"现在分词","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"right","ipa":"/raɪt/","ipaUS":"/raɪt/","zh":"权利","diff":"right 泛指各种权利（human rights、the right to vote）；copyright 是其中一种具体权利，专指作品的复制与使用权，不可互换。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"patent","ipa":"/ˈpætnt/","ipaUS":"/ˈpætnt/","zh":"专利，专利权","diff":"保护对象不同：patent 保护发明和技术方案，需要申请；copyright 保护书、歌、图片等创作作品，作品完成即自动产生。"}
+  ],
+  "contrast":{
+    "frame":"the ____ of this song",
+    "items":[
+      {"mark":"✓","word":"copyright","en":"the copyright of this song","note":"歌曲、书籍、图片等创作作品的权利，正是 copyright 的对象"},
+      {"mark":"~","word":"rights","en":"the rights to this song","note":"可以，法律和音乐行业常这么说，但更笼统，可含表演权等其他权利"},
+      {"mark":"✗","word":"patent","en":"the patent of this song","note":"出错，patent 只保护发明创造，不用于歌曲等作品"}
+    ]
+  }
+},
+{
+  "word":"motivate","ipa":"/ˈməʊtɪveɪt/","ipaUS":"/ˈmoʊtɪveɪt/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"激励，激发（某人的积极性）"},{"pos":"v.","trans":"vt.","zh":"促使，成为……的动机"}],
+  "chunk":{
+    "pos":"v.","phrase":"motivate sb to do sth","zh":"激励某人去做某事",
+    "example":{
+      "en":"A good coach knows how to <b>motivate</b> young players <b>to</b> keep going.","zh":"好教练懂得怎样激励年轻队员坚持下去。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: A good coach","form":null,"note":null},
+        {"text":"谓语: knows","form":"第三人称单数 | 原形: know /nəʊ/ 知道","note":null},
+        {"text":"宾语: how to motivate young players to keep going","form":"不定式(to+原形)","note":"n. 队员 /ˈpleɪə/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"What <b>motivated</b> her to get up at five every morning was a photo of her old team.","zh":"促使她每天五点起床的，是一张她老队伍的照片。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"从句(主语从句)","roles":[
+        {"text":"连接词: What","form":null,"note":null},
+        {"text":"谓语: motivated","form":"过去式","note":null},
+        {"text":"宾语: her","form":null,"note":null},
+        {"text":"宾补: to get up at five every morning","form":"不定式(to+原形)","note":null}
+      ]},
+      {"label":"主句","roles":[
+        {"text":"系动词: was","form":"过去式 | 原形: be 是","note":null},
+        {"text":"表语: a photo of her old team","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Money alone will not <b>motivate</b> staff if no one thanks them for their work.","zh":"如果没人对员工的付出说声谢谢，光靠钱是激励不了他们的。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: Money alone","form":null,"note":null},
+        {"text":"谓语: will not motivate","form":"情态+原形","note":null},
+        {"text":"宾语: staff","form":null,"note":"n. 员工 /stɑːf/"}
+      ]},
+      {"label":"从句(条件状语从句)","roles":[
+        {"text":"连词: if","form":null,"note":null},
+        {"text":"主语: no one","form":null,"note":null},
+        {"text":"谓语: thanks","form":"第三人称单数 | 原形: thank /θæŋk/ 感谢","note":null},
+        {"text":"宾语: them","form":null,"note":null},
+        {"text":"状语: for their work","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"encourage","ipa":"/ɪnˈkʌrɪdʒ/","ipaUS":"/ɪnˈkɜːrɪdʒ/","zh":"鼓励，支持","diff":"encourage 是通过说好话、给支持让人有勇气去做；motivate 是给出理由或动力，让人从心里想去做，多用于管理、教学、训练语境。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"inspire","ipa":"/ɪnˈspaɪə/","ipaUS":"/ɪnˈspaɪr/","zh":"启发，激发灵感","diff":"inspire 偏情感与灵感层面，让人受触动、产生新想法；motivate 更实际，指推动人去持续行动、完成目标。"}
+  ],
+  "contrast":{
+    "frame":"____ staff to work harder",
+    "items":[
+      {"mark":"✓","word":"motivate","en":"motivate staff to work harder","note":"管理语境标准搭配，强调给出动力让人持续行动"},
+      {"mark":"~","word":"encourage","en":"encourage staff to work harder","note":"可以，但偏“给勇气、说好话”，缺少制度性动力的意味"},
+      {"mark":"✗","word":"force","en":"force staff to work harder","note":"语义相反，force 是强迫，与激励的内在驱动完全不同"}
+    ]
+  }
+},
+{
+  "word":"moan","ipa":"/məʊn/","ipaUS":"/moʊn/",
+  "defs":[{"pos":"v.","trans":"vi.","zh":"抱怨，发牢骚（moan about）"},{"pos":"v.","trans":"vi.","zh":"（因痛苦而）呻吟"},{"pos":"n.","trans":null,"zh":"呻吟声；抱怨"}],
+  "chunk":{
+    "pos":"v.","phrase":"moan about sth","zh":"抱怨某事，为某事发牢骚",
+    "example":{
+      "en":"He <b>moans about</b> the weather every single morning.","zh":"他每天早上都要抱怨一通天气。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: moans about","form":"第三人称单数","note":null},
+        {"text":"宾语: the weather","form":null,"note":"n. 天气 /ˈweðə/"},
+        {"text":"状语: every single morning","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She fell off her bike and lay there <b>moaning</b> until a stranger helped her up.","zh":"她从自行车上摔下来，躺在那儿呻吟，直到一个陌生人把她扶起来。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语1: fell off","form":"过去式 | 原形: fall off /fɔːl/ 摔下","note":null},
+        {"text":"宾语: her bike","form":null,"note":null},
+        {"text":"谓语2: lay there moaning","form":"过去式+现在分词","note":null}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: until","form":null,"note":null},
+        {"text":"主语: a stranger","form":null,"note":"n. 陌生人 /ˈstreɪndʒə/"},
+        {"text":"谓语: helped","form":"过去式 | 原形: help /help/ 帮助","note":null},
+        {"text":"宾语: her up","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Instead of <b>moaning</b> about his job, he spent two months learning to write code.","zh":"他没抱怨工作，而是花了两个月学写代码。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"状语: Instead of moaning about his job","form":"现在分词","note":null},
+      {"text":"主语: he","form":null,"note":null},
+      {"text":"谓语: spent","form":"过去式 | 原形: spend /spend/ 花费","note":null},
+      {"text":"宾语: two months","form":null,"note":null},
+      {"text":"宾补: learning to write code","form":"现在分词","note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"complain","ipa":"/kəmˈpleɪn/","ipaUS":"/kəmˈpleɪn/","zh":"抱怨，投诉","diff":"complain 中性，可以是正式投诉（complain to the manager）；moan 只用于私下没完没了地发牢骚，带嫌烦的贬义，不能用于正式投诉。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"cry","ipa":"/kraɪ/","ipaUS":"/kraɪ/","zh":"哭，喊叫","diff":"cry 是流泪或大声喊；moan 是低沉的、拖长的呻吟声，多因身体疼痛，音量小得多。"}
+  ],
+  "contrast":{
+    "frame":"____ to the manager about the noise",
+    "items":[
+      {"mark":"✓","word":"complain","en":"complain to the manager about the noise","note":"正式投诉、希望对方处理，语域中性，此处最贴"},
+      {"mark":"✗","word":"moan","en":"moan to the manager about the noise","note":"别扭，moan 是私下发牢骚，用于正式投诉场合语域不合"}
+    ]
+  }
+},
+{
+  "word":"envy","ipa":"/ˈenvi/","ipaUS":"/ˈenvi/",
+  "defs":[{"pos":"v.","trans":"vt.","zh":"羡慕，嫉妒"},{"pos":"n.","trans":null,"zh":"羡慕，嫉妒（之情）"}],
+  "chunk":{
+    "pos":"v.","phrase":"envy sb sth","zh":"羡慕某人拥有某物",
+    "example":{
+      "en":"I <b>envy</b> him <b>his</b> ability to fall asleep anywhere.","zh":"我羡慕他在哪儿都能睡着的本事。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"主语: I","form":null,"note":null},
+        {"text":"谓语: envy","form":"原形","note":null},
+        {"text":"间接宾语: him","form":null,"note":null},
+        {"text":"直接宾语: his ability to fall asleep anywhere","form":"不定式(to+原形)","note":"n. 能力 /əˈbɪləti/"}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"She <b>envied</b> her friend's easy life until she saw how hard he worked at night.","zh":"她一直羡慕朋友过得轻松，直到看见他晚上有多拼。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"主句","roles":[
+        {"text":"主语: She","form":null,"note":null},
+        {"text":"谓语: envied","form":"过去式","note":null},
+        {"text":"宾语: her friend's easy life","form":null,"note":null}
+      ]},
+      {"label":"从句(时间状语从句)","roles":[
+        {"text":"连词: until","form":null,"note":null},
+        {"text":"主语: she","form":null,"note":null},
+        {"text":"谓语: saw","form":"过去式 | 原形: see /siː/ 看见","note":null},
+        {"text":"宾语从句: how hard he worked at night","form":null,"note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"His new car filled the whole office with <b>envy</b>.","zh":"他的新车让整个办公室都眼红了。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: His new car","form":null,"note":null},
+      {"text":"谓语: filled","form":"过去式 | 原形: fill /fɪl/ 充满","note":null},
+      {"text":"宾语: the whole office","form":null,"note":"n. 办公室 /ˈɒfɪs/"},
+      {"text":"状语: with envy","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"v.","word":"admire","ipa":"/ədˈmaɪə/","ipaUS":"/ədˈmaɪr/","zh":"钦佩，欣赏","diff":"admire 是纯正面的欣赏，不带“我也想要”的心思；envy 一定含有“他有我没有”的失落感，情绪偏酸。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"jealousy","ipa":"/ˈdʒeləsi/","ipaUS":"/ˈdʒeləsi/","zh":"嫉妒；吃醋","diff":"jealousy 多指怕自己已有的东西（爱人、位置）被抢走；envy 是想要别人有而自己没有的东西，方向正好相反。"}
+  ],
+  "contrast":{
+    "frame":"I ____ your free time",
+    "items":[
+      {"mark":"✓","word":"envy","en":"I envy your free time","note":"直接及物接对方拥有的东西，表达“我也想要”，最贴"},
+      {"mark":"~","word":"admire","en":"I admire your free time","note":"别扭，admire 的对象通常是品质、能力、成就，不是别人的空闲"},
+      {"mark":"✗","word":"jealous","en":"I jealous your free time","note":"出错，jealous 是形容词，须写成 I am jealous of your free time"}
+    ]
+  }
+},
+{
+  "word":"receipt","ipa":"/rɪˈsiːt/","ipaUS":"/rɪˈsiːt/",
+  "defs":[{"pos":"n.","trans":null,"zh":"收据，小票，发票"},{"pos":"n.","trans":null,"zh":"收到，接收（on receipt of）"}],
+  "chunk":{
+    "pos":"n.","phrase":"keep the receipt","zh":"留好收据",
+    "example":{
+      "en":"<b>Keep the receipt</b> in case you want to return the shoes.","zh":"把小票留好，万一你想退鞋。",
+      "grammar":{"compound":true,"clauses":[
+        {"label":"主句","roles":[
+          {"text":"谓语: Keep","form":"原形","note":null},
+          {"text":"宾语: the receipt","form":null,"note":null}
+        ]},
+        {"label":"从句(目的状语从句)","roles":[
+          {"text":"连词: in case","form":null,"note":null},
+          {"text":"主语: you","form":null,"note":null},
+          {"text":"谓语: want","form":"原形","note":null},
+          {"text":"宾语: to return the shoes","form":"不定式(to+原形)","note":null}
+        ]}
+      ]}
+    }
+  },
+  "wordExample":{
+    "en":"He lost the <b>receipt</b>, so the shop would not take the broken phone back.","zh":"他把小票弄丢了，店里不肯收回那部坏手机。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: He","form":null,"note":null},
+        {"text":"谓语: lost","form":"过去式 | 原形: lose /luːz/ 丢失","note":null},
+        {"text":"宾语: the receipt","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"连词: so","form":null,"note":null},
+        {"text":"主语: the shop","form":null,"note":null},
+        {"text":"谓语: would not take back","form":"情态+原形","note":null},
+        {"text":"宾语: the broken phone","form":null,"note":"adj. 坏的 /ˈbrəʊkən/"}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Please sign here on <b>receipt</b> of the goods.","zh":"收到货物时请在这里签字。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"谓语: sign","form":"原形","note":null},
+      {"text":"状语: here","form":null,"note":null},
+      {"text":"状语: on receipt of the goods","form":null,"note":"n. 货物 /ɡʊdz/"}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"bill","ipa":"/bɪl/","ipaUS":"/bɪl/","zh":"账单","diff":"时间点正好相反：bill 是付钱前拿到的、告诉你该付多少；receipt 是付完钱后拿到的、证明你已经付过。"},
+    {"type":"syn","sym":"≈","pos":"v.","word":"receive","ipa":"/rɪˈsiːv/","ipaUS":"/rɪˈsiːv/","zh":"收到，接到","diff":"同根但词性不同：receive 是动词“收到”，receipt 是名词“收据”或“收到这件事”。注意 receipt 中的 p 不发音。"}
+  ],
+  "contrast":{
+    "frame":"ask for the ____ after paying",
+    "items":[
+      {"mark":"✓","word":"receipt","en":"ask for the receipt after paying","note":"付款后索取的凭证，正是 receipt，购物场景标准说法"},
+      {"mark":"✗","word":"bill","en":"ask for the bill after paying","note":"出错，bill 是付款前的账单，付完再要账单不合逻辑"}
+    ]
+  }
+},
+{
+  "word":"view","ipa":"/vjuː/","ipaUS":"/vjuː/",
+  "defs":[{"pos":"n.","trans":null,"zh":"看法，观点"},{"pos":"n.","trans":null,"zh":"景色，风景；视野"},{"pos":"v.","trans":"vt.","zh":"把……看作，视为（view as）"}],
+  "chunk":{
+    "pos":"n.","phrase":"in my view","zh":"依我看，我认为",
+    "example":{
+      "en":"<b>In my view</b>, the price is far too high for a small flat.","zh":"依我看，这个价格对一套小公寓来说太高了。",
+      "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+        {"text":"状语: In my view","form":null,"note":null},
+        {"text":"主语: the price","form":null,"note":null},
+        {"text":"系动词: is","form":"第三人称单数 | 原形: be 是","note":null},
+        {"text":"表语: far too high","form":null,"note":null},
+        {"text":"状语: for a small flat","form":null,"note":null}
+      ]}]}
+    }
+  },
+  "wordExample":{
+    "en":"They paid extra for a room with a <b>view</b>, then kept the curtains closed all week.","zh":"他们多花了钱订带景观的房间，结果整周窗帘都拉着。",
+    "grammar":{"compound":true,"clauses":[
+      {"label":"第一分句","roles":[
+        {"text":"主语: They","form":null,"note":null},
+        {"text":"谓语: paid","form":"过去式 | 原形: pay /peɪ/ 支付","note":null},
+        {"text":"宾语: extra","form":null,"note":"adj. 额外的 /ˈekstrə/"},
+        {"text":"状语: for a room with a view","form":null,"note":null}
+      ]},
+      {"label":"第二分句","roles":[
+        {"text":"状语: then","form":null,"note":null},
+        {"text":"谓语: kept","form":"过去式 | 原形: keep /kiːp/ 保持","note":null},
+        {"text":"宾语: the curtains","form":null,"note":"n. 窗帘 /ˈkɜːtn/"},
+        {"text":"宾补: closed all week","form":"过去分词","note":null}
+      ]}
+    ]}
+  },
+  "sceneExample":{
+    "en":"Many young workers <b>view</b> a long commute as the real cost of a city job.","zh":"许多年轻上班族把漫长的通勤视为城市工作的真正代价。",
+    "grammar":{"compound":false,"clauses":[{"label":null,"roles":[
+      {"text":"主语: Many young workers","form":null,"note":null},
+      {"text":"谓语: view","form":"原形","note":null},
+      {"text":"宾语: a long commute","form":null,"note":"n. 通勤 /kəˈmjuːt/"},
+      {"text":"宾补: as the real cost of a city job","form":null,"note":null}
+    ]}]}
+  },
+  "relations":[
+    {"type":"syn","sym":"≈","pos":"n.","word":"opinion","ipa":"/əˈpɪnjən/","ipaUS":"/əˈpɪnjən/","zh":"意见，看法","diff":"两者作“看法”时几乎通用，只是搭配固定：说 in my view 或 in my opinion，不能说 in my sight；但 view 还有“风景”义，opinion 没有。"},
+    {"type":"syn","sym":"≈","pos":"n.","word":"scenery","ipa":"/ˈsiːnəri/","ipaUS":"/ˈsiːnəri/","zh":"风景，景色（总称）","diff":"scenery 不可数，指一片地区的自然风光总体；view 可数，指从某个位置看出去的那一幅画面，所以说 a room with a view。"}
+  ],
+  "contrast":{
+    "frame":"In my ____, this plan is risky",
+    "items":[
+      {"mark":"✓","word":"view","en":"In my view, this plan is risky","note":"固定搭配，表达个人观点，语域中性偏正式"},
+      {"mark":"~","word":"opinion","en":"In my opinion, this plan is risky","note":"完全可以，意思几乎相同，日常写作与口语中更常见"},
+      {"mark":"✗","word":"idea","en":"In my idea, this plan is risky","note":"出错，英语中没有 in my idea 这个搭配"}
+    ]
+  }
+}
+];
+/* ============ 数据区结束 ============ */
+
+/* ---------- 发音：浏览器语音合成（speechSynthesis） ---------- */
+const TTS={supported:('speechSynthesis' in window),voices:[],voice:null,rate:1,scope:'gb',loop:true};
+let curBtn=null, repTimer=null, repeating=false;
+
+function ttsTier(v){
+  if(/microsoft/i.test(v.name)&&/natural|online/i.test(v.name)) return 0;
+  if(!v.localService) return 1;
+  return 2;
+}
+const TIER_TXT=[
+  '微软自然语音 · 约 90 分，连读弱读语调都对，可以直接模仿',
+  '在线神经网络语音 · 约 80–85 分，语调自然，跟读够用',
+  '本地合成语音 · 约 55–60 分，发音准但语调机械，只适合确认读音'
+];
+/* 按口音挑当前设备上最好的语音；该口音没有就退回面板选的那个 */
+function pickVoice(acc){
+  if(!TTS.supported) return null;
+  const re = acc==='us' ? /^en[-_]US/i : /^en[-_]GB/i;
+  const list=(speechSynthesis.getVoices()||[]).filter(v=>re.test(v.lang)).sort((a,b)=>ttsTier(a)-ttsTier(b));
+  return list[0]||TTS.voice;
+}
+function showTtsMeta(){
+  const m=document.getElementById('ttsMeta'); if(!m) return;
+  if(!TTS.supported){ m.textContent='这个浏览器不支持语音合成朗读'; return; }
+  if(!TTS.voice){ m.textContent='没找到可用的英文语音'; return; }
+  m.textContent='当前：'+TTS.voice.name+' · '+TIER_TXT[ttsTier(TTS.voice)];
+}
+function loadVoices(){
+  if(!TTS.supported) return;
+  const all=speechSynthesis.getVoices()||[];
+  const en=all.filter(v=>/^en/i.test(v.lang));
+  let list;
+  if(TTS.scope==='gb')      list=en.filter(v=>/^en[-_]GB/i.test(v.lang));
+  else if(TTS.scope==='us') list=en.filter(v=>/^en[-_]US/i.test(v.lang));
+  else                      list=en;
+  if(!list.length) list=en.length?en:all;
+  list.sort((a,b)=>ttsTier(a)-ttsTier(b));
+  TTS.voices=list;
+  const sel=document.getElementById('ttsVoice'); if(!sel) return;
+  sel.innerHTML=list.map((v,i)=>'<option value="'+i+'">'+esc(v.name)+' · '+esc(v.lang)+'</option>').join('');
+  let keep=TTS.voice?list.findIndex(v=>v.name===TTS.voice.name):-1;
+  if(keep<0) keep=0;
+  sel.value=keep; TTS.voice=list[keep]||null;
+  showTtsMeta();
+}
+
+function stopAll(){
+  repeating=false; clearTimeout(repTimer);
+  if(TTS.supported) speechSynthesis.cancel();
+  if(curBtn){ curBtn.classList.remove('playing'); curBtn=null; }
+  document.querySelectorAll('.ex-en .w.on').forEach(x=>x.classList.remove('on'));
+}
+function utter(text, acc){
+  const u=new SpeechSynthesisUtterance(text);
+  const v = acc ? pickVoice(acc) : TTS.voice;
+  if(v){ u.voice=v; u.lang=v.lang; }
+  u.rate=TTS.rate;
+  return u;
+}
+
+/* 单词 / 短语：再点同一个喇叭 = 停。acc='gb'/'us' 时固定口音 */
+function playWord(word, btn, acc){
+  if(curBtn===btn){ stopAll(); return; }
+  stopAll();
+  if(!TTS.supported){ toast('浏览器不支持朗读'); return; }
+  curBtn=btn; btn.classList.add('playing'); repeating=TTS.loop;
+  const go=()=>{
+    if(curBtn!==btn) return;
+    const u=utter(word, acc);
+    u.onend=()=>{ if(curBtn!==btn) return; if(repeating){ repTimer=setTimeout(go,900); } else { stopAll(); } };
+    u.onerror=()=>{ if(curBtn===btn) stopAll(); };
+    speechSynthesis.speak(u);
+  };
+  setTimeout(go,60);
+}
+
+/* 整句：播放时逐词高亮，用面板里选的语音 */
+function playSentence(btn, enEl){
+  if(curBtn===btn){ stopAll(); return; }
+  stopAll();
+  if(!TTS.supported){ toast('浏览器不支持朗读'); return; }
+  curBtn=btn; btn.classList.add('playing'); repeating=TTS.loop;
+  const spans=Array.prototype.slice.call(enEl.querySelectorAll('.w'));
+  const text=enEl.textContent;
+  const go=()=>{
+    if(curBtn!==btn) return;
+    const u=utter(text);
+    u.onboundary=e=>{
+      if(e.name && e.name!=='word') return;
+      let hit=null;
+      spans.forEach(sp=>{ if(parseInt(sp.dataset.start,10)<=e.charIndex) hit=sp; });
+      if(hit){ spans.forEach(sp=>sp.classList.remove('on')); hit.classList.add('on'); }
+    };
+    u.onend=()=>{
+      if(curBtn!==btn) return;
+      spans.forEach(sp=>sp.classList.remove('on'));
+      if(repeating){ repTimer=setTimeout(go,1100); } else { stopAll(); }
+    };
+    u.onerror=()=>{ if(curBtn===btn) stopAll(); };
+    speechSynthesis.speak(u);
+  };
+  setTimeout(go,60);
+}
+
+/* 例句拆成可点单词，保留 <b> 结构，并记录字符偏移供逐词高亮 */
+function wrapWords(el){
+  const nodes=[]; const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
+  let n; while(n=walker.nextNode()) nodes.push(n);
+  let off=0;
+  nodes.forEach(node=>{
+    const frag=document.createDocumentFragment();
+    node.nodeValue.split(/(\s+)/).forEach(p=>{
+      if(!p) return;
+      if(/^\s+$/.test(p)){ frag.appendChild(document.createTextNode(p)); off+=p.length; return; }
+      const sp=document.createElement('span');
+      sp.className='w'; sp.textContent=p;
+      sp.dataset.start=off;
+      sp.dataset.word=p.replace(/[^A-Za-z'\u2019-]/g,'');
+      frag.appendChild(sp); off+=p.length;
+    });
+    node.parentNode.replaceChild(frag,node);
+  });
+}
+
+/* ---------- 朗读设置面板 ---------- */
+if(TTS.supported){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; } else { showTtsMeta(); }
+(function(){
+  const bar=document.getElementById('ttsbar'), btn=document.getElementById('ttsBtn');
+  if(btn) btn.addEventListener('click',()=>{
+    const hidden=bar.hasAttribute('hidden');
+    if(hidden){ bar.removeAttribute('hidden'); } else { bar.setAttribute('hidden',''); }
+    btn.classList.toggle('on',hidden);
+  });
+  const sel=document.getElementById('ttsVoice');
+  if(sel) sel.addEventListener('change',()=>{ TTS.voice=TTS.voices[parseInt(sel.value,10)]||null; stopAll(); showTtsMeta(); });
+  document.querySelectorAll('#ttsbar .tscope').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('#ttsbar .tscope').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on'); TTS.scope=b.dataset.s; TTS.voice=null; stopAll(); loadVoices();
+    });
+  });
+  document.querySelectorAll('#ttsbar .trate').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('#ttsbar .trate').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on'); TTS.rate=parseFloat(b.dataset.r); stopAll();
+    });
+  });
+  const lp=document.getElementById('ttsLoop');
+  if(lp) lp.addEventListener('click',()=>{ TTS.loop=!TTS.loop; lp.textContent='循环：'+(TTS.loop?'开':'关'); lp.classList.toggle('on',TTS.loop); if(!TTS.loop) repeating=false; });
+})();
+
+/* ---------- 复制 ---------- */
+function copy(text){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>toast('已复制')).catch(()=>fallbackCopy(text));
+  }else{ fallbackCopy(text); }
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('已复制'); }catch(e){ toast('复制失败'); }
+  document.body.removeChild(ta);
+}
+let toastTimer=null;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1400);
+}
+
+/* ---------- 结构复制文本（每行首加Tab，粘进Obsidian callout用） ---------- */
+function buildStruct(d){
+  const T='\t';
+  const L=[];
+  // 1) 单词  音标
+  L.push(d.word + '  ' + (d.ipaUS ? '英 '+d.ipa+'  美 '+d.ipaUS : d.ipa));
+  // 2..) 词性  释义（逐条）
+  d.defs.forEach(x=> L.push(x.pos + (x.trans?'  '+x.trans:'') + '  ' + x.zh));
+  // 语块  词性  释义
+  L.push(d.chunk.phrase + '  ' + d.chunk.pos + '  ' + d.chunk.zh);
+  // 近义/反义：两行制 —— 第1行: 符号 词 音标 词性 释义；第2行: 差异说明
+  d.relations.forEach(r=>{
+    L.push('');                                                  // 空行
+    L.push(r.sym + ' ' + r.word + '  ' + (r.ipaUS ? '英 '+r.ipa+' 美 '+r.ipaUS : r.ipa) + '  ' + r.pos + '  ' + (r.zh||''));
+    L.push(r.diff);                                              // 差异说明
+  });
+  // 同台对比（若有）
+  if(d.contrast && d.contrast.items && d.contrast.items.length){
+    L.push('');
+    L.push('同台对比' + (d.contrast.frame?'：'+d.contrast.frame:''));
+    d.contrast.items.forEach(it=>{ L.push((it.mark||'') + ' ' + (it.en||it.word||'') + (it.note?'  '+it.note:'')); });
+  }
+  // 每行首加 Tab（空行也加，保持 callout 连续）
+  return L.map(line => T + line).join('\n');
+}
+
+/* ---------- 渲染 ---------- */
+const SVG_SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>';
+const SVG_COPY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function stripTags(s){return s.replace(/<\/?b>/g,'');}
+
+function spk(word, acc){
+  const t = acc==='us' ? '美音发音' : (acc==='gb' ? '英音发音' : '点击发音');
+  return '<button class="spk" title="'+t+'" data-spk="'+esc(word)+'"'+(acc?' data-acc="'+acc+'"':'')+'>'+SVG_SPK+'</button>';
+}
+
+/* 词头：英 / 美 两个音标，各带各的喇叭 */
+function ipaPair(word, gb, us){
+  let h='';
+  if(gb) h+='<span class="ipa-grp"><span class="ipa-tag gb">英</span><span class="ipa">'+esc(gb)+'</span>'+spk(word,'gb')+'</span>';
+  if(us) h+='<span class="ipa-grp"><span class="ipa-tag us">美</span><span class="ipa">'+esc(us)+'</span>'+spk(word,'us')+'</span>';
+  if(!gb && !us) h+=spk(word);
+  return h;
+}
+/* 近反义词：ipaUS 有就一起显示 */
+function relIpa(r){
+  let h='<span class="rel-ipa gb"><span class="rt">英</span>'+esc(r.ipa)+'</span>'+spk(r.word,'gb');
+  if(r.ipaUS) h+='<span class="rel-ipa us"><span class="rt">美</span>'+esc(r.ipaUS)+'</span>'+spk(r.word,'us');
+  return h;
+}
+
+function renderGrammar(g){
+  if(!g||!g.clauses) return '';
+  let h='<div class="gram"><div class="gram-tag">'+(g.compound?'复合句 / 并列句':'简单句')+'</div>';
+  g.clauses.forEach(c=>{
+    h+='<div class="clause">';
+    if(c.label) h+='<div class="clause-label">'+esc(c.label)+'</div>';
+    h+='<div class="roles">';
+    c.roles.forEach(r=>{
+      h+='<span class="role">'+esc(r.text);
+      if(r.form) h+='<span class="r-form">'+esc(r.form)+'</span>';
+      if(r.note) h+='<span class="r-note">'+esc(r.note)+'</span>';
+      h+='</span>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function renderExample(ex,label){
+  const enPlain=stripTags(ex.en);
+  return ''
+    +'<div class="ex">'
+    +'<div class="ex-en">'+ex.en+'</div>'
+    +'<div class="ex-zh">'+esc(ex.zh)+'</div>'
+    +'<div class="ex-actions">'
+    +'<button class="mini" data-say="1">'+SVG_SPK+'朗读</button>'
+    +'<button class="mini" data-copy="'+encodeURIComponent('	'+enPlain)+'">'+SVG_COPY+'复制英文</button>'
+    +'<button class="mini" data-copy="'+encodeURIComponent('	'+ex.zh)+'">'+SVG_COPY+'复制中文</button>'
+    +'</div>'
+    +renderGrammar(ex.grammar)
+    +'</div>';
+}
+
+function render(i){
+  const d=DATA[i];
+  let h='';
+  // head
+  h+='<div class="head"><div class="head-left">';
+  h+='<div class="word">'+esc(d.word)+'</div>';
+  h+='<div class="ipa-line">'+ipaPair(d.word, d.ipa, d.ipaUS)+'</div>';
+  h+='</div>';
+  h+='<button class="copy-struct" data-struct="'+i+'">'+SVG_COPY+'复制释义结构</button>';
+  h+='</div>';
+  // defs
+  h+='<div class="defs">';
+  d.defs.forEach(x=>{h+='<div class="def-row"><span class="pos">'+esc(x.pos)+'</span>'+(x.trans?'<span class="trans">'+esc(x.trans)+'</span>':'')+'<span class="def-zh">'+esc(x.zh)+'</span></div>';});
+  h+='</div>';
+  // chunk
+  h+='<div class="chunk"><div class="chunk-head"><span class="pos">'+esc(d.chunk.pos)+'</span><span class="chunk-phrase">'+esc(d.chunk.phrase)+'</span>'+spk(d.chunk.phrase)+'<span class="chunk-zh">'+esc(d.chunk.zh)+'</span></div></div>';
+  // examples
+  h+='<div class="sec-label">语块例句</div>'+renderExample(d.chunk.example);
+  h+='<div class="sec-label">单词例句</div>'+renderExample(d.wordExample);
+  h+='<div class="sec-label">高频场景句</div>'+renderExample(d.sceneExample);
+  // contrast 同台对比（仅当存在时渲染，兼容无此字段的旧数据）
+  if(d.contrast && d.contrast.items && d.contrast.items.length){
+    h+='<div class="sec-label">同台对比 · 同框替换</div>';
+    h+='<div class="contrast">';
+    if(d.contrast.frame){h+='<div class="contrast-frame">框架：'+esc(d.contrast.frame)+'</div>';}
+    d.contrast.items.forEach(it=>{
+      const m=(it.mark==='✓')?'ok':((it.mark==='✗')?'no':'meh');
+      h+='<div class="ct-item '+m+'"><span class="ct-mark">'+esc(it.mark||'')+'</span><span class="ct-en">'+esc(it.en||it.word||'')+'</span>'+(it.note?'<span class="ct-note">'+esc(it.note)+'</span>':'')+'</div>';
+    });
+    h+='</div>';
+  }
+  // relations
+  h+='<div class="sec-label">近义 / 反义辨析</div>';
+  d.relations.forEach(r=>{
+    h+='<div class="rel '+(r.type==='syn'?'syn':'ant')+'">';
+    h+='<div class="rel-sym">'+esc(r.sym)+'</div>';
+    h+='<div class="rel-body"><div class="rel-top"><span class="rel-word">'+esc(r.word)+'</span>'+relIpa(r)+'<span class="rel-pos">'+esc(r.pos)+'</span>'+(r.zh?'<span class="rel-zh">'+esc(r.zh)+'</span>':'')+'</div>';
+    h+='<div class="rel-diff">'+esc(r.diff)+'</div></div></div>';
+  });
+
+  const card=document.getElementById('card');
+  card.innerHTML=h;
+  stopAll();
+  window.scrollTo(0,0);
+
+  // 例句拆词 + 点词发音
+  card.querySelectorAll('.ex-en').forEach(el=>{
+    wrapWords(el);
+    el.querySelectorAll('.w').forEach(sp=>{
+      const w=sp.dataset.word; if(!w) return;
+      sp.title='点击朗读这个词';
+      sp.addEventListener('click',()=>playWord(w,sp));
+    });
+  });
+  // 整句朗读
+  card.querySelectorAll('[data-say]').forEach(b=>{
+    const enEl=b.closest('.ex').querySelector('.ex-en');
+    b.addEventListener('click',()=>playSentence(b,enEl));
+  });
+
+  // bind speakers
+  card.querySelectorAll('[data-spk]').forEach(b=>{
+    b.addEventListener('click',()=>playWord(b.getAttribute('data-spk'),b,b.getAttribute('data-acc')));
+  });
+  // bind example copy
+  card.querySelectorAll('[data-copy]').forEach(b=>{
+    b.addEventListener('click',()=>copy(decodeURIComponent(b.getAttribute('data-copy'))));
+  });
+  // bind struct copy
+  card.querySelector('[data-struct]').addEventListener('click',()=>{
+    copy(buildStruct(DATA[parseInt(card.querySelector('[data-struct]').getAttribute('data-struct'))]));
+  });
+
+  // counter + nav
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===DATA.length-1);
+  const _j=document.getElementById('jump'); if(_j) _j.value=i;   // 同步跳转下拉框选中项
+}
+
+/* ---------- nav ---------- */
+let idx=0;
+document.getElementById('total').textContent=DATA.length;
+document.getElementById('prev').addEventListener('click',()=>{ if(idx>0){idx--;render(idx);} });
+document.getElementById('next').addEventListener('click',()=>{ if(idx<DATA.length-1){idx++;render(idx);} });
+// 跳转下拉框：填充全部单词，选择即跳转（复用同一 idx / render）
+const _jump=document.getElementById('jump');
+if(_jump){
+  _jump.innerHTML=DATA.map((d,i)=>'<option value="'+i+'">'+(i+1)+'. '+esc(d.word)+'</option>').join('');
+  _jump.addEventListener('change',()=>{ idx=parseInt(_jump.value,10); render(idx); });
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'&&idx>0){idx--;render(idx);}
+  if(e.key==='ArrowRight'&&idx<DATA.length-1){idx++;render(idx);}
+});
+render(0);
+</script>
+</body>
+</html>
