@@ -4,242 +4,237 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>英语语法</title>
-
 <style>
 :root{
-  --bg:#11131a;
-  --card:#191c26;
-  --card-2:#1f2330;
-  --line:#2a2f3d;
-
-  --ink:#e9ecf4;
-  --ink-soft:#aeb4c5;
-  --ink-mute:#6f7689;
-
-  --accent:#7c9cff;
-
-  --sans:-apple-system,BlinkMacSystemFont,
-    "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --bg:#11131a;--card:#191c26;--card-2:#1f2330;--line:#2a2f3d;
+  --ink:#e9ecf4;--ink-soft:#aeb4c5;--ink-mute:#6f7689;
+  --accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --maxw:580px;
 }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:34px 16px 90px}
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+.title{font-size:26px;font-weight:700;margin-bottom:6px}
+.sub{font-size:13.5px;color:var(--ink-mute);margin-bottom:16px}
+
+/* ---- 目录 ---- */
+.toc{
+  position:sticky;top:0;z-index:10;
+  width:100%;max-width:var(--maxw);
+  display:flex;gap:8px;flex-wrap:wrap;
+  background:var(--bg);padding:10px 0 12px;
+  border-bottom:1px solid var(--line);
 }
-
-html,body{
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--sans);
-  min-height:100vh;
+.toc a{
+  flex:1 1 0;min-width:96px;text-align:center;text-decoration:none;
+  border:1px solid var(--line);border-radius:10px;background:var(--card);
+  color:var(--ink-soft);font-size:13px;padding:8px 6px;transition:.15s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
 }
+.toc a:hover{border-color:var(--accent);color:var(--ink)}
+.toc a.active{border-color:var(--accent);color:var(--accent);background:var(--card-2)}
+.toc a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toc .n{font-size:11.5px;color:var(--ink-mute)}
+.toc a.active .n{color:var(--accent)}
 
-body{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:36px 16px 80px;
+/* ---- 模块 ---- */
+.mod{width:100%;max-width:var(--maxw);margin-top:30px;scroll-margin-top:66px}
+.mod-name{font-size:18.5px;font-weight:700}
+.mod-intro{font-size:12.5px;color:var(--ink-mute);line-height:1.7;margin:5px 0 14px}
+.sub-label{
+  font-size:11.5px;letter-spacing:.08em;color:var(--ink-mute);
+  margin:18px 0 9px;display:flex;align-items:center;gap:9px;
 }
+.items{display:flex;flex-direction:column;gap:11px}
 
-.title{
-  font-size:26px;
-  font-weight:700;
-  margin-bottom:6px;
-}
-
-.sub{
-  font-size:13.5px;
-  color:var(--ink-mute);
-  margin-bottom:28px;
-}
-
-.panel{
-  width:100%;
-  max-width:440px;
-  display:flex;
-  flex-direction:column;
-  gap:11px;
-}
-
-/* 分组标题 */
-.group-label{
-  font-size:11px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--ink-mute);
-
-  margin:14px 0 2px;
-
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.group-label:first-child{
-  margin-top:0;
-}
-
-.group-label::after{
-  content:"";
-  flex:1;
-  height:1px;
-  background:var(--line);
-}
-
-/* 条目 */
+/* ---- 条目 ---- */
 .item{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:14px;
-
-  padding:15px 18px;
-
-  text-decoration:none;
-  color:var(--ink);
-
-  transition:.15s;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:15px 18px;text-decoration:none;color:var(--ink);transition:.15s;
 }
+.item:hover{border-color:var(--accent);background:var(--card-2)}
+.item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.item.todo{border-style:dashed;background:transparent;opacity:.5;pointer-events:none}
+.it-left{display:flex;flex-direction:column;gap:4px;min-width:0}
+.it-label{font-size:15.5px;font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.it-desc{font-size:12.5px;color:var(--ink-mute);line-height:1.65}
+.it-arrow{font-size:18px;color:var(--ink-mute);flex-shrink:0;margin-left:14px}
+.badge{font-size:10.5px;padding:2px 7px;border-radius:6px;font-weight:700;
+  background:rgba(226,178,60,.15);color:var(--amber)}
 
-.item:hover{
-  border-color:var(--accent);
-  background:var(--card-2);
-}
-
-.it-left{
-  display:flex;
-  flex-direction:column;
-  gap:3px;
-  min-width:0;
-}
-
-.it-label{
-  font-size:15.5px;
-  font-weight:600;
-}
-
-.it-date{
-  font-size:12px;
-  color:var(--ink-mute);
-}
-
-.it-arrow{
-  font-size:18px;
-  color:var(--ink-mute);
-  flex-shrink:0;
-  margin-left:10px;
+.empty{
+  border:1px dashed var(--line);border-radius:14px;
+  padding:22px 18px;text-align:center;color:var(--ink-mute);font-size:13px;line-height:1.7;
 }
 </style>
 </head>
-
 <body>
 
 <div class="title">📖 英语语法</div>
-<div class="sub">Grammar</div>
+<div class="sub" id="sub"></div>
 
-<div class="panel">
+<nav class="toc" id="toc"></nav>
+<div id="body" style="width:100%;max-width:var(--maxw)"></div>
 
-  <!-- 基础 -->
-  <div class="group-label">基础</div>
+<script>
+/* ================= 配置区：改这里就行 =================
+   模块： { id, name, intro, sections:[ { label, items:[] } ] }
+   条目： { label, href, desc }        → 正常链接
+          { label, desc, todo:true }   → 还没写的，虚线灰显，不可点
+   label 为空的 section 不显示子标题。
+====================================================== */
+const MODULES = [
+  {
+    id: 'basic',
+    name: '基础篇',
+    intro: '先把句子的骨架和最基本的时间表达立起来，后面几篇都挂在这上面。',
+    sections: [
+      { label: '', items: [
+        { label:'五大基本句型', href:'总语法/五大基本句型.html',
+          desc:'拿到一个句子，先归位到五种骨架里的一种，再往上挂修饰成分。' },
+        { label:'疑问句', href:'总语法/疑问句.html',
+          desc:'由陈述句改造而来：助动词提前，疑问词占住被问的那个位置。' },
+        { label:'基本时态理解', href:'总语法/时态/时态.html',
+          desc:'最左侧的助动词负载时间信息，后面每一项的形式由前一项决定。' }
+      ]}
+    ]
+  },
 
-  <a class="item" href="总语法/五大基本句型.html">
-    <div class="it-left">
-      <div class="it-label">五大基本句型</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  {
+    id: 'pos',
+    name: '词性篇',
+    intro: '每一类词在句子里占什么位置、能不能带东西、放哪儿会改变意思。',
+    sections: [
+      { label: '名词与限定', items: [
+        { label:'00 · 名词篇', href:'总语法/词性/00-名词篇_普通名词与名词化_v2.html',
+          desc:'普通名词与名词化——把动作和性质压成名词，一个句子才装得下更多信息。' },
+        { label:'01 · 代词', href:'总语法/词性/01-代词.html',
+          desc:'替换已出现的名词以避免重复，前提是先行词唯一、不产生歧义。' },
+        { label:'02 · 冠词', href:'总语法/词性/02-冠词.html',
+          desc:'a / the / 零冠词的选择，取决于听者能不能锁定你说的是哪一个。' }
+      ]},
+      { label: '修饰与连接', items: [
+        { label:'03 · 形容词', href:'总语法/词性/03-形容词.html',
+          desc:'给名词加限定信息；重点在位置（前置还是后置）和比较级形式。' },
+        { label:'04 · 副词', href:'总语法/词性/04-副词.html',
+          desc:'修饰动词、形容词或整句；放的位置不同，修饰范围就不同。' },
+        { label:'05 · 介词', href:'总语法/词性/05-介词.html',
+          desc:'名词接入句子的接口。规则能解释一部分，大多数搭配靠语块记。' }
+      ]},
+      { label: '动词', items: [
+        { label:'动词的静态属性', href:'总语法/词性/07-动词/00-动词的静态属性.html',
+          desc:'及物与否、动态还是状态——决定了后面能不能带宾语、能不能用进行时。' }
+      ]}
+    ]
+  },
 
-  <a class="item" href="总语法/疑问句.html">
-    <div class="it-left">
-      <div class="it-label">疑问句</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  {
+    id: 'tense',
+    name: '时态篇',
+    intro: '时态不是十六张孤立的表格，而是「助动词 + 动词形式」按规则拼出来的结果。',
+    sections: [
+      { label: '', items: [
+        { label:'动词变形与助动词', href:'总语法/词性/07-动词/01-动词变形与助动词.html',
+          desc:'动词的五种形式，以及助动词如何决定它后面那个动词该用哪一种——时态的发动机。' },
+        { label:'各时态的具体用法', todo:true,
+          desc:'占位。写好后删掉 todo、补上 href。' },
+        { label:'被动语态', todo:true,
+          desc:'占位。' }
+      ]}
+    ]
+  },
 
-  <a class="item" href="总语法/时态/时态.html">
-    <div class="it-left">
-      <div class="it-label">时态</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  {
+    id: 'clause',
+    name: '从句篇',
+    intro: '两个句子怎么合成一个：地位相等叫并列，一个降级去当另一个的成分叫从属。',
+    sections: [
+      { label: '', items: [
+        { label:'并列句', href:'总语法/词性/06-并列句.html',
+          desc:'用 and / but / or 等把地位相等的两个分句连起来，谁也不从属于谁——从句的对照组。' },
+        { label:'定语从句', todo:true, desc:'占位。' },
+        { label:'名词性从句', todo:true, desc:'占位。' },
+        { label:'状语从句', todo:true, desc:'占位。' }
+      ]}
+    ]
+  }
+];
+/* ====================================================== */
 
+const $body = document.getElementById('body');
+const $toc  = document.getElementById('toc');
+let total = 0;
 
-  <!-- 词性 -->
-  <div class="group-label">词性</div>
+MODULES.forEach(mod => {
+  const done = mod.sections.reduce(
+    (n, s) => n + s.items.filter(i => !i.todo).length, 0);
+  total += done;
 
-  <a class="item" href="总语法/词性/00-名词篇_普通名词与名词化_v2.html">
-    <div class="it-left">
-      <div class="it-label">00 · 名词篇</div>
-      <div class="it-date">普通名词与名词化</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  /* 目录 */
+  const chip = document.createElement('a');
+  chip.href = '#' + mod.id;
+  chip.dataset.id = mod.id;
+  chip.innerHTML = `${mod.name}<span class="n">${done}</span>`;
+  $toc.appendChild(chip);
 
-  <a class="item" href="总语法/词性/01-代词.html">
-    <div class="it-left">
-      <div class="it-label">01 · 代词</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  /* 模块正文 */
+  const sec = document.createElement('section');
+  sec.className = 'mod';
+  sec.id = mod.id;
+  sec.innerHTML =
+    `<div class="mod-name">${mod.name}</div>
+     <div class="mod-intro">${mod.intro}</div>`;
 
-  <a class="item" href="总语法/词性/02-冠词.html">
-    <div class="it-left">
-      <div class="it-label">02 · 冠词</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  const hasAny = mod.sections.some(s => s.items.length);
+  if (!hasAny) {
+    sec.insertAdjacentHTML('beforeend',
+      '<div class="empty">这一篇还没有笔记</div>');
+  }
 
-  <a class="item" href="总语法/词性/03-形容词.html">
-    <div class="it-left">
-      <div class="it-label">03 · 形容词</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  mod.sections.forEach(s => {
+    if (!s.items.length) return;
+    if (s.label) {
+      const h = document.createElement('div');
+      h.className = 'sub-label';
+      h.textContent = s.label;
+      sec.appendChild(h);
+    }
+    const box = document.createElement('div');
+    box.className = 'items';
+    s.items.forEach(it => {
+      const el = document.createElement(it.todo ? 'div' : 'a');
+      el.className = 'item' + (it.todo ? ' todo' : '');
+      if (!it.todo) el.href = it.href;
+      el.innerHTML =
+        `<div class="it-left">
+           <div class="it-label">${it.label}${it.todo ? '<span class="badge">待写</span>' : ''}</div>
+           ${it.desc ? `<div class="it-desc">${it.desc}</div>` : ''}
+         </div>
+         <div class="it-arrow">${it.todo ? '' : '›'}</div>`;
+      box.appendChild(el);
+    });
+    sec.appendChild(box);
+  });
 
-  <a class="item" href="总语法/词性/04-副词.html">
-    <div class="it-left">
-      <div class="it-label">04 · 副词</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+  $body.appendChild(sec);
+});
 
-  <a class="item" href="总语法/词性/05-介词.html">
-    <div class="it-left">
-      <div class="it-label">05 · 介词</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
+document.getElementById('sub').textContent = `${MODULES.length} 个模块 · 共 ${total} 篇笔记`;
 
-  <a class="item" href="总语法/词性/06-并列句.html">
-    <div class="it-left">
-      <div class="it-label">06 · 并列句</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
-
-
-  <!-- 动词 -->
-  <div class="group-label">动词</div>
-
-  <a class="item" href="总语法/词性/07-动词/00-动词的静态属性.html">
-    <div class="it-left">
-      <div class="it-label">00 · 动词的静态属性</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
-
-  <a class="item" href="总语法/词性/07-动词/01-动词变形与助动词.html">
-    <div class="it-left">
-      <div class="it-label">01 · 动词变形与助动词</div>
-    </div>
-    <div class="it-arrow">›</div>
-  </a>
-
-</div>
-
+/* 滚动时高亮当前模块 */
+const chips = [...$toc.querySelectorAll('a')];
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    chips.forEach(c => c.classList.toggle('active', c.dataset.id === e.target.id));
+  });
+}, { rootMargin: '-70px 0px -70% 0px' });
+document.querySelectorAll('.mod').forEach(m => io.observe(m));
+</script>
 </body>
 </html>
