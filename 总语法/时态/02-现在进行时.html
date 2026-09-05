@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>现在进行时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);
+    line-height:1.75;padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  header.top{margin-bottom:2.6rem}
+  header.top h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;letter-spacing:.5px;line-height:1.2}
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{display:flex;gap:.35rem;margin-top:1.4rem}
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+
+  section.rung{
+    --c:var(--r1);background:var(--surface);border:1px solid var(--border);
+    border-left:4px solid var(--c);border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{font-family:var(--serif);font-size:2.3rem;font-weight:700;line-height:1;color:var(--c);flex:none}
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;margin-top:.15rem}
+
+  .why{background:var(--surface-2);border-radius:9px;padding:.75rem .95rem;margin:1rem 0 1.1rem;font-size:.93rem}
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;color:var(--text)}
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  .ex{border-left:2px solid var(--c);padding:.15rem 0 .15rem .85rem;margin:.7rem 0}
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.a .lbl{color:var(--r1)}
+  .vs .card.b .lbl{color:var(--r3)}
+
+  code{font-family:"SF Mono",Consolas,monospace;background:var(--surface-2);padding:.05rem .35rem;border-radius:5px;font-size:.88em}
+
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{counter-increment:st;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;border-bottom:1px solid var(--border)}
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{content:counter(st);position:absolute;left:0;top:.5rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--c);color:#12141a;font-weight:700;font-size:.82rem;display:grid;place-items:center}
+
+  .sum{margin-top:1.2rem;padding:.75rem .95rem;background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:9px;font-size:.94rem}
+  .sum b{color:var(--c)}
+
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+
+  .decide{margin-top:1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit3{color:var(--r3);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>现在进行时 · 阶梯式笔记</h1>
+    <p class="sub">先立住"框住一段时间窗"这块地基,再一阶阶往外扩。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- 第一阶 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:它框住一个"时间窗内在进行"</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>现在进行时到底在表达什么?
+      <span class="lim"><b>为什么需要:</b>一般现在时讲"一贯如此"的常态,可有些动作是"在某个时间窗里正展开、还没结束"的——常态时态框不住这种"进行中"。</span>
+    </div>
+    <p>核心一句话:现在进行时描述<strong>在一个时间窗内正在展开、尚未完成的动作</strong>。关键不是"此刻这一秒",而是"框住的这段时间里,这件事在进行"。这个"窗"可大可小——小到此刻,大到这个学期、这一年。</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">She reads books.</div>
+        <div class="zh">她(平时)读书。</div>
+        <div class="lbl">常态 — 她是个读书的人(一般现在时)</div>
+      </div>
+      <div class="card b">
+        <div class="en">She is reading a book.</div>
+        <div class="zh">她正在读一本书。</div>
+        <div class="lbl">进行中 — 这个窗口里的动作在展开</div>
+      </div>
+    </div>
+    <div class="sum"><b>小结:</b>现在进行时 = "时间窗 + 进行中"。抓住"窗有多大"这个变量,后面每一阶都是在调这个窗。</div>
+  </section>
+
+  <!-- 第二阶 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:进行中怎么搭成句子</h2>
+        <div class="tag">怎么用 · 造句的骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>知道它表"进行中"了,句子长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清"表达什么",没给"句子的形状"。</span>
+    </div>
+    <p>公式只有一条:<strong>am / is / are + 动词-ing(现在分词)</strong>。be 随主语变,主动词永远是 -ing 形式。</p>
+    <div class="ex">
+      <div class="en">I am working now.</div>
+      <div class="zh">我正在工作。</div>
+    </div>
+    <div class="ex">
+      <div class="en">She is eating breakfast.</div>
+      <div class="zh">她正在吃早饭。</div>
+    </div>
+    <div class="ex">
+      <div class="en">They are playing football.</div>
+      <div class="zh">他们正在踢足球。</div>
+    </div>
+    <p class="note">对照第一阶那个"常态/进行"的差别:变的不是主动词的词义,而是"be + -ing"这层外壳,把动作装进了"进行中"的框。</p>
+    <div class="sum"><b>小结:</b>骨架就一条 <code>be + doing</code>;be 负责跟主语与时间,-ing 负责表"进行"。</div>
+  </section>
+
+  <!-- 第三阶 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:两种"窗"——此刻 vs 现阶段</h2>
+        <div class="tag">怎么用 · 核心场景</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子会搭了,可"进行中"具体指哪些情况?
+      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",没解决"窗能开多大"。</span>
+    </div>
+    <p class="note">回扣第一阶:窗可大可小,于是有了两类用法。</p>
+
+    <h3>小窗:此刻正在发生</h3>
+    <div class="ex">
+      <div class="en">Look! The baby is smiling.</div>
+      <div class="zh">看!宝宝在笑。</div>
+    </div>
+
+    <h3>大窗:现阶段正在进行(说话此刻未必在做)</h3>
+    <p class="note">这一类最容易漏。动作横跨一段时期,说话这一秒不一定正在做,但"整段时间里它在推进"。</p>
+    <div class="ex">
+      <div class="en">He is losing his hair.</div>
+      <div class="zh">他在掉头发。&nbsp;<span style="color:var(--r3)">不是此刻一根根掉,是这阵子的趋势</span></div>
+    </div>
+    <div class="ex">
+      <div class="en">He is taking physics this semester.</div>
+      <div class="zh">他这学期在上物理课。&nbsp;<span style="color:var(--r3)">窗 = 这一整个学期</span></div>
+    </div>
+    <div class="sum"><b>小结:</b>同一个 <code>be+doing</code>,窗小指"此刻",窗大指"现阶段的趋势/安排"。判断靠的是这段时间跨度,不是秒表。</div>
+  </section>
+
+  <!-- 第四阶 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>特殊情况:用"进行"表将来</h2>
+        <div class="tag">特殊情况 · 靠信号词区分</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>进行时怎么又能表将来?怎么跟"正在进行"分开?
+      <span class="lim"><b>上一阶的局限:</b>第三阶的窗都在"当下",但有一类是把窗推到未来——已经在为将来做准备/已定下的将来安排。</span>
+    </div>
+
+    <h3>已定下的将来安排</h3>
+    <p>动作是"计划好、已在铺路"的将来事件,用进行时说,带一种"这事已经在动了"的确定感。</p>
+    <div class="ex">
+      <div class="en">I am publishing a book this year.</div>
+      <div class="zh">我今年要出一本书。&nbsp;<span style="color:var(--r4)">this year = 将来信号</span></div>
+    </div>
+    <div class="ex">
+      <div class="en">We are moving to Beijing next month.</div>
+      <div class="zh">我们下个月搬去北京。</div>
+    </div>
+
+    <h3>短暂性动词:表"即将发生"</h3>
+    <p class="note">die、arrive、leave 这类"一下子完成"的动词,用进行时常表"眼看就要发生"。</p>
+    <div class="ex">
+      <div class="en">You are dying.</div>
+      <div class="zh">你快不行了 / 你要死了。&nbsp;<span style="color:var(--r4)">不是"正在死",是逼近的结局</span></div>
+    </div>
+
+    <h3>关键:靠时间状语区分</h3>
+    <p>同一个 <code>be+doing</code>,到底是"正在进行"还是"为将来做准备",<strong>看有没有指向未来的时间状语</strong>。</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">She is leaving.</div>
+        <div class="zh">她正在离开(此刻走出去)。</div>
+        <div class="lbl">无将来状语 → 正在进行</div>
+      </div>
+      <div class="card b">
+        <div class="en">She is leaving tomorrow.</div>
+        <div class="zh">她明天走。</div>
+        <div class="lbl">tomorrow → 将来安排</div>
+      </div>
+    </div>
+    <div class="sum"><b>小结:</b>进行时表将来 = 把窗推到未来的"已定安排/即将发生";是不是将来,<b>由时间状语一锤定音</b>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>时间窗内动作在进行、未完成</td><td>抓"窗有多大",不是"此刻这秒"</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td><code>am/is/are + doing</code></td><td>be 跟主语,-ing 表进行</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>窗多大</td><td>此刻(小窗)/ 现阶段趋势(大窗)</td><td>看时间跨度,不看秒表</td></tr>
+        <tr class="o4"><td><span class="dot">④ 特殊</span></td><td>表将来</td><td>已定安排 / 短暂动词即将发生</td><td>将来与否,时间状语说了算</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 判断法 -->
+  <div class="decide">
+    <h2>一图流:遇到 be + doing 怎么定</h2>
+    <div class="flow">
+      <div class="q">句里有指向未来的时间状语吗(tomorrow / next week / this year)?</div>
+      <div class="a"><span class="hit4">有 →</span> 表<strong>将来安排</strong>(或短暂动词的"即将发生")</div>
+      <div class="q">没有的话:动作横跨一段时期吗(this semester / 一阵子的趋势)?</div>
+      <div class="a"><span class="hit3">是 →</span> 表<strong>现阶段正在进行</strong>(大窗,此刻未必在做)</div>
+      <div class="q">就是眼前这一刻在做吗?</div>
+      <div class="a"><span class="hit">是 →</span> 表<strong>此刻正在发生</strong>(小窗)</div>
+    </div>
+  </div>
+
+  <footer>现在进行时 · 从"框住时间窗"到"把窗推向未来",四阶叠加</footer>
+
+</div>
+</body>
+</html>

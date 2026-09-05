@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>现在进行时｜递进式英语语法笔记</title>
+<style>
+:root{
+  --bg:#0b1020; --panel:#121a2d; --panel2:#0e1729; --text:#e8eef8; --muted:#9eabc0;
+  --line:#283650; --blue:#8ab4ff; --cyan:#72d7e8; --green:#7dd3a8; --gold:#f2c66d;
+  --purple:#c7a4ff; --pink:#ff9fc1; --red:#ff8d8d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--text); line-height:1.8;
+  font-family:"Inter","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(85,118,255,.12), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(168,90,255,.08), transparent 25%),
+    var(--bg);
+}
+.container{max-width:1060px;margin:0 auto;padding:56px 22px 120px}
+header{
+  padding:34px 36px;margin-bottom:28px;border:1px solid var(--line);border-radius:24px;
+  background:linear-gradient(135deg,rgba(138,180,255,.13),rgba(199,164,255,.08));
+  box-shadow:0 20px 60px rgba(0,0,0,.24)
+}
+h1{font-size:42px;line-height:1.15;margin:0 0 10px;letter-spacing:-.02em}
+.subtitle{color:var(--muted)}
+section{
+  margin:22px 0;padding:28px 30px;border:1px solid var(--line);border-radius:20px;
+  background:rgba(18,26,45,.9);box-shadow:0 10px 34px rgba(0,0,0,.16)
+}
+h2{margin:0 0 18px;font-size:27px;line-height:1.35}
+h3{margin:26px 0 12px;font-size:19px;color:#dce8ff}
+p{margin:10px 0;color:#d7deea}
+code{
+  background:#09111f;border:1px solid #24324b;color:#bdd0ff;
+  padding:.08em .4em;border-radius:6px
+}
+.level0{border-left:4px solid var(--blue)}
+.level1,.level2{border-left:4px solid var(--cyan)}
+.level3,.level4,.level5,.level6{border-left:4px solid var(--green)}
+.level7,.level8,.level9,.level10{border-left:4px solid var(--pink)}
+.level11,.level12,.level13{border-left:4px solid var(--gold)}
+.level14,.level15,.level16,.level17{border-left:4px solid var(--purple)}
+.summary,.final{border-left:4px solid var(--blue)}
+.badge{
+  display:inline-block;padding:5px 10px;border-radius:999px;margin-bottom:12px;
+  border:1px solid rgba(138,180,255,.3);background:rgba(138,180,255,.11);
+  color:#bdd3ff;font-size:13px;font-weight:700
+}
+.core,.tree,.codebox{
+  margin:16px 0;border:1px solid #263650;border-radius:15px;background:#0a1323;
+  padding:17px 19px
+}
+.core{text-align:center;font-weight:700;font-size:19px}
+.core .sub{font-size:14px;color:var(--muted);font-weight:500;margin-top:4px}
+.tree,.codebox{
+  white-space:pre-wrap;font-family:"Cascadia Code","JetBrains Mono",Consolas,monospace;
+  color:#c5d5eb;line-height:1.7;overflow:auto
+}
+.tree{color:#c0dbff}
+.arrow{text-align:center;color:var(--blue);font-weight:800;margin:5px 0}
+.example{
+  margin:11px 0;padding:14px 16px;border:1px solid #24344e;border-radius:14px;background:#0c1526
+}
+.example .en{font-size:17px;font-weight:700;color:#eef4ff}
+.example .zh{font-size:14px;color:var(--muted);margin-top:2px}
+.examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.key,.note,.insight{
+  margin:16px 0;padding:15px 17px;border-radius:14px
+}
+.key{background:rgba(125,211,168,.08);border:1px solid rgba(125,211,168,.22);color:#d7f5e4}
+.note{background:rgba(114,215,232,.08);border:1px solid rgba(114,215,232,.20);color:#d2f4f8}
+.insight{background:rgba(199,164,255,.08);border:1px solid rgba(199,164,255,.22)}
+.insight b{color:#dec9ff}
+.grid,.contrast{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0
+}
+.card{
+  padding:15px 16px;border-radius:14px;background:#0c1526;border:1px solid #273650
+}
+.card b{display:block;margin-bottom:7px;color:#eef4ff}
+.card span{display:block;color:var(--muted)}
+.wrong,.right{
+  margin:10px 0;padding:11px 14px;border-radius:12px;font-family:"Cascadia Code",Consolas,monospace
+}
+.wrong{background:rgba(255,141,141,.08);border:1px solid rgba(255,141,141,.22);color:#ffb4b4}
+.right{background:rgba(125,211,168,.08);border:1px solid rgba(125,211,168,.22);color:#bdf0d3}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips span{
+  padding:7px 11px;border-radius:999px;background:#0b1527;border:1px solid #2a3a58;color:#cad8ec;font-size:14px
+}
+.timeline{
+  display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted)
+}
+.timeline .line{height:1px;flex:1;background:linear-gradient(90deg,transparent,#65799f,transparent)}
+.timeline strong{color:#edf4ff;white-space:nowrap}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{padding:13px 14px;border-bottom:1px solid #293750;text-align:left}
+th{background:#0c1526;color:#bfd6ff}
+td{color:#d9e1ed}
+blockquote{
+  margin:14px 0;padding:14px 18px;border-left:4px solid #4b658d;border-radius:10px;
+  background:#0b1424;color:#dce7f8
+}
+blockquote.important{border-left-color:var(--gold);font-size:18px;font-weight:700}
+.final{
+  background:linear-gradient(145deg,rgba(138,180,255,.08),rgba(18,26,45,.95))
+}
+.ultimate{
+  margin-top:20px;padding:22px;text-align:center;border-radius:16px;
+  background:linear-gradient(135deg,rgba(138,180,255,.10),rgba(199,164,255,.08));
+  border:1px solid #354766;font-size:21px
+}
+.footer{text-align:center;color:#718099;margin-top:28px;font-size:13px}
+@media(max-width:720px){
+  .container{padding:30px 14px 80px}
+  header,section{padding:22px 18px;border-radius:16px}
+  h1{font-size:34px}
+  h2{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>现在进行时</h1>
+  <div class="subtitle">第一性原理 × 系统思维 × 费曼式判断｜深色递进式语法笔记</div>
+</header>
+
+<section class="level0">
+  <div class="badge">第一性原理</div>
+  <h2>0. 它到底在表达什么？</h2>
+  <p>现在进行时最核心的不是“现在”，也不是简单的“正在”。</p>
+  <blockquote class="important">说话者把一个事件看成“正在展开的过程”，而不是完整事实。</blockquote>
+
+  <div class="core">
+    <div>现在进行时</div>
+    <div class="arrow">↓</div>
+    <div>站在事件内部，看它正在展开</div>
+  </div>
+
+  <div class="contrast">
+    <div class="card">
+      <b>一般现在时</b>
+      <span>从外面看：这是稳定事实 / 模式 / 系统常态</span>
+    </div>
+    <div class="card">
+      <b>现在进行时</b>
+      <span>从里面看：这个过程正在展开</span>
+    </div>
+  </div>
+
+  <div class="examples">
+    <div class="example"><div class="en">I work here.</div><div class="zh">我在这里工作。</div></div>
+    <div class="example"><div class="en">I am working now.</div><div class="zh">我现在正在工作。</div></div>
+  </div>
+</section>
+
+<section class="level1">
+  <h2>1. 形式</h2>
+  <div class="core">主语 + am / is / are + 动词-ing</div>
+  <div class="examples">
+    <div class="example"><div class="en">I am working.</div><div class="zh">我正在工作。</div></div>
+    <div class="example"><div class="en">She is eating.</div><div class="zh">她正在吃东西。</div></div>
+    <div class="example"><div class="en">They are talking.</div><div class="zh">他们正在说话。</div></div>
+  </div>
+</section>
+
+<section class="level2">
+  <h2>2. 为什么一定有 be？</h2>
+  <div class="tree">be
+→ 承担时态、人称
+
+V-ing
+→ 表示动作处于展开状态</div>
+
+  <div class="example"><div class="en">She is working.</div><div class="zh">她正在工作。</div></div>
+
+  <div class="codebox">is
+→ 一般现在时
+→ 第三人称单数
+
+working
+→ work 正在展开</div>
+
+  <div class="insight">
+    <b>和你之前的骨架完全一致：</b>
+    <p>最左助动词承担主要语法信息。</p>
+  </div>
+
+  <div class="codebox">She is working.
+→ is 承担现在时 + 三单
+→ working 不再承担人称变化
+
+Does she work?
+→ does 承担三单
+→ work 回原形</div>
+</section>
+
+<section class="level3">
+  <h2>3. ing 的本质：把动作内部“打开”</h2>
+  <p>不要只记成：</p>
+  <div class="wrong">ing = 正在</div>
+  <p>更底层的理解是：</p>
+  <div class="key"><strong>V-ing 把一个事件展开成“过程”，让观察点进入事件内部。</strong></div>
+
+  <div class="tree">eat
+→ 一个事件概念
+
+eating
+→ 事件内部被打开
+→ 观察点落在过程之中</div>
+
+  <div class="grid">
+    <div class="card"><b>正在进行</b><span>动作此刻展开</span></div>
+    <div class="card"><b>阶段进行</b><span>较长时间段内仍未结束</span></div>
+    <div class="card"><b>变化中</b><span>状态正在改变</span></div>
+    <div class="card"><b>尚未完成</b><span>过程还没封口</span></div>
+  </div>
+</section>
+
+<section class="level4">
+  <h2>4. 功能一：此刻正在发生</h2>
+  <div class="example"><div class="en">She is eating now.</div><div class="zh">她现在正在吃东西。</div></div>
+
+  <div class="timeline">
+    <span>过去</span><div class="line"></div><strong>现在位于 eating 内部</strong><div class="line"></div><span>未来</span>
+  </div>
+
+  <div class="example"><div class="en">He is talking to his friend.</div><div class="zh">他正在和朋友说话。</div></div>
+
+  <div class="tree">动作已经开始
+↓
+现在仍在进行
+↓
+尚未结束</div>
+</section>
+
+<section class="level5">
+  <h2>5. 功能二：现阶段正在进行</h2>
+  <p>动作不需要在说话这一秒真的发生。</p>
+
+  <div class="example"><div class="en">He is taking physics this semester.</div><div class="zh">他这学期正在学物理。</div></div>
+  <p>他说这句话时可能正在吃饭、睡觉，甚至完全没在上课，但他仍然处于“这学期学物理”的阶段里。</p>
+
+  <div class="example"><div class="en">I am reading a new book these days.</div><div class="zh">我最近正在读一本新书。</div></div>
+
+  <div class="key">“正在”不只是“此时此刻”，而是：<strong>当前参考时间位于这个过程内部。</strong></div>
+
+  <div class="chips">
+    <span>几秒</span><span>几分钟</span><span>几天</span><span>几个月</span><span>一个学期</span><span>今年</span>
+  </div>
+</section>
+
+<section class="level6">
+  <h2>6. 功能三：变化中的状态</h2>
+
+  <div class="example"><div class="en">He is losing his hair.</div><div class="zh">他正在掉头发。</div></div>
+  <div class="tree">过去头发更多
+↓
+现在持续减少
+↓
+变化过程尚未结束</div>
+
+  <div class="examples">
+    <div class="example"><div class="en">The weather is getting colder.</div><div class="zh">天气正在变冷。</div></div>
+    <div class="example"><div class="en">Your English is improving.</div><div class="zh">你的英语正在进步。</div></div>
+  </div>
+
+  <div class="key">进行时特别适合描述：<strong>状态正在发生变化。</strong></div>
+</section>
+
+<section class="level7">
+  <h2>7. You are dying 为什么不是“将来时”？</h2>
+  <div class="example"><div class="en">You are dying.</div><div class="zh">你正在死去 / 你的生命正在走向结束。</div></div>
+
+  <div class="tree">dying 这个过程已经开始
+↓
+当前正在展开
+↓
+最终结果可能发生在未来</div>
+
+  <div class="key"><strong>未来的是结果，不是时态本身。</strong></div>
+
+  <div class="example"><div class="en">The car is stopping.</div><div class="zh">汽车正在停下来。</div></div>
+  <p>车可能还没完全停，但“停下来”这个过程已经启动。</p>
+</section>
+
+<section class="level8">
+  <h2>8. 为什么现在进行时可以表示未来？</h2>
+  <div class="example"><div class="en">I am meeting Tom tomorrow.</div><div class="zh">我明天要见 Tom。</div></div>
+
+  <div class="tree">真正见 Tom
+→ 发生在未来
+
+但：
+约定 / 计划 / 安排
+→ 现在已经建立</div>
+
+  <div class="key">未来事件已经通过计划、安排或准备，进入了当前现实。</div>
+</section>
+
+<section class="level9">
+  <h2>9. 未来用法的典型场景：个人安排</h2>
+  <div class="examples">
+    <div class="example"><div class="en">I am meeting Tom tomorrow.</div><div class="zh">我明天要见 Tom。</div></div>
+    <div class="example"><div class="en">She is leaving next week.</div><div class="zh">她下周要离开。</div></div>
+    <div class="example"><div class="en">We are having dinner together tonight.</div><div class="zh">我们今晚要一起吃饭。</div></div>
+  </div>
+
+  <div class="tree">未来行动
+↓
+安排已经存在
+↓
+现在就能把它看成已启动的计划</div>
+</section>
+
+<section class="level10">
+  <h2>10. 和一般现在时表未来有什么区别？</h2>
+
+  <div class="contrast">
+    <div class="card">
+      <b>The train leaves at eight tomorrow.</b>
+      <span>系统安排 / 公共时间表 / 既定日程</span>
+    </div>
+    <div class="card">
+      <b>I am leaving at eight tomorrow.</b>
+      <span>个人计划 / 已经安排好的未来行动</span>
+    </div>
+  </div>
+
+  <div class="core">
+    <div>一般现在时表未来 → 系统安排</div>
+    <div class="arrow">↓</div>
+    <div>现在进行时表未来 → 个人安排</div>
+  </div>
+</section>
+
+<section class="level11">
+  <h2>11. I am publishing a book this year 怎么理解？</h2>
+  <div class="example"><div class="en">I am publishing a book this year.</div><div class="zh">我今年要出版一本书。</div></div>
+
+  <div class="contrast">
+    <div class="card">
+      <b>理解一：项目正在进行</b>
+      <span>书已经在写 / 编辑 / 联系出版社</span>
+    </div>
+    <div class="card">
+      <b>理解二：未来安排已经确定</b>
+      <span>出版计划已经存在，真正出版可能还在几个月后</span>
+    </div>
+  </div>
+
+  <div class="key">两种理解的底层都一样：<strong>这个事件已经进入当前进程。</strong></div>
+</section>
+
+<section class="level12">
+  <h2>12. 为什么时间状语很重要？</h2>
+
+  <div class="example"><div class="en">I am meeting Tom.</div><div class="zh">我正在见 Tom / 我正在和 Tom 会面。</div></div>
+  <p>没有更多语境时，最自然是理解为当前进行。</p>
+
+  <div class="example"><div class="en">I am meeting Tom tomorrow.</div><div class="zh">我明天要见 Tom。</div></div>
+
+  <div class="key"><code>tomorrow</code> 把参考时间推到未来，于是进行时被理解为“已安排好的未来”。</div>
+</section>
+
+<section class="level13">
+  <h2>13. 常见关键词</h2>
+
+  <h3>此刻正在发生</h3>
+  <div class="chips"><span>now</span><span>right now</span><span>at the moment</span></div>
+
+  <div class="example"><div class="en">She is working now.</div><div class="zh">她现在正在工作。</div></div>
+
+  <h3>当前阶段</h3>
+  <div class="chips"><span>these days</span><span>this week</span><span>this month</span><span>this semester</span><span>this year</span><span>currently</span></div>
+
+  <div class="example"><div class="en">I am working hard this month.</div><div class="zh">我这个月工作很努力。</div></div>
+
+  <h3>未来安排</h3>
+  <div class="chips"><span>tomorrow</span><span>tonight</span><span>next week</span><span>this weekend</span></div>
+
+  <div class="example"><div class="en">We are meeting tomorrow.</div><div class="zh">我们明天见面。</div></div>
+
+  <div class="note">关键词只能提供线索，不能独立决定时态。最终还是看：说话者如何观察事件。</div>
+</section>
+
+<section class="level14">
+  <h2>14. 临时状态：为什么进行时经常带“暂时”感觉？</h2>
+
+  <div class="examples">
+    <div class="example"><div class="en">I live in Tokyo.</div><div class="zh">我住在东京。</div></div>
+    <div class="example"><div class="en">I am living in Tokyo this year.</div><div class="zh">我今年住在东京。</div></div>
+  </div>
+
+  <div class="contrast">
+    <div class="card"><b>I live in Tokyo.</b><span>更像稳定状态</span></div>
+    <div class="card"><b>I am living in Tokyo this year.</b><span>更像当前阶段，之后可能改变</span></div>
+  </div>
+
+  <div class="key">“暂时”不是进行时的硬规则，而是“把状态看成正在展开的阶段”自然带来的效果。</div>
+</section>
+
+<section class="level15">
+  <h2>15. 特殊用法：反复发生 + 情绪</h2>
+
+  <div class="examples">
+    <div class="example"><div class="en">He always loses his keys.</div><div class="zh">他总是丢钥匙。</div></div>
+    <div class="example"><div class="en">He is always losing his keys.</div><div class="zh">他老是丢钥匙。</div></div>
+  </div>
+
+  <div class="contrast">
+    <div class="card"><b>一般现在时</b><span>更像客观描述习惯</span></div>
+    <div class="card"><b>现在进行时</b><span>常带烦、惊讶、抱怨、强调等情绪</span></div>
+  </div>
+
+  <div class="key">说话者把这种反复事件想象成“不断发生在眼前”。</div>
+</section>
+
+<section class="level16">
+  <h2>16. 哪些动词通常不用进行时？</h2>
+  <p>有些动词更像“状态”，而不是一个可以展开观察的动作过程。</p>
+
+  <div class="chips">
+    <span>know</span><span>understand</span><span>believe</span><span>like</span><span>love</span><span>want</span><span>need</span><span>own</span><span>belong</span>
+  </div>
+
+  <div class="example"><div class="en">I know him.</div><div class="zh">我认识他。</div></div>
+  <div class="wrong">通常不说：✗ I am knowing him.</div>
+
+  <div class="key">因为 <code>know</code> 在这里是一个稳定认知状态，不容易被看成“正在展开的动作”。</div>
+</section>
+
+<section class="level17">
+  <h2>17. 状态动词也不是绝对不能用进行时</h2>
+  <p>关键不是词长什么样，而是<strong>当前词义有没有变成过程</strong>。</p>
+
+  <div class="contrast">
+    <div class="card">
+      <b>I think he is right.</b>
+      <span>think = 认为 → 认知状态</span>
+    </div>
+    <div class="card">
+      <b>I am thinking about the problem.</b>
+      <span>think = 思考 → 动作过程</span>
+    </div>
+  </div>
+
+  <div class="contrast">
+    <div class="card">
+      <b>I have a car.</b>
+      <span>have = 拥有 → 状态</span>
+    </div>
+    <div class="card">
+      <b>I am having dinner.</b>
+      <span>have = 吃 / 进行 → 动作</span>
+    </div>
+  </div>
+</section>
+
+<section class="summary">
+  <h2>18. 一般现在时 vs 现在进行时</h2>
+
+  <div class="contrast">
+    <div class="card">
+      <b>I work here.</b>
+      <span>站在事件外面 → 把它看成完整事实 / 常态</span>
+    </div>
+    <div class="card">
+      <b>I am working here this month.</b>
+      <span>站在事件里面 → 把它看成尚未结束的阶段</span>
+    </div>
+  </div>
+
+  <div class="core">
+    <div>一般现在时 → 外部视角 → 常态 / 事实 / 规律</div>
+    <div class="arrow">↓</div>
+    <div>现在进行时 → 内部视角 → 过程 / 阶段 / 变化</div>
+  </div>
+</section>
+
+<section class="summary">
+  <h2>19. 总览</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>使用场景</th><th>底层视角</th><th>例句</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>此刻正在发生</td><td>当前在事件内部</td><td>She is eating now.</td></tr>
+        <tr><td>当前阶段</td><td>当前处在较长过程内部</td><td>He is taking physics this semester.</td></tr>
+        <tr><td>变化过程</td><td>状态正在改变</td><td>He is losing his hair.</td></tr>
+        <tr><td>临时状态</td><td>当前阶段成立</td><td>I am living here this year.</td></tr>
+        <tr><td>未来安排</td><td>计划已经进入当前现实</td><td>I am meeting Tom tomorrow.</td></tr>
+        <tr><td>情绪化反复</td><td>把反复事件想成不断展开</td><td>He is always losing his keys.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="final">
+  <div class="badge">费曼式判断法</div>
+  <h2>20. 最终判断法</h2>
+
+  <p>不要先问：</p>
+  <blockquote>“这里有没有 now？”</blockquote>
+
+  <p>先问：</p>
+  <blockquote class="important">“我是在把这个事件当成完整事实，还是一个正在展开的过程？”</blockquote>
+
+  <div class="contrast">
+    <div class="card">
+      <b>完整事实 / 常态</b>
+      <span>稳定事实、习惯、规律、长期状态 → 优先考虑一般现在时</span>
+    </div>
+    <div class="card">
+      <b>展开中的过程</b>
+      <span>当前展开、阶段进行、变化中、临时状态、已安排未来 → 优先考虑现在进行时</span>
+    </div>
+  </div>
+
+  <div class="ultimate">
+    现在进行时 = <strong>把事件“打开”，站在过程内部观察它。</strong>
+  </div>
+
+  <div class="codebox">I work.
+→ 工作是我的常态
+
+I am working.
+→ 我正处在工作过程中
+
+He loses his hair.
+→ 他掉头发，这是事实 / 习惯
+
+He is losing his hair.
+→ 他的头发正在持续减少
+
+I am meeting Tom tomorrow.
+→ 这个见面已经安排好了</div>
+
+  <div class="core">
+    <div>一般现在时 → 系统 / 常态 / 完整事实</div>
+    <div class="arrow">↓</div>
+    <div>现在进行时 → 过程 / 阶段 / 正在展开</div>
+  </div>
+</section>
+
+<div class="footer">Present Continuous · System Thinking Note</div>
+
+</div>
+</body>
+</html>

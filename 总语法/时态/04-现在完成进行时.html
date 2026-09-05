@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>现在完成进行时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);
+    line-height:1.75;padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  header.top{margin-bottom:2.6rem}
+  header.top h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;letter-spacing:.5px;line-height:1.2}
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{display:flex;gap:.35rem;margin-top:1.4rem}
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+
+  section.rung{
+    --c:var(--r1);background:var(--surface);border:1px solid var(--border);
+    border-left:4px solid var(--c);border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{font-family:var(--serif);font-size:2.3rem;font-weight:700;line-height:1;color:var(--c);flex:none}
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;margin-top:.15rem}
+
+  .why{background:var(--surface-2);border-radius:9px;padding:.75rem .95rem;margin:1rem 0 1.1rem;font-size:.93rem}
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;color:var(--text)}
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  .ex{border-left:2px solid var(--c);padding:.15rem 0 .15rem .85rem;margin:.7rem 0}
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.done .lbl{color:var(--r4)}
+  .vs .card.doing .lbl{color:var(--r1)}
+
+  code{font-family:"SF Mono",Consolas,monospace;background:var(--surface-2);padding:.05rem .35rem;border-radius:5px;font-size:.88em}
+
+  .sum{margin-top:1.2rem;padding:.75rem .95rem;background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:9px;font-size:.94rem}
+  .sum b{color:var(--c)}
+
+  /* 关键词卡 */
+  .kw{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0}
+  .kw span{background:var(--surface-2);border-radius:7px;padding:.4rem .7rem;font-family:var(--serif);font-size:.95rem;color:var(--text)}
+  .kw span b{color:var(--c);font-family:var(--sans);font-weight:600}
+
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+
+  /* 对照表:完成时 vs 完成进行时 */
+  .cmp{width:100%;border-collapse:collapse;font-size:.88rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:.4rem}
+  .cmp th,.cmp td{padding:.6rem .7rem;border-bottom:1px solid var(--border);vertical-align:top;text-align:left}
+  .cmp thead th{background:var(--surface-2);font-weight:600}
+  .cmp thead th.pp{color:var(--r4)} .cmp thead th.ppc{color:var(--r1)}
+  .cmp tbody tr:last-child td{border-bottom:none}
+  .cmp td:first-child{color:var(--muted)}
+  .cmp .en{font-family:var(--serif)}
+
+  .decide{margin-top:1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .h1{color:var(--r1);font-weight:600}
+  .flow .a .h4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>现在完成进行时 · 阶梯式笔记</h1>
+    <p class="sub">它存在的唯一理由:补上现在完成时的一个盲区——"过程"。整份笔记就围着这个对比走。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- 第一阶 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:它专门强调"过程",不是"结果"</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>已经有现在完成时了,为什么还要这个时态?
+      <span class="lim"><b>为什么需要:</b>现在完成时的落点在"结果"——事情<em>做完了</em>、留下了什么。可有时我们想说的恰恰相反:不管做完没,我这一路<em>一直在做</em>。完成时框不住这条"过程本身"。</span>
+    </div>
+    <p>核心一句话:现在完成进行时 = <strong>一个动作从过去持续到现在,镜头对准"一直在进行"这个过程</strong>。可能还在继续,也可能刚停,但重点永远是"这段持续",而不是"做出了什么结果"。</p>
+    <div class="vs">
+      <div class="card done">
+        <div class="en">I have read the book.</div>
+        <div class="zh">我把书读完了。</div>
+        <div class="lbl">现在完成时 — 镜头对准结果:读完了</div>
+      </div>
+      <div class="card doing">
+        <div class="en">I have been reading the book.</div>
+        <div class="zh">我一直在读这本书(可能还没读完)。</div>
+        <div class="lbl">完成进行时 — 镜头对准过程:一直在读</div>
+      </div>
+    </div>
+    <p class="note">记住这组对照,它就是整份笔记的主线。后面每一阶都在回答:这个"强调过程"的意思,怎么落到形式和用法上。</p>
+    <div class="sum"><b>小结:</b>同样连接"过去↔现在",完成时看<b>结果</b>,完成进行时看<b>过程</b>。抓住"镜头对准哪儿"这一点,全篇打通。</div>
+  </section>
+
+  <!-- 第二阶 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:过程怎么搭成句子</h2>
+        <div class="tag">怎么用 · 造句的骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>知道它强调过程了,句子长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清"表达什么",没给"句子的形状"。</span>
+    </div>
+    <p>公式一条:<strong>have / has + been + doing</strong>。拆开看正好是两个老朋友的拼接——</p>
+    <p class="note"><code>have/has + been</code> 来自现在完成时(管"连到现在"),<code>been + doing</code> 那个 <code>-ing</code> 来自进行时(管"过程")。两块一拼,既连着现在、又强调进行,正好对应第一阶的意思。</p>
+    <div class="ex">
+      <div class="en">I have been working all morning.</div>
+      <div class="zh">我一上午都在工作。</div>
+    </div>
+    <div class="ex">
+      <div class="en">She has been learning French.</div>
+      <div class="zh">她一直在学法语。&nbsp;<span style="color:var(--r2)">三单 → has been</span></div>
+    </div>
+    <div class="sum"><b>小结:</b>骨架 <code>have/has + been + doing</code> = 完成时的"连到现在" + 进行时的 "-ing 过程",拼起来的。</div>
+  </section>
+
+  <!-- 第三阶 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>怎么用:配时间状语,把"这段持续"说出来</h2>
+        <div class="tag">怎么用 · 核心搭配</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>"一直在做"这个过程,怎么在句子里标出跨度?
+      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",但一个过程总得说清"持续了多久 / 从何时起"。</span>
+    </div>
+    <p>三类常用时间状语,负责标出这段过程的长度或起点:</p>
+    <h3>for + 一段时间</h3>
+    <div class="ex">
+      <div class="en">I have been studying for 3 hours.</div>
+      <div class="zh">我已经学了3个小时了。</div>
+    </div>
+    <h3>since + 过去时间点</h3>
+    <div class="ex">
+      <div class="en">She has been working since 8am.</div>
+      <div class="zh">她从早上8点起一直在工作。</div>
+    </div>
+    <h3>all day / all morning(整段时间)</h3>
+    <div class="ex">
+      <div class="en">He has been sleeping all day.</div>
+      <div class="zh">他睡了一整天。</div>
+    </div>
+    <p class="note">和完成时的 for/since 长得一样,但这里的重点不同:完成时用它们量"结果累积到现在有多久",完成进行时用它们量"过程持续了多久"——差别还在那个"镜头对准哪儿"。</p>
+    <div class="sum"><b>小结:</b>for 标时长、since 标起点、all day 标整段;它们都是给"这段过程"量尺寸的。</div>
+  </section>
+
+  <!-- 第四阶 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>高级:一眼分清"它 vs 现在完成时"</h2>
+        <div class="tag">高级技巧 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>实战里两个时态老搞混,怎么快速判断?
+      <span class="lim"><b>上一阶的局限:</b>前面讲清了它自己;但真正的难点是它和现在完成时的边界。</span>
+    </div>
+
+    <h3>它自己的信号词</h3>
+    <p class="note">除了 for/since/all day,还有两个偏它的词:</p>
+    <div class="kw">
+      <span><b>lately</b> 最近</span>
+      <span><b>recently</b> 近来</span>
+    </div>
+    <div class="ex">
+      <div class="en">I have been feeling tired lately.</div>
+      <div class="zh">我最近一直觉得累。</div>
+    </div>
+
+    <h3>核心对照:同一件事,两种镜头</h3>
+    <table class="cmp">
+      <thead>
+        <tr><th>比的是</th><th class="pp">现在完成时</th><th class="ppc">完成进行时</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>镜头对准</td><td>结果、完成</td><td>过程、持续</td></tr>
+        <tr><td>做完了吗</td><td>通常已完成</td><td>未必,可能还在做</td></tr>
+        <tr><td>例句</td>
+            <td><span class="en">I have painted the wall.</span><br>墙刷好了</td>
+            <td><span class="en">I have been painting the wall.</span><br>我一直在刷墙</td></tr>
+        <tr><td>言下之意</td><td>看成果</td><td>看这一路的付出/持续</td></tr>
+      </tbody>
+    </table>
+    <div class="sum"><b>小结:</b>lately/recently 偏它;和完成时二选一时,问自己一句——<b>我在说"做完了什么",还是"一直在做"?</b> 前者用完成时,后者用完成进行时。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>过去持续到现在,强调过程</td><td>镜头对准"过程",不是"结果"</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td><code>have/has + been + doing</code></td><td>完成时的"连到现在" + 进行的 -ing</td></tr>
+        <tr class="o3"><td><span class="dot">③ 搭配</span></td><td>标跨度</td><td>for / since / all day</td><td>给这段过程量尺寸</td></tr>
+        <tr class="o4"><td><span class="dot">④ 高级</span></td><td>怎么区分</td><td>lately/recently;对照完成时</td><td>问:说"做完啥"还是"一直在做"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 判断法 -->
+  <div class="decide">
+    <h2>一图流:该用哪个"完成"</h2>
+    <div class="flow">
+      <div class="q">你想突出的是"一路一直在做这个过程"吗?</div>
+      <div class="a"><span class="h1">是 →</span> 用<strong>完成进行时</strong> <code>have been doing</code>(常配 for/since/all day/lately)</div>
+      <div class="q">你想突出的是"已经做完了、拿到什么结果"吗?</div>
+      <div class="a"><span class="h4">是 →</span> 用<strong>现在完成时</strong> <code>have done</code></div>
+      <div class="q">动作是 die/leave 这类短暂动词?</div>
+      <div class="a">→ 两个"完成"都不用它表持续;回去看完成时那阶的"改主系表"</div>
+    </div>
+  </div>
+
+  <footer>现在完成进行时 · 一句话——完成时看结果,它看过程</footer>
+
+</div>
+</body>
+</html>
