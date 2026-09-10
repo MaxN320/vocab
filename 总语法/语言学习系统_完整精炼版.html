@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>语言学习系统 · 完整精炼版</title>
+<style>
+:root{
+  --bg:#0b0f14;
+  --panel:#151b23;
+  --panel-2:#1b2330;
+  --code:#090d12;
+  --ink:#e7eef5;
+  --soft:#9aa6b3;
+  --faint:#6f7a88;
+  --line:#28313d;
+  --teal:#2dd4bf;
+  --blue:#60a5fa;
+  --amber:#fbbf24;
+  --green:#34d399;
+  --purple:#c084fc;
+  --rose:#fb7185;
+  --ok:#8ce99a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(1100px 560px at 88% -12%,#0f2028 0%,transparent 60%),
+    radial-gradient(820px 460px at -12% 20%,#191324 0%,transparent 55%),
+    var(--bg);
+  color:var(--ink);
+  font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+.page{max-width:1180px;margin:auto;padding:42px 24px 100px}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:34px}
+nav{
+  position:sticky;top:22px;align-self:start;
+  background:rgba(21,27,35,.78);backdrop-filter:blur(10px);
+  border:1px solid var(--line);border-radius:14px;padding:14px
+}
+.nav-title{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-family:"SF Mono",Consolas,monospace;margin:2px 6px 9px}
+nav a{display:block;padding:8px 9px;border-radius:8px;color:var(--soft);font-size:.84rem}
+nav a:hover{background:var(--panel-2);color:var(--ink)}
+main{min-width:0}
+.kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);font-size:.67rem;margin-bottom:14px}
+h1{font-size:clamp(2.15rem,5vw,3.25rem);line-height:1.06;margin:0 0 10px;letter-spacing:-.03em}
+.sub{font-family:"SF Mono",Consolas,monospace;color:var(--faint);font-size:.9rem;margin-bottom:18px}
+.lead{color:var(--soft);font-size:1.02rem;max-width:72ch}.lead b{color:var(--ink)}
+.thesis{margin:26px 0;padding:16px 18px;border-left:3px solid var(--teal);border-radius:0 11px 11px 0;background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);color:var(--soft)}
+.thesis b{color:var(--ink)}
+.stage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 40px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px}
+.stage .n{font-family:"SF Mono",Consolas,monospace;color:var(--faint);font-size:.69rem}
+.stage .t{font-weight:760;margin:4px 0 2px}
+.stage .d{font-size:.82rem;color:var(--soft)}
+.section{margin:48px 0}
+.section-title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.section-title h2{margin:0;font-size:1.48rem;letter-spacing:-.02em}
+.tag{font-family:"SF Mono",Consolas,monospace;font-size:.72rem;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--soft)}
+.sectlead{margin:0 0 16px;color:var(--soft);font-size:.93rem;max-width:72ch}
+.core{
+  background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px 17px;margin:14px 0
+}
+.core .cap{font-family:"SF Mono",Consolas,monospace;font-size:.7rem;letter-spacing:.06em;color:var(--faint);text-transform:uppercase;margin-bottom:5px}
+.core .big{font-weight:800}
+.core p{margin:7px 0 0;color:var(--soft);font-size:.9rem}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.card h3{font-size:.96rem;margin:0 0 6px}
+.card p,.card li{color:var(--soft);font-size:.86rem}
+.card p{margin:4px 0}
+.card ul{margin:7px 0 0;padding-left:18px}
+.flow{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.row{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.row .k{flex:0 0 116px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.78rem}
+.row .v{font-size:.87rem;color:var(--soft);flex:1}
+.teal{color:var(--teal)} .blue{color:var(--blue)} .amber{color:var(--amber)} .green{color:var(--green)} .purple{color:var(--purple)}
+.note{padding:11px 13px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);color:var(--soft);font-size:.85rem;margin:12px 0}
+.note b{color:var(--ink)}
+.warn{padding:11px 13px;border-radius:10px;background:rgba(251,113,133,.06);border:1px solid rgba(251,113,133,.22);color:#f4b1bc;font-size:.85rem;margin:12px 0}
+.code{font-family:"SF Mono",Consolas,monospace;color:#ffe0a3}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.pill{font-family:"SF Mono",Consolas,monospace;font-size:.74rem;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--soft);background:var(--code)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;margin:14px 0}
+table{width:100%;border-collapse:collapse;min-width:690px;font-size:.84rem}
+th,td{padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{background:var(--panel-2);font-family:"SF Mono",Consolas,monospace;font-size:.72rem;color:var(--soft)}
+tr:last-child td{border-bottom:0}
+.quote{margin:10px 0;padding:10px 13px;border-left:3px solid var(--blue);background:rgba(96,165,250,.05);color:var(--soft);font-size:.88rem}
+.research{margin:10px 0;padding:10px 13px;border:1px dashed rgba(129,140,248,.35);background:rgba(129,140,248,.05);border-radius:10px;color:var(--soft);font-size:.82rem}
+.research b{color:#b8c0ff}
+.sep{height:1px;background:var(--line);margin:44px 0}
+.placeholder{padding:16px;border-radius:12px;border:1px dashed var(--line);color:var(--faint);background:rgba(255,255,255,.015);font-size:.86rem}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.8rem}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  nav{position:relative;top:auto;display:flex;gap:4px;overflow:auto;white-space:nowrap}
+  .nav-title{display:none}
+  nav a{flex:0 0 auto}
+}
+@media(max-width:680px){
+  .stage-grid,.grid2{grid-template-columns:1fr}
+  .row{display:block}.row .k{margin-bottom:4px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="layout">
+
+<nav>
+  <div class="nav-title">Contents</div>
+  <a href="#map">总地图</a>
+  <a href="#wake">唤醒语言脑</a>
+  <a href="#structure">搭建结构</a>
+  <a href="#automation">激活与自动化</a>
+  <a href="#motivation">学习动力</a>
+  <a href="#emotion">学习情绪</a>
+  <a href="#focus">管理专注力</a>
+  <a href="#rhythm">学习节奏</a>
+</nav>
+
+<main>
+<header id="map">
+  <div class="kicker">Language Learning · System Map</div>
+  <h1>语言学习系统</h1>
+  <div class="sub">从“知道”到“自动调用”</div>
+  <p class="lead">语言不是一堆知识点，而是一套需要被<b>搭建、激活、反复调用并长期维持</b>的系统。真正的目标不是“懂得更多”，而是让理解、组织、表达逐渐从受控操作变成自动反应。</p>
+</header>
+
+<div class="thesis"><b>总原则：</b>知识负责解释，训练负责迁移，情景负责触发，节律负责让系统长期运行。<br>最终路径：<b>理解 → 骨架 → 调用 → 情景触发 → 自动化。</b></div>
+
+<div class="stage-grid">
+  <div class="stage"><div class="n">01</div><div class="t">唤醒语言脑</div><div class="d">从“翻译”转向直接理解与表达。</div></div>
+  <div class="stage"><div class="n">02</div><div class="t">搭建结构</div><div class="d">发音、词汇、语法形成可调用骨架。</div></div>
+  <div class="stage"><div class="n">03</div><div class="t">激活通路</div><div class="d">主动检索、复述、造句，让知识活起来。</div></div>
+  <div class="stage"><div class="n">04</div><div class="t">应用情景</div><div class="d">把表达与视觉、动作、声音、场景绑定。</div></div>
+  <div class="stage"><div class="n">05</div><div class="t">驱动与调节</div><div class="d">处理掉线、倦怠、焦虑与反馈缺失。</div></div>
+  <div class="stage"><div class="n">06</div><div class="t">掌控升级</div><div class="d">形成自己的长期学习系统，并迁移到其他领域。</div></div>
+</div>
+
+<section class="section" id="wake">
+  <div class="section-title"><h2>唤醒语言脑</h2><span class="tag">concept → language</span></div>
+  <p class="sectlead">先解决最底层的问题：为什么“认识很多”仍然不等于“能实时使用”。</p>
+
+  <div class="core">
+    <div class="cap">核心</div>
+    <div class="big">语言能力最终要成为可自动调用的技能，而不只是可回忆的知识。</div>
+    <p>语法、词汇、音标可以先以知识形式进入；真正的语言能力，则要靠真实语境中的反复提取、使用和修正逐渐自动化。</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>知识系统</h3>
+      <p>知道规则、认得单词、能解释句子。</p>
+      <div class="pillrow"><span class="pill">know</span><span class="pill">recognize</span><span class="pill">explain</span></div>
+    </div>
+    <div class="card">
+      <h3>调用系统</h3>
+      <p>在时间压力下直接理解、组织并输出。</p>
+      <div class="pillrow"><span class="pill">retrieve</span><span class="pill">generate</span><span class="pill">respond</span></div>
+    </div>
+  </div>
+
+  <div class="note"><b>更稳的表述：</b>不要把“陈述性记忆”和“程序性记忆”理解成完全隔绝的两个仓库。更有用的学习模型是：<b>知识要经过大量调用，才能变成更快、更自动的语言处理。</b></div>
+
+  <div class="core">
+    <div class="cap">翻译脑</div>
+    <div class="big">概念 → 中文 → 英文　vs　概念 → 英文</div>
+    <p>目标不是“永远禁止中文”，而是逐渐减少表达时对中文中介的依赖。</p>
+  </div>
+
+  <div class="flow">
+    <div class="row"><div class="k teal">留白</div><div class="v">卡词时先保住句子结构，允许缺词，事后回填；不要每次都停下来翻译。</div></div>
+    <div class="row"><div class="k teal">骨架</div><div class="v">优先调用整块表达：<span class="code">It turns out that… / I was about to… / The thing is…</span></div></div>
+    <div class="row"><div class="k teal">复述</div><div class="v">理解一句话后，尽量直接用英语复述其意思，而不是先生成完整中文译文。</div></div>
+    <div class="row"><div class="k teal">情境绑定</div><div class="v">固定一些场景默认使用英语，让“要不要切换英语”逐渐从决定变成习惯。</div></div>
+  </div>
+</section>
+
+<section class="section" id="structure">
+  <div class="section-title"><h2>搭建结构</h2><span class="tag">sound · words · grammar</span></div>
+  <p class="sectlead">结构的目的不是把理论学满，而是提供足够稳定的“零件”和“骨架”，让输出有东西可调用。</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>发音｜清晰 → 流畅 → 自动</h3>
+      <p><b>目标：</b>先保证可理解，再追求自然。</p>
+      <ul>
+        <li>音素：知道嘴怎么动。</li>
+        <li>节奏：重读、弱读、连读形成语流。</li>
+        <li>反馈：短块跟读 + 录音回听。</li>
+      </ul>
+      <p><b>抓手：</b>模仿节奏，通常比追求某个单音“绝对标准”更值得优先。</p>
+    </div>
+
+    <div class="card">
+      <h3>词汇｜形式 → 意义 → 用法</h3>
+      <p>单词不是孤立标签，而是带着搭配和场景的节点。</p>
+      <ul>
+        <li>形式：拼写、发音。</li>
+        <li>意义：核心语义和关联。</li>
+        <li>用法：搭配、句型、场景。</li>
+      </ul>
+      <p><b>造卡：</b>高频、有搭配、和自己有关；每词配 2 个搭配 + 2 个场景句。</p>
+    </div>
+  </div>
+
+  <div class="core">
+    <div class="cap">语法</div>
+    <div class="big">语法不是规则仓库，而是即时生成句子的结构程序。</div>
+    <p>真正需要长期自动化的只有三件事：<b>信息排序、动词控制、连接关系。</b></p>
+  </div>
+
+  <div class="flow">
+    <div class="row"><div class="k blue">信息排序</div><div class="v">谁先说、谁后说；主干先立住，再添加修饰和背景。</div></div>
+    <div class="row"><div class="k blue">动词控制</div><div class="v">时间、体、语态、情态通过助动词链组织：<span class="code">do / will / have / be</span>。</div></div>
+    <div class="row"><div class="k blue">连接关系</div><div class="v">从句、非谓语、连接词负责把多个信息块组织成一个句子。</div></div>
+  </div>
+
+  <div class="note"><b>训练方向：</b>少做“我能不能背出规则”的测试，多做“给我一个场景，我能不能迅速生成一句话”的测试。高频母骨架比大量零散句型更值得前台化。</div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>输入调频</h3>
+      <p><b>主食：</b>精听 / 精读——有加工、有停顿、有复述。</p>
+      <p><b>配材：</b>泛听 / 泛读——保持大量可理解接触。</p>
+      <p><b>零食：</b>碎片沉浸——只负责熟悉，不承担主训练。</p>
+    </div>
+    <div class="card">
+      <h3>输出排练</h3>
+      <p>原稿目前仅保留标题，尚未形成完整章节。</p>
+      <p>现阶段可把造句、复述、跟读后的替换输出统一视为输出端训练。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="automation">
+  <div class="section-title"><h2>激活通路 → 应用情景</h2><span class="tag">retrieve → trigger</span></div>
+  <p class="sectlead">这两步决定知识能不能从“我见过”变成“我能在场景里直接调出来”。</p>
+
+  <div class="core">
+    <div class="cap">记忆管理</div>
+    <div class="big">输入负责留下痕迹，主动检索负责把它变成可调用记忆。</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>主动检索</h3>
+      <p>晚上关掉笔记，尝试回忆当天词块、句型、例句；想不起来本身就是一次诊断。</p>
+      <p>第二天再用新的场景重新造句，检查是否真正迁移。</p>
+    </div>
+    <div class="card">
+      <h3>跨场景复用</h3>
+      <p>同一个词和骨架不要只在原例句里出现。</p>
+      <p>换人物、时间、地点、目的，让同一结构经历多次重组。</p>
+    </div>
+  </div>
+
+  <div class="core">
+    <div class="cap">自动化阶梯</div>
+    <div class="big">受控生成 → 块状调用 → 情景触发 → 反射输出</div>
+  </div>
+
+  <div class="flow">
+    <div class="row"><div class="k amber">视觉触发</div><div class="v">看到图片或场景，3 秒内说一句相关表达。</div></div>
+    <div class="row"><div class="k amber">动作触发</div><div class="v">做日常动作时直接描述，再补原因或情绪。</div></div>
+    <div class="row"><div class="k amber">声音触发</div><div class="v">听到关键词，立刻调用完整句，而不是先翻译关键词。</div></div>
+    <div class="row"><div class="k amber">触发链</div><div class="v">把物品、场景、情绪组合起来，在短时间内连续生成多句。</div></div>
+  </div>
+
+  <div class="quote">真正的自动化，不是“完全不犯错”，而是：<b>在越来越少的显性思考下，越来越快地调用正确结构。</b></div>
+</section>
+
+<section class="section" id="motivation">
+  <div class="section-title"><h2>学习动力：四种崩盘与修复</h2><span class="tag">diagnose the break</span></div>
+  <p class="sectlead">不要笼统地问“为什么没动力”，先判断学习回路断在哪一环。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>断点</th><th>体感</th><th>第一动作</th></tr></thead>
+      <tbody>
+        <tr><td><b>启动太贵</b></td><td>每次开始都费劲，热情很快消散</td><td>节律锚点 + 零摩擦包</td></tr>
+        <tr><td><b>中途掉线</b></td><td>断几天后容易把中断解释成失败</td><td>24h 最小动作 → 48h 半量 → 72h 恢复</td></tr>
+        <tr><td><b>高压倦怠</b></td><td>不是累，而是一想到这件事就烦</td><td>减压、恢复选择感与好奇心</td></tr>
+        <tr><td><b>无感进步</b></td><td>一直在做，却觉得自己没变</td><td>记录能力事件，拉长比较时间窗</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>启动：降低摩擦</h3>
+      <p><b>节律锚点：</b>把学习接在一个稳定发生的行为后。</p>
+      <p><b>零摩擦包：</b>前一晚把资料停在“下一步”，坐下即可开始。</p>
+    </div>
+    <div class="card">
+      <h3>掉线：先恢复回路</h3>
+      <p><b>24h：</b>几分钟最小动作。</p>
+      <p><b>48h：</b>体量减半。</p>
+      <p><b>72h：</b>恢复原量，并完成一次完整输出。</p>
+    </div>
+    <div class="card">
+      <h3>倦怠：不要继续加压</h3>
+      <p>累是全局低能量；倦怠更像对特定任务的持续抗拒。</p>
+      <p>倦怠期先做减法，恢复自主感，再用好奇问题重新建立连接。</p>
+    </div>
+    <div class="card">
+      <h3>无感进步：用记录替代感觉</h3>
+      <p>日间波动通常大于一天真实增量，所以别只跟昨天比。</p>
+      <p>记录“第一次做到什么”，而不是只记“学了多少分钟”。</p>
+    </div>
+  </div>
+
+  <div class="note"><b>三问定位：</b>①最近还在做吗？不在＝启动/掉线；②在做但明显抗拒吗？是＝倦怠；③在做、不抗拒、却觉得没进步？＝反馈缺失。<b>先定位断点，再选工具。</b></div>
+</section>
+
+<section class="section" id="emotion">
+  <div class="section-title"><h2>学习情绪</h2><span class="tag">anti-volatility</span></div>
+  <p class="sectlead">这一章只解决一个问题：状态波动时，怎样不被情绪带着改变整个学习系统。</p>
+
+  <div class="core">
+    <div class="cap">慢性学习压力</div>
+    <div class="big">长期挑战 + 反馈延迟 + 结果不确定 → 反复评估“我到底能不能学会？”</div>
+    <p>真正需要降低的，不一定是难度，而是无意义的评估频率。</p>
+  </div>
+
+  <div class="flow">
+    <div class="row"><div class="k green">1 · 识别</div><div class="v"><b>评价自己 → 描述状态。</b>“我不行”改成“我现在焦虑 / 疲惫 / 专注低”。</div></div>
+    <div class="row"><div class="k green">2 · 重评</div><div class="v"><b>危险 → 挑战。</b>紧张不一定是失败信号，也可能只是系统在预热。</div></div>
+    <div class="row"><div class="k green">3 · 调节</div><div class="v"><b>状态变，负荷变。</b>绿色推进；黄色降量；红色只保最低接触。</div></div>
+    <div class="row"><div class="k green">4 · 行动</div><div class="v"><b>停止无限评估。</b>3-2-1 后执行一个预设的最小动作。</div></div>
+    <div class="row"><div class="k green">5 · 复盘</div><div class="v"><b>触发 → 应对 → 结果。</b>记住自己是怎么处理过去的，而不是只记住焦虑。</div></div>
+  </div>
+
+  <div class="research"><b>研究旁注：</b>Affect Labeling 支持“给情绪命名”作为一种调节方式；Anxiety Reappraisal 提供了“把高唤醒解释成兴奋/挑战”的实验依据；Self-efficacy 强调成功经验对“我能不能做到”判断的重要性。这里把它们作为支持策略，而不是万能定律。</div>
+
+  <div class="note"><b>最终原则：</b>状态可以波动，但不要让行为跟着剧烈波动。目标不是“以后没有焦虑”，而是<b>焦虑出现以后，我知道系统下一步怎么运行。</b></div>
+</section>
+
+<section class="section" id="focus">
+  <div class="section-title"><h2>管理专注力</h2><span class="tag">placeholder</span></div>
+  <div class="placeholder">原 Markdown 目前只有章节标题，尚无正文内容，因此本版不额外补写。</div>
+</section>
+
+<section class="section" id="rhythm">
+  <div class="section-title"><h2>学习节奏</h2><span class="tag">placeholder</span></div>
+  <div class="placeholder">原 Markdown 目前只有章节标题，尚无正文内容，因此本版不额外补写。</div>
+</section>
+
+<footer>
+  <b>最终压缩：</b>学习系统的核心不是“持续亢奋”，而是让正确的结构在正确的场景被反复调用，并让整个系统在波动中继续运行。
+</footer>
+
+</main>
+</div>
+</div>
+</body>
+</html>
