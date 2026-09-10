@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单词变化 · 英语词形变化总表</title>
+<style>
+:root{
+  --bg:#0b0f14;
+  --panel:#151b23;
+  --panel-2:#1b2330;
+  --ink:#e7eef5;
+  --ink-soft:#9aa6b3;
+  --ink-faint:#69727f;
+  --line:#28313d;
+  --r0:#94a3b8;
+  --r1:#2dd4bf;
+  --r2:#60a5fa;
+  --r3:#fbbf24;
+  --r4:#34d399;
+  --r5:#c084fc;
+  --term:#818cf8;
+  --conv:#e0913d;
+  --ok:#8ce99a;
+  --warn:#fb7185;
+  --zh:#7e8794;
+  --code:#090d12;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(1100px 560px at 84% -12%, #0f2028 0%, transparent 60%),
+    radial-gradient(820px 460px at -12% 22%, #191324 0%, transparent 55%),
+    var(--bg);
+  color:var(--ink);
+  font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:960px;margin:0 auto;padding:56px 22px 120px}
+.kicker{font-family:"SF Mono",Consolas,monospace;letter-spacing:.28em;text-transform:uppercase;font-size:.68rem;color:var(--ink-faint);margin-bottom:16px}
+h1{font-size:clamp(2rem,5.5vw,3.1rem);line-height:1.08;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+.sub{color:var(--ink-faint);font-size:.9rem;font-family:"SF Mono",Consolas,monospace;margin-bottom:16px}
+.lead{color:var(--ink-soft);font-size:1.02rem;max-width:72ch}
+.lead b{color:var(--ink)}
+.thesis{margin:30px 0 8px;padding:16px 20px;border-left:3px solid var(--r1);background:linear-gradient(90deg,rgba(45,212,191,.09),transparent);border-radius:0 10px 10px 0;font-size:.96rem;color:var(--ink-soft)}
+.thesis b{color:var(--r1)} .thesis .q{color:var(--ink);font-weight:700}
+
+.map{margin:20px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.map .cap{font-size:.76rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace;margin-bottom:10px}
+.mapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mapcard{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:13px}
+.mapcard .n{font-family:"SF Mono",Consolas,monospace;font-size:.72rem;color:var(--ink-faint)}
+.mapcard .t{font-weight:760;margin-top:4px}
+.mapcard .e{font-family:"SF Mono",Consolas,monospace;font-size:.78rem;color:var(--ink-soft);margin-top:4px}
+.mapcard:nth-child(1){border-top:3px solid var(--r1)}
+.mapcard:nth-child(2){border-top:3px solid var(--r2)}
+.mapcard:nth-child(3){border-top:3px solid var(--r5)}
+
+.ladder{position:relative;margin-top:34px}
+.ladder::before{content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;background:linear-gradient(var(--r0),var(--r1),var(--r2),var(--r3),var(--r4),var(--r5));opacity:.5}
+.step{position:relative;padding-left:56px;margin-bottom:44px}
+.dot{position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 0 0 6px var(--bg),0 0 22px -4px currentColor;z-index:2}
+.r0 .dot{background:var(--r0);color:#111827}
+.r1 .dot{background:var(--r1);color:#053b34}
+.r2 .dot{background:var(--r2);color:#08213f}
+.r3 .dot{background:var(--r3);color:#3a2c00}
+.r4 .dot{background:var(--r4);color:#053d2b}
+.r5 .dot{background:var(--r5);color:#2f0f4a}
+.step h2{margin:0 0 4px;font-size:1.3rem;font-weight:760;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.r0 h2 .tag{color:var(--r0)} .r1 h2 .tag{color:var(--r1)}
+.r2 h2 .tag{color:var(--r2)} .r3 h2 .tag{color:var(--r3)}
+.r4 h2 .tag{color:var(--r4)} .r5 h2 .tag{color:var(--r5)}
+.chip{font-family:"SF Mono",Consolas,monospace;font-size:.77rem;padding:2px 9px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel);white-space:nowrap}
+
+.why{margin:14px 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.why .row{display:flex;border-bottom:1px solid var(--line)}
+.why .row:last-child{border-bottom:0}
+.why .lab{flex:0 0 96px;padding:10px 13px;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+.why .val{padding:10px 15px;font-size:.92rem;color:var(--ink-soft)}
+.why .val b{color:var(--ink)}
+
+h3{font-size:1rem;margin:1.55rem 0 .45rem}
+.rules{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.rule{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+.rule .tg{flex:0 0 165px;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.84rem}
+.r0 .rule .tg{color:var(--r0)} .r1 .rule .tg{color:var(--r1)}
+.r2 .rule .tg{color:var(--r2)} .r3 .rule .tg{color:var(--r3)}
+.r4 .rule .tg{color:var(--r4)} .r5 .rule .tg{color:var(--r5)}
+.rule .bd{flex:1;font-size:.87rem;color:var(--ink-soft)} .rule .bd b{color:var(--ink)}
+.ex{font-family:"SF Mono",Consolas,monospace;font-size:.8rem;color:var(--ok);margin-top:4px}
+.zh{color:var(--zh)}
+.callout{margin:12px 0;padding:12px 15px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--line);font-size:.89rem;color:var(--ink-soft)}
+.callout b{color:var(--ink)}
+.warn{margin:12px 0;padding:11px 14px;border-radius:10px;background:rgba(251,113,133,.07);border:1px solid rgba(251,113,133,.24);font-size:.86rem;color:#ffb3c0}
+.warn b{color:#fff}
+.park{margin:12px 0;padding:11px 14px;border-radius:10px;background:rgba(148,163,184,.05);border:1px dashed var(--line);font-size:.86rem;color:var(--ink-faint)}
+.park b{color:var(--ink-soft)}
+.sum{margin-top:14px;padding:11px 15px 11px 17px;border-radius:0 10px 10px 0;font-size:.89rem;color:var(--ink-soft)}
+.r0 .sum{border-left:3px solid var(--r0);background:rgba(148,163,184,.05)}
+.r1 .sum{border-left:3px solid var(--r1);background:rgba(45,212,191,.06)}
+.r2 .sum{border-left:3px solid var(--r2);background:rgba(96,165,250,.06)}
+.r3 .sum{border-left:3px solid var(--r3);background:rgba(251,191,36,.06)}
+.r4 .sum{border-left:3px solid var(--r4);background:rgba(52,211,153,.06)}
+.r5 .sum{border-left:3px solid var(--r5);background:rgba(192,132,252,.06)}
+.sum b{color:var(--ink)}
+
+.pron{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.pc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+.pc .ipa{font-family:"SF Mono",Consolas,monospace;font-size:1rem;font-weight:800}
+.pc .d{font-size:.84rem;color:var(--ink-soft);margin-top:3px}
+.pc .ex{margin-top:6px}
+
+.overview{margin-top:44px}
+h3.block{font-size:1.4rem;margin:0 0 4px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+.sectlead{color:var(--ink-soft);font-size:.94rem;margin:8px 0 0}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:16px}
+table.big{border-collapse:collapse;width:100%;min-width:800px;font-size:.86rem}
+table.big th,table.big td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+table.big thead th{background:var(--panel-2);color:var(--ink);font-size:.73rem;letter-spacing:.04em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+table.big tbody tr:last-child td{border-bottom:0}
+table.big code{font-family:"SF Mono",Consolas,monospace;font-size:.79rem;color:var(--ink)}
+
+.flow{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.qnode{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.qnode .qq{flex:0 0 30px;height:26px;border-radius:7px;background:var(--panel-2);display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;font-weight:800;font-size:.78rem;color:var(--ink-soft)}
+.qnode .body{flex:1}.qnode .ask{font-weight:650;margin-bottom:3px}
+.qnode .arm{font-size:.87rem;color:var(--ink-soft)}
+
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.82rem}
+footer b{color:var(--ink-soft)}
+@media (max-width:720px){.mapgrid{grid-template-columns:1fr}.pron{grid-template-columns:1fr}.rule{display:block}.rule .tg{margin-bottom:4px}}
+@media (max-width:560px){.step{padding-left:48px}.why .lab{flex-basis:76px;font-size:.66rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Feynman · 系统思维 · 规则压缩</div>
+  <h1>单词变化</h1>
+  <div class="sub">English inflection · nouns · verbs · adjectives & adverbs</div>
+  <p class="lead">这份笔记只管一件事：<b>同一个英语单词，为了适应语法位置，词形怎么变化。</b>主干只有三套：名词的数、动词的形态、形容词/副词的比较等级。</p>
+</header>
+
+<div class="thesis">
+  <b>母逻辑：</b><span class="q">先判断“语法要什么形态” → 再判断“词干需不需要调整” → 最后加词尾；发音则优先看最后一个“音”，不是最后一个字母。</span>
+  很多看似分散的规则其实是重复出现的：<b>辅音+y、静音e、重读短元音+单辅音、-s/-ed 发音</b>。
+</div>
+
+<div class="map">
+  <div class="cap">整张地图只有三大系统</div>
+  <div class="mapgrid">
+    <div class="mapcard"><div class="n">SYSTEM 01</div><div class="t">名词</div><div class="e">单数 → 复数<br>book → books</div></div>
+    <div class="mapcard"><div class="n">SYSTEM 02</div><div class="t">动词</div><div class="e">三单 / 过去式 / V-ing / 过去分词</div></div>
+    <div class="mapcard"><div class="n">SYSTEM 03</div><div class="t">形容词 & 副词</div><div class="e">原级 → 比较级 → 最高级</div></div>
+  </div>
+</div>
+
+<div class="ladder">
+
+<section class="step r0">
+  <div class="dot">0</div>
+  <h2><span class="tag">先看</span>五个会反复出现的词干处理规则 <span class="chip">shared spelling logic</span></h2>
+
+  <div class="why">
+    <div class="row"><div class="lab">为什么先学</div><div class="val">如果把每个章节分开背，你会重复背很多次。其实英语词形变化反复调用的就是下面几种“词干处理程序”。</div></div>
+    <div class="row"><div class="lab">真正重点</div><div class="val">看清楚<b>哪些规则跨系统复用</b>，以及哪些看起来相似却不能乱套。</div></div>
+  </div>
+
+  <div class="rules">
+    <div class="rule"><div class="tg">① 默认：直接加词尾</div><div class="bd">词干没有冲突时，直接接后缀。<div class="ex">book→books · work→worked · work→working · tall→taller</div></div></div>
+    <div class="rule"><div class="tg">② 辅音字母 + y</div><div class="bd">在 <b>-s / -ed / -er / -est</b> 前通常 y→i；但 <b>-ing 前不变 i</b>。<div class="ex">baby→babies · study→studied · happy→happier · study→studying</div></div></div>
+    <div class="rule"><div class="tg">③ 不发音 e</div><div class="bd">不同后缀处理不同：-ed 只 +d；-ing 常去 e；-er/-est 只 +r/+st。<div class="ex">move→moved · make→making · nice→nicer→nicest</div></div></div>
+    <div class="rule"><div class="tg">④ 重读短元音 + 单辅音</div><div class="bd">在某些后缀前需要双写末辅音，目的是保住前面的短元音。<div class="ex">stop→stopped / stopping · big→bigger / biggest</div></div></div>
+    <div class="rule"><div class="tg">⑤ c 结尾</div><div class="bd">接 -ed / -ing 时常补 k，保持 /k/。<div class="ex">panic→panicked · panicking · mimic→mimicked · mimicking</div></div></div>
+  </div>
+
+  <div class="warn"><b>最容易串错的一条：</b>“辅音+y → i”不是万能规则。<code>study → studied / studies</code>，但必须是 <code>study → studying</code>，不是 <code>studiing</code>。</div>
+  <div class="sum">📍 <b>压缩：</b>先别背“名词一套、动词一套、形容词一套”。先认出词干是否属于 y / e / CVC / c 这几个高频入口。</div>
+</section>
+
+<section class="step r1">
+  <div class="dot">1</div>
+  <h2><span class="tag">名词</span>可数名词：单数 → 复数 <span class="chip">noun plural</span></h2>
+
+  <div class="why">
+    <div class="row"><div class="lab">核心</div><div class="val">规则复数本质是给名词接 <b>-s / -es</b>；特殊拼写只是为了让词更容易读、保持原来的发音。</div></div>
+    <div class="row"><div class="lab">发音</div><div class="val">最终 -s / -es 怎么读，要看<b>单数词最后一个音</b>，不是看最后一个字母。</div></div>
+  </div>
+
+  <h3>拼写规则</h3>
+  <div class="rules">
+    <div class="rule"><div class="tg">默认 +s</div><div class="bd"><div class="ex">book→books · car→cars · dog→dogs</div></div></div>
+    <div class="rule"><div class="tg">s / x / z / sh / ch → +es</div><div class="bd"><div class="ex">bus→buses · box→boxes · buzz→buzzes · wash→washes · watch→watches</div></div></div>
+    <div class="rule"><div class="tg">辅音字母 + y</div><div class="bd">y→i + es。<div class="ex">baby→babies · city→cities · story→stories</div></div></div>
+    <div class="rule"><div class="tg">元音字母 + y</div><div class="bd">y 不变，直接 +s。<div class="ex">boy→boys · key→keys · toy→toys</div></div></div>
+    <div class="rule"><div class="tg">f / fe</div><div class="bd">不稳定：一部分 → ves，一部分直接 +s，不能靠一个规则全推。<div class="ex">life→lives · knife→knives · leaf→leaves ｜ roof→roofs · belief→beliefs</div></div></div>
+    <div class="rule"><div class="tg">o 结尾</div><div class="bd">也不稳定，记高频词。<div class="ex">tomato→tomatoes · potato→potatoes · hero→heroes ｜ photo→photos · piano→pianos · video→videos</div></div></div>
+    <div class="rule"><div class="tg">不规则</div><div class="bd"><div class="ex">man→men · woman→women · child→children · tooth→teeth · foot→feet · mouse→mice · person→people</div></div></div>
+    <div class="rule"><div class="tg">单复数同形</div><div class="bd"><div class="ex">sheep→sheep · deer→deer</div></div></div>
+  </div>
+
+  <h3>-s / -es 发音</h3>
+  <div class="pron">
+    <div class="pc"><div class="ipa">/ɪz/</div><div class="d">咝音结尾：/s z ʃ ʒ tʃ dʒ/</div><div class="ex">buses · boxes · washes · pages</div></div>
+    <div class="pc"><div class="ipa">/s/</div><div class="d">其他清辅音结尾</div><div class="ex">cats · books · cups</div></div>
+    <div class="pc"><div class="ipa">/z/</div><div class="d">元音 / 其他浊辅音结尾</div><div class="ex">dogs · beds · boys · keys</div></div>
+  </div>
+
+  <div class="sum">📍 <b>压缩：</b>拼写看字母结构；发音看最后一个音。-s 的 /s z ɪz/ 这一套，后面三单会原样复用。</div>
+</section>
+
+<section class="step r2">
+  <div class="dot">2</div>
+  <h2><span class="tag">动词 A</span>第三人称单数 <span class="chip">V → V-s / V-es</span></h2>
+
+  <div class="why">
+    <div class="row"><div class="lab">核心</div><div class="val">一般现在时里，主语是 he / she / it / 单数名词时，实义动词通常进入三单形式。</div></div>
+    <div class="row"><div class="lab">共享系统</div><div class="val">三单和名词复数的 <b>-s / -es 拼写与发音逻辑高度相似</b>，不用重新学一套。</div></div>
+  </div>
+
+  <div class="rules">
+    <div class="rule"><div class="tg">默认 +s</div><div class="bd"><div class="ex">work→works · read→reads · like→likes</div></div></div>
+    <div class="rule"><div class="tg">s / ss / x / z / sh / ch → +es</div><div class="bd"><div class="ex">pass→passes · fix→fixes · buzz→buzzes · wash→washes · watch→watches</div></div></div>
+    <div class="rule"><div class="tg">辅音字母 + y</div><div class="bd">y→i + es。<div class="ex">study→studies · try→tries · carry→carries</div></div></div>
+    <div class="rule"><div class="tg">元音字母 + y</div><div class="bd">直接 +s。<div class="ex">play→plays · enjoy→enjoys · buy→buys</div></div></div>
+    <div class="rule"><div class="tg">高频 o 结尾</div><div class="bd"><b>do / go</b> 用 -es；不要把“辅音+o 一律 +es”当成普遍规则。<div class="ex">do→does · go→goes</div></div></div>
+    <div class="rule"><div class="tg">特殊</div><div class="bd"><div class="ex">have→has · be→is</div></div></div>
+  </div>
+
+  <h3>发音：直接复用名词复数</h3>
+  <div class="pron">
+    <div class="pc"><div class="ipa">/ɪz/</div><div class="d">咝音结尾</div><div class="ex">passes · washes · watches</div></div>
+    <div class="pc"><div class="ipa">/s/</div><div class="d">其他清辅音结尾</div><div class="ex">works · likes</div></div>
+    <div class="pc"><div class="ipa">/z/</div><div class="d">元音 / 其他浊辅音结尾</div><div class="ex">reads · plays · goes</div></div>
+  </div>
+  <div class="warn"><b>单独记：</b><code>has</code>、<code>does</code>、<code>is</code> 的读音不要拿常规拼写硬推。</div>
+
+  <div class="sum">📍 <b>压缩：</b>三单 = “名词复数那套 -s 系统”搬到动词上，再额外记 have→has、do→does、be→is。</div>
+</section>
+
+<section class="step r3">
+  <div class="dot">3</div>
+  <h2><span class="tag">动词 B</span>过去式 + 过去分词 <span class="chip">V2 / V3</span></h2>
+
+  <div class="why">
+    <div class="row"><div class="lab">先分身份</div><div class="val"><b>过去式 V2</b> 和 <b>过去分词 V3</b> 是两种不同语法形态；只是规则动词恰好同形。</div></div>
+    <div class="row"><div class="lab">母逻辑</div><div class="val">规则动词：V2 = V3，统一走 -ed 系统；不规则动词：第三列单独记。</div></div>
+  </div>
+
+  <h3>规则动词拼写</h3>
+  <div class="rules">
+    <div class="rule"><div class="tg">默认 +ed</div><div class="bd"><div class="ex">answer→answered · look→looked · play→played</div></div></div>
+    <div class="rule"><div class="tg">不发音 e → +d</div><div class="bd"><div class="ex">arrive→arrived · move→moved · use→used</div></div></div>
+    <div class="rule"><div class="tg">辅音字母 + y</div><div class="bd">y→i + ed。<div class="ex">study→studied · try→tried · carry→carried</div></div></div>
+    <div class="rule"><div class="tg">元音字母 + y</div><div class="bd">直接 +ed。<div class="ex">play→played · enjoy→enjoyed</div></div></div>
+    <div class="rule"><div class="tg">重读短元音 + 单辅音</div><div class="bd">双写末辅音 + ed。<div class="ex">stop→stopped · plan→planned · prefer→preferred</div></div></div>
+    <div class="rule"><div class="tg">c → cked</div><div class="bd"><div class="ex">panic→panicked · mimic→mimicked</div></div></div>
+  </div>
+
+  <div class="callout"><b>双写别只记“重读闭音节”四个字。</b>更稳的判断是：<b>最后一个音节重读 + 短元音 + 单辅音结尾</b>。而 w / x / y 通常不双写：snowed / fixed / played。</div>
+
+  <h3>-ed 发音</h3>
+  <div class="pron">
+    <div class="pc"><div class="ipa">/ɪd/</div><div class="d">原动词最后一个音是 /t/ 或 /d/</div><div class="ex">wanted · needed</div></div>
+    <div class="pc"><div class="ipa">/t/</div><div class="d">其他清辅音结尾</div><div class="ex">looked · washed · watched · stopped</div></div>
+    <div class="pc"><div class="ipa">/d/</div><div class="d">元音 / 其他浊辅音结尾</div><div class="ex">played · answered · moved · called</div></div>
+  </div>
+
+  <h3>不规则动词：按三列关系压缩</h3>
+  <div class="rules">
+    <div class="rule"><div class="tg">AAA</div><div class="bd">V1 = V2 = V3<div class="ex">cut→cut→cut · put→put→put · hit→hit→hit</div></div></div>
+    <div class="rule"><div class="tg">ABB</div><div class="bd">V2 = V3<div class="ex">buy→bought→bought · make→made→made · leave→left→left · say→said→said</div></div></div>
+    <div class="rule"><div class="tg">ABA</div><div class="bd">V1 = V3<div class="ex">come→came→come · run→ran→run · become→became→become</div></div></div>
+    <div class="rule"><div class="tg">ABC</div><div class="bd">三种形式不同<div class="ex">write→wrote→written · see→saw→seen · take→took→taken · give→gave→given</div></div></div>
+    <div class="rule"><div class="tg">高频特殊</div><div class="bd"><div class="ex">be→was/were→been · do→did→done · go→went→gone</div></div></div>
+  </div>
+
+  <div class="warn"><b>认知修正：</b>不要记“过去分词 = 过去式”。应该记：<b>规则动词的过去式和过去分词同形；不规则动词未必同形。</b></div>
+  <div class="sum">📍 <b>压缩：</b>规则 V2/V3 共用一套 -ed；不规则只额外记第三列。</div>
+</section>
+
+<section class="step r4">
+  <div class="dot">4</div>
+  <h2><span class="tag">动词 C</span>现在分词 V-ing <span class="chip">stem + ing</span></h2>
+
+  <div class="why">
+    <div class="row"><div class="lab">母逻辑</div><div class="val"><b>V-ing = 词干处理 + ing。</b>真正要判断的不是“怎么加 ing”，而是加之前词干是否要变。</div></div>
+    <div class="row"><div class="lab">用途</div><div class="val">进行时、动名词、分词结构都会调用这一形态。</div></div>
+  </div>
+
+  <div class="rules">
+    <div class="rule"><div class="tg">默认 +ing</div><div class="bd"><div class="ex">work→working · read→reading · play→playing</div></div></div>
+    <div class="rule"><div class="tg">不发音 e → 去 e</div><div class="bd"><div class="ex">make→making · write→writing · take→taking · use→using</div></div></div>
+    <div class="rule"><div class="tg">ie → y + ing</div><div class="bd"><div class="ex">lie→lying · die→dying · tie→tying</div></div></div>
+    <div class="rule"><div class="tg">重读短元音 + 单辅音</div><div class="bd">双写末辅音 + ing。<div class="ex">run→running · sit→sitting · stop→stopping · begin→beginning · admit→admitting</div></div></div>
+    <div class="rule"><div class="tg">c → ck + ing</div><div class="bd"><div class="ex">panic→panicking · mimic→mimicking</div></div></div>
+  </div>
+
+  <div class="callout"><b>e 结尾不是见 e 就删：</b><code>see→seeing</code>、<code>agree→agreeing</code>；<code>be→being</code>。另外 <code>dye→dyeing</code> 保留 e，是为了和 <code>die→dying</code> 区分。</div>
+  <div class="callout"><b>英美差异：</b>部分以 l 结尾的双音节词，英式英语更常双写 l：<code>travelling</code>；美式常写 <code>traveling</code>。两种都要能认。</div>
+
+  <h3>发音</h3>
+  <div class="pron">
+    <div class="pc"><div class="ipa">/ɪŋ/</div><div class="d">标准 -ing 结尾基本固定</div><div class="ex">working · reading · singing</div></div>
+    <div class="pc"><div class="ipa">/ŋ/</div><div class="d">一个鼻音，不是 /n/ + /g/ 两个音</div><div class="ex">sing /sɪŋ/</div></div>
+    <div class="pc"><div class="ipa">-in'</div><div class="d">非正式口语可弱化为 /ɪn/；标准学习仍按 /ɪŋ/</div><div class="ex">workin'</div></div>
+  </div>
+
+  <div class="sum">📍 <b>压缩：</b>ie→y；静音 e→去 e；重读短元音+单辅音→双写；c→ck；其他直接 +ing。</div>
+</section>
+
+<section class="step r5">
+  <div class="dot">5</div>
+  <h2><span class="tag">形容词 & 副词</span>比较级与最高级 <span class="chip">comparative / superlative</span></h2>
+
+  <div class="why">
+    <div class="row"><div class="lab">母逻辑</div><div class="val">比较有两套实现方式：<b>词内变化 -er / -est</b>，或者<b>词外加 more / most</b>。词越短越倾向词内变化，词越长越倾向词外变化。</div></div>
+    <div class="row"><div class="lab">关键灰区</div><div class="val"><b>双音节不能一刀切。</b>它正好处在两套系统之间，有些词用 -er/-est，有些 more/most，有些两种都自然。</div></div>
+  </div>
+
+  <h3>-er / -est 拼写</h3>
+  <div class="rules">
+    <div class="rule"><div class="tg">默认 +er / +est</div><div class="bd">常见于单音节和部分双音节。<div class="ex">tall→taller→tallest · small→smaller→smallest · fast→faster→fastest</div></div></div>
+    <div class="rule"><div class="tg">不发音 e</div><div class="bd">只 +r / +st。<div class="ex">nice→nicer→nicest · large→larger→largest</div></div></div>
+    <div class="rule"><div class="tg">重读短元音 + 单辅音</div><div class="bd">双写末辅音。<div class="ex">big→bigger→biggest · hot→hotter→hottest · thin→thinner→thinnest</div></div></div>
+    <div class="rule"><div class="tg">辅音字母 + y</div><div class="bd">y→i + er / est。<div class="ex">happy→happier→happiest · easy→easier→easiest · early→earlier→earliest</div></div></div>
+  </div>
+
+  <h3>-er/-est 还是 more/most？</h3>
+  <div class="rules">
+    <div class="rule"><div class="tg">单音节</div><div class="bd">通常 -er / -est。<div class="ex">tall→taller→tallest · hard→harder→hardest</div></div></div>
+    <div class="rule"><div class="tg">双音节</div><div class="bd">灰色地带。-y 结尾通常用 -er/-est；部分 -ow / -er / -le 结尾也常这样；另一些词更自然用 more/most；部分两种皆可。<div class="ex">happy→happier · narrow→narrower · clever→cleverer / more clever · simple→simpler / more simple</div></div></div>
+    <div class="rule"><div class="tg">三音节及以上</div><div class="bd">通常 more / most。<div class="ex">beautiful→more beautiful→most beautiful · important→more important→most important</div></div></div>
+    <div class="rule"><div class="tg">-ly 副词</div><div class="bd">通常 more / most。<div class="ex">carefully→more carefully→most carefully · slowly→more slowly→most slowly</div></div></div>
+    <div class="rule"><div class="tg">短副词 / 平副词</div><div class="bd">常直接 -er / -est。<div class="ex">fast→faster→fastest · hard→harder→hardest · early→earlier→earliest</div></div></div>
+  </div>
+
+  <div class="callout"><b>less / least 是另一条轴：</b>它们不是“长单词专用规则”，而是表达<b>较不…… / 最不……</b>。<code>less important / least important / less carefully / least carefully</code>。</div>
+
+  <h3>不规则变化</h3>
+  <div class="rules">
+    <div class="rule"><div class="tg">good / well</div><div class="bd"><div class="ex">better → best</div></div></div>
+    <div class="rule"><div class="tg">bad / badly / ill</div><div class="bd"><div class="ex">worse → worst</div></div></div>
+    <div class="rule"><div class="tg">many / much</div><div class="bd"><div class="ex">more → most</div></div></div>
+    <div class="rule"><div class="tg">little</div><div class="bd">表示“少量”时。<div class="ex">less → least</div></div></div>
+    <div class="rule"><div class="tg">far</div><div class="bd"><div class="ex">farther / further → farthest / furthest</div></div></div>
+  </div>
+
+  <h3>“没有比较级”的词：不要记成绝对禁令</h3>
+  <div class="callout"><b>更准确的概念叫“不可分级形容词（non-gradable adjectives）”。</b>有些词在中性字面义里表达近似绝对状态，例如 <code>dead / impossible / perfect / unique / complete</code>，通常不自然地拿来比较“更……”。</div>
+  <div class="rules">
+    <div class="rule"><div class="tg">中性表达</div><div class="bd">常用 absolutely / completely / totally 等加强，而不是 very。<div class="ex">absolutely impossible · completely dead · absolutely perfect</div></div></div>
+    <div class="rule"><div class="tg">真实英语边界</div><div class="bd">语境可以把“绝对概念”重新理解成有程度，因此 <b>more perfect / more unique</b> 等并非语法上绝对不存在，只是学习阶段不建议把它们当默认写法。</div></div></div>
+  </div>
+
+  <div class="warn"><b>认知修正：</b>“双音节及以上 = more/most”太粗；“大部分副词 = more/most”也太粗。更稳的是：<b>多音节形容词和 -ly 副词通常 more/most；短词通常 -er/-est；双音节是灰区。</b></div>
+  <div class="sum">📍 <b>压缩：</b>短词偏 -er/-est；长词偏 more/most；双音节灰区；-ly 副词通常 more/most；不规则单独记。</div>
+</section>
+
+</div>
+
+<section class="overview">
+  <h3 class="block">跨系统总览：同一个词尾条件，四处复用</h3>
+  <p class="sectlead">这一张表是整份笔记里最值得反复看的部分。</p>
+  <div class="tbl-wrap">
+    <table class="big">
+      <thead>
+        <tr><th>词干条件</th><th>名词复数</th><th>动词三单</th><th>过去式 / V3</th><th>V-ing</th><th>比较级 / 最高级</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>默认</b></td><td><code>book→books</code></td><td><code>work→works</code></td><td><code>work→worked</code></td><td><code>work→working</code></td><td><code>tall→taller</code></td></tr>
+        <tr><td><b>辅音+y</b></td><td><code>baby→babies</code></td><td><code>study→studies</code></td><td><code>study→studied</code></td><td><code>study→studying</code><br><span class="zh">注意：这里不变 i</span></td><td><code>happy→happier</code></td></tr>
+        <tr><td><b>静音 e</b></td><td>通常直接 +s</td><td>通常直接 +s</td><td><code>move→moved</code></td><td><code>make→making</code></td><td><code>nice→nicer</code></td></tr>
+        <tr><td><b>重读短元音+单辅音</b></td><td>—</td><td>—</td><td><code>stop→stopped</code></td><td><code>stop→stopping</code></td><td><code>big→bigger</code></td></tr>
+        <tr><td><b>c 结尾</b></td><td>—</td><td>—</td><td><code>panic→panicked</code></td><td><code>panic→panicking</code></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="overview">
+  <h3 class="block">发音总览：真正需要分类的只有 -s 与 -ed</h3>
+  <div class="tbl-wrap">
+    <table class="big">
+      <thead><tr><th>词尾</th><th>规则 1</th><th>规则 2</th><th>规则 3</th><th>判断依据</th></tr></thead>
+      <tbody>
+        <tr><td><b>-s / -es</b></td><td>咝音 → <code>/ɪz/</code></td><td>其他清辅音 → <code>/s/</code></td><td>元音/浊辅音 → <code>/z/</code></td><td>看原词最后一个<b>音</b></td></tr>
+        <tr><td><b>-ed</b></td><td>/t/或/d/ → <code>/ɪd/</code></td><td>其他清辅音 → <code>/t/</code></td><td>元音/浊辅音 → <code>/d/</code></td><td>看原动词最后一个<b>音</b></td></tr>
+        <tr><td><b>-ing</b></td><td colspan="3"><code>/ɪŋ/</code> 基本固定</td><td>/ŋ/ 是一个鼻音，不额外读 g</td></tr>
+        <tr><td><b>-er / -est</b></td><td colspan="3">不需要像 -s / -ed 那样背三分法</td><td>跟着整个单词自然发音即可</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="overview">
+  <h3 class="block">最终判断流程</h3>
+  <div class="flow">
+    <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">这个词是什么词类？</div><div class="arm">名词 → 看单复数｜动词 → 看三单/过去/V-ing/V3｜形容词/副词 → 看比较等级</div></div></div>
+    <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">语法要求哪一种形态？</div><div class="arm">先定“目标形态”，不要一看词就开始变形。</div></div></div>
+    <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">词干需不需要处理？</div><div class="arm">重点检查：辅音+y｜静音 e｜重读短元音+单辅音｜c 结尾。</div></div></div>
+    <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">规则变化还是不规则变化？</div><div class="arm">不规则名词 / 不规则动词 / 不规则比较级 → 单独记高频词。</div></div></div>
+    <div class="qnode"><div class="qq">Q5</div><div class="body"><div class="ask">词尾怎么读？</div><div class="arm">-s / -ed → 看原词最后一个音；-ing → 基本固定 /ɪŋ/。</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <b>整份笔记最后只需要记住一句：</b><br>
+  英语的“单词变化”不是几十套独立规则，而是<b>几个高频词干处理程序 + 几个语法词尾</b>不断组合。<br><br>
+  名词主要调用 <b>-s</b>；动词调用 <b>-s / -ed / -ing / 不规则第三列</b>；形容词和副词调用 <b>-er/-est 或 more/most</b>。<br>
+  真正值得形成自动化的是：<b>先确定目标形态 → 检查词干 → 加后缀 → 处理发音。</b>
+</footer>
+
+</div>
+</body>
+</html>

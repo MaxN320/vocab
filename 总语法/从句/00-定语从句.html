@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>定语从句</title>
+<style>
+:root{
+  --ink:#141821;
+  --panel:#1a202a;
+  --rule:#2b3543;
+  --text:#d6dbe3;
+  --dim:#8b95a5;
+  --faint:#5f6a7a;
+  --blue:#6fa8e6;
+  --blue-bg:rgba(111,168,230,.09);
+  --orange:#e5a15e;
+  --orange-bg:rgba(229,161,94,.09);
+  --paper:#e8e3d9;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.01em;
+}
+
+/* 版面:正文 + 右侧目录 */
+.page{
+  display:grid;grid-template-columns:minmax(0,760px) 212px;gap:60px;
+  max-width:1032px;margin:0 auto;padding:0 28px;
+}
+.wrap{min-width:0;padding-bottom:120px}
+
+/* 头部 */
+header{padding:88px 0 0}
+h1{font-size:34px;line-height:1.3;margin:0 0 20px;font-weight:600;letter-spacing:.06em}
+.thesis{font-size:17px;color:var(--dim);margin:0;line-height:1.9}
+.thesis b{color:var(--text);font-weight:600}
+.legend{margin-top:24px;font-size:13.5px;color:var(--faint)}
+.legend span{margin-right:20px}
+
+/* 四问 */
+.asks{margin:28px 0 0;padding:0}
+.asks li{
+  list-style:none;display:grid;grid-template-columns:1fr auto;gap:16px;
+  padding:10px 0;font-size:15px;align-items:baseline;
+  border-top:1px solid rgba(43,53,67,.55);
+}
+.asks li:first-child{border-top:none}
+.asks .where{font-size:13px;color:var(--faint);white-space:nowrap}
+
+/* 路线图 */
+.map{
+  margin:36px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:6px 0;
+}
+.map-row{
+  display:grid;grid-template-columns:76px 1fr;gap:14px;
+  padding:11px 2px;font-size:14.5px;align-items:baseline;
+}
+.map-row + .map-row{border-top:1px solid rgba(43,53,67,.55)}
+.map-row .n{font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.1em}
+.map-row .t{color:var(--text)}
+.map-row .t em{font-style:normal;color:var(--dim)}
+a.map-row{text-decoration:none}
+a.map-row:hover .t{color:#fff}
+
+/* 阶梯 */
+.stage{margin-top:78px;scroll-margin-top:28px}
+.stage-no{display:block;font-family:var(--serif);font-size:14px;color:var(--faint);margin-bottom:10px;letter-spacing:.12em}
+.stage > h2{font-size:22px;font-weight:600;margin:0;letter-spacing:.04em;color:#eef1f5}
+
+/* 承上 */
+.bridge{margin:20px 0 0;padding-left:16px;border-left:2px solid var(--rule)}
+.bridge .before{margin:0;font-size:14.5px;color:var(--faint);line-height:1.8}
+.bridge .after{margin:4px 0 0;font-size:15px;color:var(--text);line-height:1.8}
+
+h3{font-size:16.5px;font-weight:600;margin:38px 0 12px;color:#e3e8ef;letter-spacing:.03em;scroll-margin-top:28px}
+p{margin:14px 0}
+b{color:#f0f3f7;font-weight:600}
+
+/* 例句 */
+.ex{margin:18px 0;padding:2px 0 2px 18px;border-left:1px solid var(--rule)}
+.en{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--paper);margin:0}
+.en u{text-decoration:none;border-bottom:1px solid rgba(232,227,217,.45);padding-bottom:1px}
+.zh{margin:3px 0 0;font-size:14.5px;color:var(--dim);line-height:1.75}
+.ex + .ex{margin-top:14px}
+.note{font-size:13.5px;color:var(--faint);margin:5px 0 0}
+
+/* 还原演示 */
+.restore{
+  margin:20px 0;background:var(--panel);border:1px solid var(--rule);
+  border-radius:3px;padding:16px 20px;
+}
+.restore + .restore{margin-top:12px}
+.restore .en{font-size:16.5px}
+.restore .arrow{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.8}
+.restore .arrow b{color:var(--blue);font-weight:600}
+.restore .arrow .sep{color:var(--faint);margin:0 8px}
+.restore .zh{margin-top:10px}
+
+/* 推导链 */
+.chain{margin:26px 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:8px 0}
+.step{display:grid;grid-template-columns:26px 1fr;gap:16px;padding:16px 24px}
+.step + .step{border-top:1px solid rgba(43,53,67,.6)}
+.step-n{font-family:var(--serif);font-size:14px;color:var(--faint);padding-top:3px}
+.step:last-child .step-n{color:var(--blue)}
+.step .en{font-size:16.5px}
+.step:last-child .en{color:#fff}
+.step-why{font-size:13.5px;color:var(--dim);margin:6px 0 0}
+.hl{color:var(--blue)}
+.dimtext{color:var(--dim)}
+
+/* callout */
+.box{margin:26px 0;padding:16px 20px;border-radius:3px;font-size:14.5px;line-height:1.8}
+.box p{margin:8px 0}
+.box p:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+.box .en{font-size:16px}
+.box .zh{font-size:14px}
+.box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
+.derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
+.rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
+.tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
+.derive .tag{color:var(--blue)}
+.rote .tag{color:var(--orange)}
+
+/* 小结 */
+.sum{margin:36px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:14.5px;color:var(--dim)}
+.sum b{color:var(--text)}
+
+/* 表格 */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px;border-bottom-color:#3a4655}
+.tbl td:first-child{font-family:var(--serif);color:var(--paper)}
+.tbl tr:last-child td{border-bottom:none}
+
+/* 对比 */
+.pair{margin:22px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.pair > div{padding:16px 20px}
+.pair > div + div{border-top:1px solid var(--rule);background:var(--panel)}
+.pair .verdict{font-size:13.5px;color:var(--blue);margin:7px 0 0}
+.pair > div + div .verdict{color:var(--orange)}
+
+/* 流程 */
+.flow{margin:24px 0;padding:0;counter-reset:f}
+.flow li{
+  list-style:none;position:relative;padding:0 0 22px 34px;
+  border-left:1px solid var(--rule);margin-left:8px;
+}
+.flow li:last-child{border-left-color:transparent;padding-bottom:0}
+.flow li::before{
+  counter-increment:f;content:counter(f);
+  position:absolute;left:-9px;top:2px;width:18px;height:18px;
+  background:var(--ink);border:1px solid var(--rule);border-radius:50%;
+  font-size:11px;line-height:16px;text-align:center;color:var(--dim);font-family:var(--serif);
+}
+.flow .q{font-weight:600;color:#eef1f5;font-size:15px;margin:0}
+.flow .a{font-size:14.5px;color:var(--dim);margin:5px 0 0}
+
+footer{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
+
+/* ── 右侧目录 ── */
+.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:88px 0 60px;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc-h{font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin:0 0 14px;padding-left:13px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc .item{margin:0}
+.toc a{
+  display:block;text-decoration:none;color:var(--dim);
+  font-size:13.5px;line-height:1.55;padding:6px 0 6px 13px;
+  border-left:1px solid var(--rule);transition:color .15s,border-color .15s;
+}
+.toc a:hover{color:var(--text)}
+.toc .item > a .num{font-family:var(--serif);color:var(--faint);margin-right:7px;font-size:12.5px}
+.toc .item.active > a{color:#eef1f5;border-left-color:var(--blue)}
+.toc .item.active > a .num{color:var(--blue)}
+.toc .subs{display:none;padding:2px 0 6px}
+.toc .item.active .subs{display:block}
+.toc .subs a{font-size:12.5px;color:var(--faint);padding:4px 0 4px 26px;line-height:1.5}
+.toc .subs a:hover{color:var(--dim)}
+.toc .subs a.on{color:var(--text);border-left-color:#3f4b5c}
+
+/* 窄屏:目录收成按钮 */
+.toc-btn{
+  display:none;position:fixed;right:18px;bottom:18px;z-index:30;
+  width:46px;height:46px;border-radius:50%;cursor:pointer;
+  background:var(--panel);border:1px solid #3a4655;color:var(--text);
+  font-size:13px;font-family:var(--sans);line-height:1;
+}
+.scrim{display:none;position:fixed;inset:0;background:rgba(10,13,18,.6);z-index:20}
+body.nav-open .scrim{display:block}
+
+@media (max-width:1080px){
+  .page{grid-template-columns:minmax(0,1fr);max-width:816px;gap:0}
+  .toc-btn{display:block}
+  .toc{
+    position:fixed;top:0;right:0;bottom:0;width:250px;z-index:25;
+    background:#171d26;border-left:1px solid var(--rule);
+    padding:28px 18px 40px;max-height:none;
+    transform:translateX(100%);transition:transform .2s ease;
+  }
+  body.nav-open .toc{transform:translateX(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .toc{transition:none}
+}
+
+@media (max-width:600px){
+  .page{padding:0 20px}
+  .wrap{padding-bottom:80px}
+  header{padding-top:56px}
+  h1{font-size:27px}
+  .step{grid-template-columns:20px 1fr;gap:12px;padding:14px 16px}
+  .map-row{grid-template-columns:56px 1fr;gap:10px}
+  .en{font-size:16px}
+  .stage{margin-top:58px}
+  .asks li{grid-template-columns:1fr}
+  .asks .where{white-space:normal}
+}
+</style>
+</head>
+<body>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="page">
+
+<div class="wrap">
+<header>
+  <h1>定语从句</h1>
+  <p class="thesis">定语从句的作用很简单：<b>用一个从句修饰前面的名词或代词</b>。学习时只保留两类东西：能帮助你判断新句子的机制，以及必须直接记住的语法用法。纯约定不硬推。</p>
+
+  <ol class="asks">
+    <li><span>一、关系词有哪些，怎么选</span><span class="where">阶段一、二、三</span></li>
+    <li><span>二、介词放到关系词前面怎么办</span><span class="where">阶段四</span></li>
+    <li><span>三、有无逗号，意义有什么不同</span><span class="where">阶段五、六</span></li>
+    <li><span>四、多个从句和省略怎么处理</span><span class="where">阶段七、八</span></li>
+  </ol>
+
+  <p class="legend"><span>📖 蓝色 = 值得理解的判断机制</span><span>🧷 橙色 = 直接记用法 / 语法约定</span></p>
+
+  <div class="map">
+    <a class="map-row" href="#s1"><span class="n">一</span><span class="t">先认识它 <em>—— 先行词、关系词、定语从句</em></span></a>
+    <a class="map-row" href="#s2"><span class="n">二</span><span class="t">关系代词 <em>—— who / whom / whose / which / that</em></span></a>
+    <a class="map-row" href="#s3"><span class="n">三</span><span class="t">关系副词 <em>—— where / when / why 怎么选</em></span></a>
+    <a class="map-row" href="#s4"><span class="n">四</span><span class="t">介词 + 关系代词 <em>—— to whom / in which 这类结构</em></span></a>
+    <a class="map-row" href="#s5"><span class="n">五</span><span class="t">限定 / 非限定 <em>—— 有没有逗号，意思不同</em></span></a>
+    <a class="map-row" href="#s6"><span class="n">六</span><span class="t">as / which <em>—— 特殊非限定性，指前面整件事</em></span></a>
+    <a class="map-row" href="#s7"><span class="n">七</span><span class="t">多个动作 / 多个从句 <em>—— 一个从句可有并列谓语，多个从句也可共用先行词</em></span></a>
+    <a class="map-row" href="#s8"><span class="n">八</span><span class="t">省略与简化 <em>—— 哪些能省，哪些先别硬压</em></span></a>
+  </div>
+</header>
+
+<!-- ══ 阶段一 ══ -->
+<section class="stage" id="s1">
+  <span class="stage-no">阶段一</span>
+  <h2>先认识定语从句</h2>
+
+  <div class="bridge">
+    <p class="after">先别推“它为什么长这样”。先把三个角色认清：先行词、关系词、定语从句。</p>
+  </div>
+
+  <h3 id="s1a">定语有三种常见形式</h3>
+
+  <div class="ex">
+    <p class="en">a <u>tall</u> woman</p>
+    <p class="zh">一个高个子的女人 —— 形容词修饰 woman</p>
+  </div>
+  <div class="ex">
+    <p class="en">the woman <u>at the shop window</u></p>
+    <p class="zh">商店橱窗旁的那个女人 —— 介词短语修饰 woman</p>
+  </div>
+  <div class="ex">
+    <p class="en">the woman <u>who lives next door</u></p>
+    <p class="zh">住在隔壁的那个女人 —— 从句修饰 woman</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 位置直接记</span>
+    <p>较长的短语、定语从句通常放在名词后面：<b>the woman who lives next door</b>。</p>
+    <p>不要硬推成“超过一个词就后置”。英语里有很多固定例外，例如 <span class="dimtext">a well-known writer</span>、<span class="dimtext">something important</span>。看到具体结构再按具体规则处理。</p>
+  </div>
+
+  <h3 id="s1b">三个角色：先行词 + 关系词 + 从句</h3>
+
+  <div class="ex">
+    <p class="en">the <b>woman</b> <u>who lives next door</u></p>
+    <p class="zh"><b>woman</b> = 先行词；<b>who</b> = 关系词；<b>who lives next door</b> = 定语从句。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 先建立“关系词总地图”</span>
+    <p><b>关系词</b>就是把后面的定语从句接到先行词上的“接头人”。</p>
+    <p><b>关系代词：</b>who / whom / whose / which / that —— 在从句里主要对应人、物、所属。</p>
+    <p><b>关系副词：</b>where / when / why —— 在从句里主要对应地点、时间、原因。</p>
+    <p>两类都引导<b>定语从句</b>。where / when / why 不是“状语从句”的标志。</p>
+  </div>
+
+  <h3 id="s1c">它实际拿来干什么</h3>
+
+  <p>最常见的用途就是：<b>给前面的名词补充“哪一个 / 什么样的”信息</b>。</p>
+
+  <div class="ex">
+    <p class="en">An architect is someone who designs buildings.</p>
+    <p class="zh">建筑师就是设计楼房的人。</p>
+  </div>
+  <div class="ex">
+    <p class="en">A burglar is someone who breaks into a house to steal things.</p>
+    <p class="zh">窃贼就是闯进房子偷东西的人。</p>
+    <p class="note">结构：A burglar <b>is</b> someone｜who <b>breaks into</b> a house｜<b>to steal things</b>。who... 修饰 someone；to steal things 是里面的目的不定式。</p>
+  </div>
+  <div class="ex">
+    <p class="en">An atheist is someone who doesn't believe in God.</p>
+    <p class="zh">无神论者就是不信上帝的人。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>定语从句 = 一个从句放在名词/代词后面修饰它。先认清先行词，再看关系词属于“关系代词”还是“关系副词”。</p>
+</section>
+
+<!-- ══ 阶段二 ══ -->
+<section class="stage" id="s2">
+  <span class="stage-no">阶段二</span>
+  <h2>关系代词：who / whom / whose / which / that</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶已经知道：关系代词是定语从句的一类“接头人”。</p>
+    <p class="after">真正要会的是：后面的从句缺“谁 / 什么 / 谁的”，该选哪个词。</p>
+  </div>
+
+  <p>实战时可以做一个动作：<b>把先行词放回从句中，看看它在里面是什么身份</b>。这个方法的价值只是帮助判断，不是为了推导语法为什么存在。</p>
+
+  <div class="box derive">
+    <span class="tag">📖 先行词有“两套身份”—— 选关系词只看从句里的身份</span>
+    <p>同一个名词在主句里和定语从句里可以担任不同成分。选关系词时，<b>只看它在定语从句内部干什么</b>。</p>
+    <p class="formula">I don't like <b>stories</b>.　→ stories 在主句里是 like 的宾语</p>
+    <p class="formula"><b>Stories</b> have unhappy endings.　→ 在定语从句里，stories 是 have 的主语</p>
+  </div>
+
+  <div class="restore">
+    <p class="en">The woman ______ lives next door is a doctor.</p>
+    <p class="arrow">The woman lives next door → 缺“谁”作主语 → <b>who</b></p>
+  </div>
+  <div class="restore">
+    <p class="en">I don't like stories ______ have unhappy endings.</p>
+    <p class="arrow">Stories have unhappy endings → 缺“什么”作主语 → <b>which / that</b></p>
+    <p class="zh">我不喜欢结局不幸的故事。</p>
+  </div>
+  <div class="restore">
+    <p class="en">This is one of the ugliest faces I have seen ______.</p>
+    <p class="arrow">I have seen the faces → faces 是 seen 的宾语 → <b>which / that / 省略</b></p>
+    <p class="zh">这是我见过的最丑的面孔之一。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 空格在最后，只是在帮你找“缺口”</span>
+    <p>分析时写 <b>I have seen ______</b>，只是为了看 seen 后面缺宾语。真正的定语从句写成 <b>which I have seen</b>；如果 which 作宾语，还可以省成 <b>I have seen</b>。</p>
+    <p>结构是 <b>one of [the ugliest faces (which) I have seen]</b>，从句修饰 <b>faces</b>，不是 one。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>你想表达</th><th>关系词</th><th>常见位置</th></tr>
+    <tr><td>人</td><td>who</td><td>主语；口语中也常作宾语</td></tr>
+    <tr><td>人（正式宾格）</td><td>whom</td><td>宾语</td></tr>
+    <tr><td>物</td><td>which</td><td>主语 / 宾语</td></tr>
+    <tr><td>人或物</td><td>that</td><td>限定性从句中的主语 / 宾语</td></tr>
+    <tr><td>“……的”</td><td>whose</td><td>所属关系</td></tr>
+    <tr><td>人或物，落在从句的 be 后面</td><td>that；通常直接省</td><td>表语（“当时那副样子”）</td></tr>
+  </table>
+
+  <h3 id="s2who">who 和 whom：人作主语还是宾语</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 先看这个人在从句里干什么</span>
+    <p><b>who</b>：人作主语。　<b>whom</b>：人作宾语（较正式）。</p>
+    <p class="formula">He called me. → the man <b>who</b> called me　　I saw him. → the man <b>whom</b> I saw</p>
+    <p>现代英语里，宾语位置也常用 <b>who</b>，限定性从句里还可以省略：the man <b>whom / who / Ø</b> I saw。</p>
+    <p><b>介词提前时用 whom：</b>the man <b>to whom</b> I spoke ✅　　to who ❌。</p>
+  </div>
+
+  <div class="restore">
+    <p class="en">He is the person ______ smile makes me melt every time.</p>
+    <p class="arrow">the person's smile → “这个人的笑容” → <b>whose</b></p>
+    <p class="zh">他是那个每次微笑都让我融化的人。</p>
+  </div>
+  <div class="restore">
+    <p class="en">I want to find a restaurant ______ menu is not full of fried food.</p>
+    <p class="arrow">the restaurant's menu → “这家餐厅的菜单” → <b>whose</b></p>
+    <p class="zh">我想找一家菜单上不全是油炸食品的餐厅。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 whose 最好这样理解</span>
+    <p class="formula">the <b>restaurant's</b> menu → <b>whose</b> menu</p>
+    <p><b>whose = 先行词的……</b>。先行词本身是对象时考虑 who / which / that；出现“先行词的某物”时考虑 whose。</p>
+  </div>
+
+  <p>主谓一致直接跟真正的先行词走：people who <b>live</b>，a woman who <b>lives</b>。</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 考试常见：one of ... who / the only one who</span>
+    <p><b>one of the students who are...</b> → who 通常指 students，所以用 <b>are</b>。</p>
+    <p><b>the only one who is...</b> → who 指 the only one，所以用 <b>is</b>。</p>
+  </div>
+
+  <h3 id="s2a">that：只记实际会用到的边界</h3>
+
+  <div class="box rote">
+    <span class="tag">🧷 that 的用法直接记</span>
+    <p><b>普通限定性从句：</b>指人、指物都可能用 that。</p>
+    <p><b>两个禁区：</b>逗号后的非限定性从句不用 that；介词放到关系词前面时不用 that。</p>
+    <p><b>反过来有一个位置只能用 that：</b>先行词落在从句的 be 后面时，who / which 都进不去 —— 见下一节。</p>
+    <p><b>先行词是 all / everything / anything / nothing / little / much 这类不定代词时：</b>基本只用 that，不用 which。</p>
+    <p><b>考试型偏好：</b>先行词同时包含人和物，或前面有序数词、最高级、only 等时，传统题目常偏好 that。把它当题型习惯，不要当成整个系统的核心。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 最高级不决定时态</span>
+    <p>This is one of the ugliest faces I <b>have seen</b> 用完成时，是因为意思是“截至现在我见过的”，不是因为出现了最高级。</p>
+    <p class="en">This is the most expensive car we sell.</p>
+    <p class="zh">这是我们卖的最贵的车。—— 现在的销售事实，所以用一般现在时。</p>
+  </div>
+
+  <h3 id="s2be">第四种身份：先行词落在 be 后面</h3>
+
+  <p>前面三种身份是主语、宾语、所属。还有一种落点容易被漏掉 —— 先行词放回从句后，落在了<b>系动词后面</b>。</p>
+
+  <div class="restore">
+    <p class="en">She is not the shy <u>girl</u> ______ she was 3 years ago.</p>
+    <p class="arrow">还原：She <b>was</b> the shy girl 3 years ago.<span class="sep">→</span>girl 落在 was 后面，不是前面</p>
+    <p class="zh">她已经不是三年前那个害羞的姑娘了。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 一个更快的信号：看从句里主语位有没有人</span>
+    <p><b>that she was 3 years ago</b> —— she 明摆着写在那儿，<b>主语位已经被占了</b>。一个句子不会有两个主语，所以 girl 只可能落在别处。</p>
+    <p>对照一个 girl 真的当主语的：<b>the shy girl who was afraid of everything</b> —— 这个从句里<b>没有</b>另一个 she，主语位空着，正好留给 who。</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">the shy girl <b>who</b> ___ was afraid of everything</p>
+      <p class="verdict">坑在主语位 → 关系代词代“那个人” → <b>who</b> ✓</p>
+    </div>
+    <div>
+      <p class="en">the shy girl <b>that</b> she was ___ 3 years ago</p>
+      <p class="verdict">坑在 be 后面 → 只能 <b>that</b>，或直接省</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 这个位置为什么排除 who / which</span>
+    <p>who / which 是<b>代词</b>，代的必须是一个具体的人或物。</p>
+    <p>但 <b>she was ___</b> 这个坑里填的不是某个人，是“当年那副样子” —— 一种身份、一种状态。代词站不进去，所以只用纯连接的 that，或者干脆省掉（更常见）。</p>
+    <p class="en">She is not the shy girl <b>who</b> she was 3 years ago. ❌</p>
+  </div>
+
+  <p>同一形状的高频句：</p>
+
+  <div class="ex">
+    <p class="en">He is not the man <b>(that)</b> he used to be.</p>
+    <p class="zh">他不再是从前那个他了。</p>
+  </div>
+  <div class="ex">
+    <p class="en">This is not the city <b>(that)</b> it was ten years ago.</p>
+    <p class="zh">这已经不是十年前那座城了。</p>
+    <p class="note">看到 <b>is not the … (that) … was / used to be</b> 这个形状，直接认成“今非昔比”，别去想 who。</p>
+  </div>
+
+  <h3 id="s2b">别和宾语从句、同位语从句混掉</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">I think <u>(that) he is right</u>.</p>
+      <p class="verdict">从句跟在 think 后，整块是 think 的宾语 → 宾语从句。</p>
+    </div>
+    <div>
+      <p class="en">things <u>(that) they don't need</u></p>
+      <p class="verdict">从句跟在 things 后，修饰“哪些 things” → 定语从句。</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">People buy things <u>they don't need</u> with money <u>they don't have</u> to impress people <u>they don't like</u>.</p>
+    <p class="zh">人们用自己没有的钱，买自己不需要的东西，去取悦自己并不喜欢的人。</p>
+    <p class="note">三处都是定语从句。完整形式分别是 things that they don't need / money that they don't have / people that they don't like；that 作宾语，所以可以省。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 “作宾语”直接问动词：谁 / 什么？</span>
+    <p class="formula">they don't need <b>things</b> → need 什么？things</p>
+    <p class="formula">they don't have <b>money</b> → have 什么？money</p>
+    <p class="formula">they don't like <b>people</b> → like 谁？people</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">The news that he won the game surprised everyone.</p>
+      <p class="zh">他赢了比赛这个消息让所有人都很吃惊。</p>
+      <p class="verdict">回答“news 的内容是什么？” → 同位语 / 内容从句。</p>
+    </div>
+    <div>
+      <p class="en">The news that he told me was false.</p>
+      <p class="zh">他告诉我的那个消息是假的。</p>
+      <p class="verdict">回答“哪一个 news？” → 定语从句。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 定语 vs 同位语：只问两个问题</span>
+    <p><b>定语从句：</b>哪一个 / 什么样的？—— the news that he told me。</p>
+    <p><b>同位语从句：</b>内容是什么？—— the news that he won the game。</p>
+  </div>
+
+  <h3 id="s2c">中间插入 think / believe / say 这类判断块</h3>
+
+  <p>I think 不是特例。同类还有 <b>I believe / I suppose / she says / they say / we know</b> 等。判断关系词时，可以先暂时跳过这块，看更里面真正缺什么。</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">the man <u>who I think can help you</u></p>
+      <p class="verdict">跳过 I think → ___ can help you → 缺主语 → <b>who</b></p>
+    </div>
+    <div>
+      <p class="en">the man <u>whom I believe you can trust</u></p>
+      <p class="verdict">跳过 I believe → you can trust ___ → 缺宾语 → <b>whom / who / that / 省略</b></p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">the woman <u>who they say won the competition</u></p>
+    <p class="note">跳过 they say → ___ won the competition → 缺主语 → who。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这只是分析技巧</span>
+    <p>I think / they say 自己当然也有主语和谓语。只是判断关系词时，先把它们当成“中间块”跳过去，避免干扰你看真正的缺口。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 what 的边界直接记</span>
+    <p><b>the thing that I want</b> ✅　　<b>what I want</b> ✅</p>
+    <p><b>the thing what I want</b> ❌</p>
+    <p>普通定语从句前面已经有先行词时，不用 what。可以把 <b>what</b> 粗略理解成“the thing that”。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>关系代词的实战判断很简单：从句里缺“谁 / 什么” → who / which / that；缺“谁的 / 什么的” → whose；宾语关系代词在限定性从句里常可省。</p>
+</section>
+
+<!-- ══ 阶段三 ══ -->
+<section class="stage" id="s3">
+  <span class="stage-no">阶段三</span>
+  <h2>关系副词：where / when / why 怎么用</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶的动作是：把先行词放回从句，看它占哪个位置 —— 主语、宾语、所属、be 后面。</p>
+    <p class="after">但有时放回去会发现，这些位置<b>全都是满的</b>。那说明先行词在从句里根本不当名词用，而是在说“在哪儿 / 什么时候 / 为什么”。这时候要换一类词。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>从句里表达</th><th>关系副词</th><th>常见先行词</th></tr>
+    <tr><td>在哪里？</td><td>where</td><td>place / room / town / situation...</td></tr>
+    <tr><td>什么时候？</td><td>when</td><td>day / year / time...</td></tr>
+    <tr><td>为什么？</td><td>why</td><td>reason</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 一个动作同时管住两阶：看从句里缺的是不是名词性成分</span>
+    <p><b>缺一个名词性成分</b>（主语 / 宾语 / be 后面）→ 用<b>关系代词</b>，它进去把那个坑补上。</p>
+    <p><b>名词性成分全是满的，缺的是状语</b>（在哪儿 / 什么时候 / 为什么）→ 用<b>关系副词</b>。</p>
+    <div class="restore">
+      <p class="en">the town <b>that</b> I love ___</p>
+      <p class="arrow">I love ___<span class="sep">→</span>love 后面缺宾语，是名词性的坑 → 关系代词</p>
+    </div>
+    <div class="restore">
+      <p class="en">the town <b>where</b> I was born</p>
+      <p class="arrow">I was born<span class="sep">→</span>主语 I、动词 was born 都齐了，不缺名词；缺的是“在哪儿” → 关系副词</p>
+    </div>
+    <p>这和上一阶是同一个动作，只是多问一句：<b>缺的那个坑，是名词性的，还是状语？</b></p>
+  </div>
+
+  <h3 id="s3a">where：看它是不是在表达“在哪里”</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">This is the town <b>where</b> I was born.</p>
+      <p class="zh">这是我出生的城镇。</p>
+      <p class="verdict">我在哪里出生？→ in this town → <b>where</b></p>
+    </div>
+    <div>
+      <p class="en">This is the town <b>that</b> I love the most.</p>
+      <p class="zh">这是我最喜欢的城镇。</p>
+      <p class="verdict">我最喜欢什么？→ the town → <b>that / which</b></p>
+    </div>
+  </div>
+
+  <p>两句的先行词都是 town，关系词却不同 —— 决定权不在 town 身上，在从句里那个坑：love 后面缺宾语（名词性）→ that；was born 后面缺的是地点（状语）→ where。<b>所以看到地点名词不要自动选 where。</b></p>
+
+  <h3 id="s3b">when / why：同样直接问问题</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">I remember the day <b>when</b> we first met.</p>
+      <p class="zh">我记得我们第一次见面的那一天。</p>
+      <p class="verdict">我们什么时候见面？→ that day → <b>when</b></p>
+    </div>
+    <div>
+      <p class="en">I remember the day <b>that</b> we spent together.</p>
+      <p class="zh">我记得我们一起度过的那一天。</p>
+      <p class="verdict">我们一起度过了什么？→ the day → <b>that / which / 省略</b></p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">I know the reason <b>why</b> he left.</p>
+    <p class="zh">我知道他离开的原因。</p>
+    <p class="note">问：他为什么离开？→ why。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 reason 后的常见形式</span>
+    <p class="en">the reason <b>why</b> he left / the reason <b>that</b> he left / the reason he left</p>
+    <p>这三种都很常见。当前阶段直接认识即可，不必为 why / that / 省略再做一套推导。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">There are situations <b>where</b> silence is the best answer.</p>
+    <p class="zh">有些情况下，沉默是最好的回答。</p>
+    <p class="note">where 不只跟真实地点；situation / case / point 这类“情境、场合”也常用 where。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 the way：直接记三种写法</span>
+    <p class="en">the way he speaks / the way that he speaks / the way in which he speaks</p>
+    <p>不要写 <b>the way how he speaks</b> ❌，也不要写 <b>the way where he speaks</b> ❌ —— 同一类错误。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b><b>在哪里 → where；什么时候 → when；为什么 → why。</b>地点词、时间词本身并不会自动决定关系词，关键看它在后面的从句里表达什么。</p>
+</section>
+
+<!-- ══ 阶段四 ══ -->
+<section class="stage" id="s4">
+  <span class="stage-no">阶段四</span>
+  <h2>介词 + 关系代词：to whom / in which 这类结构</h2>
+
+  <div class="bridge">
+    <p class="before">这一章值得理解一个结构：关系词本身就是定语从句里的成分。</p>
+    <p class="after">理解这一点，<b>whom I spoke to</b> 和 <b>to whom I spoke</b> 就是一回事，不需要分别死背。</p>
+  </div>
+
+  <h3 id="s4a">先看懂：关系词本身就在从句里面</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 定语从句不是“关系词 + 一个完整普通句子”</span>
+    <p class="formula">the book <b>that I bought</b>　→ I bought ___　→ that 对应这个宾语位置</p>
+    <p>同理，<b>whom I spoke to</b> 里，I spoke to ___ 的确还缺一个人；这个位置正是前面的 <b>whom</b>。</p>
+  </div>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div>
+        <p class="en">I spoke <b>to the man</b>.</p>
+        <p class="step-why">普通句：to 后面的 the man 是介词宾语。</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div>
+        <p class="en">the man <b>whom I spoke to ___</b></p>
+        <p class="step-why">the man 已经做先行词；whom 对应 to 后面的那个宾语位置。</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div>
+        <p class="en">the man <b>to whom I spoke</b></p>
+        <p class="step-why">正式写法还可以把 to 和 whom 一起放到前面。</p>
+      </div>
+    </div>
+  </div>
+
+  <p>所以这两种都对：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">the man <b>whom I spoke to</b></p>
+      <p class="verdict">介词留在后面；whom 是宾语。现代英语也常用 who，或直接省略。</p>
+    </div>
+    <div>
+      <p class="en">the man <b>to whom I spoke</b></p>
+      <p class="verdict">介词 + whom 一起放前面，更正式。</p>
+    </div>
+  </div>
+
+  <h3 id="s4b">人用 whom，物用 which</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">I spoke <b>to the man</b>. → the man <b>to whom</b> I spoke</p>
+      <p class="verdict">人 → whom</p>
+    </div>
+    <div>
+      <p class="en">I live <b>in the house</b>. → the house <b>in which</b> I live</p>
+      <p class="verdict">物 → which</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 介词放前面时直接记</span>
+    <p>人 → <b>介词 + whom</b>；物 → <b>介词 + which</b>。</p>
+    <p>不用 <b>that</b>；关系词不能省。</p>
+    <p>介词到底是 to / with / from / in / on，通常看原来的搭配：speak <b>to</b>，be familiar <b>with</b>，get away <b>from</b>。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 of whom / of which：直接认成“其中……”</span>
+    <p class="en">He has three sisters, <b>all of whom</b> are doctors.</p>
+    <p class="zh">他有三个姐姐，<b>她们三个都是</b>医生。</p>
+    <p class="en">I bought ten books, <b>some of which</b> are very expensive.</p>
+    <p class="zh">我买了十本书，<b>其中一些</b>很贵。</p>
+    <p>常见骨架：all / some / both / many + <b>of whom</b>（人）；all / some / most / none + <b>of which</b>（物）。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>值得理解的是：<b>关系词本身就是从句里的成分</b>。所以 whom I spoke to 和 to whom I spoke 都来自同一个关系：I spoke to the man。其余边界直接按用法记。</p>
+</section>
+
+<!-- ══ 阶段五 ══ -->
+<section class="stage" id="s5">
+  <span class="stage-no">阶段五</span>
+  <h2>限定性 vs 非限定性：有没有逗号，意义不同</h2>
+
+  <div class="bridge">
+    <p class="before">这一章不要推“逗号为什么产生”。</p>
+    <p class="after">直接掌握：<b>没有逗号 = 用来限定是哪一个；有逗号 = 只是补充说明。</b></p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">The experts <b>who arrived this morning</b> will stay at the hotel.</p>
+      <p class="zh">今天早上到的那批专家会住在酒店。</p>
+      <p class="verdict">没有逗号：从句用来告诉你“哪一批专家”。</p>
+    </div>
+    <div>
+      <p class="en">The experts, <b>who arrived this morning</b>, will stay at the hotel.</p>
+      <p class="zh">这些专家今天早上到了，他们会住在酒店。</p>
+      <p class="verdict">有逗号：专家是谁已经明确，从句只是补一句信息。</p>
+    </div>
+  </div>
+
+  <h3 id="s5a">怎么判断要不要逗号</h3>
+
+  <p>问一个实用问题：<b>拿掉定语从句以后，前面的名词指谁 / 指什么还清楚吗？</b></p>
+
+  <div class="pair">
+    <div>
+      <p class="en">The students <b>who passed the exam</b> can leave early.</p>
+      <p class="verdict">不能随便删：到底哪些 students？需要从句限定。</p>
+    </div>
+    <div>
+      <p class="en">My father, <b>who lives in Tokyo</b>, is visiting me.</p>
+      <p class="verdict">my father 已经指明是谁；who... 只是补充。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 非限定性定语从句直接记两条</span>
+    <p>不用 <b>that</b>。</p>
+    <p>关系词不能省略。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 逗号后也可以是 where / when</span>
+    <div class="ex">
+      <p class="en">We went to Paris, <b>where</b> we stayed a week.</p>
+      <p class="zh">我们去了巴黎，在那儿待了一周。</p>
+    </div>
+    <div class="ex">
+      <p class="en">He joined the company in 2019, <b>when</b> it was still small.</p>
+      <p class="zh">他 2019 年加入这家公司，那时候它还很小。</p>
+    </div>
+    <p>读法和 who / which 的非限定完全一样：先读主干，逗号后当补充。翻译时顺成“在那儿……”“那时候……”，不要硬套“……的”。</p>
+  </div>
+
+  <h3 id="s5b">阅读时：先读主干，再读逗号里的补充</h3>
+
+  <div class="ex">
+    <p class="en">Ann, who lives next door, is very friendly.</p>
+    <p class="zh">Ann 人很好，她就住在隔壁。</p>
+    <p class="note">不要硬翻成“住在隔壁的 Ann 人很好”。逗号里的内容更像一句插入补充。</p>
+  </div>
+  <div class="ex">
+    <p class="en">We stayed at the Grand Hotel, which Ann recommended to us.</p>
+    <p class="zh">我们住在格兰德酒店，这家酒店是 Ann 推荐的。</p>
+  </div>
+
+  <h3 id="s5c">一个逗号真的会改变意思</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">The food <b>which wasn't in the fridge</b> went off.</p>
+      <p class="zh">没放进冰箱的那部分食物坏了。</p>
+      <p class="verdict">限定：只说“没放冰箱的那部分”。</p>
+    </div>
+    <div>
+      <p class="en">The food, <b>which wasn't in the fridge</b>, went off.</p>
+      <p class="zh">这些食物都没放进冰箱，后来坏了。</p>
+      <p class="verdict">补充：说的是前面这一整批 food。</p>
+    </div>
+  </div>
+
+  <h3 id="s5d">翻译时别强行都译成“……的”</h3>
+
+  <div class="ex">
+    <p class="en">She passed the letter to Maria, who passed it on to me.</p>
+    <p class="zh">她把信递给 Maria，Maria 又把它递给了我。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The food, which wasn't in the fridge, went off.</p>
+    <p class="zh">这些食物没放在冰箱里，所以后来坏了。</p>
+    <p class="note">中文翻译可以根据上下文顺成并列、先后、原因等关系；语法上它仍然是非限定性关系从句。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b><b>没逗号 = 限定“哪一个”；有逗号 = 补充说明。</b>非限定性从句不用 that、关系词不能省；阅读时把逗号里的内容当插入补充处理。</p>
+</section>
+
+<!-- ══ 阶段六 ══ -->
+<section class="stage" id="s6">
+  <span class="stage-no">阶段六</span>
+  <h2>特殊的非限定性定语从句：as / which 指前面整件事</h2>
+
+  <div class="bridge">
+    <p class="before">普通定语从句通常修饰一个名词：the book <b>which I bought</b>。</p>
+    <p class="after">这里特殊在：as / which 指向的不是一个名词，而是<b>前面整件事</b>。</p>
+  </div>
+
+  <h3 id="s6a">为什么它还属于定语从句体系</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">The book <b>which I bought</b> is expensive.</p>
+      <p class="verdict">普通：which 指 the book，后面的从句修饰这个名词。</p>
+    </div>
+    <div>
+      <p class="en">He missed the train, <b>which made him late</b>.</p>
+      <p class="verdict">特殊：which ≈ “他错过火车这件事”，后面继续补充说明这件事。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 和名词性从句的区别</span>
+    <p><b>名词性从句：</b><span class="dimtext">What he said</span> surprised me —— 整个从句自己当主语。</p>
+    <p><b>这里的 which / as：</b>前面的主句本来就完整，后面的关系从句只是对前面内容追加说明。</p>
+  </div>
+
+  <h3 id="s6b">怎么用：as = 正如；which = 这件事……</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en"><b>As</b> we all know, the earth moves around the sun.</p>
+      <p class="zh">众所周知，地球绕太阳运行。</p>
+      <p class="verdict">as 常有“正如……”的感觉，位置比较自由。</p>
+    </div>
+    <div>
+      <p class="en">She passed the exam, <b>which surprised me</b>.</p>
+      <p class="zh">她通过了考试，这让我很惊讶。</p>
+      <p class="verdict">which ≈ “她通过考试这件事”。</p>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>你想表达</th><th>常用</th><th>典型位置</th></tr>
+    <tr><td>“正如……所知 / 所见 / 所料”</td><td>as</td><td>句首、句中、句尾都可以</td></tr>
+    <tr><td>对前面整件事补评论、结果</td><td>which</td><td>通常接在前面句子后面</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 as 的高频骨架</span>
+    <p>as we all know / as you can see / as expected / as often happens / as is often the case</p>
+    <p><b>such ... as / the same ... as</b> 另当固定结构认识，不和“指整件事”的 as 硬并成一套。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>普通定语从句修饰一个名词；这里的 as / which 是特殊的非限定性关系从句，补充说明前面整件事。<b>as → 正如……；which → 这件事……</b></p>
+</section>
+
+<!-- ══ 阶段七 ══ -->
+<section class="stage" id="s7">
+  <span class="stage-no">阶段七</span>
+  <h2>一个先行词后面有多个动作 / 多个定语从句</h2>
+
+  <div class="bridge">
+    <p class="before">看到 and / or 或连续两个修饰块时，不要靠“数动词”猜有几个定语从句。</p>
+    <p class="after">先把答案挑明：<b>一个关系词可以带多个并列谓语；两个关系从句也可以共同修饰同一个先行词。</b></p>
+  </div>
+
+  <h3 id="s7a">一个定语从句，也可以有多个并列谓语</h3>
+
+  <div class="ex">
+    <p class="en">something <b>[that made me laugh, made me think, or fit my personality]</b></p>
+    <p class="zh">让我笑、让我思考、或者符合我个性的东西</p>
+    <p class="note"><b>正确结构：</b>一个限定性定语从句 + 三个并列谓语。that 是共同主语，made / made / fit 都属于同一个从句。它是在限定“什么样的 something”，不是阶段五那种逗号后的补充说明。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">Errors often result from things <b>[that you don't know]</b>, or <b>[that you think you know]</b>.</p>
+    <p class="zh">错误往往源于你不知道的事，或者你以为自己知道的事。</p>
+    <p class="note"><b>正确结构：</b>这里重新出现第二个 that，所以是两个定语从句；两个都修饰 things。</p>
+  </div>
+
+  <h3 id="s7b">连续两个从句：直接看“谁修饰谁”</h3>
+
+  <div class="ex">
+    <p class="en">He is the only <b>person [that we know] [who speaks so many foreign languages]</b>.</p>
+    <p class="zh">他是我们认识的人里唯一一个会说这么多门外语的人。</p>
+    <p class="note"><b>答案：</b>两个从句都修饰 <b>person</b>。that we know = 我们认识的 person；who speaks... = 会说很多外语的 person。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 验证方法：把中心名词放回去</span>
+    <p><b>We know the person.</b> → that we know 修饰 person。</p>
+    <p><b>The person speaks many foreign languages.</b> → who speaks... 也修饰 person。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">There is <b>nothing [(that) you can buy] [that will replace real trust]</b>.</p>
+    <p class="zh">你买得到的任何东西，都替代不了真正的信任。</p>
+    <p class="note"><b>答案：</b>两个从句都围绕中心词 <b>nothing</b>。第一个省略了宾语关系词；第二个 that 指 nothing，并在从句里作主语。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 长句判断不要靠 and / or</span>
+    <p>先找中心名词，再看每个关系词指谁、每套谓语属于哪一层。<b>关系词数量 ≠ 谓语数量</b>。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>一个定语从句内部可以并列多个谓语；多个定语从句也可以共同修饰同一个先行词。先把“谁修饰谁”明确出来，再分析细节。</p>
+</section>
+
+<!-- ══ 阶段八 ══ -->
+<section class="stage" id="s8">
+  <span class="stage-no">阶段八</span>
+  <h2>省略与简化：先掌握最常见的几种</h2>
+
+  <div class="bridge">
+    <p class="before">定语从句确实可以变短。</p>
+    <p class="after">但这里最容易出现“为了推导而推导”。先掌握稳定、常用的形式；更细的条件留到非谓语动词再学。</p>
+  </div>
+
+  <h3 id="s8a">宾语关系代词：限定性从句里常可省</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">the book <b>that I bought</b></p>
+      <p class="verdict">that 是 bought 的宾语 → 可以省</p>
+    </div>
+    <div>
+      <p class="en">the book <b>I bought</b></p>
+      <p class="verdict">最常见的省略结果</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 先记不能省的常见情况</span>
+    <p>关系词作主语：<b>the book that tells the story</b>。</p>
+    <p>非限定性从句（前面有逗号）：关系词不能省。</p>
+    <p>介词已经放到关系词前面：<b>to whom / in which</b> 不能把 whom / which 省掉。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 还有一种几乎总是省：先行词落在 be 后面</span>
+    <div class="ex">
+      <p class="en">She is not the shy girl <b>(that)</b> she was 3 years ago.</p>
+      <p class="zh">她已经不是三年前那个害羞的姑娘了。</p>
+    </div>
+    <p>写出 that 完全正确，但实际英语里绝大多数直接省掉：<b>the girl she was</b> / <b>the man he used to be</b>。</p>
+  </div>
+
+  <h3 id="s8b">常见简化：定语从句 → 更短的后置修饰</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">a book <span class="dimtext">which was</span> written by a famous scholar</p>
+      <p class="verdict">→ a book <b>written</b> by a famous scholar</p>
+    </div>
+    <div>
+      <p class="en">people <span class="dimtext">who live</span> here</p>
+      <p class="verdict">→ people <b>living</b> here</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">the people <span class="dimtext">who are</span> in the room → the people <b>in the room</b></p>
+    <p class="zh">在房间里的人</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这里值得理解的只有“方向”</span>
+    <p><b>主动意义</b>常见 doing：people <b>living</b> here。</p>
+    <p><b>被动意义</b>常见 done：a book <b>written</b> by him。</p>
+    <p>这能帮助你读句子，但不要把它硬记成“任何定语从句都能机械压缩”。</p>
+  </div>
+
+  <h3 id="s8c">什么时候先别压：不会就保留完整从句</h3>
+
+  <p>分词简化受语义、时态、动作状态等多种条件影响。当前阶段最安全的原则是：</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 不确定能不能压，就保留完整定语从句</span>
+    <p class="en">This is a book <b>that will change</b> people's view.</p>
+    <p>这里直接保留 that will change 最清楚。不要为了“更高级”强行改成 changing。</p>
+    <p>详细的 doing / done / to do 选择放到下一章“非谓语动词”系统学习。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>现在只掌握两件事：<b>宾语关系代词常可省</b>；常见定语从句可以简化成 doing / done / 介词短语等后置修饰，但不要机械压缩。</p>
+</section>
+
+<!-- ══ 总览 ══ -->
+<section class="stage" id="s9">
+  <span class="stage-no">总览</span>
+  <h2>一张表和一套使用流程</h2>
+
+  <h3 id="s9a">一张表</h3>
+
+  <table class="tbl">
+    <tr><th>你要表达什么</th><th>常用关系词 / 结构</th><th>例子</th></tr>
+    <tr><td>人：主语 / 宾语</td><td>who；宾语正式用 whom，也常用 who / that / 省略</td><td>who called me / whom I saw</td></tr>
+    <tr><td>物：什么</td><td>which / that</td><td>the book that I bought</td></tr>
+    <tr><td>“谁的 / 什么的”</td><td>whose</td><td>a restaurant whose menu...</td></tr>
+    <tr><td>人或物，落在从句的 be 后面</td><td>that；通常直接省</td><td>the girl (that) she was</td></tr>
+    <tr><td>在哪里</td><td>where</td><td>the town where I was born</td></tr>
+    <tr><td>什么时候</td><td>when</td><td>the day when we met</td></tr>
+    <tr><td>为什么</td><td>why</td><td>the reason why he left</td></tr>
+    <tr><td>正式：介词 + 人 / 物</td><td>prep + whom / which</td><td>to whom / in which</td></tr>
+    <tr><td>指前面整件事</td><td>as / which</td><td>As we know... / ..., which surprised me</td></tr>
+    <tr><td>展开名词的“内容”</td><td>that 内容从句</td><td>the news that he won</td></tr>
+  </table>
+
+  <h3 id="s9b">一套使用流程</h3>
+
+  <ol class="flow">
+    <li>
+      <p class="q">先确认：后面这段是不是在修饰前面的名词？</p>
+      <p class="a">回答“哪一个 / 什么样的”时，优先考虑定语从句。若是在展开 news / fact / idea 等名词的具体内容，则可能是同位语 / 内容从句。</p>
+    </li>
+    <li>
+      <p class="q">把先行词放回从句，看坑在哪儿。</p>
+      <p class="a">缺主语 / 宾语 → who / which / that；缺“谁的” → whose；落在 be 后面 → that，通常直接省；<b>名词性位置全满、缺的是状语</b> → 在哪里 where、什么时候 when、为什么 why。</p>
+    </li>
+    <li>
+      <p class="q">再看有没有逗号。</p>
+      <p class="a">没有逗号通常是在限定“哪一个”；有逗号通常是补充说明。非限定性从句不用 that，关系词不能省。</p>
+    </li>
+    <li>
+      <p class="q">遇到 to whom / in which 这种，不要慌。</p>
+      <p class="a">正式结构：介词 + whom 指人，介词 + which 指物。具体介词看原来的英语搭配；日常表达常把介词留到后面。</p>
+    </li>
+    <li>
+      <p class="q">最后再看能不能省。</p>
+      <p class="a">限定性定语从句里，关系代词作宾语时常可省；作主语、非限定性逗号后、介词前置时通常不能省。</p>
+    </li>
+  </ol>
+
+  <footer>下一步：非谓语动词。到那里再系统学习 doing / done / to do 如何作为后置定语；这里不提前用一套过强的“压缩公式”硬套。</footer>
+</section>
+</div><!-- /wrap -->
+
+<!-- ══ 右侧目录 ══ -->
+<nav class="toc" id="toc">
+  <p class="toc-h">目录</p>
+  <ol>
+    <li class="item" data-sec="s1">
+      <a href="#s1"><span class="num">一</span>先认识它</a>
+      <div class="subs">
+        <a href="#s1a">定语的三种形式</a>
+        <a href="#s1b">三个角色</a>
+        <a href="#s1c">它实际拿来干什么</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s2">
+      <a href="#s2"><span class="num">二</span>关系代词</a>
+      <div class="subs">
+        <a href="#s2who">who 和 whom</a>
+        <a href="#s2a">that 的边界</a>
+        <a href="#s2be">第四种身份：be 后面</a>
+        <a href="#s2b">别和别的从句混</a>
+        <a href="#s2c">think / believe / say 块</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s3">
+      <a href="#s3"><span class="num">三</span>关系副词</a>
+      <div class="subs">
+        <a href="#s3a">where 怎么用</a>
+        <a href="#s3b">when / why 怎么用</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s4">
+      <a href="#s4"><span class="num">四</span>介词 + 关系代词</a>
+      <div class="subs">
+        <a href="#s4a">为什么两种写法都对</a>
+        <a href="#s4b">人 whom / 物 which</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s5">
+      <a href="#s5"><span class="num">五</span>限定 / 非限定</a>
+      <div class="subs">
+        <a href="#s5a">怎么判断逗号</a>
+        <a href="#s5b">阅读时怎么读</a>
+        <a href="#s5c">逗号改变意思</a>
+        <a href="#s5d">翻译别硬套“的”</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s6">
+      <a href="#s6"><span class="num">六</span>as / which 指整件事</a>
+      <div class="subs">
+        <a href="#s6a">为什么仍是定语从句</a>
+        <a href="#s6b">as / which 怎么用</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s7">
+      <a href="#s7"><span class="num">七</span>多个动作 / 多个从句</a>
+      <div class="subs">
+        <a href="#s7a">一个从句多个谓语</a>
+        <a href="#s7b">连续从句修饰谁</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s8">
+      <a href="#s8"><span class="num">八</span>省略与简化</a>
+      <div class="subs">
+        <a href="#s8a">宾语关系词可省</a>
+        <a href="#s8b">常见简化</a>
+        <a href="#s8c">不确定就别压</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s9">
+      <a href="#s9"><span class="num">总</span>使用总览</a>
+      <div class="subs">
+        <a href="#s9a">一张表</a>
+        <a href="#s9b">一套使用流程</a>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+</div><!-- /page -->
+
+<button class="toc-btn" id="tocBtn" aria-label="打开目录">目录</button>
+
+<script>
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.toc .item'));
+  var subLinks = [].slice.call(document.querySelectorAll('.toc .subs a'));
+  var secs = items.map(function(it){ return document.getElementById(it.dataset.sec); });
+  var subs = subLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var ticking = false;
+
+  function activeIndex(list, offset){
+    var idx = 0;
+    for (var i = 0; i < list.length; i++){
+      if (list[i] && list[i].getBoundingClientRect().top <= offset) idx = i;
+    }
+    return idx;
+  }
+
+  function update(){
+    ticking = false;
+    var i = activeIndex(secs, 120);
+    items.forEach(function(it, n){ it.classList.toggle('active', n === i); });
+
+    var j = activeIndex(subs, 140);
+    subLinks.forEach(function(a, n){ a.classList.toggle('on', n === j); });
+
+    // 把当前项滚进目录可视区(仅宽屏侧栏)
+    var cur = items[i];
+    if (cur && window.innerWidth > 1080){
+      var toc = document.getElementById('toc');
+      var t = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+      if (t < 0 || t > toc.clientHeight - 60) toc.scrollTop += t - toc.clientHeight / 2;
+    }
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+
+  // 窄屏抽屉
+  var btn = document.getElementById('tocBtn');
+  var scrim = document.getElementById('scrim');
+  function close(){ document.body.classList.remove('nav-open'); }
+  btn.addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
+  scrim.addEventListener('click', close);
+  document.getElementById('toc').addEventListener('click', function(e){
+    if (e.target.tagName === 'A') close();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>

@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>副词 · 阶梯式笔记</title>
-<style>
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>副词 · 阶梯式笔记 v4</title><style>
   :root{
     --bg:#0b0f14;
     --panel:#151b23;
@@ -195,302 +190,215 @@
     .why .lab{flex-basis:74px;font-size:.66rem}
     .step{padding-left:48px}
   }
-</style>
-</head>
-<body>
-<div class="wrap">
 
-  <header>
-    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
-    <h1>副词</h1>
-    <div class="sub">adverbs · describing everything except the noun</div>
-    <p class="lead">上一册形容词只修饰<b>名词</b>。但"跑得<b>快</b>"里的"快"修饰的是<b>动作</b>,形容词管不着——这正是副词登场的理由。一句话记住它俩的分工:<b>形容词描述"事物",副词描述"动作、性质、程度",几乎修饰名词以外的一切。</b></p>
-    <div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。<span class="pill conv">🧷 纯约定</span> 橙框：没逻辑、靠积累/背的（延续系列规矩）。</div>
-  </header>
 
-  <div class="thesis">
-    <b>贯穿全篇的地基:</b>形容词管"事物"(名词),副词管"其余一切"。<span class="q">它修饰动作(run fast)、修饰性质(very tall)、修饰另一个副词(too fast)、甚至评论整句(Luckily, …)。</span> 一个粗暴但好用的判断:<b>你想描述的对象,如果不是一个"东西",那多半就该用副词。</b>下面五阶,把这个"描述非名词"的工具一层层拆开:先弄清修饰谁 → 怎么变出来 → 放句子哪儿 → 找不到副词怎么办 → 怎么用它写出漂亮句子。
-  </div>
+/* ===== 兼容原阶梯笔记内容组件：仅换模板，不改知识内容 ===== */
+header .lead + .lead{margin-top:.45rem}
+.source-guard{margin:20px 0 10px;padding:14px 16px;border-left:3px solid var(--r3);background:linear-gradient(90deg,rgba(251,191,36,.07),transparent);border-radius:0 10px 10px 0;color:var(--ink-soft);font-size:.91rem}
+.source-guard h2{font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--r3);margin:0 0 7px;font-family:"SF Mono",Consolas,monospace}
+.source-guard p{margin:7px 0}.source-guard b{color:var(--ink)}
+.source-key{margin:13px 0 0;display:flex;gap:8px 14px;flex-wrap:wrap;font-size:.8rem;color:var(--ink-faint)}
+.source-key span{white-space:nowrap}.source-key b{color:var(--ink-soft)}
 
-  <!-- ===== 招牌：可落点 ===== -->
-  <div class="slots">
-    <div class="scap">副词和形容词最大的不同：它不锁死在一个位置，能在句中"滑动"</div>
-    <div class="ssub">同一句话，不同类型的副词落在不同的槽位 —— <b style="color:var(--ink)">位置本身携带信息</b>，放错就别扭甚至变意。</div>
-    <div class="track2">
-      <span class="drop front">句首 · 句子副词<br>Luckily,</span>
-      <span class="tok">She</span>
-      <span class="drop mid">中位 · 频率副词<br>always</span>
-      <span class="tok">sings</span>
-      <span class="drop end">句末 · 方式副词<br>beautifully</span>
-    </div>
-    <div class="legend2">
-      <span><b class="sen">句首</b>=评论整句</span><span><b class="freq">中位</b>=多久一次</span><span><b class="deg">词前</b>=程度(very)</span><span><b class="man">句末</b>=怎么做</span>
-    </div>
-    <div class="snote">→ 完整例句：<span class="sen">Luckily</span>, she <span class="freq">always</span> sings <span class="man">beautifully</span>.（幸好，她总是唱得很动听。）位置的门道见第三阶。</div>
-  </div>
+.step h2 .s{display:block;flex-basis:100%;font-size:.8rem;font-weight:400;color:var(--ink-faint);margin-top:-4px}
+.step h2 .tag.hi,.step h2 .tag.mid{font-family:"SF Mono",Consolas,monospace;font-size:.72rem;padding:2px 8px;border-radius:20px;border:1px solid var(--line);background:var(--panel);color:inherit}
+.dot.word-dot{width:34px;height:34px;left:4px;font-size:.67rem;letter-spacing:.02em}
 
-  <div class="ladder">
+.step p{margin:.8rem 0;color:var(--ink-soft);font-size:.94rem}.step p b{color:var(--ink)}
+.step h3{font-size:1rem;margin:1.55rem 0 .45rem;color:var(--ink);font-weight:720}
+.step h3 .n{font-family:"SF Mono",Consolas,monospace;font-size:.76rem;color:var(--ink-faint);margin-right:.35rem}
+.step h4{font-size:.93rem;margin:1.3rem 0 .4rem;color:var(--ink);font-weight:700}
+.step code,.overview code{font-family:"SF Mono",Consolas,monospace;color:#8ce99a;font-size:.84rem}
 
-    <!-- ===== 第一阶 ===== -->
-    <section class="step r1">
-      <div class="dot">1</div>
-      <h2><span class="tag">是什么</span>修饰"非名词"：动词 / 形容词 / 副词 / 整句<span class="chip">modify non-nouns</span></h2>
+/* 原例句 → 当前模板的深色例句卡 */
+.ex{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.ex p{margin:0;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:10px 13px;color:var(--ink-soft)}
+.ex .en{font-family:Georgia,"Times New Roman",serif;font-size:1rem;color:var(--ink);display:inline}
+.ex .zh{display:block;color:var(--zh);font-size:.82rem;margin-top:2px}
+.ex .no,.no{color:#ff9cad}.ex .yes,.yes{color:#8ce99a}
 
-      <div class="why">
-        <div class="row"><div class="lab">要解决</div><div class="val">形容词只能贴名词(a quick runner)。可"他跑得快"里的"快"描述的是<b>跑这个动作</b>,形容词伸不进去。</div></div>
-        <div class="row"><div class="lab">为什么</div><div class="val">于是有了副词,专门修饰<b>名词以外</b>的成分。它有四个作用对象,记住这四类,就抓住了副词的全部用武之地。</div></div>
-      </div>
+.warn,.note,.park{margin:12px 0;padding:11px 14px;border-radius:10px;background:var(--panel-2);font-size:.88rem;color:var(--ink-soft)}
+.warn{border:1px solid rgba(251,113,133,.24);border-left:3px solid #fb7185}
+.warn b{color:#ffb3c0}
+.note{border:1px solid rgba(129,140,248,.22);border-left:3px solid var(--term);background:rgba(129,140,248,.05)}
+.note b{color:#c7ceff}
+.park{border:1px dashed var(--line);color:var(--ink-faint)}
+.park b{color:var(--ink-soft)}
 
-      <div class="egs">
-        <div class="eg"><div class="en">She <span class="vb">runs</span> <span class="adv">quickly</span>.</div><div class="zh">她跑得快。（quickly 修饰动词 runs——最典型）</div></div>
-        <div class="eg"><div class="en">He is <span class="adv">very</span> <span class="aj">tall</span>.</div><div class="zh">他非常高。（very 修饰形容词 tall——程度）</div></div>
-        <div class="eg"><div class="en">She runs <span class="adv">too</span> <span class="adv">quickly</span>.</div><div class="zh">她跑得太快了。（too 修饰另一个副词 quickly）</div></div>
-        <div class="eg"><div class="en"><span class="adv">Luckily</span>, we won the game.</div><div class="zh">幸运的是，我们赢了比赛。（Luckily 评论整句——句子副词）</div></div>
-      </div>
+.recap,.sum.source-sum{margin-top:14px;padding:11px 15px 11px 17px;border-left:3px solid currentColor;border-radius:0 10px 10px 0;background:rgba(255,255,255,.025);font-size:.88rem;color:var(--ink-soft)}
+.r1 .recap{color:var(--base)}.r2 .recap{color:var(--r2)}.r3 .recap{color:var(--r3)}.r4 .recap{color:var(--r4)}.r5 .recap{color:var(--r5)}
+.recap b{color:var(--ink)}
 
-      <div class="callout">🔗 <b>接上形容词篇:</b>那一册第一阶埋了一句"改名词用形容词,改动作用副词"。这里就是它的展开:副词把"改"的对象<b>从名词扩展到了动词、形容词、副词、整句</b>。一句话对照——<b>形容词描述"什么样的东西",副词描述"怎么样地做/多么地怎样"。</b></div>
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+.tablewrap table, .step>table, .overview table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:34rem}
+.tablewrap th,.tablewrap td,.step>table th,.step>table td,.overview table th,.overview table td{padding:9px 11px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.tablewrap th,.step>table th,.overview table th{background:var(--panel-2);color:var(--ink);font-size:.75rem;font-family:"SF Mono",Consolas,monospace}
+.tablewrap tr:last-child td,.step>table tr:last-child td,.overview table tr:last-child td{border-bottom:0}
 
-      <div class="sum">📍 <b>小结:</b>副词=修饰非名词的四类成分。知道它"修饰谁"之后,第一个实际问题是:这个副词<b>怎么来</b>?大多数由形容词加工而成,逼出第二阶。</div>
-    </section>
+.q{display:grid;grid-template-columns:2rem 1fr;gap:.15rem .7rem;margin:11px 0;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:11px}
+.q .k{font-family:"SF Mono",Consolas,monospace;color:#a5b4fc;font-weight:800}.q .a{color:var(--ink);font-weight:700}.q .b{grid-column:2;color:var(--ink-soft);font-size:.88rem}
+.exit{display:block;margin:12px 0;padding:11px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--ink-soft);text-decoration:none}.exit b,.exit strong{color:var(--ink)}.exit em,.exit span{color:var(--ink-faint)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(13rem,1fr));gap:8px 12px;color:var(--ink-soft)}
 
-    <!-- ===== 第二阶 ===== -->
-    <section class="step r2">
-      <div class="dot">2</div>
-      <h2><span class="tag">怎么变形</span>形容词 → 副词：加 -ly 的规则<span class="chip">adj + ly</span></h2>
+/* 总览区：沿用目标模板 */
+.overview{margin-top:42px}
+.overview h3.block{font-size:1.4rem;margin:0 0 5px;letter-spacing:-.01em;padding-left:14px;border-left:4px solid var(--ink)}
+.overview .sectlead{color:var(--ink-soft);font-size:.93rem;margin:7px 0 0}
+.overview>p{color:var(--ink-soft)}
+.overview .q{margin:9px 0}
 
-      <div class="why">
-        <div class="row"><div class="lab">解决</div><div class="val">绝大多数副词不是凭空造的,而是<b>从形容词加工</b>来的:quick(形)→ quickly(副)。规则怎么走?</div></div>
-        <div class="row"><div class="lab">为什么</div><div class="val">拼写微调仍然服务于<b>好拼、好读</b>——和名词复数、形容词比较级<b>同一套底层逻辑</b>,你已经见过两次了。</div></div>
-      </div>
-
-      <div class="rules">
-        <div class="rule"><div class="tg">默认 +ly</div><div class="bd">直接加。<div class="ex">quick → quickly · slow → slowly · real → really</div></div></div>
-        <div class="rule"><div class="tg">辅音+y→ily</div><div class="bd"><b>辅音字母 + y</b>:变 y 为 i 再加 ly(同 baby→babies)。<div class="ex">happy → happily · easy → easily</div></div></div>
-        <div class="rule"><div class="tg">-le → -ly</div><div class="bd"><b>以 -le 结尾</b>:把 le 换成 ly(不是加 ly)。<div class="ex">simple → simply · terrible → terribly · gentle → gently</div></div></div>
-        <div class="rule"><div class="tg">-ic → ally</div><div class="bd"><b>以 -ic 结尾</b>:加 -ally(多一个 a)。<div class="ex">basic → basically · automatic → automatically</div></div></div>
-        <div class="rule"><div class="tg">-l 照常+ly</div><div class="bd">以 l 结尾的,照常加 ly,会出现<b>两个 l</b>(正常)。<div class="ex">careful → carefully · usual → usually</div></div></div>
-      </div>
-
-      <details class="term">
-        <summary><span class="caret">▸</span>📖 纠正一个常见错记：以 e 结尾"要不要去 e"？</summary>
-        <div class="tbody">
-          <p>很多人记成"去 e 加 ly",<b>这是错的、会让你写出 ❌ nicly</b>。真相:</p>
-          <p><b>· 绝大多数 e 结尾 → 保留 e，直接 +ly:</b> <code>nice → nicely</code>、<code>close → closely</code>、<code>complete → completely</code>、<code>brave → bravely</code>。</p>
-          <p><b>· 真正"变形"的只是 -le 结尾</b>(见上面规则):<code>simple → simply</code> 是把 <b>le 换成 ly</b>,不是"去 e"。别把这两种搞混。</p>
-          <div class="warn">⚠️ 少数几个词<b>确实去 e</b>,是不规则,单独记就好:<code>true → truly</code>、<code>whole → wholly</code>、<code>due → duly</code>。除这几个,e 结尾一律保留 e。</div>
-        </div>
-      </details>
-
-      <div class="sum">📍 <b>小结:</b>副词的"造词"搞定了。但副词真正的难点不在长什么样,而在<b>放句子哪里</b>——这是它和位置固定的形容词最大的分野,逼出第三阶。</div>
-    </section>
-
-    <!-- ===== 第三阶 ===== -->
-    <section class="step r3">
-      <div class="dot">3</div>
-      <h2><span class="tag">特殊情况 · 重点</span>位置：不同类型的副词，落点不同<span class="chip">position matters</span></h2>
-
-      <div class="why">
-        <div class="row"><div class="lab">解决</div><div class="val">形容词位置固定(贴名词);副词却能滑到句首、句中、句末。<b>放错位置轻则别扭,重则改意思</b>——这是中国学习者最高频的错区。</div></div>
-        <div class="row"><div class="lab">为什么</div><div class="val">副词按<b>"在回答什么问题"</b>分类,每类有自己的默认落点。下面<b>先讲位置最讲究的四类(方式/频率/程度/句子)</b>,再补三类<b>常用但位置简单的(时间/地点/疑问)</b>——七类一并覆盖。</div></div>
-      </div>
-
-      <div class="pos">
-        <div class="pc man">
-          <div class="h">① 方式副词（怎么做）→ 句末</div>
-          <div class="d">回答"how"。放在<b>动词后 / 宾语后</b>。<b>别插在动词和宾语之间。</b></div>
-          <div class="ex">She speaks English <span class="man">fluently</span>. <span class="zh">她英语说得流利。</span><br>❌ She speaks <span class="man">fluently</span> English.</div>
-        </div>
-        <div class="pc freq">
-          <div class="h">② 频率副词（多久一次）→ 句中</div>
-          <div class="d">回答"how often"(always/often/never…)。规则:<b>实义动词前、be 动词后、第一个助动词后</b>。</div>
-          <div class="ex">He <span class="freq">always</span> gets up early. <span class="zh">他总是早起。（实义动词前）</span><br>She is <span class="freq">never</span> late. <span class="zh">她从不迟到。（be 后）</span><br>❌ He gets up <span class="freq">always</span> early.</div>
-        </div>
-        <div class="pc deg">
-          <div class="h">③ 程度副词（多么）→ 紧贴被修饰词前</div>
-          <div class="d">回答"to what extent"(very/quite/too/almost)。放在<b>它修饰的那个形容词/副词前面</b>。</div>
-          <div class="ex">It is <span class="deg">very</span> cold today. <span class="zh">今天非常冷。</span><br>She sings <span class="deg">quite</span> well. <span class="zh">她唱得相当好。</span></div>
-        </div>
-        <div class="pc sen">
-          <div class="h">④ 句子副词（评论整句）→ 句首</div>
-          <div class="d">对整句表态(luckily/honestly/maybe)。放<b>句首,常带逗号</b>。</div>
-          <div class="ex"><span class="sen">Honestly</span>, I don't know. <span class="zh">老实说，我不知道。</span><br><span class="sen">Maybe</span> she forgot. <span class="zh">也许她忘了。</span></div>
-        </div>
-      </div>
-
-      <div class="callout" style="border-color:var(--r3)">➕ <b>上面四类"位置最讲究"，所以重点讲。下面三类也很常用，但位置很简单，一起补齐：</b></div>
-
-      <div class="pos">
-        <div class="pc man" style="border-left-color:#7dd3fc">
-          <div class="h" style="color:#7dd3fc">⑤ 时间副词（何时）→ 多在句末</div>
-          <div class="d">回答"when"：now, today, soon, yesterday…</div>
-          <div class="ex" style="color:#7dd3fc">I will call you <span style="color:#7dd3fc;font-weight:700">soon</span>. <span class="zh">我很快给你打电话。</span><br>We met <span style="color:#7dd3fc;font-weight:700">yesterday</span>. <span class="zh">我们昨天见了面。</span></div>
-        </div>
-        <div class="pc deg" style="border-left-color:#5eead4">
-          <div class="h" style="color:#5eead4">⑥ 地点副词（何处）→ 多在句末</div>
-          <div class="d">回答"where"：here, there, home…</div>
-          <div class="ex" style="color:#5eead4">Come <span style="color:#5eead4;font-weight:700">here</span>. <span class="zh">过来这儿。</span><br>She is not <span style="color:#5eead4;font-weight:700">here</span>. <span class="zh">她不在这儿。</span></div>
-        </div>
-        <div class="pc sen" style="border-left-color:#fca5a5">
-          <div class="h" style="color:#fca5a5">⑦ 疑问副词（提问）→ 句首</div>
-          <div class="d">用来提问：when / where / why / how。放<b>句首</b>。</div>
-          <div class="ex" style="color:#fca5a5"><span style="color:#fca5a5;font-weight:700">Where</span> is my book? <span class="zh">我的书在哪儿？</span><br><span style="color:#fca5a5;font-weight:700">Why</span> are you sad? <span class="zh">你为什么难过？</span></div>
-        </div>
-      </div>
-
-      <div class="callout">🔸 还有一类<b>关系副词</b>(when/where/why 引导从句,如 the day <b>when</b> we met)——它属于<b>定语从句</b>的范畴,留到从句那册专门讲,这里知道有它即可,不展开。</div>
-
-      <details class="term">
-        <summary><span class="caret">▸</span>📖 可推导：句末多个副词一起，按"方式 → 地点 → 时间"排</summary>
-        <div class="tbody">
-          <p>如果句末同时有方式、地点、时间副词,顺序是固定的:<b>方式(M) → 地点(P) → 时间(T)</b>。</p>
-          <p><code>She sang <span style="color:#8ce99a">beautifully</span> <span style="color:#7ab8ff">here</span> <span style="color:#d4a6ff">yesterday</span>.</code><br>她昨天在这儿唱得很动听。(怎么唱→在哪→何时)</p>
-          <p><b>一条好记的线索:</b>离动作越"近"的越靠前——"怎么做"和动作最贴身(方式),"何时"最外围(时间)。这和名词篇"越本质越贴近"是同一种直觉。</p>
-          <div class="warn">🔑 记不住 M-P-T 全序也没关系,最该守住的是第①条:<b>方式副词别塞进"动词+宾语"中间</b>,这是最常被扣分的点。</div>
-        </div>
-      </details>
-
-      <div class="sum">📍 <b>小结:</b>位置这一关过了,副词的"用法"就基本齐了。但接下来会撞上一个结构性难题——<b>很多概念根本没有好用的副词</b>。这逼出第四阶的破解术。</div>
-    </section>
-
-    <!-- ===== 第四阶 ===== -->
-    <section class="step r4">
-      <div class="dot">4</div>
-      <h2><span class="tag">高级技巧</span>副词不够用时：名词化，改用形容词去修饰<span class="chip">the workaround</span></h2>
-
-      <div class="why">
-        <div class="row"><div class="lab">解决</div><div class="val">英语里<b>形容词的数量远多于副词</b>。很多意思你想用副词表达,却发现<b>要么没有对应副词,要么那个副词很生硬</b>。</div></div>
-        <div class="row"><div class="lab">为什么</div><div class="val">破解思路:<b>把动作"名词化"变成名词,再拿一个形容词去修饰它</b>。形容词多、好用、还能叠——绕开了副词的短缺。</div></div>
-      </div>
-
-      <div class="swap">
-        <div class="swcol no">
-          <h5>✗ 硬找副词（常常卡住或生硬）</h5>
-          <div class="ex">He explained it ??? <span class="zh">想说"他解释得极其清楚/有力"，副词一时难凑</span></div>
-          <div class="d">很多"程度 + 方式"的组合，没有现成的单个副词能精准表达。</div>
-        </div>
-        <div class="swcol yes">
-          <h5>✓ 名词化 + 形容词（万能绕过）</h5>
-          <div class="ex">He explained it <span class="aj">with great clarity</span>. <span class="zh">他解释得极其清楚。</span></div>
-          <div class="d">把"清楚"变名词 clarity，用形容词 great 修饰它，套进 with/at/in a … way 结构。</div>
-        </div>
-      </div>
-
-      <div class="egs">
-        <div class="eg"><div class="en">She ran <span class="aj">at an incredible speed</span>.</div><div class="zh">她跑得快得惊人。（= ran incredibly fast，用 speed + incredible 绕过）</div></div>
-        <div class="eg"><div class="en">They worked <span class="aj">with great care</span>.</div><div class="zh">他们干得非常仔细。（= worked very carefully）</div></div>
-        <div class="eg"><div class="en">He answered <span class="aj">in a strange way</span>.</div><div class="zh">他回答得很奇怪。（= answered strangely，但 way 结构更灵活）</div></div>
-      </div>
-
-      <div class="callout">🧠 <b>为什么这是高招:</b>名词是英语里"承重能力最强的容器"(形容词篇讲过)。一旦把动作变成名词,你就能在它前面挂那些<b>又多又强的形容词</b>——<code>great / immense / incredible / remarkable / fantastic</code>。常用骨架:<code>with + 形 + 名</code>(with great care)、<code>at + 形 + speed</code>、<code>in a + 形 + way</code>。<b>这也是写作里让句子显得高级、精准的常用手法。</b></div>
-
-      <div class="sum">📍 <b>小结:</b>副词短缺的问题被"名词化+形容词"化解了。最后一步,把副词用出彩——有一批<b>副词+词的固定搭配</b>,是写作的杀器,逼出第五阶。</div>
-    </section>
-
-    <!-- ===== 第五阶 ===== -->
-    <section class="step r5">
-      <div class="dot">5</div>
-      <h2><span class="tag">积累 · 写作杀器</span>副词的固定搭配<span class="chip">🧷 靠积累</span></h2>
-
-      <div class="why">
-        <div class="row"><div class="lab">解决</div><div class="val">母语者习惯用一些<b>固定的"副词 + 形容词/动词"组合</b>。用对了,一句话立刻地道、有力;用不对(或只会 very)就平庸。</div></div>
-        <div class="row"><div class="lab">为什么</div><div class="val">这类搭配<b>没有严密逻辑,是约定</b>(标🧷)——为什么是 highly successful 而不是 strongly successful?没道理,就是习惯。<b>只能靠见到就积累。</b></div></div>
-      </div>
-
-      <div class="collo">
-        <div class="cgrp">
-          <h5>副词 + 形容词（替代平庸的 very）</h5>
-          <div class="items">
-            <div class="ci"><b>notoriously difficult</b> <span class="zh">出了名地难</span></div>
-            <div class="ci"><b>highly successful</b> <span class="zh">非常成功</span></div>
-            <div class="ci"><b>bitterly cold</b> <span class="zh">刺骨地冷</span></div>
-            <div class="ci"><b>deeply concerned</b> <span class="zh">深切担忧</span></div>
-            <div class="ci"><b>perfectly clear</b> <span class="zh">完全清楚</span></div>
-          </div>
-        </div>
-        <div class="cgrp">
-          <h5>副词 + 动词（让动作更有力）</h5>
-          <div class="items">
-            <div class="ci"><b>strongly recommend</b> <span class="zh">强烈推荐</span></div>
-            <div class="ci"><b>firmly believe</b> <span class="zh">坚信</span></div>
-            <div class="ci"><b>sincerely apologize</b> <span class="zh">诚挚道歉</span></div>
-            <div class="ci"><b>badly need</b> <span class="zh">急需</span></div>
-            <div class="ci"><b>fully understand</b> <span class="zh">完全理解</span></div>
-          </div>
-        </div>
-        <div class="cgrp">
-          <h5>连接副词（连接句子、表逻辑）——写作尤其有用</h5>
-          <div class="items">
-            <div class="ci"><b>however</b> <span class="zh">然而（转折）· It was hard. However, we did it. 那很难。然而我们做到了。</span></div>
-            <div class="ci"><b>therefore</b> <span class="zh">因此（结果）· He was ill. Therefore, he stayed home. 他病了，因此待在家。</span></div>
-            <div class="ci"><b>moreover</b> <span class="zh">而且（递进）· It is cheap. Moreover, it is good. 它便宜，而且好。</span></div>
-            <div class="ci"><b>otherwise</b> <span class="zh">否则 · Hurry, otherwise we will be late. 快点，否则我们要迟到。</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="callout" style="border-color:var(--r5)">🔗 <b>连接副词的用法要点(简单记):</b>它连接<b>两个完整句子</b>,表达它们之间的逻辑关系(转折/因果/递进)。最常见是放<b>第二句句首,后面加逗号</b>:<code>…. However, ….</code> 这类词能让你的<b>写作条理清晰、有逻辑感</b>——正是考试作文的加分点。</div>
-
-      <div class="callout">✍️ <b>怎么积累:</b>你在命令行报错、技术文档、文章里遇到这类"副词+词"搭配,别只记单词——<b>把整个搭配当一个"块"记下来</b>(highly successful 作为一个整体),写作时直接调用。这比背单个副词有用得多,是从"看得懂"到"写得出"的关键一步。</div>
-
-      <div class="sum">📍 <b>小结:</b>五阶合流:副词修饰非名词(1)→ 加 ly 造出来(2)→ 按类型摆位置(3)→ 短缺时名词化绕过(4)→ 固定搭配写出彩(5)。整册都围绕"描述非名词"这一个使命展开。</div>
-    </section>
-
-  </div><!-- /ladder -->
-
-  <!-- ===== 独立陷阱框 ===== -->
-  <section class="overview" style="margin-top:36px">
-    <h3 class="block">⚠️ 独立陷阱：形副同形 & 加 ly 变意</h3>
-    <p class="sectlead" style="margin-top:8px">有一批词，<b>加不加 ly 是两个意思</b>，甚至意思相反。这是高频失分点，单独拎出来强记。</p>
-
-    <table class="flat">
-      <thead><tr><th>词</th><th>原形（也是副词，"平副词"）</th><th>加 ly 后（意思变了！）</th></tr></thead>
-      <tbody>
-        <tr><td class="w">hard</td><td class="a">努力地 · work <b style="color:#8ce99a">hard</b> 努力工作</td><td class="b"><b>hardly</b> = 几乎不 · work hardly 几乎不工作（意思相反！）</td></tr>
-        <tr><td class="w">late</td><td class="a">晚 · come <b style="color:#8ce99a">late</b> 来晚了</td><td class="b"><b>lately</b> = 最近</td></tr>
-        <tr><td class="w">near</td><td class="a">近 · stand <b style="color:#8ce99a">near</b> 站得近</td><td class="b"><b>nearly</b> = 几乎</td></tr>
-        <tr><td class="w">high</td><td class="a">高（物理高度）· fly <b style="color:#8ce99a">high</b> 飞得高</td><td class="b"><b>highly</b> = 高度地（抽象）· highly recommend</td></tr>
-      </tbody>
-    </table>
-
-    <div class="callout" style="border-color:#fb7185"><b>最狠的坑是 hard / hardly:</b> <code>He works hard.</code>(他工作努力)和 <code>He hardly works.</code>(他几乎不工作)<b>意思完全相反</b>!<span style="color:#ffb3c0">hardly 已经彻底脱离了 hard 的原意</span>,别把它当"hard 的副词"。<br><br>另外补两个"平副词"(形容词和副词同形,不加 ly):<code>fast</code>(a fast car / run fast)、<code>well</code>(well 是 good 的副词:do it well)。</div>
-  </section>
-
-  <!-- ===== 总览表 ===== -->
-  <section class="overview">
-    <h3 class="block">一张总览表</h3>
-    <p class="sectlead" style="margin-top:8px">竖着读是五层递进;<b>横着读，是"描述非名词"这一个使命被逐步补全</b>。🧷 标记的是纯约定项。</p>
-    <div class="tbl-wrap">
-      <table class="big">
-        <thead><tr><th>阶</th><th>解决什么</th><th>机制</th><th>核心例句</th><th>依赖 / 备注</th></tr></thead>
-        <tbody>
-          <tr data-r="1"><td class="stage">1 · 修饰谁</td><td>描述非名词</td><td><code>动/形/副/整句</code></td><td><code>She runs quickly.</code><span class="mini">她跑得快</span></td><td>对照形容词修饰名词</td></tr>
-          <tr data-r="2"><td class="stage">2 · 变形</td><td>怎么造出来</td><td><code>adj + ly（含 -le/-ic）</code><span class="mini">发音省力</span></td><td><code>simple → simply</code><span class="mini">简单地</span></td><td>拼写同名词/形容词篇</td></tr>
-          <tr data-r="3"><td class="stage">3 · 位置</td><td>放句子哪儿</td><td><code>四类讲究+三类简单</code><span class="mini">共七类</span></td><td><code>He always gets up early.</code><span class="mini">他总早起</span></td><td>★重点，最易错</td></tr>
-          <tr data-r="4"><td class="stage">4 · 破解</td><td>副词不够用</td><td><code>名词化 + 形容词</code></td><td><code>with great care</code><span class="mini">非常仔细</span></td><td>形容词多、好用</td></tr>
-          <tr data-r="5"><td class="stage">5 · 搭配 🧷</td><td>写出彩</td><td><code>副词+形/动 固定块</code><span class="mini">靠积累</span></td><td><code>strongly recommend</code><span class="mini">强烈推荐</span></td><td>约定，整块记</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ===== 判断流程 ===== -->
-  <section class="overview">
-    <h3 class="block">判断/应用：要用一个副词，五问定位</h3>
-    <p class="sectlead" style="margin-top:8px">从上往下问，副词的形态、位置、乃至"要不要换结构"就定了：</p>
-    <div class="flow">
-      <div class="qnode"><div class="qq">Q1</div><div class="body"><div class="ask">我要描述的是"一个东西"，还是动作/性质/程度/整句？</div><div class="arm"><span class="no">是东西(名词)</span> → 用<b>形容词</b>｜<span class="yes">是动作/性质/程度/整句</span> → 用<b>副词</b>，继续</div></div></div>
-      <div class="qnode"><div class="qq">Q2</div><div class="body"><div class="ask">怎么变出来？</div><div class="arm">adj+<b>ly</b>｜辅音+y→<b>ily</b>｜-le→<b>-ly</b>(simply)｜-ic→<b>-ally</b>｜e 结尾一般<b>保留 e</b>(nicely)</div></div></div>
-      <div class="qnode"><div class="qq">Q3</div><div class="body"><div class="ask">放句子哪个位置？看它是哪类</div><div class="arm">方式(怎么做)→<b>句末</b>｜频率(多久)→<b>句中</b>(实义动词前/be后)｜程度(多么)→<b>被修饰词前</b>｜评论整句→<b>句首</b>｜时间/地点(何时/何处)→<b>句末</b>｜疑问(提问)→<b>句首</b></div></div></div>
-      <div class="qnode"><div class="qq">Q4</div><div class="body"><div class="ask">找不到合适的副词、或副词很生硬？</div><div class="arm">→ <b>名词化</b>：把动作变名词，用形容词修饰（with great care / at high speed / in a … way）</div></div></div>
-      <div class="qnode"><div class="qq">Q5</div><div class="body"><div class="ask">在写作，想让句子更地道有力？</div><div class="arm">→ 调用<b>固定搭配</b>(🧷整块记)：副词+形(highly successful)、副词+动(strongly recommend)，别只会 very</div></div></div>
-    </div>
-    <div class="callout" style="margin-top:16px">🧭 <b>一条主线贯穿五问:</b>一切围绕"<b>描述一个非名词的东西</b>"——先确认该用副词而非形容词(Q1)，再定它<b>长什么样(Q2)、坐哪儿(Q3)</b>；副词不给力时<b>换名词化结构(Q4)</b>，想出彩时<b>调固定搭配(Q5)</b>。其中位置(Q3)是最该练的，固定搭配(Q5)是纯约定要靠积累。</div>
-  </section>
-
-  <footer>
-    <b>回看地基:</b>副词看着零散——一堆 ly、飘忽的位置、hardly 这种陷阱——但它只有一个使命:<b>描述名词以外的一切</b>。修饰谁、怎么变、放哪里，是这个使命的三次落地；副词不够用时用"名词化+形容词"绕过，想写得漂亮时调"副词+词"的固定块。它和形容词是一对搭档:<b>形容词管"事物"，副词管"动作、性质、程度与整句"</b>。你不是在背一堆 ly，你是在学会：当你要描述的不是一个"东西"时，如何精准地把它说出来。
-  </footer>
-
+@media (max-width:560px){
+  .step{padding-left:46px}.dot.word-dot{left:1px}
+  .source-key{gap:6px 10px}
+  .tablewrap table,.step>table,.overview table{min-width:30rem}
+}
+</style></head><body><div class="wrap"><header><div class="kicker">Feynman · 第一性原理 · 阶梯递进</div><h1>副词</h1><div class="sub">adverbs · first principles · ladder notes</div><p class="lead">在形容词 / 副词二选一时，形容词主要给<b>人或事物加属性</b>；而"跑得<b>快</b>"里的"快"是在补充<b>动作</b>的信息——这就是副词登场的理由。</p><p class="lead">一句话先做二选一速判：<b>形容词主要给对象赋属性/状态；副词主要给动作、性质、程度或整件事补充信息。</b>这是一条高效入口，不是词类的全部定义。</p><div class="source-key"><span><b style="color:var(--exam)">★</b> 要会写,直接换分</span><span><b>○</b> 阅读认出即可</span><span><b>◌</b> 占位,现在不学</span><span><b>🧷</b> 纯约定,靠记</span></div><div class="termhint"><span class="pill">📖 可推导</span> 蓝框：能讲透逻辑的。 <span class="pill conv">🧷 纯约定</span> 橙框：没逻辑、靠积累/背的。</div></header><div class="source-guard">
+<h2>两条警戒线,全册要回来兑现</h2>
+<p><b>① 副词通常不直接给普通名词添加“什么样”的属性。</b><span class="no">✗ a quickly runner</span> → <span class="yes">✓ a quick runner</span>。但 only / even / just 这类聚焦副词可以作用于名词短语等成分，第 7.2 阶会说明。</p>
+<p><b>② 不看词尾，先看它在句中做什么、作用于谁。</b>词尾只能用来<b>猜</b>词性，不能<b>定</b>词性。尤其注意：副词通常不作普通名词的属性定语，但聚焦副词可以把名词短语纳入自己的作用域。</p>
+</div><div class="thesis"><p>副词的一大难点是:<b>位置会随它表达的信息类型变化</b>。所以"修饰谁"和"放哪里"是同一件事的两面,必须一起看。</p></div><div class="ladder"><section class="step r1"><div class="dot">1</div><h2><span class="tag">阶段</span>四类核心副词:修饰谁 + 表达什么 + 放哪里 <span class="tag hi">★</span><span class="s">全册主干</span></h2><p>副词的一大难点是:<b>位置会随它表达的信息类型变化</b>。所以"修饰谁"和"放哪里"是同一件事的两面,必须一起看。</p><div class="tablewrap">
+<table>
+<tr><th>类型</th><th>回答什么</th><th>修饰谁</th><th>默认位置</th></tr>
+<tr><td><b>方式</b></td><td>怎么做?</td><td>动作</td><td>动词后 / 宾语后</td></tr>
+<tr><td><b>频率</b></td><td>多久一次?</td><td>动作</td><td>实义动词前 / be 后 / 第一助动词后</td></tr>
+<tr><td><b>程度</b></td><td>到什么程度?</td><td>常见是形容词 / 副词，也可依词义作用于动词或谓语</td><td>通常紧贴自己的作用对象</td></tr>
+<tr><td><b>句子副词</b></td><td>说话人怎么看?</td><td>整件事</td><td>句首,带逗号</td></tr>
+</table>
+</div><h3><span class="n">1.1</span>方式副词 → 动词后 / 宾语后</h3><div class="ex">
+<p><span class="en">He answered carefully.</span><span class="zh">他小心地回答了。</span></p>
+<p><span class="en">She speaks English fluently.</span><span class="zh">她英语说得流利。</span></p>
+<p><span class="en no">✗ She speaks fluently English.</span></p>
+</div><div class="warn">
+<p style="margin:0"><b>⚠️ 方式副词放句末时，如果动词带宾语，通常把副词放在宾语后：</b><code>V + O + Adv</code>。不要机械写成 <span class="no">V + Adv + O</span>。不过部分方式副词也能放在动词前，例如 <code>She carefully opened the door.</code></p>
+</div><h3><span class="n">1.2</span>频率副词 → 句中三个位置</h3><p>always / usually / often / sometimes / never。三条位置规则:</p><div class="park"><b>◌ sometimes 位置比较自由:</b>可出现在句首、句中或句末。本节的“中位”规则主要抓 always / usually / often / never 的典型位置。</div><div class="ex">
+<p><span class="en">He always gets up early.</span><span class="zh">他总是早起。(实义动词 gets 前)</span></p>
+<p><span class="en">She is never late.</span><span class="zh">她从不迟到。(be 后)</span></p>
+<p><span class="en">He has never seen it.</span><span class="zh">他从没见过。(第一个助动词 has 后)</span></p>
+<p><span class="en">Tourists do not usually choose boring trips.</span><span class="zh">游客通常不会选择乏味的旅途。(否定句里,跟在 do not 后面)</span></p>
+<p><span class="en no">✗ He gets up always early.</span></p>
+</div><h3><span class="n">1.3</span>程度副词 → 通常紧贴自己的作用对象</h3><p><b>very / too</b> 最典型地给形容词或副词加强程度：<code>very cold</code>、<code>too quickly</code>。但不要把“程度副词 = 只能修饰形容词/副词”记成定律；<b>almost / quite / rather</b> 等词的作用域更宽，也可以落到动词或整个谓语上。</p><div class="ex">
+<p><span class="en">It is very cold today.</span><span class="zh">very → cold（形容词的程度）</span></p>
+<p><span class="en">She runs too quickly.</span><span class="zh">too → quickly（副词的程度）</span></p>
+<p><span class="en">I almost fell.</span><span class="zh">almost → fell（几乎发生这个动作）</span></p>
+<p><span class="en">I quite agree.</span><span class="zh">quite → agree（完全/相当赞同）</span></p>
+<p><span class="en">I rather like it.</span><span class="zh">rather → like（相当喜欢）</span></p>
+</div><div class="note"><p style="margin:0"><b>关键不是背“程度副词都站在形容词前”。</b>真正要找的是它的<b>作用域</b>：它到底在加强哪个词、哪个动作或哪一整块意思。<code>very quickly</code> 里 very 作用于 quickly；<code>almost fell</code> 里 almost 作用于 fell。</p></div><h3><span class="n">1.4</span>句子副词 → 常在句首,常用逗号隔开</h3><p>它不修饰句中任何一个词,而是<b>说话人对整件事的评价或表态</b>。</p><div class="ex">
+<p><span class="en">Luckily, nobody was hurt.</span><span class="zh">幸运的是,没有人受伤。</span></p>
+<p><span class="en">Honestly, I don't know.</span><span class="zh">老实说,我不知道。</span></p>
+<p><span class="en">Actually, most people prefer fresh fruits.</span><span class="zh">事实上,大多数人更喜欢新鲜水果。</span></p>
+</div><div class="note">
+<p style="margin:0"><b>判断核心看意义,不是只看位置。</b>如果副词表达的是说话人对整件事的评价、态度或判断,就是句子副词。句首 + 逗号只是它的常见位置,不是判定依据。方式副词也可能前置,例如 <code>Carefully, she opened the box.</code></p>
+</div><p class="recap source-sum">📍 <b>小结:</b>四类核心副词讲完,"修饰谁"和"放哪里"一次解决。剩下两类位置简单,但地图要补齐。</p></section><section class="step r2"><div class="dot">2</div><h2><span class="tag">阶段</span>其余的位置 <span class="tag mid">○ 认识即可</span><span class="s">时间 · 地点 · 多个并存</span></h2><div class="ex">
+<p><span class="en">I saw him yesterday.</span><span class="zh">我昨天见过他。(时间 → 多在句末)</span></p>
+<p><span class="en">Come here.</span><span class="zh">过来这儿。(地点 → 多在句末)</span></p>
+</div><h4>句末多个副词并存</h4><p>常见的默认顺序是 <b>方式 → 地点 → 时间</b>。</p><div class="ex">
+<p><span class="en">She sang beautifully here yesterday.</span><span class="zh">她昨天在这儿唱得很动听。(怎么唱 → 在哪 → 何时)</span></p>
+</div><p>好记的线索:<b>离动作越近的越靠前</b>——"怎么做"和动作最贴身,"何时"最外围。</p><div class="warn">
+<p style="margin:0"><b>⚠️ 这是默认序,不是铁律。</b>考试主动输出优先使用 <b>方式 → 地点 → 时间</b>。真正要守住的是第 1.1 条:方式副词放句末时,若有宾语,通常放在宾语后。</p>
+</div><p class="recap source-sum">📍 <b>小结:</b>位置系统到此收口。接下来四阶换一个方向:不再讲整类副词的规律,而是讲<b>某些具体的词和词形有自己的脾气</b>——一个词 → 几组词 → 两组词形陷阱。</p></section><section class="step r3"><div class="dot">3</div><h2><span class="tag">阶段</span>enough:反常后置 <span class="tag hi">★</span><span class="s">一个词的脾气</span></h2><p>第 1.3 阶说的是程度副词通常靠近自己的作用对象。<b>enough 是一个特别值得单独记的位置规则：</b>当它修饰形容词或副词时，放在后面。</p><div class="ex">
+<p><span class="en">The room is big enough for pet activities.</span><span class="zh">这间屋子足够大,可以供宠物活动。(✗ enough big)</span></p>
+<p><span class="en">He didn't run quickly enough.</span><span class="zh">他跑得不够快。(修饰副词也放后面)</span></p>
+<p><span class="en">He is old enough to drive.</span><span class="zh">他够大了,可以开车了。</span></p>
+</div><p>一句压缩:<b>enough 修饰形容词或副词时,放在它们后面。</b>和中文语序正好相反,所以要专门记。</p><div class="park">
+<b>◌ enough + 名词(enough time / enough fresh fruits)属于 enough 的非本篇副词用法</b>,不在本册副词主线里,不展开。顺带一句:老教材里的 <code>fresh fruits enough</code> 这种后置写法在现代英语里已经很边缘,别主动写。
+  </div><p class="recap source-sum">📍 <b>小结:</b>一个词有脾气。下一阶是几组词。</p></section><section class="step r4"><div class="dot">4</div><h2><span class="tag">阶段</span>高频个案 <span class="tag hi">🧷 ★</span><span class="s">几组词的脾气,没逻辑,靠记</span></h2><h3><span class="n">4.1</span>「也」的三个词:too / either / also</h3><div class="ex">
+<p><span class="en">I like it too.</span><span class="zh">我也喜欢。(肯定句,句末)</span></p>
+<p><span class="en">I don't like it either.</span><span class="zh">我也不喜欢。(否定句,句末)</span></p>
+<p><span class="en">She also works here.</span><span class="zh">她也在这儿工作。(句中,实义动词前)</span></p>
+</div><div class="warn">
+<p style="margin:0"><b>⚠️ 表示“也”时：</b>肯定句常用 <code>too</code>，否定句表达“也不”时，中性标准英语<b>优先用 <code>either</code></b>：<span class="yes">✓ I don't like it either.</span>。<code>I don't like it too.</code> 在部分口语/语境中能出现，但容易产生歧义，<b>不建议把它当默认主动输出</b>。注意 <code>I don't like it too much.</code> 里的 <code>too</code> 是“太”，不是“也”。</p>
+</div><h3><span class="n">4.2</span>already / yet</h3><p>粗略对应:<b>"已经"用 already,"还没"用 yet。</b></p><div class="ex">
+<p><span class="en">She has already left.</span><span class="zh">她已经走了。</span></p>
+<p><span class="en">He hasn't finished yet.</span><span class="zh">他还没做完。</span></p>
+<p><span class="en">Have you finished yet?</span><span class="zh">你做完了吗?</span></p>
+</div><div class="park">
+<b>◌ 不要记成"already 只配肯定、yet 只配否定疑问"</b>——这条流行的配对表是教学简化,经不起细查。<code>Have you already finished?</code>(你这么快就做完了?)完全成立,只是多一层惊讶的意味。按语义记"已经/还没",比按句型配对可靠。
+  </div><p class="recap source-sum">📍 <b>小结:</b>几组词有脾气。下面两阶是一批词——而且它们要联手推翻一个直觉:靠词尾判断词性。</p></section><section class="step r5"><div class="dot">5</div><h2><span class="tag">阶段</span>没有 -ly,也是副词 <span class="tag hi">★</span><span class="s">平副词 · 加 ly 变义</span></h2><div class="note">
+<p style="margin:0"><b>这一阶里是两件不同的事,别当成一回事:</b>上半是<b>一个词兼两种词性</b>(fast 既是形容词也是副词),下半是<b>加 -ly 后现代常用义发生了分化</b>(例如 hard / hardly)。放在一起只因为都跟 -ly 有关。</p>
+</div><h3><span class="n">5.1</span>平副词:形容词和副词同形</h3><div class="ex">
+<p><span class="en">a fast car / He runs fast.</span><span class="zh">一辆快车 / 他跑得快。(现代标准英语通常不用 fastly)</span></p>
+<p><span class="en">an early bus / He gets up early.</span><span class="zh">一班早班车 / 他起得早。</span></p>
+<p><span class="en">a straight line / Go straight.</span><span class="zh">一条直线 / 一直往前走。</span></p>
+</div><h3><span class="n">5.2</span>加 -ly 之后,意思变了</h3><div class="tablewrap">
+<table>
+<tr><th>原形(本身就是副词)</th><th>加 ly 后</th></tr>
+<tr><td><b>hard</b> 努力地 · work hard 努力工作</td><td><b>hardly</b> 几乎不 · <b>意思相反</b></td></tr>
+<tr><td><b>late</b> 晚 · come late 来晚了</td><td><b>lately</b> 最近</td></tr>
+<tr><td><b>near</b> 近 · stand near 站得近</td><td><b>nearly</b> 几乎</td></tr>
+<tr><td><b>high</b> 高的 / 高高地 · fly high 飞得高</td><td><b>highly</b> 高度地(抽象)· highly recommend 强烈推荐</td></tr>
+</table>
+</div><div class="warn">
+<p style="margin-bottom:.4rem"><b>⚠️ 最狠的坑是 hard / hardly,意思完全相反:</b></p>
+<div class="ex" style="border-color:var(--rule); margin-bottom:0">
+<p><span class="en">He works hard.</span><span class="zh">他工作很努力。</span></p>
+<p><span class="en">He hardly works.</span><span class="zh">他几乎不工作。</span></p>
 </div>
-</body>
-</html>
+<p style="margin-bottom:0"><code>hardly</code> 的现代常用义不能按 <code>hard + ly</code> 机械推导，<b>别把它当成“hard 的普通副词形式”</b>。</p>
+</div><p class="recap source-sum">📍 <b>小结:</b>没有 -ly 的可以是副词。反过来呢?下一阶。</p></section><section class="step r1"><div class="dot">6</div><h2><span class="tag">阶段</span>有 -ly,未必是副词 <span class="tag hi">★</span><span class="s">兑现地基第 ② 条</span></h2><h3><span class="n">6.1</span>-ly 结尾,却是形容词</h3><p>这一批高频词虽然以 -ly 结尾，但常见身份是形容词；不能因为词尾是 -ly 就直接判成副词:</p><div class="ex">
+<p><span class="en">friendly · lovely · lively · lonely · silly · ugly · elderly · costly · orderly</span><span class="zh">友好的 · 可爱的 · 活泼的 · 孤独的 · 傻的 · 丑的 · 年长的 · 昂贵的 · 有序的</span></p>
+<p><span class="en">He is a friendly man.</span><span class="zh">他是个友好的人。</span></p>
+<p><span class="en no">✗ He smiled friendly.</span><span class="yes"> → ✓ He smiled in a friendly way.</span><span class="zh">他友好地笑了笑。</span></p>
+</div><h3><span class="n">6.2</span>-ly 结尾,形容词副词都能当</h3><div class="ex">
+<p><span class="en">a daily report / The bus runs daily.</span><span class="zh">一份日报 / 这班车每天都开。</span></p>
+<p><span class="en">daily · weekly · monthly · yearly</span><span class="zh">每日的;每日 · 每周的;每周 · 每月的;每月 · 每年的;每年</span></p>
+</div><div class="note">
+<p style="margin:0"><b>🔑 第 5、6 两阶合起来兑现了地基第 ② 条：</b>fast 没有 -ly 却能作副词，friendly 有 -ly 却常作形容词。所以<b>词尾只能帮你猜，不能替你定</b>。最终要问的是：<b>它在句中承担什么功能、作用于谁？</b>给普通名词赋属性 → 通常是形容词；给动作、性质、程度或整句附加信息 → 常是副词；only / even 这类聚焦副词虽然能作用于名词短语，但做的是<b>强调</b>，不是属性描写。</p>
+</div><p class="recap source-sum">📍 <b>小结:</b>词尾这条捷径被堵死了,判断只能回到"修饰谁"。最后一阶,看看副词还能跑到哪些意外的地方去。</p></section><section class="step r2"><div class="dot">7</div><h2><span class="tag">阶段</span>边界用法<span class="s">本册要讲的两项 + 三个出口</span></h2><h3><span class="n">7.1</span>少数地点 / 状态词可直接出现在 be 后 <span class="tag mid">○</span></h3><p>少数表示地点或状态的词可以直接出现在 <code>be</code> 后，补充主语的位置或状态。这里先掌握结构，不强行统一词类标签。</p><div class="ex">
+<p><span class="en">He is away this week.</span><span class="zh">他这周不在。</span></p>
+<p><span class="en">She is abroad now.</span><span class="zh">她现在在国外。</span></p>
+<p><span class="en">She is here.</span><span class="zh">她在这里。</span></p>
+</div><p>这一类常见词包括:<b>away · abroad · here · there</b>。</p><div class="note">
+<p style="margin:0"><b>🔗 接形容词册第 2 阶:</b>那一册说过“系动词后面并不是只能站形容词”。这里补一个边界：<code>be</code> 后也能出现地点 / 状态补语。<code>in / out / over</code> 等词在不同词典或语法体系里可能有不同分析，考试阶段先掌握用法，不必硬判。</p>
+</div><h3><span class="n">7.2</span>聚焦副词 <span class="tag hi">★</span></h3><p><b>only / even / just</b> 不是给名词加“属性”，而是在句子里划定<b>焦点 / 作用域</b>。主动写作时，最好让它<b>尽量靠近真正想强调的成分</b>；但实际理解还要结合语境和重音。</p><div class="ex">
+<p><span class="en">Only Tom knows the answer.</span><span class="zh">只有汤姆知道答案。</span></p>
+<p><span class="en">Even a child can do it.</span><span class="zh">连小孩都会做。</span></p>
+<p><span class="en">I just want a cup of tea.</span><span class="zh">我只想要杯茶。</span></p>
+</div><div class="warn">
+<p style="margin:0"><b>⚠️ 位置会强烈影响默认焦点，但不是唯一线索：</b><code>Only Tom saw her.</code> → 焦点默认在 Tom（只有汤姆）；<code>Tom saw only her.</code> → 焦点默认在 her（只看见她）；<code>Tom only saw her.</code> → only 常作用于后面的整个谓语块，具体排除什么还可能依赖语境和重音。<b>想写得最清楚，就把 only 放得离焦点更近。</b></p>
+</div><h3><span class="n">7.3</span>三个出口 <span class="tag mid">○ 在别册</span></h3><p style="color:var(--ink-3); font-size:.92rem; margin-bottom:.6rem">下面三类不是"不重要",是"讲在别处"。这里只放路标,免得以后撞上时以为本册漏了。</p><div class="exit"><b>疑问副词</b> when / where / why / how　<em>→ 疑问句册</em></div><div class="exit"><b>关系副词</b> when / where / why(the day <b>when</b> we met)　<em>→ 定语从句册</em></div><div class="exit"><b>连接副词</b> however / therefore / moreover / otherwise　<em>→ 写作·连接册。阅读里是逻辑路标,作文里是条理分,值得早点去看</em></div><p class="recap source-sum">📍 <b>小结:</b>七阶合流——四类核心副词的位置(1-2)→ 个别词的脾气(3-4)→ 词尾靠不住(5-6)→ 跑出常规的用法(7)。</p></section><section class="step r3"><div class="dot">附</div><h2><span class="tag">阶段</span>构词:形容词 → 副词怎么拼 <span class="tag hi">★</span><span class="s">填词补文直接考</span></h2><p>正文各阶解决的是"<b>这里需要一个副词</b>";这一节解决"<b>这个副词具体怎么拼出来</b>"。放在附录,是因为它本质是拼写不是语法——而且这套变形逻辑(辅音+y 变 i、e 怎么处理)和名词加 -s、形容词加 -er 是同一批,以后可以合并。</p><p>考法很直接:填词补文给你一个 <code>(easy)</code>,让你填 <code>easily</code>。</p><div class="tablewrap">
+<table>
+<tr><th>规则</th><th>例</th></tr>
+<tr><td>默认 <b>+ly</b></td><td>quick → quickly · slow → slowly · real → really</td></tr>
+<tr><td>常见辅音字母 + y → <b>变 y 为 i 加 ly</b></td><td>happy → happily · easy → easily<br/><span style="color:var(--ink-3)">边界:shy → shyly</span></td></tr>
+<tr><td>常见辅音 + -le → <b>le 换成 ly</b></td><td>simple → simply · terrible → terribly · gentle → gently</td></tr>
+<tr><td>-ic 结尾 → <b>加 -ally</b></td><td>basic → basically · automatic → automatically<br/><span style="color:var(--ink-3)">例外:public → publicly</span></td></tr>
+<tr><td>-l 结尾 → <b>照常 +ly,出现两个 l 是对的</b></td><td>careful → carefully · usual → usually</td></tr>
+<tr><td>e 结尾 → <b>保留 e</b></td><td>nice → nicely · close → closely · complete → completely</td></tr>
+<tr><td>不规则</td><td>true → truly · whole → wholly · due → duly · <b>good → well</b></td></tr>
+</table>
+</div><div class="warn">
+<p style="margin-bottom:.4rem"><b>⚠️ 纠正一个常见错记:"去 e 加 ly"是错的</b>,照它写会造出 <span class="no">✗ nicly</span>。</p>
+<p style="margin:0">绝大多数 e 结尾<b>保留 e</b>(nicely / closely / completely)。规律性的 e 变化主要出现在 <b>-le</b> 这一类——simple → simply 可理解为把 <b>le 换成 ly</b>。true → truly 等少数词属于<b>例外</b>,单独记,不要反推成普遍规律。</p>
+</div></section></div><section class="overview"><h3 class="block">一张总览表</h3><div class="tablewrap">
+<table>
+<tr><th>阶</th><th>解决什么</th><th>核心例句</th><th>权重</th></tr>
+<tr><td><b>1</b> 核心四类</td><td>修饰谁 + 放哪里</td><td><code>She speaks English fluently.</code></td><td><span class="tag hi">★</span></td></tr>
+<tr><td><b>2</b> 其余位置</td><td>时间地点、多个并存</td><td><code>She sang beautifully here yesterday.</code></td><td><span class="tag mid">○</span></td></tr>
+<tr><td><b>3</b> enough</td><td>一个词反常后置</td><td><code>big enough</code></td><td><span class="tag hi">★</span></td></tr>
+<tr><td><b>4</b> 高频个案</td><td>几组词的脾气</td><td><code>I don't like it either.</code></td><td><span class="tag hi">🧷★</span></td></tr>
+<tr><td><b>5</b> 没 ly 也是副词</td><td>平副词 · 加 ly 变义</td><td><code>He works hard. / He hardly works.</code></td><td><span class="tag hi">★</span></td></tr>
+<tr><td><b>6</b> 有 ly 未必是</td><td>-ly 形容词</td><td><code>a friendly man</code></td><td><span class="tag hi">★</span></td></tr>
+<tr><td><b>7</b> 边界用法</td><td>be 后地点/状态 · 聚焦副词</td><td><code>He is away. / Only Tom knows.</code></td><td><span class="tag mid">○ / ★</span></td></tr>
+<tr><td><b>附</b> 构词</td><td>怎么拼出来</td><td><code>easy → easily</code></td><td><span class="tag hi">★</span></td></tr>
+</table>
+</div><p style="font-size:.92rem; color:var(--ink-2)"><b>逻辑线:</b>位置系统(1-2)→ 个别词的脾气(3-4)→ 词尾靠不住(5-6)→ 跑出常规(7)。从最普遍的规则,走到最具体的个案。</p></section><section class="overview"><h3 class="block">判断 / 应用:四问定位</h3><div class="q">
+<span class="k">Q1</span><span class="a">我要描述的是"一个事物",还是动作 / 性质 / 程度 / 整件事?</span>
+<span class="b">如果是在形容词 / 副词二选一：描述人或事物的属性 → 用<b>形容词</b>；描述动作、程度、性质或整件事 → 用<b>副词</b>。⚠️ 别靠词尾判断：fast 没有 ly 也能作副词，friendly 有 ly 却常作形容词。</span>
+</div><div class="q">
+<span class="k">Q2</span><span class="a">这个副词属于哪一类?位置就跟着定了。</span>
+<span class="b">怎么做 → <b>常在动词后 / 宾语后</b>(部分也可在动词前)｜多久一次 → <b>实义动词前 / be 后 / 第一助动词后</b>｜多么 → <b>紧贴被修饰词前</b>｜评论整件事 → <b>常在句首,常用逗号隔开</b>｜何时何处 → <b>多在句末</b></span>
+</div><div class="q">
+<span class="k">Q3</span><span class="a">碰上的是不是有脾气的那几个词?</span>
+<span class="b"><b>enough</b> 放形容词/副词后面｜<b>也</b>:肯定 too、否定 either、句中 also｜<b>hard / late / near / high</b> 加不加 ly 是两个意思</span>
+</div><div class="q">
+<span class="k">Q4</span><span class="a">怎么把它拼出来?</span>
+<span class="b">默认 +ly｜辅音+y → ily｜-le → 换 ly｜-ic → 加 ally｜-l 照常加,双 l 正常｜<b>e 结尾保留 e</b>(nicely,不是 nicly)｜good → well</span>
+</div><p class="recap" style="margin-top:2rem">
+<b>回看地基：</b>副词看着零散——一堆 ly、飘忽的位置、hardly 这种陷阱——但它的核心使命很稳定：<b>给动作、性质、程度或整件事补充信息</b>。在形容词 / 副词二选一时，可以先抓这条<b>第一层速判</b>：<b>形容词主要给对象赋属性/状态，副词主要补充动作、程度、性质或整句信息。</b>再往上一层，不看“词尾像什么”，而看<b>句法功能 + 作用域</b>。<br/><br/>
+  全册守住了两条警戒线:<b>①</b> 副词通常不作普通名词的前置定语(第 7.2 阶给出了 only/even 这一类紧贴名词的用法,位置贴着,但做的是强调而非描述);<b>②</b> 词尾只能猜、不能定词性(第 5、6 两阶从两个方向验证了这一点)。真正判断时，优先问:<b>它在句中承担什么功能、主要作用于谁。</b>
+</p><div class="park" style="margin-top:2rem">
+<b>◌ 已从本册完全移出</b><br/>
+    · <b>比较级 / 最高级</b>(harder than · works hardest)→ 单独成册,形容词副词共用<br/>
+    · <b>名词化绕过</b>(with great care · at an incredible speed)→ 属于修辞不是语法,挪去写作册<br/>
+    · <b>副词 + 形/动固定搭配</b>(highly successful · strongly recommend)→ 属于词汇搭配,不进入本册语法主线
+  </div></section><footer><b>模板说明：</b> 内容来自原文件；本版本仅统一为深色阶梯视觉模板，未主动删改知识点。</footer></div></body></html>

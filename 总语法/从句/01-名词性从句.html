@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>名词性从句</title>
+<style>
+:root{
+  --ink:#141821;
+  --panel:#1a202a;
+  --rule:#2b3543;
+  --text:#d6dbe3;
+  --dim:#8b95a5;
+  --faint:#5f6a7a;
+  --blue:#6fa8e6;
+  --blue-bg:rgba(111,168,230,.09);
+  --orange:#e5a15e;
+  --orange-bg:rgba(229,161,94,.09);
+  --paper:#e8e3d9;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.01em;
+}
+
+/* 版面:正文 + 右侧目录 */
+.page{
+  display:grid;grid-template-columns:minmax(0,760px) 212px;gap:60px;
+  max-width:1032px;margin:0 auto;padding:0 28px;
+}
+.wrap{min-width:0;padding-bottom:120px}
+
+/* 头部 */
+header{padding:88px 0 0}
+h1{font-size:34px;line-height:1.3;margin:0 0 20px;font-weight:600;letter-spacing:.06em}
+.thesis{font-size:17px;color:var(--dim);margin:0;line-height:1.9}
+.thesis b{color:var(--text);font-weight:600}
+.legend{margin-top:24px;font-size:13.5px;color:var(--faint)}
+.legend span{margin-right:20px}
+
+/* 四问 */
+.asks{margin:28px 0 0;padding:0}
+.asks li{
+  list-style:none;display:grid;grid-template-columns:1fr auto;gap:16px;
+  padding:10px 0;font-size:15px;align-items:baseline;
+  border-top:1px solid rgba(43,53,67,.55);
+}
+.asks li:first-child{border-top:none}
+.asks .where{font-size:13px;color:var(--faint);white-space:nowrap}
+
+/* 路线图 */
+.map{
+  margin:36px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:6px 0;
+}
+.map-row{
+  display:grid;grid-template-columns:76px 1fr;gap:14px;
+  padding:11px 2px;font-size:14.5px;align-items:baseline;
+}
+.map-row + .map-row{border-top:1px solid rgba(43,53,67,.55)}
+.map-row .n{font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.1em}
+.map-row .t{color:var(--text)}
+.map-row .t em{font-style:normal;color:var(--dim)}
+a.map-row{text-decoration:none}
+a.map-row:hover .t{color:#fff}
+
+/* 阶梯 */
+.stage{margin-top:78px;scroll-margin-top:28px}
+.stage-no{display:block;font-family:var(--serif);font-size:14px;color:var(--faint);margin-bottom:10px;letter-spacing:.12em}
+.stage > h2{font-size:22px;font-weight:600;margin:0;letter-spacing:.04em;color:#eef1f5}
+
+/* 承上 */
+.bridge{margin:20px 0 0;padding-left:16px;border-left:2px solid var(--rule)}
+.bridge .before{margin:0;font-size:14.5px;color:var(--faint);line-height:1.8}
+.bridge .after{margin:4px 0 0;font-size:15px;color:var(--text);line-height:1.8}
+
+h3{font-size:16.5px;font-weight:600;margin:38px 0 12px;color:#e3e8ef;letter-spacing:.03em;scroll-margin-top:28px}
+h3.minor{font-size:14.5px;font-weight:600;margin:28px 0 10px;color:var(--dim);letter-spacing:.02em;padding-left:12px;border-left:2px solid var(--rule)}
+p{margin:14px 0}
+b{color:#f0f3f7;font-weight:600}
+
+/* 例句 */
+.ex{margin:18px 0;padding:2px 0 2px 18px;border-left:1px solid var(--rule)}
+.en{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--paper);margin:0}
+.en u{text-decoration:none;border-bottom:1px solid rgba(232,227,217,.45);padding-bottom:1px}
+.zh{margin:3px 0 0;font-size:14.5px;color:var(--dim);line-height:1.75}
+.ex + .ex{margin-top:14px}
+.note{font-size:13.5px;color:var(--faint);margin:5px 0 0}
+
+/* 还原演示 */
+.restore{
+  margin:20px 0;background:var(--panel);border:1px solid var(--rule);
+  border-radius:3px;padding:16px 20px;
+}
+.restore + .restore{margin-top:12px}
+.restore .en{font-size:16.5px}
+.restore .arrow{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.8}
+.restore .arrow b{color:var(--blue);font-weight:600}
+.restore .arrow .sep{color:var(--faint);margin:0 8px}
+.restore .zh{margin-top:10px}
+
+/* 推导链 */
+.chain{margin:26px 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:8px 0}
+.step{display:grid;grid-template-columns:26px 1fr;gap:16px;padding:16px 24px}
+.step + .step{border-top:1px solid rgba(43,53,67,.6)}
+.step-n{font-family:var(--serif);font-size:14px;color:var(--faint);padding-top:3px}
+.step:last-child .step-n{color:var(--blue)}
+.step .en{font-size:16.5px}
+.step:last-child .en{color:#fff}
+.step-why{font-size:13.5px;color:var(--dim);margin:6px 0 0}
+.hl{color:var(--blue)}
+.dimtext{color:var(--dim)}
+
+/* callout */
+.box{margin:26px 0;padding:16px 20px;border-radius:3px;font-size:14.5px;line-height:1.8}
+.box p{margin:8px 0}
+.box p:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+.box .en{font-size:16px}
+.box .zh{font-size:14px}
+.box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
+.derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
+.rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
+.tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
+.derive .tag{color:var(--blue)}
+.rote .tag{color:var(--orange)}
+
+/* 小结 */
+.sum{margin:36px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:14.5px;color:var(--dim)}
+.sum b{color:var(--text)}
+
+/* 表格 */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px;border-bottom-color:#3a4655}
+.tbl td:first-child{font-family:var(--serif);color:var(--paper)}
+.tbl tr:last-child td{border-bottom:none}
+
+/* 对比 */
+.pair{margin:22px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.pair > div{padding:16px 20px}
+.pair > div + div{border-top:1px solid var(--rule);background:var(--panel)}
+.pair .verdict{font-size:13.5px;color:var(--blue);margin:7px 0 0}
+.pair > div + div .verdict{color:var(--orange)}
+
+/* 流程 */
+.flow{margin:24px 0;padding:0;counter-reset:f}
+.flow li{
+  list-style:none;position:relative;padding:0 0 22px 34px;
+  border-left:1px solid var(--rule);margin-left:8px;
+}
+.flow li:last-child{border-left-color:transparent;padding-bottom:0}
+.flow li::before{
+  counter-increment:f;content:counter(f);
+  position:absolute;left:-9px;top:2px;width:18px;height:18px;
+  background:var(--ink);border:1px solid var(--rule);border-radius:50%;
+  font-size:11px;line-height:16px;text-align:center;color:var(--dim);font-family:var(--serif);
+}
+.flow .q{font-weight:600;color:#eef1f5;font-size:15px;margin:0}
+.flow .a{font-size:14.5px;color:var(--dim);margin:5px 0 0}
+
+footer{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
+
+/* ── 右侧目录 ── */
+.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:88px 0 60px;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc-h{font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin:0 0 14px;padding-left:13px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc .item{margin:0}
+.toc a{
+  display:block;text-decoration:none;color:var(--dim);
+  font-size:13.5px;line-height:1.55;padding:6px 0 6px 13px;
+  border-left:1px solid var(--rule);transition:color .15s,border-color .15s;
+}
+.toc a:hover{color:var(--text)}
+.toc .item > a .num{font-family:var(--serif);color:var(--faint);margin-right:7px;font-size:12.5px}
+.toc .item.active > a{color:#eef1f5;border-left-color:var(--blue)}
+.toc .item.active > a .num{color:var(--blue)}
+.toc .subs{display:none;padding:2px 0 6px}
+.toc .item.active .subs{display:block}
+.toc .subs a{font-size:12.5px;color:var(--faint);padding:4px 0 4px 26px;line-height:1.5}
+.toc .subs a:hover{color:var(--dim)}
+.toc .subs a.on{color:var(--text);border-left-color:#3f4b5c}
+
+/* 窄屏:目录收成按钮 */
+.toc-btn{
+  display:none;position:fixed;right:18px;bottom:18px;z-index:30;
+  width:46px;height:46px;border-radius:50%;cursor:pointer;
+  background:var(--panel);border:1px solid #3a4655;color:var(--text);
+  font-size:13px;font-family:var(--sans);line-height:1;
+}
+.scrim{display:none;position:fixed;inset:0;background:rgba(10,13,18,.6);z-index:20}
+body.nav-open .scrim{display:block}
+
+@media (max-width:1080px){
+  .page{grid-template-columns:minmax(0,1fr);max-width:816px;gap:0}
+  .toc-btn{display:block}
+  .toc{
+    position:fixed;top:0;right:0;bottom:0;width:250px;z-index:25;
+    background:#171d26;border-left:1px solid var(--rule);
+    padding:28px 18px 40px;max-height:none;
+    transform:translateX(100%);transition:transform .2s ease;
+  }
+  body.nav-open .toc{transform:translateX(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .toc{transition:none}
+}
+
+@media (max-width:600px){
+  .page{padding:0 20px}
+  .wrap{padding-bottom:80px}
+  header{padding-top:56px}
+  h1{font-size:27px}
+  .step{grid-template-columns:20px 1fr;gap:12px;padding:14px 16px}
+  .map-row{grid-template-columns:56px 1fr;gap:10px}
+  .en{font-size:16px}
+  .stage{margin-top:58px}
+  .asks li{grid-template-columns:1fr}
+  .asks .where{white-space:normal}
+}
+
+/* 错例删除线 */
+s{color:var(--orange);text-decoration-thickness:1px}
+/* 独立公式行(.box 内的规则优先级更高,不受影响) */
+.formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:18px 0;line-height:1.7}
+/* 正文里的交叉引用 */
+.xref{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(111,168,230,.4)}
+.xref:hover{border-bottom-color:var(--blue)}
+
+/* 自检清单(在 .asks 基础上加序号) */
+.checks{counter-reset:c}
+.checks li{grid-template-columns:26px 1fr auto}
+.checks li::before{
+  counter-increment:c;content:counter(c);
+  font-family:var(--serif);font-size:13px;color:var(--faint);padding-top:2px;
+}
+@media (max-width:600px){ .checks li{grid-template-columns:22px 1fr} }
+</style>
+</head>
+<body>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="page">
+
+<div class="wrap">
+<header>
+  <h1>名词性从句</h1>
+  <p class="thesis">整章只解决一个问题：<b>英语怎样把"一整句话"变成另一个句子里的一个成分</b>。主语从句、宾语从句、表语从句、同位语从句不是四套语法，它们是同一个"信息块"，最后坐在了不同的位置。</p>
+
+  <ol class="asks">
+    <li><span>一、一整句话怎么打包成一个成分</span><span class="where">阶段一、二</span></li>
+    <li><span>二、接口后面那个句子写成什么样</span><span class="where">阶段三</span></li>
+    <li><span>三、打包好的块能坐在哪些位置</span><span class="where">阶段四</span></li>
+    <li><span>四、块太重往哪挪，写作里怎么用</span><span class="where">阶段五、六</span></li>
+    <li><span>五、哪些边界必须单独记</span><span class="where">阶段七</span></li>
+  </ol>
+
+  <p class="legend"><span>📖 蓝色 = 能推导出来的判断机制</span><span>🧷 橙色 = 直接记用法 / 语法约定</span></p>
+
+  <div class="map">
+    <a class="map-row" href="#s1"><span class="n">一</span><span class="t">一整句话可以坐在名词的位置上 <em>—— 为什么必须有连词</em></span></a>
+    <a class="map-row" href="#s2"><span class="n">二</span><span class="t">三个打包接口 <em>—— that / whether-if / wh-</em></span></a>
+    <a class="map-row" href="#s3"><span class="n">三</span><span class="t">从句内部长什么样 <em>—— 主语在前，不带 do</em></span></a>
+    <a class="map-row" href="#s4"><span class="n">四</span><span class="t">信息块的四个落点 <em>—— 主语 / 宾语 / 表语 / 同位语；另补形容词内容从句</em></span></a>
+    <a class="map-row" href="#s5"><span class="n">五</span><span class="t">信息重量：长的往后挪 <em>—— it 形式主语、it 形式宾语、伪分裂、解释后置</em></span></a>
+    <a class="map-row" href="#s6"><span class="n">六</span><span class="t">把名词性从句变成写作骨架 <em>—— 评价 / 报道 / 聚焦 / 概念化</em></span></a>
+    <a class="map-row" href="#s7"><span class="n">七</span><span class="t">七条必须单独处理的边界 <em>—— whether/if、省略、时态、虚拟原形</em></span></a>
+    <a class="map-row" href="#s8"><span class="n">八</span><span class="t">本质：信息嵌套 <em>—— 从句这个名字可以扔掉了</em></span></a>
+    <a class="map-row" href="#s9"><span class="n">总</span><span class="t">使用总览与自检 <em>—— 速查表、五步流程、30 题</em></span></a>
+  </div>
+</header>
+
+<!-- ══ 阶段一 ══ -->
+<section class="stage" id="s1">
+  <span class="stage-no">阶段一</span>
+  <h2>一整句话可以坐在名词的位置上</h2>
+
+  <div class="bridge">
+    <p class="after">先不管四种从句的名字。只看一件事：本来站在这个位置的是一个词，现在换成了一整句话。</p>
+  </div>
+
+  <h3 id="s1a">从一个词，变成一整句话</h3>
+
+  <div class="ex">
+    <p class="en">I know <u>him</u>.</p>
+    <p class="zh">我认识他。</p>
+  </div>
+
+  <p>him 占的是宾语位。但现在我想说的不是"我认识他"，而是"我知道他很忙这件事"。原始信息是：</p>
+
+  <div class="ex">
+    <p class="en">He is busy.</p>
+    <p class="zh">他很忙。</p>
+  </div>
+
+  <p>而 know 后面需要一个<b>宾语内容</b>。英语可以把一整个句子打包成一个整体，让它承担这个宾语功能：</p>
+
+  <div class="ex">
+    <p class="en">I know <u>that he is busy</u>.</p>
+    <p class="zh">我知道他很忙。</p>
+    <p class="note">that he is busy 整体承担宾语功能。本来一个词做的成分，现在一个句子做了 —— 这就是"什么什么从句"这个名字的全部来历。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 整章就这一句话</span>
+    <p><b>把一整句话打包起来，让它去做原本一个词做的那个成分。</b></p>
+    <p>后面所有内容都是这一句的展开：怎么打包（阶段二、三）、能放在哪儿（阶段四）、太长了怎么办（阶段五）。</p>
+  </div>
+
+  <h3 id="s1b">为什么中间必须有一个连词</h3>
+
+  <p>先看一个几乎所有人都写过的错句。Robert is short. 罗伯特很矮，这件事 is true 是真的。想合成一句：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en"><s>Robert is short is true.</s></p>
+      <p class="verdict">✗ 一个简单句里出现了 is、is 两个谓语动词。</p>
+    </div>
+    <div>
+      <p class="en">That Robert is short <b>is</b> true.</p>
+      <p class="verdict">✓ 加了 that，前半块被打包成一个成分，谓语动词只剩下主句那个 is。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 连词的作用不是"连接"，是"降级"</span>
+    <p>一个简单句<b>有且只有一个谓语动词</b>。两个句子直接并排，就会出现两个谓语动词，句子塌掉。</p>
+    <p>连词干的事情是：把其中一个句子<b>降一级</b>，让它不再是独立的句子，而是变成另一个句子内部的一个零件。所以"学任何从句"本质上就是"学它的连词"。</p>
+    <p>反过来读长句时，这条也是断句依据：<b>看到连词，就知道这里有一个被降级的块，可以先把它整块抠出去。</b></p>
+  </div>
+
+  <h3 id="s1c">判断从句类型，看的不是从句本身</h3>
+
+  <p>你怎么知道 that he is busy 是宾语从句？不是从它自己身上看出来的 —— 它自己长什么样，在四种从句里都一样。你是看到了它<b>前面</b>有一个 know。</p>
+
+  <div class="ex">
+    <p class="en">I <u>know</u> ｜ that he is busy.</p>
+    <p class="zh">前面是实义动词 → 这块是动作的对象 → 宾语从句。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The problem <u>is</u> ｜ that he is busy.</p>
+    <p class="zh">前面是系动词 → 这块在说明主语 → 表语从句。</p>
+  </div>
+  <div class="ex">
+    <p class="en">the <u>fact</u> ｜ that he is busy</p>
+    <p class="zh">前面是抽象名词 → 这块在展开这个名词 → 同位语从句。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>从句 = 本来一个词做的成分，现在一个句子做。中间必须有连词，因为一个句子只能有一个谓语动词。判断是哪种从句，看它<b>前面那个词</b>，不看它自己。</p>
+</section>
+
+<!-- ══ 阶段二 ══ -->
+<section class="stage" id="s2">
+  <span class="stage-no">阶段二</span>
+  <h2>三种原始信息，三个打包接口</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶只知道"能放一整句话进去"。</p>
+    <p class="after">但没说这句话能不能原样塞。不能。先看原始信息本身是什么类型。</p>
+  </div>
+
+  <h3 id="s2a">陈述信息 → that</h3>
+
+  <div class="ex">
+    <p class="en">He is busy.</p>
+    <p class="zh">他很忙。</p>
+  </div>
+  <div class="ex">
+    <p class="en">I know <b>that</b> he is busy.</p>
+    <p class="zh">我知道他很忙。</p>
+    <p class="note">这里的 that 不是"那个"。它<b>不表示任何意思</b>，在从句里也不占任何成分 —— 唯一的作用就是标出"从这里开始是一整块"。</p>
+  </div>
+
+  <h3 id="s2b">一般疑问信息 → whether / if</h3>
+
+  <div class="ex">
+    <p class="en">Is he busy?</p>
+    <p class="zh">他忙吗？</p>
+  </div>
+  <div class="ex">
+    <p class="en">I don't know <b>whether</b> he is busy.</p>
+    <p class="zh">我不知道他是否忙。</p>
+  </div>
+
+  <h3 id="s2c">特殊疑问信息 → 原疑问词</h3>
+
+  <div class="ex">
+    <p class="en">Why is he busy?</p>
+    <p class="zh">他为什么忙？</p>
+  </div>
+  <div class="ex">
+    <p class="en">I don't know <b>why</b> he is busy.</p>
+    <p class="zh">我不知道他为什么忙。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么特殊疑问句不用再加 whether</span>
+    <p>一般疑问句的疑问点是"是否"，句子里<b>没有任何一个词承载它</b>，所以要外挂一个 whether 把它扛起来。</p>
+    <p>特殊疑问句的疑问点已经由 what / who / where / when / why / how 扛着了，接口自带，不需要再加。</p>
+  </div>
+
+  <h3 id="s2d">what 的两种用法：问"什么" / 指"……的东西"</h3>
+
+  <div class="ex">
+    <p class="en">What does he want?</p>
+    <p class="zh">他想要什么？</p>
+    <p class="note">这里 what 是<b>疑问代词</b>：问一个未知的"什么"。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">What he bought was expensive.</p>
+    <p class="zh">他买的东西很贵。</p>
+    <p class="note">这里 what <b>不表示"什么？"</b>，而是指"他所买的东西"。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 第二种 what 怎么理解</span>
+    <p>先看普通定语从句：<b>the thing that he bought</b> ＝"他买的那个东西"。</p>
+    <p>英语还可以用 <b>what he bought</b> 直接表达同样的意思。为了建立直觉，可以先把这里的 what 理解成一个特殊的连接代词，近似把 <b>the thing ＋ that</b> 两个作用合在一起：</p>
+    <p class="formula">the thing that he bought　≈　what he bought</p>
+    <p>从意义上看，后面的 he bought 在限定"是哪一个东西"—— 也就是"他买的"。但<b>严格分析时，不把 he bought 单独叫作修饰 what 的定语从句</b>；整个 what he bought 是一个名词性结构。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 只记这两层</span>
+    <p><b>外层：</b>what he bought 整体 ＝"他买的东西"，可以作主语、宾语等。</p>
+    <p><b>内层：</b>he bought ___ 缺宾语，what 同时占这个宾语位置。</p>
+    <p class="formula">What he bought was expensive. → [他买的东西] 很贵。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 第二种用法只指东西，指人换 whoever</span>
+    <div class="ex">
+      <p class="en">Whoever comes first gets the prize.</p>
+      <p class="zh">谁先来，谁就得奖。（这个位置不能用 what）</p>
+    </div>
+    <div class="ex">
+      <p class="en">Take whatever you need. / Choose whichever you prefer.</p>
+      <p class="zh">你需要什么就拿什么。／ 你喜欢哪个就选哪个。</p>
+    </div>
+    <p>这条只管第二种用法。<b>第一种（问"什么"）照样可以问到人的身份：</b></p>
+    <div class="ex">
+      <p class="en">I don't know what he is.</p>
+      <p class="zh">我不知道他是干什么的。（问身份 / 职业）</p>
+    </div>
+  </div>
+
+    <table class="tbl">
+    <tr><th>原始信息</th><th>打包接口</th></tr>
+    <tr><td>陈述事实</td><td>that</td></tr>
+    <tr><td>是否……</td><td>whether / if</td></tr>
+    <tr><td>什么 / 为什么 / 哪里 / 怎么……</td><td>原疑问词</td></tr>
+    <tr><td>"……的东西 / 事情"</td><td>what ＝"……的东西 / 事情"（非疑问）</td></tr>
+    <tr><td>"无论什么 / 任何……的东西"</td><td>whatever</td></tr>
+    <tr><td>"……的人 / 无论谁"</td><td>whoever</td></tr>
+    <tr><td>"任意哪个 / 无论哪个"</td><td>whichever</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 整章可以压成一句话</span>
+    <p class="formula">三种句子，做四种成分。</p>
+    <p>三种句子 = 陈述句、一般疑问句、特殊疑问句（也就是这一阶的三个接口）；四种成分 = 主语、宾语、表语、同位语（阶段四的四个落点）。<b>名词性从句 = 3 × 4 的组合表</b>，没有第五种机制。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>这一阶真正的主干只有三条 —— <b>陈述 → that；是否 → whether / if；特殊疑问 → wh-</b>。疑问类进入从句后用正常语序（阶段三）。其余都是局部细节：what 的两种用法记住中文对照即可，指人换 whoever。</p>
+</section>
+
+<!-- ══ 阶段三 ══ -->
+<section class="stage" id="s3">
+  <span class="stage-no">阶段三</span>
+  <h2>从句内部：主语在前，不带 do</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶给了接口 —— that / whether / 原疑问词。</p>
+    <p class="after">但接口只管开头那一个词。接下来的问题是：接口后面那个句子，内部要写成什么样？</p>
+  </div>
+
+  <h3 id="s3a">先认清一件事：什么叫疑问语序</h3>
+
+  <p>中文靠"吗"提问，英文靠<b>把动词提到主语前面</b>。这个"动词跑到了主语前面"的形状，就叫疑问语序。</p>
+
+  <div class="ex">
+    <p class="en">He <u>is</u> busy. → <u>Is</u> he busy?</p>
+    <p class="zh">他很忙。→ 他忙吗？</p>
+    <p class="note">句子本来就有 is，直接把它提到 he 前面就行。</p>
+  </div>
+  <div class="ex">
+    <p class="en">She likes coffee. → <u>Does</u> she like coffee?</p>
+    <p class="zh">她喜欢咖啡。→ 她喜欢咖啡吗？</p>
+    <p class="note">likes 是实义动词，提不动。英语的办法是<b>临时造一个 does 出来顶这个位置</b>，时间信息也跟着交给它，所以后面剩下光杆的 like。</p>
+  </div>
+
+  <p class="note">特殊疑问句是在这个基础上<b>再加一步</b> —— 把疑问词也提到最前面：Where <u>is</u> he? ／ Why <u>is</u> he busy? ／ What <u>does</u> he want?</p>
+
+  <h3 id="s3b">从句只做其中一半</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 从句是从陈述句长出来的，不是从疑问句改出来的</span>
+    <p>你写句子的时候，手上有的从来不是疑问句，是那个<b>陈述句</b>：She likes coffee. ／ He is busy. ／ He is【某个地方】。</p>
+    <p>想说"<b>是否</b>" → 前面加一个 whether，句子本身<b>一个字不动</b>。</p>
+    <p>想说"<b>哪里 / 什么 / 为什么</b>" → 把疑问词提到最前面当接口，句子本身<b>还是一个字不动</b>。</p>
+    <p>直接疑问句比这多做一件事：<b>动词也要提到主语前面</b>。而这一件事是"我正在问你、你得回答我"的标记。从句不在向谁提问，所以不做。</p>
+    <table class="tbl">
+      <tr><th></th><th>疑问词提前</th><th>动词提前</th></tr>
+      <tr><td>Where is he?　<span class="dimtext">直接发问</span></td><td>做</td><td>做</td></tr>
+      <tr><td>… where he is　<span class="dimtext">嵌进主句</span></td><td>做</td><td>不做</td></tr>
+    </table>
+    <p>注意<b>疑问点并没有消失</b> —— where 还在，"到底是哪里"这个未知也还在。消失的只是"我在问你"这个<b>动作</b>。所以上一阶那句"疑问词自己就是接口"仍然成立，两处不矛盾。</p>
+  </div>
+
+  <p>动词不提前，主语自然就还在最前面。这就是全部：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">I know where <b>he is</b>.</p>
+      <p class="verdict">✓ 拿 He is ___ 原封不动，只把 where 挪到最前面。</p>
+    </div>
+    <div>
+      <p class="en"><s>I know where is he.</s></p>
+      <p class="verdict">✗ 多做了"动词提前"那一步 —— 那一步只属于直接发问。</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">Why is he busy? → I don't know why <b>he is</b> busy.</p>
+    <p class="zh">他为什么忙？→ 我不知道他为什么忙。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">Who came? → I know <b>who came</b>.　Who broke the window? → I know <b>who broke the window</b>.</p>
+    <p class="zh">谁来了？→ 我知道谁来了。／ 谁打破了窗户？→ 我知道谁打破了窗户。</p>
+    <p class="note">疑问词自己就是主语时，它本来就在最前面，<b>没有任何动作可做</b>。注意直接疑问句这里也不说 <s>Who did come?</s> —— 因为压根不存在"把动词提到主语前面"这个动作要执行。</p>
+  </div>
+
+  <h3 id="s3c">连带结果：do / does / did 会消失</h3>
+
+  <p>回头看上面那个 does 是怎么来的 —— 它是<b>为了"动词提前"才临时造出来顶位的</b>。从句不做这个动作，那个位置根本不存在，does 也就没有理由出现。时间信息重新回到实义动词身上：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">Does she like coffee? → I'm not sure whether she <b>likes</b> coffee.</p>
+      <p class="verdict">✓ does 不出现，时态回到 like 身上，变回 likes。</p>
+    </div>
+    <div>
+      <p class="en"><s>I'm not sure whether does she like coffee.</s></p>
+      <p class="verdict">✗ 既提了动词，又留着 does。</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">Did he eat? → I don't know whether he <b>ate</b>.</p>
+    <p class="zh">他吃了吗？→ 我不知道他吃没吃。</p>
+  </div>
+
+  <p>而 is / can / has / will 不一样 —— 它们不是为提问才出现的，<b>陈述句本来就有</b>。把三列摆在一起，一眼能看出从句抄的是哪一列：</p>
+
+  <table class="tbl">
+    <tr><th>陈述句（你手上真正有的）</th><th>疑问句</th><th>从句</th></tr>
+    <tr><td>She <b>likes</b> coffee.</td><td>Does she like coffee?</td><td>whether she <b>likes</b> coffee</td></tr>
+    <tr><td>He <b>is</b> busy.</td><td>Is he busy?</td><td>whether he <b>is</b> busy</td></tr>
+    <tr><td>He <b>can</b> swim.</td><td>Can he swim?</td><td>whether he <b>can</b> swim</td></tr>
+    <tr><td>He <b>has</b> left.</td><td>Has he left?</td><td>whether he <b>has</b> left</td></tr>
+    <tr><td>He <b>will</b> come.</td><td>Will he come?</td><td>whether he <b>will</b> come</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么这样讲，比"撤销倒装"省事</span>
+    <p>第三列和<b>第一列</b>几乎逐字相同，只是前面多了一个接口词；跟第二列反而处处不一样。</p>
+    <p>所以你根本不需要记"什么该撤、什么该留、什么要还回去"—— 那套说法假设你是从第二列出发的，可你从来没有从那儿出发过。<b>照着第一列写，前面加接口，就完事了。</b></p>
+  </div>
+
+  <h3 id="s3d">主句在提问、从句不提问，可以同时出现</h3>
+
+  <p>提问是<b>哪一层在做的事，就只影响哪一层</b>，不会往下传：</p>
+
+  <div class="ex">
+    <p class="en">Do you know whether he is busy?</p>
+    <p class="zh">你知道他忙不忙吗？</p>
+    <p class="note">主句在问你"知不知道"，所以主句是疑问语序；从句只是那块被知道的内容，没有在问任何人。</p>
+  </div>
+  <div class="pair">
+    <div>
+      <p class="en">Can you tell me where <b>she works</b>?</p>
+      <p class="verdict">✓ 主句疑问语序，从句陈述语序，两层各按各的来。</p>
+    </div>
+    <div>
+      <p class="en"><s>Can you tell me where does she work?</s></p>
+      <p class="verdict">✗ 把主句的提问动作"传染"给了从句 —— 这是全章最高频的错。</p>
+    </div>
+  </div>
+
+  <p class="sum"><b>小结 + 自检法：</b>从句内部就是原来那个陈述句，前面加一个接口词。写完之后把从句单独抠出来，只看两个形状 —— <b>主语是不是在动词前面？有没有多余的 do / does / did？</b>判断依据只能是这两个形状，<b>不能是"它读起来像不像在提问"</b>：它读起来本来就该像在提问，因为疑问点从来没消失过。</p>
+</section>
+
+<!-- ══ 阶段四 ══ -->
+<section class="stage" id="s4">
+  <span class="stage-no">阶段四</span>
+  <h2>信息块的四个落点</h2>
+
+  <div class="bridge">
+    <p class="before">前三阶都在讲怎么打包。</p>
+    <p class="after">现在才轮到：打包完塞到哪里？传统语法主要关注四个落点。除此之外，英语里形容词也可以直接接一个“内容从句”，这一点单独补充，不硬塞进四类。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>位置</th><th>传统名称</th><th>核心作用</th></tr>
+    <tr><td>句子主语位</td><td>主语从句</td><td>“……这件事”当主角</td></tr>
+    <tr><td>动词宾语位</td><td>宾语从句</td><td>知道 / 认为 / 说的内容</td></tr>
+    <tr><td>系动词后补语位</td><td>表语从句</td><td>直接说明主语的具体内容</td></tr>
+    <tr><td>内容名词之后</td><td>同位语从句</td><td>把这个名词的具体内容补出来</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 四类先按“位置”理解</span>
+    <p><b>主语 / 宾语 / 表语 / 同位语</b>，说的是从句在外层结构里承担什么功能，不是四套不同的生成程序。</p>
+    <p>但不要再把所有 that 从句都硬塞进这四类：例如 <b>I'm sure that…</b> 里的 that 从句，是在补充形容词 sure 的内容，下面单独讲。</p>
+  </div>
+
+  <h3 id="s4a">落点一：主语位</h3>
+
+  <div class="ex">
+    <p class="en">That he passed the exam surprised everyone.</p>
+    <p class="zh">他通过考试这件事让所有人吃惊。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Whether she comes or not doesn't concern me.</p>
+    <p class="zh">她来不来和我无关。</p>
+  </div>
+  <div class="ex">
+    <p class="en">What caused the fire is still a mystery.</p>
+    <p class="zh">是什么引起了火灾仍然是个谜。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Who was responsible for the accident is not yet clear.</p>
+    <p class="zh">谁该为这场事故负责，目前还不清楚。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Why he left so abruptly is not known to any of us.</p>
+    <p class="zh">我们谁也不知道他为什么突然离开。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 从句作主语，学习阶段默认按单数处理</span>
+    <p>把整个从句看成<b>一件事</b>，最常见的是 is / was / has。先按这个规则写最稳。</p>
+    <div class="ex">
+      <p class="en">What I need <b>is</b> money.　What makes me angry <b>is</b> that he never listens.</p>
+      <p class="zh">我需要的是钱。／ 让我生气的是他从来不听。</p>
+    </div>
+  </div>
+
+  <h3 id="s4b">落点二：宾语位（最高频）</h3>
+
+  <p>人的大量语言行为都需要一个“内容”：知道什么、认为什么、说什么、发现什么。这个内容可以直接由一整个从句承担。</p>
+
+  <div class="ex">
+    <p class="en">I know that he is busy.</p>
+    <p class="zh">我知道他很忙。</p>
+  </div>
+  <div class="ex">
+    <p class="en">He explained how the tool was used.</p>
+    <p class="zh">他解释了这个工具是如何使用的。</p>
+    <p class="note">整个 how the tool was used 是 explained 的内容。</p>
+  </div>
+
+  <p>宾语位下面再记两个常见形状即可。</p>
+
+  <h3 id="s4b1">① 动词 + 人 + 内容从句</h3>
+
+  <div class="ex">
+    <p class="en">The captain assured <u>the passengers</u> <u>that there was no danger</u>.</p>
+    <p class="zh">船长向乘客保证没有危险。</p>
+    <p class="note">the passengers = 对谁说；that there was no danger = 说 / 保证的内容。后面的内容仍然跟动词 assure 发生关系。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Tell <u>me</u> <u>what happened</u>.　He informed <u>me</u> <u>that the meeting had been cancelled</u>.</p>
+    <p class="zh">告诉我发生了什么。／ 他通知我会议已经取消。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这里别急着盯着“人”</span>
+    <p>看到 <b>Tell me that…</b>，不要因为 that 前面紧挨着 me，就以为 that 从句在解释 me。</p>
+    <p>先问：<b>这块从句是谁的内容？</b> —— 是 tell / inform / assure 的内容，不是“me 的内容”。</p>
+  </div>
+
+  <h3 id="s4b2">② 介词后</h3>
+
+  <p>介词后同样可以接名词性的内容，所以 wh 从句、whether 从句经常直接放在介词后。</p>
+
+  <div class="ex">
+    <p class="en">We talked about what he had done.　It depends on whether he comes.</p>
+    <p class="zh">我们谈到了他做过的事情。／ 这取决于他来不来。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 介词后：wh / whether 可以，普通 that 内容从句通常不直接跟</span>
+    <div class="pair">
+      <div>
+        <p class="en">We talked about what he did.　It depends on whether he comes.</p>
+        <p class="verdict">✓ wh / whether 可以直接跟在介词后。</p>
+      </div>
+      <div>
+        <p class="en"><s>We talked about that he was late.</s> → We talked about <b>the fact that</b> he was late.</p>
+        <p class="verdict">✗ → ✓ 加一个能够承载内容的名词 fact。</p>
+      </div>
+    </div>
+    <p class="formula">介词 + that 从句 ✗　｜　介词 + 名词 + that 从句 ✓</p>
+  </div>
+
+  <h3 id="s4b3">补充：形容词也能接内容从句</h3>
+
+  <div class="ex">
+    <p class="en">I'm <b>sure [that he will come]</b>.</p>
+    <p class="zh">我确信他会来。</p>
+  </div>
+  <div class="ex">
+    <p class="en">I'm not <b>sure [whether she likes coffee]</b>.</p>
+    <p class="zh">我不确定她是否喜欢咖啡。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The doctor was <b>doubtful [whether the patient would survive the operation]</b>.</p>
+    <p class="zh">医生不确定这个病人能否熬过手术。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这里真正的结构：形容词 + 内容</span>
+    <p class="formula">I　｜　am　｜　[sure [that he will come]]</p>
+    <p><b>外层：</b>sure that he will come 整体是一个形容词短语，作表语；核心词是 sure。</p>
+    <p><b>内层：</b>that he will come 补充“sure 的具体内容”，所以可以叫 <b>sure 的补足语 / 内容从句</b>。</p>
+    <p>因此它<b>不是表语从句</b>：表语位的核心已经是形容词 sure。严格结构分析时，它也不需要硬叫“宾语从句”。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 考试口径和结构理解分开</span>
+    <p>一些国内教材会把 <b>I'm sure that…</b> 这类也归进“宾语从句 / 名词性从句”范围。做题时按教材口径即可。</p>
+    <p>真正拆句时只记：<b>sure 是表语核心；that 从句补充 sure 的内容。</b>不要再推成“省略了某个介词”。</p>
+  </div>
+
+  <p class="note">阶段五还会遇到 I find it strange that…，那是另一种结构：it 先占住宾语位，真正的内容放在后面。</p>
+
+  <h3 id="s4c">落点三：系动词后的补语位</h3>
+
+  <div class="restore">
+    <p class="en">The problem is <b>money</b>. → The problem is <b>that we have no money</b>.</p>
+    <p class="arrow">be 后面的表语位，直接由一整句话承担<span class="sep">→</span>表语从句</p>
+    <p class="zh">问题是钱。→ 问题是我们没有钱。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">The question is whether he will come.　That is why he left.</p>
+    <p class="zh">问题是他是否会来。／ 那就是他离开的原因。</p>
+  </div>
+  <div class="ex">
+    <p class="en">This is how Jane lives.　Home is where you can find love and care.</p>
+    <p class="zh">简就是这样生活的。／ 家就是你能找到爱和关怀的地方。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 先抓最稳定的骨架：主语 + be + 从句</span>
+    <p>表语当然不只由名词承担：形容词、介词短语、从句都可以站在这个位置。学习阶段先把 <b>be + 从句</b> 认熟即可。</p>
+    <div class="ex">
+      <p class="en">The question <b>remains</b> whether we can win the majority of the people.</p>
+      <p class="zh">问题依然是我们能否赢得大多数人。（remain 也能出现在某些这类结构里，遇到再认。）</p>
+    </div>
+  </div>
+
+  <h3 id="s4d">落点四：内容名词之后（传统：同位语从句）</h3>
+
+  <p>有些名词本身能够承载一个<b>命题 / 内容</b>。说出这个名词以后，还可以继续把“具体是什么内容”补出来：</p>
+
+  <div class="restore">
+    <p class="en">The rumor was unfounded. → 什么传言？ → The rumor <b>that he was arrested</b> was unfounded.</p>
+    <p class="arrow">rumor<span class="sep">→</span>后面的 that 从句把“传言的具体内容”补出来</p>
+    <p class="zh">这个传言毫无根据。→ “他被捕”这个传言毫无根据。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 常见的“内容名词”</span>
+    <p class="formula">fact / news / idea / rumor / story / belief / hope / doubt / possibility / conclusion / conviction / concern / opinion / knowledge / suggestion</p>
+    <p>共同点不是“长得抽象”，而是这些名词能够承载一块具体内容。判断时就问：<b>后面的从句是不是在回答“这个名词的内容是什么？”</b></p>
+  </div>
+
+  <div class="ex">
+    <p class="en">The rumor <b>that he had resigned</b> spread quickly.</p>
+    <p class="zh">“他已经辞职”这个传言很快传开了。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Einstein came to the conclusion <b>that the maximum speed possible in the universe is that of light</b>.</p>
+    <p class="zh">爱因斯坦得出结论：宇宙中可能的最大速度就是光速。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 上位理解：名词 + 内容补足语</span>
+    <p>传统语法把这类叫<b>同位语从句</b>。如果往上一层看，它其实很好理解：</p>
+    <p class="formula">fact [that he lied]　＝　名词 + 这个名词的具体内容</p>
+    <p>所以核心不是“修饰 fact”，而是把 <b>fact 里面装的是什么</b>说出来。</p>
+  </div>
+
+  <h3 id="s4d1">同一条主线：谁在接这个内容？</h3>
+
+  <p>把下面三个放在一起，整个关系就统一了。<b>that he lied</b> 都是在提供“内容”，区别只是这个内容跟着谁。</p>
+
+  <table class="tbl">
+    <tr><th>结构</th><th>内容跟谁</th><th>怎么理解</th></tr>
+    <tr><td>I <b>know [that he lied]</b>.</td><td>动词 know</td><td>know 的内容 → 传统叫宾语从句</td></tr>
+    <tr><td>I'm <b>sure [that he lied]</b>.</td><td>形容词 sure</td><td>sure 的内容 → 形容词补足语 / 内容从句</td></tr>
+    <tr><td>the <b>fact [that he lied]</b></td><td>名词 fact</td><td>fact 的内容 → 名词补足语；传统叫同位语从句</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 以后看到 that 从句，先问这一句</span>
+    <p><b>“这块内容到底是在补谁？”</b></p>
+    <p>补动词 → 往宾语从句方向看；补形容词 → 形容词补足语；补内容名词 → 同位语从句。这样比死盯“that 前面是什么词形”更稳。</p>
+  </div>
+
+  <h3 id="s4d2">that 从句到底跟名词，还是跟前面的动词？</h3>
+
+  <p>这一组以前叫“同位语从句 vs 双宾语”，其实标题把问题搞复杂了。真正只判断一件事：<b>后面的内容是谁的？</b></p>
+
+  <div class="pair">
+    <div>
+      <p class="en">Tell <u>me</u> <b>that he is coming</b>.</p>
+      <p class="verdict">that he is coming 不是“me 的内容”，而是 <b>tell 的内容</b> → 宾语从句。</p>
+    </div>
+    <div>
+      <p class="en">the <u>fact</u> <b>that he lied</b></p>
+      <p class="verdict">that he lied 正是在说 <b>fact 的内容</b>是什么 → 名词内容从句 / 传统同位语从句。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 “等号”只当辅助理解</span>
+    <p><b>the fact that he lied</b> 可以粗略看成：the fact ≈ “he lied” 这件事。前面的名词和后面的命题之间存在<b>内容对应</b>。</p>
+    <p>但真正判断同位语从句还是定语从句，继续用阶段七的<a class="xref" href="#s7c">留坑法</a>最稳：<b>内容是什么</b>和<b>是哪一个 / 什么样的</b>是两条不同的关系。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>传统名词性从句仍然先记四类：<b>主语、宾语、表语、同位语</b>。理解时再加一个更上位的问题：<b>这块从句是在补谁的内容？</b> 动词可以接内容，形容词可以接内容，名词也可以接内容。尤其记住：<b>I'm sure that… 里的 that 从句补 sure；the fact that… 里的 that 从句补 fact。</b></p>
+</section>
+
+<!-- ══ 阶段五 ══ -->
+<section class="stage" id="s5">
+  <span class="stage-no">阶段五</span>
+  <h2>信息重量：英语为什么经常把长的往后挪</h2>
+
+  <div class="bridge">
+    <p class="before">阶段四把位置讲成了静态的。</p>
+    <p class="after">但实际英语里，落在主语位的从句经常又被挪走。背后是同一条原则。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 一条原则，四种手段</span>
+    <p>英语通常倾向于：<b>短的、旧的、轻的信息靠前；长的、新的、重的信息靠后。</b></p>
+    <p>主语如果是一个很长的从句，听者要等很久才知道这句话到底要说什么 —— 这就是头重脚轻。下面四种手段全部由这一条推出，不是四个孤立知识点。</p>
+  </div>
+
+  <h3 id="s5a">手段一：it 形式主语</h3>
+
+  <p>用一个轻量的 it 占住主语位，把真正的内容甩到后面：</p>
+
+  <div class="restore">
+    <p class="en">That he did this is surprising. → <b>It is surprising that</b> he did this.</p>
+    <p class="arrow">主语 4 个词 + 系动词 1 个 + 表语 1 个<span class="sep">→</span>头重脚轻，把重的甩到尾巴上</p>
+    <p class="zh">他做了这件事，很让人吃惊。</p>
+    <p class="note">前一句<b>不是错句</b>，后一句只是更符合英语的信息流。千万不要记成"主语从句放句首就是错的"。</p>
+  </div>
+
+  <p>阶段四落点一的五个例句，全部可以这样改造：</p>
+
+  <div class="ex">
+    <p class="en">It is quite clear that the crime was done deliberately.</p>
+    <p class="zh">很明显，这起犯罪是故意实施的。</p>
+  </div>
+  <div class="ex">
+    <p class="en">It doesn't concern me whether she comes or not.　It is still a mystery what caused the fire.</p>
+    <p class="zh">她来不来和我无关。／ 是什么引起了火灾仍然是个谜。</p>
+  </div>
+  <div class="ex">
+    <p class="en">It is not yet clear who was responsible for the accident.</p>
+    <p class="zh">谁该为这起事故负责，目前还不清楚。</p>
+  </div>
+
+  <p class="formula">骨架：It is + 评价 + 从句</p>
+
+  <p>这三种不要分开背，"评价"可以是三种词性。<b>这是主语从句在真实文本里最高频的形态</b>，值得把词表存下来：</p>
+
+  <table class="tbl">
+    <tr><th>评价部分的词性</th><th>常见成员</th><th>例句</th></tr>
+    <tr><td>形容词</td><td>clear / obvious / possible / likely / certain / strange / fortunate / necessary / vital</td><td>It is clear that he is right.</td></tr>
+    <tr><td>过去分词</td><td>said / reported / believed / found / thought / agreed / pointed out / known</td><td>It is said that he has left the country.</td></tr>
+    <tr><td>名词</td><td>a pity / a fact / the truth / good news / no wonder / a shame / a miracle</td><td>It is a pity that she cannot come.</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 过去分词那一组直接背下来</span>
+    <p class="formula">It + is / was + 过去分词 + that 从句　＝　据说 / 据报道 / 人们认为……</p>
+    <p>它们全是 <b>be done</b> 结构。这组是考试高频，中英对照直接记：</p>
+    <table class="tbl">
+      <tr><th>结构</th><th>中文</th></tr>
+      <tr><td>It is said that…</td><td>据说</td></tr>
+      <tr><td>It is reported that…</td><td>据报道</td></tr>
+      <tr><td>It is believed that…</td><td>人们认为</td></tr>
+      <tr><td>It is known that… / It is well-known that…</td><td>众所周知</td></tr>
+      <tr><td>It is suggested that…</td><td>有人建议</td></tr>
+      <tr><td>It is expected that…</td><td>人们预料</td></tr>
+      <tr><td>It is found / thought / agreed / pointed out that…</td><td>人们发现 / 认为 / 一致同意 / 指出</td></tr>
+    </table>
+    <p>时态可以变：It is / It was / It has been said that… 都成立，不影响结构。</p>
+  </div>
+
+  <h3 id="s5b">手段二：it 形式宾语</h3>
+
+  <p>同一条"重信息后置"原则，在宾语位置同样会发生：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">I find <b>it</b> strange <b>that he never calls me</b>.</p>
+      <p class="verdict">✓ 我觉得他从不给我打电话这件事很奇怪。</p>
+    </div>
+    <div>
+      <p class="en"><s>I find that he never calls me strange.</s></p>
+      <p class="verdict">✗ 从句直接塞进宾语位，后面那个 strange 就被甩到十万八千里外，读者根本接不住。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么"形式宾语"只出现在宾补句型里</span>
+    <p>形式主语的存在很好理解 —— 主语在句首，太重就压头。但宾语本来就在句尾，还能重到哪儿去？</p>
+    <p>回到五大基本句型：主系表、主谓、主谓宾、主谓双宾、<b>主谓宾补</b>。前四种的宾语都在句尾，天然没有头重问题。<b>只有主谓宾补，宾语后面还压着一个宾语补足语</b> —— 宾语一旦变成长从句，就把补语挤到了读者接不住的地方。</p>
+    <p>所以这条规则不需要背触发条件：<b>看到宾补动词，才会有形式宾语。</b>常见的宾补动词就那么几个 —— make / find / think / consider / regard / take。</p>
+  </div>
+
+  <p class="formula">骨架：主语 + 宾补动词 + it + 宾补 + 真正的内容</p>
+
+  <div class="ex">
+    <p class="en">I think it strange that he refused.　We made it clear that we would not agree.</p>
+    <p class="zh">我觉得他拒绝了这件事很奇怪。／ 我们明确表示我们不会同意。</p>
+  </div>
+  <div class="ex">
+    <p class="en">I take it for granted that he will help us.</p>
+    <p class="zh">我理所当然地认为他会帮我们。</p>
+  </div>
+  <div class="ex">
+    <p class="en">We find <b>it</b> amazing <b>that</b> koalas sleep 22 hours a day.</p>
+    <p class="zh">考拉一天睡 22 个小时，这让我们觉得十分不可思议。</p>
+  </div>
+  <div class="ex">
+    <p class="en">We think <b>it</b> important <b>that</b> we never skip breakfast.</p>
+    <p class="zh">我们认为不吃早餐是万万不可的。</p>
+    <p class="note">这两句是真题原句。触发词就是那几个宾补动词：find / think / feel / make / consider。</p>
+  </div>
+  <div class="ex">
+    <p class="en">I regard <b>it</b> as remarkable <b>that</b> he has made a complete discovery.</p>
+    <p class="zh">我认为他做出了一个完整的发现，这很了不起。</p>
+    <p class="note">as remarkable 是宾语补足语。补语的词性可以是形容词、名词、副词、介词短语，也可以是这种 as + 形容词。它不占句子成分，读的时候直接当形容词认就行。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 宾补动词后面的 it，往后要找三样东西</span>
+    <p>不是只有 that 从句。看到 <b>make it / find it / think it / consider it / regard it</b>，往后找的可能是：</p>
+    <p>① <b>that 从句</b>：He has made it clear <b>that</b> he won't agree to the plan.</p>
+    <p>② <b>to do 不定式</b>：You make it impossible <b>for me to hate you</b>.（你让我没办法讨厌你）</p>
+    <p>③ <b>doing 动名词</b>：I find it no use <b>arguing with him</b>.</p>
+    <p>阅读时的动作统一是：<b>这个形容词是在说后面那件事 / 那个动作的</b>，不是在说 it。</p>
+  </div>
+
+  <p class="note">对照记：it 占主语位，从句甩到句尾；it 占宾语位，从句甩到宾补后面。同一个原则，两个位置。</p>
+
+  <h3 id="s5c">手段三：what 伪分裂 —— 把焦点拎出来</h3>
+
+  <p>it 是为了减负，what 伪分裂是为了<b>把某个成分设成焦点</b>。</p>
+
+  <h3 class="minor" id="s5c1">骨子里就是主系表</h3>
+
+  <div class="ex">
+    <p class="en"><b>My goal</b> is <b>freedom</b>.</p>
+    <p class="zh">我的目标是自由。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>What I need</b> is <b>money</b>.</p>
+    <p class="zh">我需要的是钱。</p>
+    <p class="note">两句结构完全一样：主语 + be + 表语。区别只是第二句的主语位上坐了一个从句，不是一个词。这就是阶段四"落点一：主语位"最普通的一个案例，<b>没有任何新机制</b>。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 可以把这里的 be 暂时理解成"＝"</span>
+    <p class="formula">What I need　＝　money　｜　我需要的东西　＝　钱</p>
+    <p>这个模型帮你看清两边在<b>建立对应关系</b>：左边是一个待确定的对象，右边是它的答案。</p>
+    <p class="formula">What makes me angry　＝　that he lied to me</p>
+    <p><b>只作理解模型，不作判断标准。</b>be 不是数学等号 —— He is tired. 就不能倒过来写成 <s>Tired is he.</s></p>
+  </div>
+
+  <h3 class="minor" id="s5c2">这里的 what 不是疑问用法</h3>
+
+  <p>在这个结构里，<b>What I need 整体充当句子的主语</b>，指的是一个对象、一份内容 ——"我需要的东西"。</p>
+
+  <p>所以这里的 what 不是"什么"那种疑问用法。中文对应固定是<b>"……的，是……"</b>：</p>
+
+  <div class="ex">
+    <p class="en">What makes the desert beautiful is that somewhere it hides a well.</p>
+    <p class="zh">让沙漠变得美丽的，是它在某处藏着一口井。</p>
+    <p class="note">主语从句 + 表语从句，两个经常一起出现。</p>
+  </div>
+  <div class="ex">
+    <p class="en">What I see here is nothing but a shell.</p>
+    <p class="zh">我在这里看到的，不过是一个外壳。</p>
+  </div>
+  <div class="ex">
+    <p class="en">What is most important is what is invisible.</p>
+    <p class="zh">最重要的，是看不见的。</p>
+  </div>
+
+  <h3 class="minor" id="s5c3">be 后面可以放什么</h3>
+
+  <table class="tbl">
+    <tr><th>焦点类型</th><th>例句</th><th>中文</th></tr>
+    <tr><td>名词</td><td>What I need is <b>money</b>.</td><td>我需要的是钱</td></tr>
+    <tr><td>不定式</td><td>What I want is <b>to go home</b>.</td><td>我想要的是回家</td></tr>
+    <tr><td>that 从句</td><td>What makes me angry is <b>that he lied to me</b>.</td><td>让我生气的是他骗了我</td></tr>
+    <tr><td>whether 从句</td><td>What matters is <b>whether we win</b>.</td><td>重要的是我们能不能赢</td></tr>
+    <tr><td>否定＋对比</td><td>What I need is <b>not money, but time</b>.</td><td>我需要的不是钱，而是时间</td></tr>
+  </table>
+
+  <h3 class="minor" id="s5c4">什么时候用它</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 当你想把某个成分设为焦点时</span>
+    <p><code>I need money.</code> 和 <code>What I need is money.</code> 意思一样，那为什么要多写几个词？<b>因为你想让读者的注意力落在 money 上。</b></p>
+    <p>最常见的四种场合：<b>对比、纠正、回答一个隐含的"到底是什么"、强调重点。</b></p>
+  </div>
+
+  <div class="ex">
+    <p class="en">— You need more money.　— Money isn't the problem. <b>What I need is time.</b></p>
+    <p class="zh">——你需要更多钱。——钱不是问题，我需要的是时间。（纠正）</p>
+  </div>
+  <div class="ex">
+    <p class="en">What I like most about this city is its quietness.</p>
+    <p class="zh">我最喜欢这座城市的，是它的安静。（强调重点，前面并不需要有人说错什么）</p>
+  </div>
+  <div class="ex">
+    <p class="en">What matters most is how we respond to change.</p>
+    <p class="zh">最要紧的，是我们如何应对变化。（作为开场也完全正常）</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 两个边界</span>
+    <p><b>这个骨架里不要随便删 to：</b></p>
+    <div class="pair">
+      <div>
+        <p class="en">What I want is <b>to become</b> a hero.</p>
+        <p class="verdict">✓ 焦点是整个不定式短语。</p>
+      </div>
+      <div>
+        <p class="en"><s>What I want is become a hero.</s></p>
+        <p class="verdict">✗ 原形动词 become 站不进这个位置。</p>
+      </div>
+    </div>
+    <p><b>主谓一致</b>见阶段四落点一：用单数。（焦点明显是复数时偶尔也见到 are，了解即可。）</p>
+  </div>
+
+  <p class="sum"><b>这一节压成三句：</b>骨子里是主系表，只是主语位坐了个从句；这里的 What… 整体作主语，指一个对象，不是疑问；想把某样东西设成焦点时用它。<b>调用骨架：What … is … ＝"……的，是……"</b></p>
+
+  <h3 id="s5d">手段四：名词的解释，可以推到句尾</h3>
+
+  <p>先看一个正常句子：</p>
+
+  <div class="ex">
+    <p class="en">The news <b>that the war had broken out</b> spread quickly.</p>
+    <p class="zh">战争爆发的消息传得很快。</p>
+    <p class="note">news 是"消息"。什么消息？后面那块 that the war had broken out 就是在说这个。</p>
+  </div>
+
+  <p><b>问题是主语太长。</b>The news that the war had broken out 整个是主语，八个词。读的人要读到第九个词 spread，才知道这句话到底要说什么。</p>
+
+  <p><b>英语的处理：把 that 那块挪到句尾。</b></p>
+
+  <div class="restore">
+    <p class="en">The news &#91;that the war had broken out&#93; spread quickly.</p>
+    <p class="arrow">只有方括号那块在动<span class="sep">→</span>The news 没动，spread quickly 也没动</p>
+    <p class="en">The news spread quickly &#91;that the war had broken out&#93;.</p>
+    <p class="zh">消息很快传开了 —— 什么消息，最后再补。</p>
+  </div>
+
+  <p>再看两组，动作完全一样：</p>
+
+  <div class="restore">
+    <p class="en">The thought <b>that he might be lying</b> struck me.</p>
+    <p class="arrow">that 那块搬到最后<span class="sep">→</span></p>
+    <p class="en">The thought struck me <b>that he might be lying</b>.</p>
+    <p class="zh">我突然想到，他可能在撒谎。</p>
+  </div>
+
+  <div class="restore">
+    <p class="en">A rumor <b>that the boss was leaving</b> went round the office.</p>
+    <p class="arrow">that 那块搬到最后<span class="sep">→</span></p>
+    <p class="en">A rumor went round the office <b>that the boss was leaving</b>.</p>
+    <p class="zh">办公室里传开一个谣言，说老板要走了。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 就一个动作</span>
+    <p><b>一个名词的解释太长时，可以不紧跟着它，推到句尾去。</b></p>
+    <p>名词留在原位，中间的谓语一个字不改，只有 that 那一块在动。</p>
+    <p>这和前面三种手段是同一条原则：<b>长的东西往后放。</b></p>
+  </div>
+
+  <p class="note">这个动作主要发生在名词<b>作主语</b>的时候（上面三句都是）。名词作宾语时限制多得多，中间一般只能隔一个很短的词：I heard a rumor <span class="dimtext">yesterday</span> that the boss was leaving.（我昨天听到一个谣言，说老板要走了）</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 读的时候的动作</span>
+    <p>看到一个<b>光秃秃的抽象名词</b>（news / fact / rumor / story / thought / opinion / concern），后面直接就跟了谓语，就往后扫一眼有没有 that。</p>
+    <p>有，那个 that 从句就是回来解释这个名词的。往前找那个名词，就对上了。</p>
+    <p class="dimtext">（语法书把这个叫"同位语从句后置 / 分裂结构"，名字不用管。）</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>四种手段，一条原则 —— <b>长的东西往后放</b>。it 形式主语、it 形式宾语是<b>为了减负</b>；what 伪分裂是<b>为了设焦点</b>；把名词的解释推到句尾是<b>为了不让主语太长</b>。</p>
+</section>
+
+<!-- ══ 阶段六 ══ -->
+<section class="stage" id="s6">
+  <span class="stage-no">阶段六</span>
+  <h2>把名词性从句变成写作骨架</h2>
+
+  <div class="bridge">
+    <p class="before">前五阶解决的是“怎么看懂”：怎么打包、放哪儿、太重怎么挪。</p>
+    <p class="after">这一阶开始解决“怎么拿来写”：<b>同一个内容，换一种骨架，就能改变句子的重点和用途。</b></p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这一阶真正要学的不是“高级句型”</span>
+    <p>简单句并不低级，复杂句也不会自动变高级。真正有用的是：<b>先确定你想干什么，再选骨架。</b></p>
+    <p class="formula">评价一件事 ｜ 报道一件事 ｜ 突出一个重点 ｜ 把一件事变成“可以继续操作的概念”</p>
+    <p>这四种功能，都可以直接调用前面学过的名词性从句结构。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>我想表达什么</th><th>优先骨架</th><th>信息重点</th></tr>
+    <tr><td>先给判断 / 评价</td><td>It is + adj. + that…</td><td>“这件事怎么样”</td></tr>
+    <tr><td>报道 / 转述</td><td>It is + p.p. + that…</td><td>“据说 / 据报道什么”</td></tr>
+    <tr><td>突出某个成分</td><td>What… is…</td><td>be 后面的焦点</td></tr>
+    <tr><td>把整件事当成一个概念</td><td>the fact / idea / belief / possibility + that…</td><td>把命题变成可讨论的“东西”</td></tr>
+  </table>
+
+  <h3 id="s6a">一、先评价，再给内容：It is + adj. + that…</h3>
+
+  <p>最普通的写法只是陈述事实：</p>
+
+  <div class="ex">
+    <p class="en">We need more time.</p>
+    <p class="zh">我们需要更多时间。</p>
+  </div>
+
+  <p>如果你还想告诉读者“我怎么看这件事”，就把评价放到前面：</p>
+
+  <div class="ex">
+    <p class="en">It is <b>clear</b> that we need more time.</p>
+    <p class="zh">很明显，我们需要更多时间。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这个骨架多出来的是什么</span>
+    <p><b>We need more time.</b> 只给内容。</p>
+    <p><b>It is clear that we need more time.</b> = 先给评价 <b>clear</b>，再给内容 <b>that we need more time</b>。</p>
+    <p>所以它真正的价值不是“句子更长”，而是多了一层：<b>你对这件事的判断。</b></p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>骨架</th><th>常见用途</th></tr>
+    <tr><td>It is clear / obvious that…</td><td>认为某事明显</td></tr>
+    <tr><td>It is important / necessary that…</td><td>说明某事重要 / 必要</td></tr>
+    <tr><td>It is possible / likely that…</td><td>判断可能性</td></tr>
+    <tr><td>It is strange / surprising that…</td><td>表达意外或异常</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 不要反推过头</span>
+    <p>不是“主语从句都在表达作者观点”。只是<b>It is + 评价词 + that…</b> 这个骨架，本身就把评价放到了内容前面。</p>
+    <p>例如 <span class="en">Whether he will come is unknown.</span> 也是主语从句，但它只是在说明“他来不来还不知道”。</p>
+  </div>
+
+  <h3 id="s6b">二、不强调谁说的：It is + 过去分词 + that…</h3>
+
+  <p>有时消息本身比“谁说的”更重要，这时英语很常用非人称报道结构：</p>
+
+  <div class="ex">
+    <p class="en">It is <b>reported</b> that the company will cut costs.</p>
+    <p class="zh">据报道，公司将削减成本。</p>
+  </div>
+  <div class="ex">
+    <p class="en">It is widely <b>believed</b> that regular exercise is good for mental health.</p>
+    <p class="zh">人们普遍认为，规律运动有益于心理健康。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 主动和这个骨架，区别在“先说谁”</span>
+    <p><b>Researchers report that…</b> —— 先告诉你“谁报告”。</p>
+    <p><b>It is reported that…</b> —— 不把报告者放在前面，直接进入“据报道 + 内容”。</p>
+    <p>所以它适合<b>来源不重要、来源已经知道、或只想做一般性转述</b>的场景。它不会自动让观点更可信，也不等于作者在“推卸责任”。</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">He <b>said</b> that he was tired.</p>
+      <p class="verdict">主动：said 说了什么？→ that he was tired 是 <b>宾语从句</b>。</p>
+    </div>
+    <div>
+      <p class="en"><b>It is said</b> that he has left the country.</p>
+      <p class="verdict">形式主语 it 在前，真正内容放在后面 → 传统分析为<b>后置主语从句</b>。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 高频报道骨架</span>
+    <p class="formula">It is said / reported / believed / thought / known that…</p>
+    <p>读的时候直接整体识别成：<b>据说 / 据报道 / 人们认为 / 人们知道……</b></p>
+  </div>
+
+  <h3 id="s6c">三、把重点拎出来：What… is…</h3>
+
+  <p>有时你不是只想陈述，而是想告诉读者：<b>真正要注意的是哪一块。</b></p>
+
+  <div class="pair">
+    <div>
+      <p class="en">I need more time.</p>
+      <p class="verdict">平铺：直接说“我需要更多时间”。</p>
+    </div>
+    <div>
+      <p class="en"><b>What I need is more time.</b></p>
+      <p class="verdict">聚焦：我需要的东西是 —— <b>more time</b>。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这个骨架为什么有“强调感”</span>
+    <p>它先故意留下一个范围：<b>What I need…</b>（我需要的东西……），然后用 <b>is</b> 把答案放到后面。</p>
+    <p>所以注意力自然落到 be 后面：<b>more time</b>。这不是“更高级”，而是<b>焦点更明确</b>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en"><b>What matters is</b> how we solve the problem.</p>
+    <p class="zh">真正重要的是我们如何解决这个问题。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>What I mean is</b> that we need a different approach.</p>
+    <p class="zh">我的意思是，我们需要换一种方法。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>What I want is not</b> money, <b>but</b> freedom.</p>
+    <p class="zh">我想要的不是钱，而是自由。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 最值得变成主动词汇的几个骨架</span>
+    <p class="formula">What matters is… ｜ What we need is… ｜ What I mean is… ｜ What I want is…</p>
+    <p>它们特别适合<b>强调、纠正、对比、总结</b>。没有强调需要时，普通 SVO 往往更自然。</p>
+  </div>
+
+  <h3 id="s6d">四、把“一件事”变成可操作的概念：名词 + that…</h3>
+
+  <p>这是同位语 / 名词内容从句在写作里最实用的地方：<b>把一个完整命题装进 fact / idea / belief / possibility 这样的名词里。</b></p>
+
+  <div class="ex">
+    <p class="en">Mistakes happen.</p>
+    <p class="zh">错误会发生。—— 只是陈述一个事实。</p>
+  </div>
+  <div class="ex">
+    <p class="en">We must accept <b>the fact that mistakes happen</b>.</p>
+    <p class="zh">我们必须接受“错误会发生”这个事实。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么这个变化很有用</span>
+    <p>一旦把 <b>mistakes happen</b> 包成 <b>the fact that mistakes happen</b>，整件事就像一个“对象”，可以继续被处理：</p>
+    <p class="formula">accept the fact that… ｜ ignore the fact that… ｜ challenge the idea that… ｜ consider the possibility that…</p>
+    <p>这就是所谓“更抽象”的真正含义：<b>不是把句子写复杂，而是把一个命题变成可以接受、否定、讨论、比较的概念。</b></p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>骨架</th><th>适合表达</th></tr>
+    <tr><td>the fact that…</td><td>把某事当作事实来谈</td></tr>
+    <tr><td>the idea / belief that…</td><td>把某事当作观点 / 信念来谈</td></tr>
+    <tr><td>the possibility that…</td><td>把某事当作可能性来谈</td></tr>
+    <tr><td>the hope that…</td><td>把某事当作希望来谈</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 四种骨架怎么选</span>
+    <p><b>我要先评价：</b>It is clear / important / possible that…</p>
+    <p><b>我要做一般性报道：</b>It is said / reported / believed that…</p>
+    <p><b>我要突出某个重点：</b>What… is…</p>
+    <p><b>我要把整件事当成一个概念继续讨论：</b>the fact / idea / belief / possibility that…</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>第六阶不再增加新的从句规则，而是把前面学过的结构变成<b>可直接调用的写作骨架</b>。真正要练的是“表达目的 → 选骨架”：评价、报道、聚焦、概念化。复杂不是目标，<b>信息重点清楚</b>才是。</p>
+</section>
+
+<!-- ══ 阶段七 ══ -->
+<section class="stage" id="s7">
+  <span class="stage-no">阶段七</span>
+  <h2>七条必须单独处理的边界</h2>
+
+  <div class="bridge">
+    <p class="before">前六阶是主干，全部可以互相推出来。</p>
+    <p class="after">剩下的是长在主干上、<b>推不出来只能单独记</b>的分叉。橙色框占比在这一阶最高。</p>
+  </div>
+
+  <h3 id="s7a">一、whether 和 if 的分工</h3>
+
+  <p>两者都表"是否"，核心区别是：<b>whether 的活动范围比 if 大</b>。在常见的"是否……"嵌入结构里，两者通常都可以：</p>
+
+  <div class="ex">
+    <p class="en">I don't know whether / if he will come.　I'm not sure whether / if she likes coffee.</p>
+    <p class="zh">我不知道他是否会来。／ 我不确定她是否喜欢咖啡。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 这些位置优先、甚至必须用 whether</span>
+    <p><b>介词后：</b>It depends on whether he agrees.</p>
+    <p><b>接不定式：</b>I don't know whether to go.（不说 <s>if to go</s>）</p>
+    <p><b>句首主语从句：</b>Whether he comes doesn't matter.</p>
+    <p><b>正式文体</b>，或需要避开 if = "如果"的歧义时。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么主语从句不能用 if</span>
+    <p>if 除了"是否"还有"如果"。放在句首，读者无法立刻判断它是哪一层意思 —— 是条件状语从句，还是主语从句？</p>
+    <p>歧义有多真实：</p>
+    <div class="pair">
+      <div>
+        <p class="en">Tell me if you are busy.</p>
+        <p class="verdict">① 你忙的话就告诉我　② 告诉我你是不是忙 —— 两种都读得通。</p>
+      </div>
+      <div>
+        <p class="en">Tell me whether you are busy.</p>
+        <p class="verdict">只剩一个意思。</p>
+      </div>
+    </div>
+    <p>宾语从句放在动词后，位置本身就排除了条件状语的读法，所以那里才允许用 if。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">The doctor felt John's arm to find out <b>whether or not</b> the bone was broken. / … whether the bone was broken <b>or not</b>.</p>
+    <p class="zh">医生摸约翰的胳膊，想查明骨头是不是断了。</p>
+    <p class="note">or not 可以紧跟 whether，也可以放句尾。读到 whether or not 直接理解成"是否"，不用管 or not。它不是永远可删的废话 —— 有时会加强"两个可能性都被明确考虑"。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 or not 的考试口径</span>
+    <p>国内语法书普遍规定：<b>出现 or not 时用 whether，不用 if</b>，这是高频考点。</p>
+    <p>实际英语里 if … or not 并不算错（英文语法参考书是承认的）。但既然国内爱考，写的时候<b>乖乖用 whether</b>，别去争。</p>
+    <p>一句实战规则：<b>表达"是否"时拿不准，一律优先 whether。</b></p>
+  </div>
+
+  <h3 id="s7b">二、压缩接口：wh + to do</h3>
+
+  <p>阶段二那三个接口打包出来的都是完整从句。但<b>当动作的执行者能够从主句或上下文中确定时，疑问类从句经常可以压缩成不定式</b>：</p>
+
+  <div class="restore">
+    <p class="en">I don't know what I should do. → I don't know <b>what to do</b>.</p>
+    <p class="arrow">执行者 I 已确定，可以恢复<span class="sep">→</span>压缩</p>
+    <p class="zh">我不知道该做什么。</p>
+  </div>
+
+  <p>注意执行者<b>不一定是主句主语</b>：</p>
+
+  <div class="ex">
+    <p class="en">Tell me what to do.</p>
+    <p class="zh">告诉我该做什么。（执行 do 的是 me，不是主句的 you）</p>
+  </div>
+  <div class="ex">
+    <p class="en">She hasn't decided where to go.　Tell me how to solve it.</p>
+    <p class="zh">她还没决定去哪里。（执行者是 she）／ 告诉我怎么解决它。（执行者是听话的人）</p>
+  </div>
+
+  <p class="note">所以条件是"执行者可恢复"，不是"和主句主语重复" —— 后者只是最直观的一种情况。常见的还有：what to say / who to ask / whether to stay。</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 if 进不了这个接口</span>
+    <p>只能说 whether to go，不能说 <s>if to go</s>。这正是上一条"whether 活动范围比 if 大"的又一个证据。</p>
+  </div>
+
+  <p class="note">看到 what to say 不要当成孤立短语背 —— 它是 what I should say 压缩来的。</p>
+
+  <h3 id="s7c">三、留坑法：that 和 what 怎么选</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 一句话原理</span>
+    <p><b>that 是纯连接</b>，不占从句成分，所以 that 后面的句子本身完整。</p>
+    <p><b>what 是名词性的</b>，必须占一个句法成分（主语、宾语、表语等），所以 what 后面的句子必须<b>留一个坑</b>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">What makes the desert beautiful is…</p>
+    <p class="zh">what 是从句的<b>主语</b>。</p>
+  </div>
+  <div class="ex">
+    <p class="en">What I see here is…</p>
+    <p class="zh">what 是 see 的<b>宾语</b>。</p>
+  </div>
+  <div class="ex">
+    <p class="en">I don't know what he is.</p>
+    <p class="zh">我不知道他是干什么的。what 接近<b>表语</b>（he is what）。</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">That he is busy is true.</p>
+      <p class="verdict">✓ he is busy 已完整，that 不占成分。</p>
+    </div>
+    <div>
+      <p class="en"><s>What he is busy is true.</s></p>
+      <p class="verdict">✗ he is busy 已经齐了，what 没地方站。</p>
+    </div>
+  </div>
+
+  <h3 id="s7c2">同一条线：切分同位语从句和定语从句</h3>
+
+  <p>两者外形都是"名词 + that + …"：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">The news <b>that he won the game</b> is true.</p>
+      <p class="verdict">He won the game. 完整。that 没补任何成分，只是展开 news 的内容 → <b>同位语从句</b>。</p>
+    </div>
+    <div>
+      <p class="en">The news <b>that he told me</b> is true.</p>
+      <p class="verdict">He told me ___. 缺宾语。that = the news，进去补坑 → <b>定语从句</b>。</p>
+    </div>
+  </div>
+
+  <p class="formula">不缺成分 → 引导词只是接口 → that　｜　缺一个句法成分 → 引导词要进去补坑 → what，或定语从句的 that</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 边界提醒：别拿它去测 why / when / where / how</span>
+    <p>这个方法只对"引导词是不是<b>名词性成分</b>"这个问题有效。</p>
+    <div class="ex">
+      <p class="en">I know why he left.</p>
+      <p class="zh">我知道他为什么走。</p>
+      <p class="note">he left 本身已经完整，但 why 仍然有作用 —— 它承担的是<b>原因状语</b>，本来就不占主语 / 宾语 / 表语的位置。</p>
+    </div>
+  </div>
+
+  <h3 id="s7d">四、that 什么时候能省，什么时候绝对不能</h3>
+
+  <div class="ex">
+    <p class="en">I think that he is right. / I think he is right.</p>
+    <p class="zh">我认为他是对的。</p>
+    <p class="note">听到 think / know 之后，听者已经能预测后面是"想的内容"，边界很明显，所以 that 可以省。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>位置</th><th>that</th></tr>
+    <tr><td>普通宾语从句</td><td>经常可省</td></tr>
+    <tr><td>并列的第二个及以后的宾语从句</td><td><b>不可省</b></td></tr>
+    <tr><td>从句套从句时</td><td><b>不可省</b></td></tr>
+    <tr><td>句首主语从句</td><td>通常保留</td></tr>
+    <tr><td>表语从句 / 同位语从句</td><td>通常保留</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 并列时，第二个 that 必须写出来</span>
+    <div class="ex">
+      <p class="en">She wrote <span class="dimtext">(that)</span> she would come and see him sometimes, <b>and that</b> she would never forget what he had done for her.</p>
+      <p class="zh">她写道，她有时会来看他，而且永远不会忘记他为她所做的一切。</p>
+      <p class="note">没有第二个 that，读者无法判断 and 并列的是两件"她写的事"，还是 come and see 那一层的动作。这个 that 是<b>并列边界的标记</b>。</p>
+    </div>
+    <div class="ex">
+      <p class="en">We must believe that each one of us is able to do something well, <b>and that</b> when we discover what this something is, we must work until we succeed.</p>
+      <p class="zh">我们必须相信每个人都能把某件事做好，而且相信当我们发现这件事是什么时，就必须努力直到成功。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 从句套从句时也不能省 —— 最高频的写作错误</span>
+    <div class="pair">
+      <div>
+        <p class="en"><s>In case Mother could not be back, we hope the children would stay with us for the night.</s></p>
+        <p class="verdict">✗ in case 已经带来一个从句，后面 we hope 又是一句，再加一句 —— 三个句子只有一个连词，接不上。</p>
+      </div>
+      <div>
+        <p class="en">In case Mother could not be back, we hope <b>that</b> the children would stay with us for the night.</p>
+        <p class="verdict">✓ 补上 that，hope 的内容才有边界。</p>
+      </div>
+    </div>
+    <p>规律很简单：<b>句子一多，that 就不能省。</b>省略的前提永远是"省了也不会引起歧义"。</p>
+  </div>
+
+  <p class="note">也不要机械理解成"除宾语从句外绝对不能省" —— 真实英语比考试规则复杂。学习阶段采用"<b>宾语从句可省，其余优先保留；一旦并列或套嵌，一律写出来</b>"即可。</p>
+
+  <h3 id="s7e">五、时态呼应：三种情况</h3>
+
+  <p>主句进入过去视角后，从句通常跟着回移：</p>
+
+  <div class="ex">
+    <p class="en">He says that he is tired. → He said that he <b>was</b> tired.</p>
+    <p class="zh">他说他很累。→ 他说他当时很累。</p>
+  </div>
+
+  <p>但"跟着回移"只是其中一种情况。分成三种记，考试题基本就是在这三种里出：</p>
+
+  <p class="formula">情况一：主句是一般现在时 → 从句用<b>任意时态</b></p>
+
+  <div class="ex">
+    <p class="en">I know he <b>lives</b> here.</p>
+    <p class="zh">我知道他住在这儿。（现在）</p>
+  </div>
+  <div class="ex">
+    <p class="en">I know he <b>lived</b> here before.</p>
+    <p class="zh">我知道他以前住在这儿。（过去）</p>
+  </div>
+  <div class="ex">
+    <p class="en">I know he <b>will come</b> tomorrow.</p>
+    <p class="zh">我知道他明天会来。（将来）</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么现在时不限制从句</span>
+    <p>现在时的视角就是"此刻"，而从此刻望出去，过去、现在、将来全都在视野里。所以从句想说哪个时间段，就用哪个时态，跑不出它的范围。</p>
+    <p>换句话说：<b>只有主句退到过去，才会产生"从句也得跟着退"的问题。</b></p>
+  </div>
+
+  <p class="formula">情况二：主句是过去时 → 从句用<b>某个过去时</b></p>
+
+  <div class="box derive">
+    <span class="tag">📖 操作顺序：先给从句定时态，再整体后移一格</span>
+    <p>最容易犯的错是把"时态一致"理解成"从句一律改成一般过去时"。正确的动作分两步：</p>
+    <p><b>第一步</b>：从句<b>先按自己要表达的时间</b>选一个时态，就像它是个独立句子一样。</p>
+    <p><b>第二步</b>：再整体后移一格。所以结果可以是一般过去时、过去将来时、过去完成时、过去进行时 —— <b>"某个过去时"，不是"一般过去时"</b>。</p>
+  </div>
+
+  <div class="restore">
+    <p class="en">He told me that she <b>would come</b> tomorrow.</p>
+    <p class="arrow">从句有 tomorrow → 本该用将来时<span class="sep">→</span>后移一格 → 过去将来时 would come</p>
+    <p class="zh">他告诉我她明天会来。（不是 <s>came tomorrow</s>）</p>
+  </div>
+  <div class="restore">
+    <p class="en">The gardener said that he <b>had cut down</b> the tree yesterday.</p>
+    <p class="arrow">砍树发生在"说"之前<span class="sep">→</span>用过去完成时体现先后</p>
+    <p class="zh">园丁说他昨天把树砍倒了。（说成 cut 也对，只是不体现先后）</p>
+    <p class="note">但这里不能用 was cutting：cut down 是<b>结果性动作</b>，可以"砍了一整天"，不能"砍倒了一整天"。时态还要过语义这一关。</p>
+  </div>
+
+  <p class="formula">情况三：客观真理、自然规律、永恒事实 → 从句用<b>一般现在时</b></p>
+
+  <div class="ex">
+    <p class="en">The teacher said the earth <b>goes</b> around the sun.</p>
+    <p class="zh">老师说地球绕着太阳转。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The writer said that Australia <b>has</b> unique wildlife.</p>
+    <p class="zh">作者说澳大利亚拥有独特的野生动物。</p>
+    <p class="note">道理很直白：这件事到现在还成立，不属于"当时的情况"，所以不跟着退回过去。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 考试按这条填，但读的时候别当死规则</span>
+    <p><b>做题时</b>：客观真理一律选一般现在时。这是国内考试的统一口径，照填不会错。</p>
+    <p><b>读文章时</b>：实际英语里回移也很常见 —— The teacher said that the Earth <b>was</b> round. 同样成立。</p>
+    <p>关键是别误读：这里的 was <b>不表示</b>"地球以前圆、现在不圆了"。过去式不一定说明事实已经失效，它可能只是被主句的过去视角牵着走。</p>
+  </div>
+
+  <h3 id="s7f">六、否定转移</h3>
+
+  <p>常见于 think / believe / suppose / expect / imagine / feel。英语习惯把否定放在主句上，但语义上真正被否定的是从句。</p>
+
+  <div class="ex">
+    <p class="en">I don't think he can do it better than me.</p>
+    <p class="zh">我认为他做不到比我更好。（不译成"我不认为……"）</p>
+  </div>
+  <div class="pair">
+    <div>
+      <p class="en">I don't think he can do it.</p>
+      <p class="verdict">更自然、更委婉 —— 写作里的默认选择。</p>
+    </div>
+    <div>
+      <p class="en">I think he can't do it.</p>
+      <p class="verdict">更直接，强调从句本身的否定。</p>
+    </div>
+  </div>
+
+  <p class="note">两个方向的动作：<b>翻译时把否定往后挪</b>（I don't think he was happy → 他觉得自己不快乐）；<b>写作时把否定往前提</b>（不要写 He felt that he was not happy）。</p>
+
+  <h3 id="s7g">七、要求 / 建议类 that 从句：动词原形</h3>
+
+  <p>前面讲的"信息打包接口"只决定连接方式和语序，管不到从句内部的谓语形式。但有些特定语义环境会继续往里伸手，改动从句的动词形态 —— 建议 / 要求 / 必要性就是这样一个分叉。</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 动词一律用原形，不受人称和时态影响</span>
+    <div class="ex">
+      <p class="en">I suggest that he <b>go</b> now.（不是 goes）</p>
+      <p class="zh">我建议他现在就走。</p>
+    </div>
+    <div class="ex">
+      <p class="en">They demanded that he <b>leave</b> immediately.（不是 left）</p>
+      <p class="zh">他们要求他立刻离开。</p>
+    </div>
+    <div class="ex">
+      <p class="en">It is important that everyone <b>be</b> present.（不是 is）</p>
+      <p class="zh">每个人都到场很重要。</p>
+    </div>
+    <p>触发这个规则的核心词可以是不同词性：</p>
+    <p><b>动词：</b>suggest / propose / demand / insist / require / recommend</p>
+    <p><b>形容词：</b>necessary / important / essential / vital</p>
+    <p><b>过去分词：</b>ordered / suggested / required</p>
+    <p><b>名词：</b>suggestion / proposal / demand / order</p>
+    <div class="ex">
+      <p class="en">His suggestion is that we <b>start</b> early.　It is necessary that he <b>be</b> here.</p>
+      <p class="zh">他的建议是我们早点出发。／ 他有必要在场。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 这个原形是 should 省略后的残留</span>
+    <p>完整形式是 It is necessary that he <b>should be</b> here. 省掉 should 之后，剩下动词原形。</p>
+    <p>反直觉的一点：一般省略让句子变得<b>非正式</b>，但这一条相反 —— <b>省掉 should 的版本反而更正式</b>，所以它大量出现在考研、专八这类正式文本里。</p>
+    <div class="ex">
+      <p class="en">It is vital that economic, political and social conditions which can alleviate poverty <b>be established</b> at national and international levels.</p>
+      <p class="zh">在国家和国际两个层面上创造出能减轻贫困的经济、政治和社会条件，这至关重要。</p>
+      <p class="note">主语是三样东西（复数），却用了 be established 而不是 are established —— 因为这是 should be established 省略了 should，不是主谓不一致。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 一个陷阱：suggest 表"暗示、表明"时不触发</span>
+    <div class="pair">
+      <div>
+        <p class="en">I suggest that he <b>see</b> a doctor.</p>
+        <p class="verdict">"建议" → 提出一个尚未实现的要求 → 原形。</p>
+      </div>
+      <div>
+        <p class="en">His pale face suggested that he <b>was</b> ill.</p>
+        <p class="verdict">"表明" → 陈述一个已经成立的事实 → 正常时态。</p>
+      </div>
+    </div>
+    <p>判断依据是<b>词义</b>，不是词形：句子在"提出一个尚未实现的要求"，才用原形。insist 同理（坚持要求 vs 坚称）。</p>
+  </div>
+
+  <h3 id="s7h">补充表达：not that A, but that B</h3>
+
+  <p>这不是新机制 —— 两个 that 都是普通的内容从句 —— 但它是写作里很实用的搭配：先否定一个读者可能想到的原因，再抛出真正的。</p>
+
+  <div class="ex">
+    <p class="en">It is not that he doesn't want to come, but that he is too busy.</p>
+    <p class="zh">不是他不想来，而是他太忙了。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>这七条推不出来，只能记。其中最影响写作正确率的是<b>四（并列 / 套嵌时 that 不可省）</b>和<b>五（先定从句时态再整体后移）</b>；最影响阅读理解的是<b>三（留坑法）</b>。</p>
+</section>
+
+<!-- ══ 阶段八 ══ -->
+<section class="stage" id="s8">
+  <span class="stage-no">阶段八</span>
+  <h2>本质：英语的信息嵌套能力</h2>
+
+  <div class="bridge">
+    <p class="after">到这里可以把"从句"这个名字暂时扔掉了。</p>
+  </div>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">He is wrong.</p><p class="step-why">他错了。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en">I know <b>that he is wrong</b>.</p><p class="step-why">我知道他错了。整句变成了一个零件。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div><p class="en">She thinks <b>[ I know [ he is wrong ] ]</b>.</p><p class="step-why">她认为我知道他错了。那个句子又变成了更外层句子的零件。</p></div>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 被嵌进去的不止一种东西</span>
+    <p><b>命题：</b>that he is wrong（他错了）</p>
+    <p><b>疑问内容：</b>whether he is wrong / what he wants（＝他想要什么）</p>
+    <p><b>指称对象：</b>what he wants（＝ the thing that he wants，他想要的那个东西）</p>
+    <p>第三类就是阶段二讲的 what 第二种用法。<b>what he wants 同形两义，读到时靠上下文分辨。</b></p>
+  </div>
+
+  <p>一句话可以变成另一个句子的零件，而那个句子又能继续变成更外层句子的零件。这个能力才是整章的本体 —— 它不是考试语法，而是英语把<b>一个完整的信息单位压缩成另一个信息内部的一个组件</b>的机制。</p>
+
+  <p>人之所以能说出"我认为他知道……""她不知道我为什么……""我相信他说的事情……""问题在于我们是否……"，靠的都是这一条。</p>
+
+  <p class="sum"><b>小结：</b>四种从句是四个落点，不是四套语法。真正的本体是嵌套 —— 而嵌套是可以无限套下去的，读长难句时唯一可靠的动作就是靠连词一层层剥。</p>
+</section>
+
+<!-- ══ 总览 ══ -->
+<section class="stage" id="s9">
+  <span class="stage-no">总览</span>
+  <h2>使用总览与自检</h2>
+
+  <h3 id="s9a">速查一：先看位置，再问“这块内容跟谁”</h3>
+
+  <p>位置能给你第一提示，但不要只看 that 前面紧挨着什么词。更稳的动作是：<b>先找外层位置，再问这个从句是在补谁的内容。</b></p>
+
+  <table class="tbl">
+    <tr><th>从句跟谁 / 在哪儿</th><th>优先怎么认</th><th>例</th></tr>
+    <tr><td>整个从句坐在主语位</td><td>主语从句</td><td>Whether he comes doesn't matter.</td></tr>
+    <tr><td>it 先占主语位，真正内容在后面</td><td>形式主语 + 主语从句</td><td>It is clear that…</td></tr>
+    <tr><td>内容直接跟动词</td><td>宾语从句</td><td>I know that… / Tell me that…</td></tr>
+    <tr><td>内容直接坐在 be 后面的表语位</td><td>表语从句</td><td>The problem is that…</td></tr>
+    <tr><td>内容补充一个内容名词</td><td>同位语从句 / 名词补足语</td><td>the fact that…</td></tr>
+    <tr><td>内容补充一个形容词</td><td>形容词补足语 / 内容从句</td><td>I'm sure that…</td></tr>
+    <tr><td>wh / whether 直接跟在介词后</td><td>介词宾语</td><td>depends on whether…</td></tr>
+    <tr><td>it 先占宾语位，真正内容在后面</td><td>形式宾语结构</td><td>I find it strange that…</td></tr>
+  </table>
+
+  <h3 id="s9b">速查二：写的时候的四层判断</h3>
+
+  <p><b>第一层：先判断你要表达的原始信息</b></p>
+
+  <table class="tbl">
+    <tr><th>你想表达的</th><th>打包接口</th></tr>
+    <tr><td>一个事实</td><td>that</td></tr>
+    <tr><td>是否</td><td>whether / if（if 的分布比 whether 窄；具体限制见阶段七）</td></tr>
+    <tr><td>谁 / 什么 / 为什么 / 哪里 / 怎么（在提问）</td><td>who / what / why / where / how…</td></tr>
+    <tr><td>"……的东西 / 事情"（不在提问）</td><td>what</td></tr>
+    <tr><td>"无论什么 / 任何……的东西"</td><td>whatever</td></tr>
+    <tr><td>"……的人 / 无论谁"</td><td>whoever</td></tr>
+    <tr><td>"任意哪个 / 无论哪个"</td><td>whichever</td></tr>
+    <tr><td>执行者可恢复时的压缩形式</td><td>wh + to do</td></tr>
+  </table>
+
+  <p><b>第二层：从句内部就是原来那个陈述句</b></p>
+
+  <div class="ex">
+    <p class="en">He is ___ . → I know <b>where he is</b>.（疑问词提到最前面，主语和动词都不动）</p>
+    <p class="en">Who came? → I know <b>who came</b>.（疑问词自己就是主语，什么都不用做）</p>
+    <p class="zh">直接疑问句多做的那一步 —— 动词提到主语前面 —— 从句不做。所以 do / does / did 不出现，be / have / 情态动词照常留在原位。</p>
+  </div>
+
+  <p><b>第三层：看整个信息块承担什么功能</b></p>
+
+  <table class="tbl">
+    <tr><th>外层关系</th><th>名称</th><th>例句</th></tr>
+    <tr><td>整个从句作主语</td><td>主语从句</td><td>What he said is true.</td></tr>
+    <tr><td>内容跟动词</td><td>宾语从句</td><td>I know that he is right.</td></tr>
+    <tr><td>整个从句直接作表语</td><td>表语从句</td><td>The problem is that we are late.</td></tr>
+    <tr><td>内容补名词</td><td>同位语从句 / 名词补足语</td><td>The fact that he lied shocked me.</td></tr>
+    <tr><td>内容补形容词</td><td>形容词补足语 / 内容从句</td><td>I'm sure that he will come.</td></tr>
+  </table>
+
+  <p><b>第四层：再考虑信息重量</b> —— 重的往后挪：it 形式主语 ／ it 形式宾语（仅宾补句型）／ what 伪分裂 ／ 同位语分裂结构。</p>
+
+  <h3 id="s9c">使用流程：五步</h3>
+
+  <ol class="flow">
+    <li>
+      <p class="q">先找主句骨架。</p>
+      <p class="a">谁是主语，谁是谓语。整句话最终只有一个主谓是"主"的。</p>
+    </li>
+    <li>
+      <p class="q">有没有"一整句话"被塞进主句？</p>
+      <p class="a">靠连词断句，然后看连词的<b>相对位置</b>（速查一那张表）定性。</p>
+    </li>
+    <li>
+      <p class="q">这句话原本是什么信息？</p>
+      <p class="a">陈述 → that；是否 → whether / if；特殊疑问 → 原疑问词；"……的东西" → what；"无论什么 / 哪个" → whatever / whichever；执行者能恢复 → wh + to do。</p>
+    </li>
+    <li>
+      <p class="q">从句内部照着陈述句写。</p>
+      <p class="a">主语留在动词前面，不出现 do / does / did；be / have / 情态动词照常留在原位。疑问词本身就是主语的，什么都不用做。</p>
+    </li>
+    <li>
+      <p class="q">最后检查三件事。</p>
+      <p class="a">并列 / 套嵌时 that 写出来了吗？主句过去时的话，从句<b>先定自己的时态再后移一格</b>了吗？句子作主语，谓语用单数了吗？</p>
+    </li>
+  </ol>
+
+  <h3 id="s9d">费曼自检</h3>
+
+  <p>能从"信息类型 → 打包接口 → 内部语序 → 承担句法功能 → 信息结构"一步步推出下面这些，才算掌握了生成系统，而不是记住了名词性从句。答不上来的，右边标了回哪一阶。</p>
+
+  <ol class="asks checks">
+    <li><span>为什么 I know where he is. 不能写成 I know where is he.？</span><span class="where">阶段三</span></li>
+    <li><span>为什么 Who came? 嵌入成 I know who came. 时一个字都不用改？</span><span class="where">阶段三</span></li>
+    <li><span>为什么 Does she like coffee? 嵌入后 does 消失，而 Is he busy? 嵌入后 is 还在？</span><span class="where">阶段三</span></li>
+    <li><span>为什么 Do you know whether he is busy? 里主句用疑问语序、从句不用？</span><span class="where">阶段三</span></li>
+    <li><span>I know what he wants. 和 What he wants is expensive. 里的 what，来源一样吗？</span><span class="where">阶段二</span></li>
+    <li><span>为什么 Whoever comes first 不能换成 What comes first，而 I don't know what he is. 里的 what 却能问到人？</span><span class="where">阶段二</span></li>
+    <li><span>为什么 That he passed the exam 可以整体放在主语位置？</span><span class="where">阶段一、四</span></li>
+    <li><span>为什么 Robert is short is true. 是错的？加一个 that 到底改变了什么？</span><span class="where">阶段一</span></li>
+    <li><span>为什么 We talked about that he was late. 不成立，加上 the fact 就成立了？</span><span class="where">阶段四</span></li>
+    <li><span>Tell me that he is coming. 和 the fact that he lied 里，两个 that 从句分别是在补谁的内容？</span><span class="where">阶段四</span></li>
+    <li><span>I'm sure that he will come. 里，sure 和 that he will come 各是什么？为什么不能把 that 从句直接叫表语从句？</span><span class="where">阶段四</span></li>
+    <li><span>I need money. / What I need is money. / Money is what I need. 三句里，哪一句才是真正的"平铺"？</span><span class="where">阶段五</span></li>
+    <li><span>为什么 What I want is become a hero. 是错的？</span><span class="where">阶段五</span></li>
+    <li><span>I find it strange that he never calls me. 里的 it 是什么？为什么不能说 I find that he never calls me strange.？</span><span class="where">阶段五</span></li>
+    <li><span>为什么"形式宾语"只出现在主谓宾补句型里，其他四种基本句型都没有？</span><span class="where">阶段五</span></li>
+    <li><span>看到 make it / regard it，往后可能找到哪三样东西？</span><span class="where">阶段五</span></li>
+    <li><span>为什么英语更喜欢 It is clear that… 而不是把长从句顶在句首？</span><span class="where">阶段五</span></li>
+    <li><span>A story goes that… 里，story 和 that 从句为什么被劈开了？</span><span class="where">阶段五</span></li>
+    <li><span>He said that… 和 It is said that… 里的 that 从句，是同一种从句吗？怎么判断？</span><span class="where">阶段六</span></li>
+    <li><span>如果想评价一件事、做一般性报道、突出重点、把一件事变成概念，分别优先调用什么骨架？</span><span class="where">阶段六</span></li>
+    <li><span>为什么 whether 比 if 能出现在更多位置？</span><span class="where">阶段七</span></li>
+    <li><span>what to do 是从哪个完整从句压缩来的？Tell me what to do. 里执行 do 的是谁？为什么不能说 if to go？</span><span class="where">阶段七</span></li>
+    <li><span>为什么 The news that he won 是同位语从句，而 The news that he told me 是定语从句？</span><span class="where">阶段七</span></li>
+    <li><span>为什么留坑法不能用来分析 I know why he left.？</span><span class="where">阶段七</span></li>
+    <li><span>为什么宾语从句里的 that 特别容易省？又在哪两种情况下绝对不能省？</span><span class="where">阶段七</span></li>
+    <li><span>He told me that she ___ tomorrow. 为什么填 would come 而不是 came？</span><span class="where">阶段七</span></li>
+    <li><span>The teacher said that the Earth was round. 里的 was，意味着地球现在不圆了吗？</span><span class="where">阶段七</span></li>
+    <li><span>I suggest that he go now. 里为什么是 go 而不是 goes？这个原形是哪个词省略后剩下的？</span><span class="where">阶段七</span></li>
+    <li><span>His pale face suggested that he was ill. 里的 suggest 后面为什么不用原形？</span><span class="where">阶段七</span></li>
+    <li><span>为什么"时态呼应"和"否定转移"不应该和四种从句并列背？</span><span class="where">阶段七</span></li>
+  </ol>
+</section>
+
+<footer>下一步：定语从句与状语从句。名词性从句解决的是"一整句话怎么当一个成分"，接下来两类解决的是"一整句话怎么当一个修饰语"—— 定语修饰名词，状语修饰谓语。三类合起来才是英语全部的从句嵌入能力。</footer>
+
+</div><!-- /wrap -->
+
+<nav class="toc" id="toc">
+  <p class="toc-h">目录</p>
+  <ol>
+    <li class="item" data-sec="s1">
+      <a href="#s1"><span class="num">一</span>坐在名词的位置上</a>
+      <div class="subs">
+        <a href="#s1a">从一个词到一整句</a>
+        <a href="#s1b">为什么必须有连词</a>
+        <a href="#s1c">判断从句看什么</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s2">
+      <a href="#s2"><span class="num">二</span>三个打包接口</a>
+      <div class="subs">
+        <a href="#s2a">陈述 → that</a>
+        <a href="#s2b">一般疑问 → whether</a>
+        <a href="#s2c">特殊疑问 → 原疑问词</a>
+        <a href="#s2d">what 的两种用法</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s3">
+      <a href="#s3"><span class="num">三</span>从句内部长什么样</a>
+      <div class="subs">
+        <a href="#s3a">什么叫疑问语序</a>
+        <a href="#s3b">从句只做一半</a>
+        <a href="#s3c">do 为什么消失</a>
+        <a href="#s3d">主句问、从句不问</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s4">
+      <a href="#s4"><span class="num">四</span>四个落点</a>
+      <div class="subs">
+        <a href="#s4a">落点一：主语位</a>
+        <a href="#s4b">落点二：宾语位</a>
+        <a href="#s4b1">｜人 + 内容</a>
+        <a href="#s4b2">｜介词后</a>
+        <a href="#s4b3">｜形容词补足语</a>
+        <a href="#s4c">落点三：表语位</a>
+        <a href="#s4d">落点四：名词内容</a>
+        <a href="#s4d1">｜词 + 内容</a>
+        <a href="#s4d2">｜内容跟谁</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s5">
+      <a href="#s5"><span class="num">五</span>信息重量</a>
+      <div class="subs">
+        <a href="#s5a">it 形式主语</a>
+        <a class="xref" href="#s5b">it 形式宾语</a>
+        <a href="#s5c">what 伪分裂</a>
+        <a href="#s5d">名词的解释推到句尾</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s6">
+      <a href="#s6"><span class="num">六</span>写作骨架</a>
+      <div class="subs">
+        <a href="#s6a">评价：It is + adj.</a>
+        <a href="#s6b">报道：It is + p.p.</a>
+        <a href="#s6c">聚焦：What… is…</a>
+        <a href="#s6d">概念化：名词 + that</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s7">
+      <a href="#s7"><span class="num">七</span>七条边界</a>
+      <div class="subs">
+        <a href="#s7a">一、whether 和 if</a>
+        <a href="#s7b">二、wh + to do</a>
+        <a class="xref" href="#s7c">三、留坑法</a>
+        <a href="#s7c2">｜与定语从句</a>
+        <a href="#s7d">四、that 的省略</a>
+        <a href="#s7e">五、时态呼应</a>
+        <a href="#s7f">六、否定转移</a>
+        <a href="#s7g">七、动词原形</a>
+        <a href="#s7h">not that A, but that B</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s8">
+      <a href="#s8"><span class="num">八</span>本质：信息嵌套</a>
+      <div class="subs">
+        <a href="#s8">三层嵌套</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s9">
+      <a href="#s9"><span class="num">总</span>总览与自检</a>
+      <div class="subs">
+        <a href="#s9a">速查一：位置 + 内容关系</a>
+        <a href="#s9b">速查二：四层判断</a>
+        <a href="#s9c">五步流程</a>
+        <a href="#s9d">费曼自检</a>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+</div><!-- /page -->
+
+<button class="toc-btn" id="tocBtn" aria-label="打开目录">目录</button>
+
+<script>
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.toc .item'));
+  var subLinks = [].slice.call(document.querySelectorAll('.toc .subs a'));
+  var secs = items.map(function(it){ return document.getElementById(it.dataset.sec); });
+  var subs = subLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var ticking = false;
+
+  function activeIndex(list, offset){
+    var idx = 0;
+    for (var i = 0; i < list.length; i++){
+      if (list[i] && list[i].getBoundingClientRect().top <= offset) idx = i;
+    }
+    return idx;
+  }
+
+  function update(){
+    ticking = false;
+    var i = activeIndex(secs, 120);
+    items.forEach(function(it, n){ it.classList.toggle('active', n === i); });
+
+    var j = activeIndex(subs, 140);
+    subLinks.forEach(function(a, n){ a.classList.toggle('on', n === j); });
+
+    // 把当前项滚进目录可视区(仅宽屏侧栏)
+    var cur = items[i];
+    if (cur && window.innerWidth > 1080){
+      var toc = document.getElementById('toc');
+      var t = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+      if (t < 0 || t > toc.clientHeight - 60) toc.scrollTop += t - toc.clientHeight / 2;
+    }
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+
+  // 窄屏抽屉
+  var btn = document.getElementById('tocBtn');
+  var scrim = document.getElementById('scrim');
+  function close(){ document.body.classList.remove('nav-open'); }
+  btn.addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
+  scrim.addEventListener('click', close);
+  document.getElementById('toc').addEventListener('click', function(e){
+    if (e.target.tagName === 'A') close();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>
