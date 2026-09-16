@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>现在完成进行时 · 阶梯式笔记</title>
+<title>现在完成进行时 · 阶梯式笔记（三模块解剖版）</title>
 <style>
   :root{
     --bg:#14161c;
@@ -17,6 +17,9 @@
     --r2:#5cc98a;
     --r3:#e6b850;
     --r4:#f0876a;
+    --r5:#b48ef0;
+    --r6:#e0729e;
+    --danger:#ef6a6a;
     --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
   }
@@ -37,6 +40,8 @@
   .rail span:nth-child(2){background:var(--r2)}
   .rail span:nth-child(3){background:var(--r3)}
   .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+  .rail span:nth-child(6){background:var(--r6)}
 
   section.rung{
     --c:var(--r1);background:var(--surface);border:1px solid var(--border);
@@ -47,6 +52,8 @@
   section.rung.s2{--c:var(--r2)}
   section.rung.s3{--c:var(--r3)}
   section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+  section.rung.s6{--c:var(--r6)}
 
   .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
   .num{font-family:var(--serif);font-size:2.3rem;font-weight:700;line-height:1;color:var(--c);flex:none}
@@ -69,24 +76,33 @@
   .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
   .ex.sub{margin-left:1.1rem;opacity:.92}
 
+  .ex.bad{border-left-color:var(--danger)}
+  .ex.bad .en{color:#f3a3a3;text-decoration:line-through;text-decoration-color:rgba(239,106,106,.5)}
+  .ex.bad .en::after{content:" ✗";color:var(--danger);text-decoration:none;font-family:var(--sans)}
+  .ex.good{border-left-color:var(--r2)}
+  .ex.good .en::after{content:" ✓";color:var(--r2);font-family:var(--sans)}
+
   .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
   @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
   .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
   .vs .card .en{font-family:var(--serif);font-size:1.05rem}
   .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
   .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
-  .vs .card.done .lbl{color:var(--r4)}
-  .vs .card.doing .lbl{color:var(--r1)}
+  .vs .card.a .lbl{color:var(--r1)}
+  .vs .card.b .lbl{color:var(--r3)}
+
+  .conv{margin:.6rem 0}
+  .conv .row{display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px dashed var(--border);font-size:.95rem}
+  .conv .row:last-child{border-bottom:none}
+  .conv .from{font-family:var(--serif);color:#f3a3a3;min-width:5.5em}
+  .conv .arrow{color:var(--faint)}
+  .conv .to{font-family:var(--serif);color:var(--r2);font-weight:600}
+  .conv .gloss{color:var(--muted);font-size:.85rem;margin-left:auto}
 
   code{font-family:"SF Mono",Consolas,monospace;background:var(--surface-2);padding:.05rem .35rem;border-radius:5px;font-size:.88em}
 
   .sum{margin-top:1.2rem;padding:.75rem .95rem;background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:9px;font-size:.94rem}
   .sum b{color:var(--c)}
-
-  /* 关键词卡 */
-  .kw{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0}
-  .kw span{background:var(--surface-2);border-radius:7px;padding:.4rem .7rem;font-family:var(--serif);font-size:.95rem;color:var(--text)}
-  .kw span b{color:var(--c);font-family:var(--sans);font-weight:600}
 
   .overview{margin-top:2.8rem}
   .overview h2{font-size:1.4rem;margin-bottom:1rem}
@@ -97,15 +113,7 @@
   .tbl .dot{font-weight:700}
   .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
   .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
-
-  /* 对照表:完成时 vs 完成进行时 */
-  .cmp{width:100%;border-collapse:collapse;font-size:.88rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:.4rem}
-  .cmp th,.cmp td{padding:.6rem .7rem;border-bottom:1px solid var(--border);vertical-align:top;text-align:left}
-  .cmp thead th{background:var(--surface-2);font-weight:600}
-  .cmp thead th.pp{color:var(--r4)} .cmp thead th.ppc{color:var(--r1)}
-  .cmp tbody tr:last-child td{border-bottom:none}
-  .cmp td:first-child{color:var(--muted)}
-  .cmp .en{font-family:var(--serif)}
+  .tbl tr.o5 .dot{color:var(--r5)} .tbl tr.o6 .dot{color:var(--r6)}
 
   .decide{margin-top:1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
   .decide h2{font-size:1.15rem;margin-bottom:.9rem}
@@ -114,7 +122,19 @@
   .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
   .flow .a::before{content:"└ ";color:var(--faint)}
   .flow .a .h1{color:var(--r1);font-weight:600}
+  .flow .a .h3{color:var(--r3);font-weight:600}
   .flow .a .h4{color:var(--r4);font-weight:600}
+  .flow .a .h5{color:var(--r5);font-weight:600}
+  .flow .a .hd{color:var(--danger);font-weight:600}
+
+  .kw{display:grid;grid-template-columns:1fr;gap:.55rem;margin:.6rem 0}
+  @media(min-width:560px){.kw{grid-template-columns:1fr 1fr 1fr}}
+  .kw .k{background:var(--surface-2);border-radius:9px;padding:.65rem .8rem}
+  .kw .k .t{font-size:.8rem;font-weight:700;margin-bottom:.25rem}
+  .kw .k .w{font-family:var(--serif);font-size:.98rem;color:var(--text)}
+  .kw .k.a .t{color:var(--r1)} .kw .k.b .t{color:var(--r3)} .kw .k.c .t{color:var(--r5)}
+
+  .tl{margin:.7rem 0;padding:10px 12px;background:var(--surface-2);border-radius:9px;font-family:"SF Mono",Consolas,monospace;font-size:.85rem;color:var(--muted);white-space:pre;overflow:auto;line-height:1.65}
 
   footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
 </style>
@@ -124,55 +144,124 @@
 
   <header class="top">
     <h1>现在完成进行时 · 阶梯式笔记</h1>
-    <p class="sub">它存在的唯一理由:补上现在完成时的一个盲区——"过程"。整份笔记就围着这个对比走。</p>
-    <div class="rail"><span></span><span></span><span></span><span></span></div>
+    <p class="sub">它不是"一个时态",是<b>现在</b> + <b>完成</b> + <b>进行</b> 三块拼起来的。把三块拆开,再合回去,整个结构就通了。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span><span></span></div>
   </header>
 
-  <!-- 第一阶 -->
+  <!-- ① 地基:三层叠加 -->
   <section class="rung s1">
     <div class="rung-head">
       <div class="num">1</div>
       <div class="titles">
-        <h2>地基:它专门强调"过程",不是"结果"</h2>
+        <h2>地基:它不是"一个时态",是三层叠加</h2>
         <div class="tag">是什么 · 一个最本质的点</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>已经有现在完成时了,为什么还要这个时态?
-      <span class="lim"><b>为什么需要:</b>现在完成时的落点在"结果"——事情<em>做完了</em>、留下了什么。可有时我们想说的恰恰相反:不管做完没,我这一路<em>一直在做</em>。完成时框不住这条"过程本身"。</span>
+      <b>要解决:</b>为什么它的名字里同时有"现在""完成""进行",却还能是一个整体?
+      <span class="lim"><b>为什么需要:</b>大多数人把它当成一个"新的、要死记的时态"。其实它只是把三个已经学过的模块拼在一起,每一块管一件事。</span>
     </div>
-    <p>核心一句话:现在完成进行时 = <strong>一个动作从过去持续到现在,镜头对准"一直在进行"这个过程</strong>。可能还在继续,也可能刚停,但重点永远是"这段持续",而不是"做出了什么结果"。</p>
-    <div class="vs">
-      <div class="card done">
-        <div class="en">I have read the book.</div>
-        <div class="zh">我把书读完了。</div>
-        <div class="lbl">现在完成时 — 镜头对准结果:读完了</div>
-      </div>
-      <div class="card doing">
-        <div class="en">I have been reading the book.</div>
-        <div class="zh">我一直在读这本书(可能还没读完)。</div>
-        <div class="lbl">完成进行时 — 镜头对准过程:一直在读</div>
-      </div>
+    <p>把它拆开看:</p>
+    <div class="conv">
+      <div class="row"><span class="from">现在</span><span class="arrow">→</span><span class="to">have / has</span><span class="gloss">把参考点钉在此刻</span></div>
+      <div class="row"><span class="from">完成</span><span class="arrow">→</span><span class="to">been</span><span class="gloss">建立"更早 ↔ 参照点"的连接</span></div>
+      <div class="row"><span class="from">进行</span><span class="arrow">→</span><span class="to">doing</span><span class="gloss">把事件打开成过程</span></div>
     </div>
-    <p class="note">记住这组对照,它就是整份笔记的主线。后面每一阶都在回答:这个"强调过程"的意思,怎么落到形式和用法上。</p>
-    <div class="sum"><b>小结:</b>同样连接"过去↔现在",完成时看<b>结果</b>,完成进行时看<b>过程</b>。抓住"镜头对准哪儿"这一点,全篇打通。</div>
+    <p class="note">三个模块各管一个维度:<b>现在管"参考点在哪"</b>,<b>完成管"时间关系"</b>,<b>进行管"观察方式"</b>。三块各司其职,拼在一起才叫"现在完成进行时"。</p>
+    <p class="note">它和前面几课是一个系统:一般现在时看"现在的常态",现在进行时看"此刻正在展开的过程",现在完成时看"过去如何连接到现在",现在完成进行时看"<strong>这段连接里,过程是怎么一路走过来的</strong>"。</p>
+    <div class="sum"><b>小结:</b>不要把它当成一个新时态记。它是三个老模块的组合——<b>现在给锚点、完成给关系、进行给过程</b>。</div>
   </section>
 
-  <!-- 第二阶 -->
+  <!-- ② 解剖三块 -->
   <section class="rung s2">
     <div class="rung-head">
       <div class="num">2</div>
       <div class="titles">
-        <h2>形式:过程怎么搭成句子</h2>
+        <h2>解剖三块:每一块给什么,去掉它会变成什么</h2>
+        <div class="tag">怎么理解 · 三模块各自的贡献</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>这三块具体各贡献什么?少了任何一块会怎样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说"有三块",没说"去掉一块会变成什么"。</span>
+    </div>
+
+    <h3>"进行"给什么:把事件打开,看内部</h3>
+    <p class="note">进行模块的活儿是——<strong>把事件当成一个正在展开的过程</strong>,而不是一个已经完成的点。有没有它,决定你"看结果"还是"看过程"。</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I have read the book.</div>
+        <div class="zh">书读完了。</div>
+        <div class="lbl">没有"进行" → 看到的是结果 / 完成</div>
+      </div>
+      <div class="card b">
+        <div class="en">I have been reading the book.</div>
+        <div class="zh">一直在读,可能还没读完。</div>
+        <div class="lbl">加了"进行" → 看到的是过程 / 持续</div>
+      </div>
+    </div>
+
+    <h3>"完成"给什么:建立"更早 ↔ 参照点"的连接</h3>
+    <p class="note">完成模块的活儿是——<strong>把一个更早的事件,和参照点挂上钩</strong>。有没有它,决定你"只看此刻"还是"从过去一路看过来"。</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I am reading the book.</div>
+        <div class="zh">我正在读这本书。</div>
+        <div class="lbl">没有"完成" → 只看此刻正在发生,不管之前多久</div>
+      </div>
+      <div class="card b">
+        <div class="en">I have been reading the book.</div>
+        <div class="zh">我一直在读这本书。</div>
+        <div class="lbl">加了"完成" → 从过去一路连接到现在</div>
+      </div>
+    </div>
+
+    <h3>"现在"给什么:把参考点钉在此刻</h3>
+    <p class="note">现在模块的活儿是——<strong>决定参考点在哪</strong>。它用 <code>have / has</code> 把参照点定在"说话这一刻",换掉它,整套时态就换锚点。</p>
+    <div class="conv">
+      <div class="row"><span class="from">have been doing</span><span class="arrow">→</span><span class="to">参照点 = 现在</span><span class="gloss">现在完成进行时</span></div>
+      <div class="row"><span class="from">had been doing</span><span class="arrow">→</span><span class="to">参照点 = 过去</span><span class="gloss">过去完成进行时</span></div>
+      <div class="row"><span class="from">will have been doing</span><span class="arrow">→</span><span class="to">参照点 = 将来</span><span class="gloss">将来完成进行时</span></div>
+    </div>
+    <p class="note">三块里最"重"的是哪块?——<b>现在这块</b>。最左边的 <code>have / has</code> 承担了时态信息,改它,整套时态跟着变;后面两块的形式基本不动。</p>
+    <div class="sum"><b>小结:</b>去掉"进行" → 只看结果;去掉"完成" → 只看此刻;换掉"现在" → 换成另一个锚点。<b>三块都在,才同时具备"连接 + 过程 + 现在"三个特点。</b></div>
+  </section>
+
+  <!-- ③ 形式控制链 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>形式:三块怎么拼成 have been doing</h2>
         <div class="tag">怎么用 · 造句的骨架</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>知道它强调过程了,句子长什么样?
-      <span class="lim"><b>上一阶的局限:</b>地基只说清"表达什么",没给"句子的形状"。</span>
+      <b>要解决:</b>知道三块各给什么了,它们具体怎么拼?
+      <span class="lim"><b>上一阶的局限:</b>解剖说清"每块给什么",但形式为什么长这样、能不能换别的,还没落地。</span>
     </div>
-    <p>公式一条:<strong>have / has + been + doing</strong>。拆开看正好是两个老朋友的拼接——</p>
-    <p class="note"><code>have/has + been</code> 来自现在完成时(管"连到现在"),<code>been + doing</code> 那个 <code>-ing</code> 来自进行时(管"过程")。两块一拼,既连着现在、又强调进行,正好对应第一阶的意思。</p>
+    <p>公式一条:<strong>have / has + been + doing</strong>。它不是随便拼的,是一条严格的控制链:</p>
+    <div class="conv">
+      <div class="row"><span class="from">have / has</span><span class="arrow">→</span><span class="to">后面要过去分词</span><span class="gloss">完成结构规定</span></div>
+      <div class="row"><span class="from">be</span><span class="arrow">→</span><span class="to">been</span><span class="gloss">只能变成 been,不能是 being</span></div>
+      <div class="row"><span class="from">been</span><span class="arrow">→</span><span class="to">后面要现在分词</span><span class="gloss">进行结构规定</span></div>
+      <div class="row"><span class="from">do</span><span class="arrow">→</span><span class="to">doing</span><span class="gloss">动词打开成过程</span></div>
+    </div>
+
+    <h3>为什么是 been,不是 being?</h3>
+    <p class="note">这是最常见的错误。<code>being</code> 是 be 的<strong>现在分词</strong>,它出现在进行结构里(比如 <code>is being watched</code>)。而完成结构后面要求<strong>过去分词</strong>,be 的过去分词是 <code>been</code>,所以必须是 <code>have been</code>。</p>
+    <div class="ex bad">
+      <div class="en">I have being studying.</div>
+      <div class="zh">✗ have 后面必须是过去分词,being 是现在分词</div>
+    </div>
+    <div class="ex good">
+      <div class="en">I have been studying.</div>
+      <div class="zh">✓ have + been(过去分词)+ studying</div>
+    </div>
+
+    <h3>为什么 doing 不能换成 do / did?</h3>
+    <p class="note"><code>been</code> 后面接的是进行结构,进行结构要求 <strong>-ing</strong> 形式,所以永远是 <code>doing</code>。这也是为什么"进行"那块的形式在整个时态里是固定的。</p>
+
     <div class="ex">
       <div class="en">I have been working all morning.</div>
       <div class="zh">我一上午都在工作。</div>
@@ -181,82 +270,210 @@
       <div class="en">She has been learning French.</div>
       <div class="zh">她一直在学法语。&nbsp;<span style="color:var(--r2)">三单 → has been</span></div>
     </div>
-    <div class="sum"><b>小结:</b>骨架 <code>have/has + been + doing</code> = 完成时的"连到现在" + 进行时的 "-ing 过程",拼起来的。</div>
+
+    <div class="sum"><b>小结:</b><code>have → been → doing</code> 是一条硬链,不能改成 <code>being</code>,也不能改成 <code>do</code>。<b>最左边的 have/has 承担时态信息,后面两块形式固定。</b></div>
   </section>
 
-  <!-- 第三阶 -->
-  <section class="rung s3">
-    <div class="rung-head">
-      <div class="num">3</div>
-      <div class="titles">
-        <h2>怎么用:配时间状语,把"这段持续"说出来</h2>
-        <div class="tag">怎么用 · 核心搭配</div>
-      </div>
-    </div>
-    <div class="why">
-      <b>要解决:</b>"一直在做"这个过程,怎么在句子里标出跨度?
-      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",但一个过程总得说清"持续了多久 / 从何时起"。</span>
-    </div>
-    <p>三类常用时间状语,负责标出这段过程的长度或起点:</p>
-    <h3>for + 一段时间</h3>
-    <div class="ex">
-      <div class="en">I have been studying for 3 hours.</div>
-      <div class="zh">我已经学了3个小时了。</div>
-    </div>
-    <h3>since + 过去时间点</h3>
-    <div class="ex">
-      <div class="en">She has been working since 8am.</div>
-      <div class="zh">她从早上8点起一直在工作。</div>
-    </div>
-    <h3>all day / all morning(整段时间)</h3>
-    <div class="ex">
-      <div class="en">He has been sleeping all day.</div>
-      <div class="zh">他睡了一整天。</div>
-    </div>
-    <p class="note">和完成时的 for/since 长得一样,但这里的重点不同:完成时用它们量"结果累积到现在有多久",完成进行时用它们量"过程持续了多久"——差别还在那个"镜头对准哪儿"。</p>
-    <div class="sum"><b>小结:</b>for 标时长、since 标起点、all day 标整段;它们都是给"这段过程"量尺寸的。</div>
-  </section>
-
-  <!-- 第四阶 -->
+  <!-- ④ 时间线 + 用法 -->
   <section class="rung s4">
     <div class="rung-head">
       <div class="num">4</div>
       <div class="titles">
-        <h2>高级:一眼分清"它 vs 现在完成时"</h2>
-        <div class="tag">高级技巧 · 实战抓手</div>
+        <h2>时间线:完成时 vs 完成进行时,差在哪一段</h2>
+        <div class="tag">怎么用 · 三种过程形态 + 时间状语</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>实战里两个时态老搞混,怎么快速判断?
-      <span class="lim"><b>上一阶的局限:</b>前面讲清了它自己;但真正的难点是它和现在完成时的边界。</span>
+      <b>要解决:</b>和现在完成时到底差在哪?三种"过程形态"怎么落进句子?
+      <span class="lim"><b>上一阶的局限:</b>形式落地了,但"过程"这个概念本身还需要一个可视化的对比,才不容易和完成时混。</span>
     </div>
 
-    <h3>它自己的信号词</h3>
-    <p class="note">除了 for/since/all day,还有两个偏它的词:</p>
-    <div class="kw">
-      <span><b>lately</b> 最近</span>
-      <span><b>recently</b> 近来</span>
+    <h3>时间线对比</h3>
+    <div class="tl">现在完成时 —— 看"累积到现在的成果"
+
+ 过去                       现在
+  ●─────────────────────────▶ ✓
+  └── 结果被压成一个点 ──┘
+
+
+现在完成进行时 —— 看"一路延伸过来的过程"
+
+ 过去                       现在
+  ●━━━━━━━━━━━━━━━━━━━━━━━━▶
+  └── 过程被展开成一条线 ──┘</div>
+    <p class="note">同一根"过去↔现在"的线,<b>完成时把它压成一点</b>(看结果),<b>完成进行时把它拉成一条线</b>(看过程)。这是两者最根本的差别,其他用法都是从这个差别长出来的。</p>
+
+    <h3>三种"过程形态"</h3>
+
+    <p><strong>形态一:还在继续</strong></p>
+    <div class="ex">
+      <div class="en">I have been studying for three hours.</div>
+      <div class="zh">我已经连续学习三个小时了。&nbsp;<span style="color:var(--r4)">现在还在学</span></div>
+    </div>
+
+    <p><strong>形态二:刚停下,留下痕迹</strong></p>
+    <div class="ex">
+      <div class="en">You have been running.</div>
+      <div class="zh">你刚才一直在跑步吧。&nbsp;<span style="color:var(--muted)">现在停了,但满头大汗、还在喘</span></div>
     </div>
     <div class="ex">
-      <div class="en">I have been feeling tired lately.</div>
-      <div class="zh">我最近一直觉得累。</div>
+      <div class="en">Have you been crying?</div>
+      <div class="zh">你刚才一直在哭吗?&nbsp;<span style="color:var(--muted)">现在停了,但眼睛红着</span></div>
+    </div>
+
+    <p><strong>形态三:最近这段时间一直如此</strong></p>
+    <div class="ex">
+      <div class="en">I have been working hard lately.</div>
+      <div class="zh">我最近一直工作得很努力。</div>
+    </div>
+    <div class="ex">
+      <div class="en">She has been feeling tired recently.</div>
+      <div class="zh">她最近一直觉得累。</div>
+    </div>
+
+    <h3>时间状语:给"这段过程"量尺寸</h3>
+    <div class="conv">
+      <div class="row"><span class="from">for</span><span class="arrow">→</span><span class="to">量长度</span><span class="gloss">for 3 hours / for two weeks</span></div>
+      <div class="row"><span class="from">since</span><span class="arrow">→</span><span class="to">找起点</span><span class="gloss">since 8am / since 2006</span></div>
+      <div class="row"><span class="from">all day</span><span class="arrow">→</span><span class="to">标整段</span><span class="gloss">all day / all morning / all week</span></div>
+      <div class="row"><span class="from">lately</span><span class="arrow">→</span><span class="to">标近段</span><span class="gloss">lately / recently</span></div>
+    </div>
+
+    <div class="kw">
+      <div class="k a"><div class="t">持续到现在</div><div class="w">for · since<br>all day</div></div>
+      <div class="k b"><div class="t">刚停,留痕</div><div class="w">动作动词<br>+ 完成进行时</div></div>
+      <div class="k c"><div class="t">近期持续</div><div class="w">lately<br>recently</div></div>
+    </div>
+
+    <div class="sum"><b>小结:</b>同一根线,完成时压成一点(看结果),完成进行时拉成一条线(看过程)。三种过程形态:<b>还在继续 / 刚停留痕 / 近期持续</b>;时间状语负责给这段过程量尺寸。</div>
+  </section>
+
+  <!-- ⑤ 大坑 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>大坑:没有"过程"的动词,不能用进行</h2>
+        <div class="tag">特殊情况 · 最容易错的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>为什么 <code>I have been knowing him</code> 是错的?和完成时那阶的大坑怎么对应?
+      <span class="lim"><b>上一阶的局限:</b>前面说"过程",但有一类动词根本没有过程——它们只能表状态或瞬间。这类词套进行结构就错。</span>
+    </div>
+    <p>先分清三种动词:</p>
+    <div class="conv">
+      <div class="row"><span class="from">动作动词</span><span class="arrow">→</span><span class="to">有过程</span><span class="gloss">study / work / read / rain / run</span></div>
+      <div class="row"><span class="from">状态动词</span><span class="arrow">→</span><span class="to">没过程</span><span class="gloss">know / believe / own / belong / love(表状态)</span></div>
+      <div class="row"><span class="from">短暂动词</span><span class="arrow">→</span><span class="to">没过程</span><span class="gloss">die / leave / marry / buy / borrow</span></div>
+    </div>
+    <p class="note">只有第一类能进 <code>have been doing</code>。后两类都没有可被打开的"过程",套进去就错。</p>
+
+    <h3>为什么错?把中文直译出来</h3>
+    <div class="ex bad">
+      <div class="en">I have been knowing him for ten years.</div>
+      <div class="zh">字面:我"持续认识"他十年 —— "认识"是一种状态,不是一个过程</div>
+    </div>
+    <div class="ex bad">
+      <div class="en">I have been owning this car for three years.</div>
+      <div class="zh">字面:我"持续拥有"这辆车三年 —— "拥有"是状态</div>
+    </div>
+    <div class="ex bad">
+      <div class="en">He has been leaving school for 10 years.</div>
+      <div class="zh">字面:他"持续离开"学校十年 —— 离开是一瞬间的</div>
+    </div>
+    <div class="ex bad">
+      <div class="en">My grandpa has been dying for 2 years.</div>
+      <div class="zh">字面:祖父"持续死亡"两年 —— 荒谬</div>
+    </div>
+
+    <h3>解决法:状态动词 / 短暂动词表"持续",用完成时</h3>
+    <p class="note">它们没有过程,但<strong>留下的状态</strong>可以延续到现在,正好交给现在完成时。和完成时那阶的"改主系表"是同一个逻辑。</p>
+    <div class="conv">
+      <div class="row"><span class="from">know</span><span class="arrow">→</span><span class="to">have known</span><span class="gloss">认识 → 一直认识</span></div>
+      <div class="row"><span class="from">own</span><span class="arrow">→</span><span class="to">have owned</span><span class="gloss">拥有 → 一直拥有</span></div>
+      <div class="row"><span class="from">be dead</span><span class="arrow">→</span><span class="to">have been dead</span><span class="gloss">死亡状态 → 一直处于这个状态</span></div>
+      <div class="row"><span class="from">be away</span><span class="arrow">→</span><span class="to">have been away</span><span class="gloss">离开状态 → 一直处于这个状态</span></div>
+    </div>
+    <div class="ex good">
+      <div class="en">I have known him for ten years.</div>
+      <div class="zh">我认识他十年了。</div>
+    </div>
+    <div class="ex good">
+      <div class="en">My grandpa has been dead for 2 years.</div>
+      <div class="zh">我祖父去世 2 年了。</div>
+    </div>
+
+    <h3>但是——动作动词就是动作动词</h3>
+    <p class="note">如果动词本身有过程(teach、live、work、learn、read、rain),直接 <code>have been doing</code>,不用改:</p>
+    <div class="ex good">
+      <div class="en">I have been teaching English for 11 years.</div>
+      <div class="zh">我教英语 11 年了(还在教)。</div>
+    </div>
+    <div class="ex good">
+      <div class="en">It has been raining since last night.</div>
+      <div class="zh">从昨晚起一直在下雨。</div>
+    </div>
+
+    <div class="sum"><b>小结:</b>三种动词只有动作动词能配 <code>have been doing</code>。<b>状态动词 + 进行 = 错,短暂动词 + 进行 = 错</b>;两类都改用现在完成时 + 状态表达。</div>
+  </section>
+
+  <!-- ⑥ 判断法 + 和完成时的边界 -->
+  <section class="rung s6">
+    <div class="rung-head">
+      <div class="num">6</div>
+      <div class="titles">
+        <h2>实战:和完成时二选一,怎么快速定</h2>
+        <div class="tag">高级技巧 · 收尾判断</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>考试里两个"完成"老搞混,怎么一秒钟决定?
+      <span class="lim"><b>上一阶的局限:</b>前面拆清了三个模块和三种动词;最后的难点是"看到句子,该选哪个"。</span>
     </div>
 
     <h3>核心对照:同一件事,两种镜头</h3>
-    <table class="cmp">
+    <table class="tbl" style="margin-top:.4rem">
       <thead>
-        <tr><th>比的是</th><th class="pp">现在完成时</th><th class="ppc">完成进行时</th></tr>
+        <tr><th>比的是</th><th>现在完成时</th><th>完成进行时</th></tr>
       </thead>
       <tbody>
-        <tr><td>镜头对准</td><td>结果、完成</td><td>过程、持续</td></tr>
+        <tr><td>看的是</td><td>结果、完成、成果</td><td>过程、持续、一路</td></tr>
         <tr><td>做完了吗</td><td>通常已完成</td><td>未必,可能还在做</td></tr>
-        <tr><td>例句</td>
-            <td><span class="en">I have painted the wall.</span><br>墙刷好了</td>
-            <td><span class="en">I have been painting the wall.</span><br>我一直在刷墙</td></tr>
-        <tr><td>言下之意</td><td>看成果</td><td>看这一路的付出/持续</td></tr>
+        <tr><td>时间线</td><td>压成一点</td><td>拉成一条线</td></tr>
+        <tr><td>例句</td><td>I have painted the wall.<br>墙刷好了</td><td>I have been painting the wall.<br>我一直在刷墙</td></tr>
+        <tr><td>典型信号词</td><td>already / just / yet<br>ever / never</td><td>for / since / all day<br>lately / recently</td></tr>
       </tbody>
     </table>
-    <div class="sum"><b>小结:</b>lately/recently 偏它;和完成时二选一时,问自己一句——<b>我在说"做完了什么",还是"一直在做"?</b> 前者用完成时,后者用完成进行时。</div>
+
+    <h3>歧义句:有没有"进行",意思不一样</h3>
+    <p><code>I have lived in Beijing.</code> 光这一句有歧义,换形式就分开:</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I have lived in Beijing.</div>
+        <div class="zh">我(曾经)在北京住过 —— 现在多半不住。</div>
+        <div class="lbl">完成时 — 整段经历压成一个事实</div>
+      </div>
+      <div class="card b">
+        <div class="en">I have been living in Beijing.</div>
+        <div class="zh">我一直在北京住着 —— 强调过程。</div>
+        <div class="lbl">完成进行时 — 整段经历展开成过程</div>
+      </div>
+    </div>
+    <div class="ex">
+      <div class="en">I lived in Beijing for 10 years.</div>
+      <div class="zh">我(曾经)在北京住了十年 —— 十年整体封在过去,现在已不住。</div>
+    </div>
+
+    <h3>两种"完成"之外:三层模块的替换游戏</h3>
+    <p class="note">最后一个练手的点:如果会拆,就知道替换哪一块会得到什么时态。</p>
+    <div class="conv">
+      <div class="row"><span class="from">have done</span><span class="arrow">→</span><span class="to">去掉"进行"</span><span class="gloss">现在完成时(看结果)</span></div>
+      <div class="row"><span class="from">am doing</span><span class="arrow">→</span><span class="to">去掉"完成"</span><span class="gloss">现在进行时(只看此刻)</span></div>
+      <div class="row"><span class="from">had been doing</span><span class="arrow">→</span><span class="to">换掉"现在"</span><span class="gloss">过去完成进行时(锚点在过去)</span></div>
+      <div class="row"><span class="from">will have been doing</span><span class="arrow">→</span><span class="to">换掉"现在"</span><span class="gloss">将来完成进行时(锚点在将来)</span></div>
+    </div>
+    <div class="sum"><b>小结:</b>二选一时问自己一句——<b>我在说"做完了什么",还是"一直在做"?</b> 前者用完成时,后者用完成进行时。<b>把三块拆开看,还能顺手推导出过去/将来完成进行时。</b></div>
   </section>
 
   <!-- 总览 -->
@@ -267,10 +484,12 @@
         <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
       </thead>
       <tbody>
-        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>过去持续到现在,强调过程</td><td>镜头对准"过程",不是"结果"</td></tr>
-        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td><code>have/has + been + doing</code></td><td>完成时的"连到现在" + 进行的 -ing</td></tr>
-        <tr class="o3"><td><span class="dot">③ 搭配</span></td><td>标跨度</td><td>for / since / all day</td><td>给这段过程量尺寸</td></tr>
-        <tr class="o4"><td><span class="dot">④ 高级</span></td><td>怎么区分</td><td>lately/recently;对照完成时</td><td>问:说"做完啥"还是"一直在做"</td></tr>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>它是什么</td><td>现在 + 完成 + 进行,三层叠加</td><td>不是新时态,是三块拼的</td></tr>
+        <tr class="o2"><td><span class="dot">② 解剖</span></td><td>每块给什么</td><td>进行给过程 / 完成给连接 / 现在给锚点</td><td>去掉哪块,就变成别的时态</td></tr>
+        <tr class="o3"><td><span class="dot">③ 形式</span></td><td>怎么搭</td><td><code>have/has + been + doing</code></td><td>硬链,不能改 been / doing</td></tr>
+        <tr class="o4"><td><span class="dot">④ 时间线</span></td><td>和完成时差在哪</td><td>完成压成一点,完成进行拉成线</td><td>看结果 vs 看过程</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 大坑</span></td><td>过程的限制</td><td>状态动词 / 短暂动词不能用进行</td><td>没过程,别打开</td></tr>
+        <tr class="o6"><td><span class="dot">⑥ 实战</span></td><td>怎么定</td><td>二选一;三层模块替换游戏</td><td>问:说"做完啥"还是"一直在做"</td></tr>
       </tbody>
     </table>
   </div>
@@ -282,13 +501,17 @@
       <div class="q">你想突出的是"一路一直在做这个过程"吗?</div>
       <div class="a"><span class="h1">是 →</span> 用<strong>完成进行时</strong> <code>have been doing</code>(常配 for/since/all day/lately)</div>
       <div class="q">你想突出的是"已经做完了、拿到什么结果"吗?</div>
-      <div class="a"><span class="h4">是 →</span> 用<strong>现在完成时</strong> <code>have done</code></div>
-      <div class="q">动作是 die/leave 这类短暂动词?</div>
-      <div class="a">→ 两个"完成"都不用它表持续;回去看完成时那阶的"改主系表"</div>
+      <div class="a"><span class="h3">是 →</span> 用<strong>现在完成时</strong> <code>have done</code></div>
+      <div class="q">动词是 know / own 这类状态动词,或 die / leave 这类短暂动词?</div>
+      <div class="a"><span class="hd">是 →</span> 不用 been doing 表持续;改用完成时 + 状态表达(be dead / be away…)</div>
+      <div class="q">把 have 换成 had / will have,还想说"一直在做"吗?</div>
+      <div class="a"><span class="h4">是 →</span> 换锚点得到<strong>过去 / 将来完成进行时</strong>,结构不变</div>
+      <div class="q">句里只有 lately / recently,说的是最近这段时间一直如此?</div>
+      <div class="a"><span class="h5">是 →</span> 偏<strong>完成进行时</strong></div>
     </div>
   </div>
 
-  <footer>现在完成进行时 · 一句话——完成时看结果,它看过程</footer>
+  <footer>现在完成进行时 · 三层叠加 → 三块解剖 → 形式链 → 时间线 → 大坑 → 实战 · 现在给锚点,完成给连接,进行给过程</footer>
 
 </div>
 </body>

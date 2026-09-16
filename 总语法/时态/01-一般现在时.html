@@ -187,6 +187,23 @@
   .flow .a .hit4{color:var(--r4);font-weight:600}
 
   footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- satmax skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.rel{color:#e6b850}   /* 定语从句 */
+.nom{color:#38cabf}   /* 名词性从句 */
+.adv{color:#f0876a}   /* 状语从句 */
+.freq{color:#b48ef0;font-weight:700}  /* 频率副词 */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+
 </style>
 </head>
 <body>
@@ -194,197 +211,224 @@
 
   <header class="top">
     <h1>一般现在时 · 阶梯式笔记</h1>
-    <p class="sub">从"它到底锚定什么"这块地基起步,一阶叠一阶往上搭。</p>
+    <p class="sub">从“它锚定什么”起步，一阶叠一阶：地基 → 骨架 → 功能 → 表将来 → 判断。</p>
     <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
   </header>
 
-  <!-- 第一阶 -->
+  <!-- ① 地基 -->
   <section class="rung s1">
     <div class="rung-head">
       <div class="num">1</div>
       <div class="titles">
-        <h2>地基:它锚定"常态",不是"此刻"</h2>
+        <h2>地基：它锚定“常态”，不是“此刻”</h2>
         <div class="tag">是什么 · 一个最本质的点</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>一般现在时到底在表达什么?
-      <span class="lim"><b>为什么需要:</b>名字骗人——"现在时"让人以为是"现在正在做",但那是<em>进行时</em>。不先拆掉这个误解,后面全会用错。</span>
+      <b>要解决：</b>一般现在时到底在表达什么？
+      <span class="lim"><b>为什么先讲：</b>名字骗人——“现在时”让人以为是“正在做”，但那是<em>现在进行时</em>。不先拆掉这个误解，后面全会用错。</span>
     </div>
-    <p>核心一句话:一般现在时描述的是<strong>稳定、反复、不随某个时间点改变的情况</strong>——也就是常态与规律。正因为它不绑定某个具体时刻,所以过去成立、现在成立、将来也成立(它的"时间不受限"就是这么来的)。</p>
+    <p>核心一句话：一般现在时描述的是<strong>稳定、反复、不随某个时间点改变的情况</strong>——也就是常态与规律。正因为它不绑定某个具体时刻，所以<strong>过去成立、现在成立、将来也成立</strong>；它“时间不受限”就是这么来的。</p>
     <div class="vs">
       <div class="card gen">
         <div class="en">She eats meat.</div>
-        <div class="zh">她(平时)吃肉。</div>
+        <div class="zh">她（平时）吃肉。</div>
         <div class="lbl">常态 — 她是个吃肉的人</div>
       </div>
       <div class="card now">
         <div class="en">She is eating meat.</div>
         <div class="zh">她正在吃肉。</div>
-        <div class="lbl">此刻 — 这是进行时,不是本课</div>
+        <div class="lbl">此刻 — 这是进行时，不是本课</div>
       </div>
     </div>
-    <div class="sum"><b>小结:</b>一般现在时 = "默认档 / 无时间戳"的时态,讲的是"一贯如此",不是"此刻发生"。记住这一句,后面每一阶都在它上面长。</div>
+    <div class="sum"><b>小结：</b>一般现在时 = “默认档 / 无时间戳”的时态，讲的是“一贯如此”，不是“此刻发生”。后面每一阶都长在它上面。</div>
   </section>
 
-  <!-- 第二阶 -->
+  <!-- ② 形式 -->
   <section class="rung s2">
     <div class="rung-head">
       <div class="num">2</div>
       <div class="titles">
-        <h2>形式:常态怎么搭成句子</h2>
-        <div class="tag">怎么用 · 造句的骨架</div>
+        <h2>形式：一个满配句子能塞多满</h2>
+        <div class="tag">怎么用 · 句子骨架</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>知道它表常态了,可句子长什么样?
-      <span class="lim"><b>上一阶的局限:</b>地基只说清了"表达什么",没给"句子的形状"。</span>
+      <b>要解决：</b>一个一般现在时的句子，成分排起来长什么样？
+      <span class="lim"><b>上一阶的局限：</b>地基只说清“表达什么”，没给“句子的形状”。</span>
+    </div>
+    <p>把动词分成<strong>实义动词句（do/does）</strong>和 <strong>be 动词句</strong>两套；每套再看三种句式（陈述 / 一般疑问 / 特殊疑问）。关键规律：<strong>换时态时骨架不变，只有谓语动词换形</strong>——这就是把它抽成骨架的意义。下面每条都塞满“三大从句 + 频率副词”，展示满配上限。</p>
+    <div class="legend2">
+      <span class="rel">〔定语从句〕</span>
+      <span class="nom">〔名词性从句〕</span>
+      <span class="adv">〔状语从句〕</span>
+      <span class="freq">频率副词</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
     </div>
 
-    <h3>两类动词</h3>
-    <p><strong>系动词 be(am / is / are)</strong>——描述"是什么、处于什么状态"。</p>
+    <h3>A · 实义动词句（do / does）</h3>
+    <p class="note">下面三句是<strong>同一句</strong>一步步变出来的：陈述句 → 一般疑问句 → 特殊疑问句，后一句都在前一句身上只动一处。主语三单时谓语加 -s/-es（tell→tells），此处不展开变形规则。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel">主语 <span class="rel">〔定语从句〕</span> · <span class="freq">频率副词</span> · <b>谓语</b> · 宾语 <span class="nom">〔名词性从句〕</span> · <span class="adv">〔状语从句〕</span></div>
     <div class="ex">
-      <div class="en">She is tired.</div>
-      <div class="zh">她累了。</div>
-    </div>
-    <p><strong>实义动词 do</strong>——用动词原形;<em>唯独</em>主语是"第三人称单数"时,动词加 -s/-es(这就是"三单")。</p>
-    <div class="ex">
-      <div class="en">We eat breakfast at seven.</div>
-      <div class="zh">我们(平时)七点吃早饭。</div>
-    </div>
-    <div class="ex sub">
-      <div class="en">He eats breakfast at seven.</div>
-      <div class="zh">他(平时)七点吃早饭。&nbsp;<span style="color:var(--r2)">← 三单,eat→eats</span></div>
+      <div class="en">The teacher <span class="rel">who teaches us English</span> <span class="freq">always</span> <b>tells</b> us <span class="nom">that hard work pays off</span> <span class="adv">when we want to give up</span>.</div>
+      <div class="zh">教我们英语的那位老师，总在我们想放弃时告诉我们努力会有回报。</div>
     </div>
 
-    <h3>三单变形速查 + 发音口诀</h3>
-    <p class="note">一句口诀管发音:<b style="color:var(--r2)">咝音→读 /ɪz/;非咝音·清辅音→/s/;非咝音·浊辅音或元音→/z/</b>。</p>
-    <div class="rows">
-      <div class="row"><span class="k">直接 +s</span><span class="v">works <code>/s/</code>(清)、plays <code>/z/</code>(元)</span></div>
-      <div class="row"><span class="k">s x ch sh o + es</span><span class="v">watches <code>/ɪz/</code>、goes <code>/z/</code></span></div>
-      <div class="row"><span class="k">辅音 + y → ies</span><span class="v">study → studies <code>/z/</code></span></div>
-      <div class="row"><span class="k">不规则</span><span class="v">have→has <code>/hæz/</code>、do→does <code>/dʌz/</code>、say→says <code>/sɛz/</code></span></div>
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动：主句谓语 <b>tells</b> 拆成 <b>does + 原形 tell</b>，把 <b>does</b> 提到主语前；从句里的 teaches、want 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Does</b> the teacher <span class="rel">who teaches us English</span> <span class="freq">always</span> <b>tell</b> us <span class="nom">that hard work pays off</span> <span class="adv">when we want to give up</span>?</div>
+      <div class="zh">教我们英语的那位老师，总在我们想放弃时告诉我们努力会有回报吗？</div>
     </div>
-    <div class="sum"><b>小结:</b>be 描述状态,do 描述动作;主语三单时动词变身,发音只看一条"咝音口诀"。这一阶给了造句骨架。</div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动：把要问的成分（宾语 <span class="nom">that 从句</span>）换成疑问词 <b>What</b> 提到最前，后面 <b>does</b> 的语序原样保留。</div>
+    <div class="ex">
+      <div class="en"><b>What</b> does the teacher <span class="rel">who teaches us English</span> <span class="freq">always</span> <b>tell</b> us <span class="adv">when we want to give up</span>?</div>
+      <div class="zh">教我们英语的那位老师，总在我们想放弃时告诉我们什么？</div>
+    </div>
+
+    <h3>B · be 动词句（am / is / are）</h3>
+    <p class="note">同样是<strong>一句</strong>依次变出三态。be 句更省事：不借 do，靠 <b>be 自己前移</b>。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel">主语 <span class="rel">〔定语从句〕</span> · <b>be</b> · <span class="freq">频率副词</span> · 表语 <span class="nom">〔名词性从句〕</span> · <span class="adv">〔状语从句〕</span></div>
+    <div class="ex">
+      <div class="en">The teacher <span class="rel">who teaches us math</span> <b>is</b> <span class="freq">always</span> sure <span class="nom">that practice makes perfect</span> <span class="adv">when students feel lost</span>.</div>
+      <div class="zh">教我们数学的那位老师，在学生感到迷茫时，也总确信熟能生巧。</div>
+    </div>
+
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动：把主句的 <b>is</b> 直接提到主语前，<strong>不借 do</strong>；从句里的 teaches、makes、feel 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Is</b> the teacher <span class="rel">who teaches us math</span> <span class="freq">always</span> sure <span class="nom">that practice makes perfect</span> <span class="adv">when students feel lost</span>?</div>
+      <div class="zh">教我们数学的那位老师，在学生感到迷茫时，是不是也总确信熟能生巧？</div>
+    </div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动：把要问的时间状语从句（<span class="adv">when students feel lost</span>）换成疑问词 <b>When</b> 提到最前；同时把频率副词 <span class="freq">always</span> 拿掉——“什么时候 + 总是”读着别扭，<strong>自然英语优先于机械只改一处</strong>。</div>
+    <div class="ex">
+      <div class="en"><b>When</b> is the teacher <span class="rel">who teaches us math</span> sure <span class="nom">that practice makes perfect</span>?</div>
+      <div class="zh">教我们数学的那位老师，在什么时候确信熟能生巧？</div>
+    </div>
+    <p class="note">语法教学里，“自然英语”的优先级高于“同一句只改一处”。这里为了自然去掉了 always；要严格看“频率副词在 <b>be 之后</b>”，回上面陈述 / 一般疑问那两步——<code>is always sure</code>、<code>Is … always sure</code> 都稳稳成立。</p>
+
+    <div class="sum"><b>小结：</b>实义句靠 <b>do/does</b> 撑起疑问、谓语还原<strong>原形</strong>、频率副词在<strong>谓语前</strong>；be 句<strong>不借 do</strong>、be 自己前移、频率副词在 <strong>be 后</strong>。骨架不变，换时态只换谓语。</div>
   </section>
 
-  <!-- 第三阶 -->
+  <!-- ③ 功能 -->
   <section class="rung s3">
     <div class="rung-head">
       <div class="num">3</div>
       <div class="titles">
-        <h2>功能:什么时候真的用它</h2>
-        <div class="tag">怎么用 · 两大核心场景</div>
+        <h2>功能：什么时候真的用它</h2>
+        <div class="tag">怎么用 · 三条骨架，每条 3 例</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>句子会搭了,但到底在哪些场景该用它?
-      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",没解决"何时用"。</span>
-    </div>
-    <p class="note">下面两大用法,本质都是"常态"的具体化——回扣第一阶。</p>
-
-    <h3>习惯 / 反复发生</h3>
-    <div class="ex">
-      <div class="en">I eat meat.</div>
-      <div class="zh">我吃肉(一贯的饮食习惯)。</div>
-    </div>
-    <div class="ex">
-      <div class="en">She does yoga in the morning.</div>
-      <div class="zh">她早上做瑜伽。</div>
-    </div>
-    <p class="note">注意:一周一次、一年一次,只要是"规律性重复",也算习惯。</p>
-    <div class="ex sub">
-      <div class="en">We visit grandma once a week.</div>
-      <div class="zh">我们每周去看一次奶奶。</div>
+      <b>要解决：</b>句子会搭了，到底在哪些场景该用它？
+      <span class="lim"><b>上一阶的局限：</b>形式解决“怎么搭”，没解决“何时用”。三种场景本质都是“常态”，回扣第一阶。</span>
     </div>
 
-    <h3>事实 / 普遍真理</h3>
-    <div class="ex">
-      <div class="en">Fortune favors the bold.</div>
-      <div class="zh">幸运眷顾勇者。</div>
-    </div>
-    <div class="ex">
-      <div class="en">Water boils at one hundred degrees.</div>
-      <div class="zh">水在一百度沸腾。</div>
-    </div>
-    <div class="sum"><b>小结:</b>两大核心 = 习惯性重复 + 客观真理。它们其实是同一件事——<b>稳定成立的规律</b>。</div>
+    <h3>① 习惯 / 反复发生</h3>
+    <div class="skel">主语 · 频率/时间状语 · <b>谓语</b> · 宾语</div>
+    <div class="ex"><div class="en">He <b>plays</b> basketball on Sundays.</div><div class="zh">他每周日打篮球。</div></div>
+    <div class="ex"><div class="en">I never <b>drink</b> coffee at night.</div><div class="zh">我晚上从不喝咖啡。</div></div>
+    <div class="ex"><div class="en">She often <b>reads</b> before bed.</div><div class="zh">她常在睡前看书。</div></div>
+
+    <h3>② 客观事实</h3>
+    <div class="skel">主语 · <b>be</b> · 表语</div>
+    <div class="ex"><div class="en">The earth <b>is</b> round.</div><div class="zh">地球是圆的。</div></div>
+    <div class="ex"><div class="en">Ice <b>is</b> cold.</div><div class="zh">冰是冷的。</div></div>
+    <div class="ex"><div class="en">Two and three <b>are</b> five.</div><div class="zh">二加三等于五。</div></div>
+
+    <h3>③ 普遍真理</h3>
+    <div class="skel">主语 · <b>谓语</b> · 状语</div>
+    <div class="ex"><div class="en">The sun <b>rises</b> in the east.</div><div class="zh">太阳从东方升起。</div></div>
+    <div class="ex"><div class="en">Water <b>flows</b> downhill.</div><div class="zh">水往低处流。</div></div>
+    <div class="ex"><div class="en">The moon <b>goes</b> around the earth.</div><div class="zh">月亮绕着地球转。</div></div>
+
+    <div class="sum"><b>小结：</b>习惯反复、客观事实、普遍真理——三者是同一件事：<strong>稳定成立的规律</strong>。</div>
   </section>
 
-  <!-- 第四阶 -->
+  <!-- ④ 特殊 -->
   <section class="rung s4">
     <div class="rung-head">
       <div class="num">4</div>
       <div class="titles">
-        <h2>特殊情况:用"现在"表"将来"</h2>
-        <div class="tag">特殊情况 · 反直觉的一类</div>
+        <h2>特殊情况：用“现在”表“将来”</h2>
+        <div class="tag">特殊情况 · 三条骨架，每条 3 例</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>现在时不是讲常态吗,怎么有时能表将来?
-      <span class="lim"><b>上一阶的局限:</b>功能只覆盖"当下常态",但有一类将来事件,被当成"既定规律"来说。</span>
+      <b>要解决：</b>现在时不是讲常态吗，怎么有时能表将来？
+      <span class="lim"><b>上一阶的局限：</b>功能只覆盖“当下常态”，但有一类将来事件被当成“既定规律”来说。</span>
     </div>
 
-    <h3>条件 / 时间状语从句</h3>
-    <p>规则:<strong>主句用将来时,从句用一般现在时</strong>(而不是 will)。</p>
-    <div class="ex">
-      <div class="en">If it rains tomorrow, we will stay home.</div>
-      <div class="zh">如果明天下雨,我们就待在家。&nbsp;<span style="color:var(--r4)">rains 用现在时,主句才 will</span></div>
-    </div>
-    <div class="ex">
-      <div class="en">I will tell her when she comes tomorrow.</div>
-      <div class="zh">她明天来的时候我告诉她。&nbsp;<span style="color:var(--r4)">comes 用现在时</span></div>
-    </div>
+    <h3>① 条件状语从句（主将从现）</h3>
+    <div class="skel">If + 主语 · <span class="adv">现在时谓语</span>，主句 <b>will do</b></div>
+    <div class="ex"><div class="en"><span class="adv">If it rains</span> tomorrow, we <b>will stay</b> home.</div><div class="zh">如果明天下雨，我们就待在家。</div></div>
+    <div class="ex"><div class="en"><span class="adv">If you help</span> me, I <b>will finish</b> it soon.</div><div class="zh">如果你帮我，我很快就能做完。</div></div>
+    <div class="ex"><div class="en">She <b>will pass</b> the exam <span class="adv">if she works</span> hard.</div><div class="zh">她如果努力就会通过考试。</div></div>
 
-    <h3>时刻表 / 既定安排</h3>
-    <div class="ex">
-      <div class="en">The train leaves at six tomorrow.</div>
-      <div class="zh">火车明天六点发车。</div>
+    <h3>② 时间状语从句（主将从现）</h3>
+    <div class="skel">主句 <b>will do</b> + when/before/after + 主语 · <span class="adv">现在时谓语</span></div>
+    <div class="ex"><div class="en">I <b>will call</b> you <span class="adv">when I get</span> home.</div><div class="zh">我到家就给你打电话。</div></div>
+    <div class="ex"><div class="en">We <b>will start</b> <span class="adv">before it gets</span> dark.</div><div class="zh">天黑前我们就出发。</div></div>
+    <div class="ex"><div class="en">He <b>will tell</b> you <span class="adv">after he reads</span> it.</div><div class="zh">他看完后会告诉你。</div></div>
+
+    <h3>③ 时刻表 / 既定安排</h3>
+    <div class="skel">主语 · <b>谓语(现在时)</b> · 时间状语</div>
+    <div class="ex"><div class="en">The train <b>leaves</b> at six tomorrow.</div><div class="zh">火车明天六点发车。</div></div>
+    <div class="ex"><div class="en">The shop <b>opens</b> at nine every day.</div><div class="zh">这家店每天九点开门。</div></div>
+    <div class="ex"><div class="en">Our class <b>starts</b> next Monday.</div><div class="zh">我们下周一开课。</div></div>
+
+    <h3>把它放回坐标系：表将来是一条谱系</h3>
+    <p>上面三种“现在时表将来”只覆盖了<strong>最确定的那一端</strong>。真正要记的是：英语表将来不是一种说法，而是按<strong>说话人的确定程度与主观态度</strong>铺开的一条谱系——越往后，说话人的“意志”越重。</p>
+    <div class="rows">
+      <div class="row"><span class="k">现在时表将来</span><span class="v">确定到不必表态，当规律陈述（时刻表 / 从句）。<code>The train leaves at 6.</code> 火车 6 点发车。</span></div>
+      <div class="row"><span class="k">be going to</span><span class="v">已有迹象或打算，但还没板上钉钉。<code>It is going to rain.</code> 要下雨了（天上已有征兆）。</span></div>
+      <div class="row"><span class="k">will do</span><span class="v">说话人当场的判断、决心或承诺，主观意志最重。<code>I will finish it.</code> 我一定做完。</span></div>
     </div>
-    <div class="ex">
-      <div class="en">He leaves next week.</div>
-      <div class="zh">他下周走。</div>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">It is going to rain.</div>
+        <div class="zh">要下雨了。</div>
+        <div class="lbl">看征兆 — 基于迹象的预测</div>
+      </div>
+      <div class="card now">
+        <div class="en">I will help you.</div>
+        <div class="zh">我来帮你。</div>
+        <div class="lbl">凭意志 — 当场的决心 / 承诺</div>
+      </div>
     </div>
-    <p class="note">为什么能这么用?因为"既定日程"被当成一条稳定事实来陈述(回扣地基:它跟"真理"一样确定)。这种说法比 will 更强调"板上钉钉的安排";will 更多是主观判断或意愿。</p>
-    <div class="sum"><b>小结:</b>从句和时刻表用现在时表将来,底层逻辑是——把"确定的未来"当成"稳定的规律"来说。</div>
+    <p class="note">所以“will 比一般将来时更坚定”这个说法要修正一处：will <strong>本身就是</strong>一般将来时的核心，真正的对照是 will 与 be going to。will 的“坚定”不在语法，而在它承载了<strong>说话人的意志</strong>——不是预测天会不会下雨，是“我决定、我保证、我判断”。承诺、决心、当场决定都用 will，道理在此。</p>
+    <div class="sum"><b>小结：</b>本阶两件事叠在一起：其一，从句（主将从现）和时刻表用<strong>现在时</strong>表将来，是把“确定的未来”当“稳定的规律”说——这是谱系最确定的一端；其二，往后是 <b>be going to</b>（凭迹象）→ <b>will</b>（凭意志），确定度递减而主观意志递增。选哪种，取决于你想表达“既定规律 / 有迹象的预测 / 我的决心”中的哪一个。</div>
   </section>
 
-  <!-- 第五阶 -->
+  <!-- ⑤ 判断 -->
   <section class="rung s5">
     <div class="rung-head">
       <div class="num">5</div>
       <div class="titles">
-        <h2>高级技巧:靠信号词快速判断</h2>
-        <div class="tag">高级技巧 · 实战抓手</div>
+        <h2>判断：三步快速定位</h2>
+        <div class="tag">收口 · 实战抓手</div>
       </div>
     </div>
     <div class="why">
-      <b>要解决:</b>实战里怎么一眼判断该不该用一般现在时?
-      <span class="lim"><b>上一阶的局限:</b>前面讲"该用在哪",这一阶给"怎么快速识别"的抓手。</span>
+      <b>要解决：</b>实战里怎么一眼判断该不该用一般现在时？
+      <span class="lim"><b>上一阶的局限：</b>前面讲“该用在哪”，这一阶给“怎么快速识别”的抓手。</span>
     </div>
-
-    <h3>它的两类"指纹"</h3>
-    <p><strong>频率副词</strong>:always / usually / often / sometimes / never(放在实义动词前、be 动词后)。</p>
-    <div class="ex">
-      <div class="en">He always drinks tea.</div>
-      <div class="zh">他总是喝茶。</div>
-    </div>
-    <div class="ex">
-      <div class="en">She is never late.</div>
-      <div class="zh">她从不迟到。&nbsp;<span style="color:var(--r5)">never 在 be 之后</span></div>
-    </div>
-    <p><strong>时间状语</strong>:every day / on Mondays / once a week / in the morning。</p>
-    <div class="ex">
-      <div class="en">I go to the gym every day.</div>
-      <div class="zh">我每天去健身房。</div>
-    </div>
-
+    <p class="note">看到 <b style="color:var(--r5)">always / usually / often / never</b>（频率副词）或 <b style="color:var(--r5)">every day / on Mondays / once a week</b>（时间状语），基本就是它的“指纹”。</p>
     <h3>三步判断法</h3>
     <ol class="steps">
-      <li>讲的是"一贯 / 反复 / 客观"的事吗?→ 是,基本就是一般现在时。</li>
-      <li>主语是三单吗?→ 是,动词加 -s/-es,套咝音口诀定发音。</li>
-      <li>是"从句"或"时刻表"里的将来吗?→ 是,仍用现在时,别用 will。</li>
+      <li>讲的是“一贯 / 反复 / 客观”的事吗？→ 是，基本就是一般现在时。</li>
+      <li>主语是三单吗？→ 是，谓语加 -s/-es（咝音口诀：咝音 /ɪz/、清辅音 /s/、浊音或元音 /z/）。</li>
+      <li>是“从句”或“时刻表”里的将来吗？→ 是，仍用现在时，别用 will。</li>
     </ol>
-    <div class="sum"><b>小结:</b>频率副词 + 时间状语是它的指纹;三步判断法帮你在实战里一次定好时态、形式、发音。</div>
+    <div class="sum"><b>小结：</b>信号词是它的指纹；三步判断法帮你一次定好<strong>时态、形式、发音</strong>。</div>
   </section>
 
   <!-- 总览 -->
@@ -395,30 +439,31 @@
         <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
       </thead>
       <tbody>
-        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>常态/规律,时间不受限</td><td>讲"一贯如此",不是"此刻"</td></tr>
-        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td>be(am/is/are)+ do(原形/三单)</td><td>be 描述状态,do 描述动作</td></tr>
-        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>习惯反复 + 客观真理</td><td>都是"稳定成立的事"</td></tr>
-        <tr class="o4"><td><span class="dot">④ 特殊</span></td><td>表将来</td><td>从句 & 时刻表用现在时</td><td>把确定的未来当规律说</td></tr>
-        <tr class="o5"><td><span class="dot">⑤ 高级</span></td><td>怎么识别</td><td>频率副词 + 时间状语</td><td>看指纹,走三步判断</td></tr>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>常态/规律，时间不受限</td><td>讲“一贯如此”，不是“此刻”</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>句子骨架</td><td>be／实义 两套 × 陈述/疑问/特殊，满配三大从句</td><td>换时态只换谓语，骨架不变</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>习惯反复／客观事实／普遍真理</td><td>都是“稳定成立的事”</td></tr>
+        <tr class="o4"><td><span class="dot">④ 特殊</span></td><td>表将来</td><td>条件从句／时间从句／时刻表；并放回谱系：现在时→be going to→will</td><td>确定当规律，越往后越凭意志</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么识别</td><td>信号词 + 三步判断法</td><td>看指纹，走三步定位</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- 判断法 -->
+  <!-- 一图流 -->
   <div class="decide">
-    <h2>一图流:遇到句子怎么定</h2>
+    <h2>一图流：遇到句子怎么定</h2>
     <div class="flow">
-      <div class="q">这句讲的是"一贯 / 反复 / 真理"吗?</div>
-      <div class="a"><span class="hit">是 →</span> 用一般现在时 → 主语三单? &nbsp;是:<code>+s/es</code>(咝音口诀) / 否:动词原形</div>
-      <div class="q">这是"从句"或"时刻表"里的将来吗?</div>
-      <div class="a"><span class="hit4">是 →</span> 也用一般现在时,<strong>不用 will</strong></div>
-      <div class="q">是"此刻正在发生"吗?</div>
-      <div class="a">是 → 那不是本课,用进行时(is/are + doing)</div>
+      <div class="q">这句讲的是“一贯 / 反复 / 真理”吗？</div>
+      <div class="a"><span class="hit">是 →</span> 用一般现在时 → 主语三单？&nbsp;是：<code>+s/es</code>（咝音口诀） / 否：动词原形</div>
+      <div class="q">这是“从句”或“时刻表”里的将来吗？</div>
+      <div class="a"><span class="hit4">是 →</span> 也用一般现在时，<strong>不用 will</strong></div>
+      <div class="q">是“此刻正在发生”吗？</div>
+      <div class="a">是 → 那不是本课，用进行时（is/are + doing）</div>
     </div>
   </div>
 
-  <footer>一般现在时 · 从地基到指纹,五阶叠加</footer>
+  <footer>一般现在时 · 地基 → 满配骨架 → 功能 → 表将来 → 判断 · 例句均配中文</footer>
 
 </div>
+
 </body>
 </html>
