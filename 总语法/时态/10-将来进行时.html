@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>将来进行时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- satmax skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.rel{color:#e6b850}   /* 定语从句 */
+.nom{color:#38cabf}   /* 名词性从句 */
+.adv{color:#f0876a}   /* 状语从句 */
+.freq{color:#b48ef0;font-weight:700}  /* 频率副词 */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>将来进行时 · 阶梯式笔记</h1>
+    <p class="sub">从“它锚定什么”起步,一阶叠一阶:地基 → 骨架 → 功能 → 对比 → 判断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:给将来“定格”一幅进行中的画面</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>将来进行时到底在表达什么?它和一般将来时差在哪?
+      <span class="lim"><b>为什么先讲:</b>名字里有“进行”,很多人却把它当成 will do 的花哨版。不先看清它锚定的是“将来某刻,动作<em>正在进行</em>”这幅画面,就会和一般将来时混用。</span>
+    </div>
+    <p>核心一句话:将来进行时描述的是<strong>在将来某个时间点或时间段,一个动作正处于“进行中”的状态</strong>。一般将来时(<code>will do</code>)告诉你事情<strong>会发生</strong>——把它当一个整体事件;将来进行时(<code>will be doing</code>)把镜头推到<strong>将来的某一刻</strong>,让你看到那时动作<strong>正在半途</strong>。所以它天生带两层附加色彩:把动作钉在具体时刻,<strong>画面感强(生动)</strong>;又常暗示“按事情自然发展,那时正好在做”——<strong>确定、不刻意</strong>。</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">This time tomorrow, I'll be flying to Tokyo.</div>
+        <div class="zh">明天这个时候,我正在飞往东京的途中。</div>
+        <div class="lbl">will be doing — 定格“进行中”的画面</div>
+      </div>
+      <div class="card now">
+        <div class="en">Tomorrow I'll fly to Tokyo.</div>
+        <div class="zh">明天我会飞往东京。</div>
+        <div class="lbl">will do — 只说“会发生”,不带画面</div>
+      </div>
+    </div>
+    <p class="note">这幅“进行中”的画面正是本课的核心:<b>will</b> 标“将来”,<b>be + doing</b> 标“进行”,两层叠在一起。</p>
+    <div class="sum"><b>小结:</b>将来进行时 = 把镜头推到将来某刻,看动作<strong>正在进行</strong>。记住这幅“进行中的画面”(生动 + 确定),后面选它还是一般将来时全靠它。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:一个满配句子能塞多满</h2>
+        <div class="tag">怎么用 · 句子骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一个将来进行时的句子,成分排起来长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清“表达什么”,没给“句子的形状”。</span>
+    </div>
+    <p>形式是<strong>两层叠加</strong>:<code>will + be + 动词-ing</code>——will 管“将来”,be + doing 管“进行”。和一般将来时一样<strong>不分人称</strong>(will 是情态动词,三单不加 -s)。其实只要把一般将来时的谓语从 <code>will do</code> 换成 <code>will be doing</code>,就给动作加上了“进行中”这层镜头,<strong>骨架不变,只换谓语</strong>。下面每条都塞满“三大从句”。</p>
+    <p class="note">换个角度看清结构:British Council 的语法版主指出,will 是<strong>情态动词</strong>,后面跟不定式,而不定式可带“进行”这层体——<code>will do</code>(will + 原形)、<code>will be doing</code>(will + 进行式)。这正是“两层叠加”的由来。</p>
+    <div class="legend2">
+      <span class="rel">〔定语从句〕</span>
+      <span class="nom">〔名词性从句〕</span>
+      <span class="adv">〔状语从句〕</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
+    </div>
+
+    <h3>A · will be doing 句</h3>
+    <p class="note">下面三句是<strong>同一句</strong>一步步变出来的:陈述句 → 一般疑问句 → 特殊疑问句,后一句都在前一句身上只动一处。will 是助动词,变疑问<strong>不借 do</strong>,靠 <b>will 自己前移</b>。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel">时间点状语 · 主语 <span class="rel">〔定语从句〕</span> · <b>will be</b> · 谓语-ing · 宾语 <span class="nom">〔名词性从句〕</span> · <span class="adv">〔状语从句〕</span></div>
+    <div class="ex">
+      <div class="en">By this time tomorrow, the teacher <span class="rel">who teaches us English</span> <b>will be explaining</b> <span class="nom">what the exam covers</span> <span class="adv">while we take notes</span>.</div>
+      <div class="zh">明天这个时候,教我们英语的那位老师正在讲解考试的范围,我们则在记笔记。</div>
+    </div>
+
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动:把 <b>will</b> 提到主语前(be、doing 跟在后面原样不动),<strong>不借 do</strong>;从句里的 teaches、covers、take 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Will</b> the teacher <span class="rel">who teaches us English</span> <b>be explaining</b> <span class="nom">what the exam covers</span> <span class="adv">while we take notes</span>?</div>
+      <div class="zh">明天这个时候,教我们英语的那位老师会正在讲解考试范围、我们在记笔记吗?</div>
+    </div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动:把要问的时间点换成疑问词 <b>When</b> 提到最前,后面 will 的语序原样保留。</div>
+    <div class="ex">
+      <div class="en"><b>When</b> will the teacher <span class="rel">who teaches us English</span> <b>be explaining</b> <span class="nom">what the exam covers</span>?</div>
+      <div class="zh">教我们英语的那位老师,会在什么时候讲解考试的范围?</div>
+    </div>
+
+    <h3>B · 三个易错点</h3>
+    <p class="note">will be doing 的骨架很规整,但初学最容易在这三处翻车。</p>
+    <div class="rows">
+      <div class="row"><span class="k">不分人称</span><span class="v">will 是情态动词,所有人称都用 <b>will be + -ing</b>,三单不加 -s。<code>She will be working.</code>(× She will be works)</span></div>
+      <div class="row"><span class="k">否定</span><span class="v">won't be + -ing。<code>I won't be working then.</code> 那时我不在上班。</span></div>
+      <div class="row"><span class="k">状态动词</span><span class="v">be、know、like 等<strong>状态动词</strong>本身不表“进行”,不进入进行式,直接用一般将来时。<code>Jane will be at home.</code>(× will be being at home)</span></div>
+    </div>
+
+    <div class="sum"><b>小结:</b>will be doing 靠 <b>will 前移</b>成疑问、谓语用 <b>be + -ing</b>、三单不加 -s;否定 won't be doing。骨架不变,给动作加“进行中”这层镜头,只需把 will do 换成 will be doing。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:什么时候真的用它</h2>
+        <div class="tag">怎么用 · 三条骨架,每条 3 例</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子会搭了,到底在哪些场景该用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决“怎么搭”,没解决“何时用”。三种场景本质都是“将来某刻,动作正在进行”,回扣第一阶。</span>
+    </div>
+
+    <h3>① 将来某刻正在进行（画面感）</h3>
+    <div class="skel">时间点状语(this time tomorrow / at 8) · 主语 · <b>will be</b> · 谓语-ing</div>
+    <div class="ex"><div class="en">This time next week, we <b>will be lying</b> on the beach.</div><div class="zh">下周这个时候,我们正躺在沙滩上。</div></div>
+    <div class="ex"><div class="en">At 8 tonight, I <b>will be watching</b> the match.</div><div class="zh">今晚八点,我正在看比赛。</div></div>
+    <div class="ex"><div class="en">When you get off the train, I <b>will be waiting</b> on the platform.</div><div class="zh">你下火车时,我正在站台上等你。</div></div>
+
+    <h3>② 将来某时段持续 / 一时的、新的状态</h3>
+    <div class="skel">主语 · <b>will be</b> · 谓语-ing · 时段状语(for… / next… / while…)</div>
+    <div class="ex"><div class="en">He <b>will be staying</b> with his parents for several months.</div><div class="zh">他要在父母那儿住上几个月。</div></div>
+    <div class="ex"><div class="en">Next week we <b>will be taking</b> the train instead.</div><div class="zh">下周我们改乘火车。</div></div>
+    <div class="ex"><div class="en">I <b>will be working</b> all weekend.</div><div class="zh">我整个周末都在工作。</div></div>
+    <p class="note">British Council:这一类还常表“<strong>新的、暂时的</strong>”安排——和以往不同、只持续一阵。</p>
+
+    <h3>③ 顺理成章会发生（确定 / 不刻意）</h3>
+    <div class="skel">主语 · <b>will be</b> · 谓语-ing(事情按计划自然发生)</div>
+    <div class="ex"><div class="en">We <b>will be leaving</b> at 8 a.m. tomorrow.</div><div class="zh">我们明早八点出发（已定）。</div></div>
+    <div class="ex"><div class="en">Don't worry — I <b>will be seeing</b> Tom later, so I'll tell him.</div><div class="zh">别担心,我等下会见到 Tom,顺便告诉他。</div></div>
+    <div class="ex"><div class="en">I <b>will be passing</b> your house, so I can drop it off.</div><div class="zh">我反正会路过你家,可以顺路放下。</div></div>
+    <p class="note">这层意思是“<strong>按事情自然发展,那时正好在做</strong>”,不含“我特意去做”的意味——这正是将来进行时的“<strong>确定、不刻意</strong>”。</p>
+
+    <div class="sum"><b>小结:</b>某刻正在进行、某段持续、顺理成章——三者共享一个内核:<strong>把动作放进将来的时间轴,看它“正在进行”</strong>。生动与确定,都从这里来。</div>
+  </section>
+
+  <!-- ④ 对比 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>对比:will do 还是 will be doing?</h2>
+        <div class="tag">特殊情况 · 放回坐标系</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>同一件将来的事,什么时候用 will do,什么时候用 will be doing?
+      <span class="lim"><b>上一阶的局限:</b>功能讲了它的地盘,但最容易错的是它和一般将来时、和现在进行时的边界。</span>
+    </div>
+
+    <h3>① will do vs will be doing:整体事件 vs 进行画面</h3>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">At 8, I'll be having dinner.</div>
+        <div class="zh">八点我正在吃晚饭（已在半途）。</div>
+        <div class="lbl">进行中 — 强调那刻在进行</div>
+      </div>
+      <div class="card now">
+        <div class="en">At 8, I'll have dinner.</div>
+        <div class="zh">八点我（才）吃晚饭（那时开始）。</div>
+        <div class="lbl">整体事件 — 只说会发生</div>
+      </div>
+    </div>
+    <p>同一时刻,<code>will do</code> 把动作当<strong>一个整体事件</strong>(那时发生 / 开始);<code>will be doing</code> 把动作当<strong>正在进行的过程</strong>(那时已在半途)。要“画面”和“过程”,用 will be doing;只说“会发生”,用 will do。</p>
+
+    <h3>② 委婉询问:问对方安排,不带“请求”</h3>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">Will you be joining us for dinner?</div>
+        <div class="zh">你会来和我们一起吃晚饭吗?</div>
+        <div class="lbl">中性打听 — 只问你的安排</div>
+      </div>
+      <div class="card now">
+        <div class="en">Will you join us for dinner?</div>
+        <div class="zh">来和我们一起吃晚饭吧?</div>
+        <div class="lbl">更像邀请 / 请求</div>
+      </div>
+    </div>
+    <p class="note">一个常被忽略的妙用:<code>Will you be doing…?</code> 只是<strong>中性地打听对方将来会不会做某事</strong>,问的是“事情会不会自然在进行”,不指向对方意愿,所以听起来更客气、不施压;而 <code>Will you do…?</code> 往往是<strong>请求</strong>。</p>
+
+    <h3>③ 放回“进行体”家族 + 主将从现</h3>
+    <p>把它和别的“进行”排在一起就清楚了——都是“<strong>在某个参照点,动作正在进行</strong>”,只是参照点不同:</p>
+    <div class="rows">
+      <div class="row"><span class="k">现在进行时</span><span class="v">am/is/are + doing —— 参照点是<strong>此刻</strong>。<code>I am working now.</code></span></div>
+      <div class="row"><span class="k">过去进行时</span><span class="v">was/were + doing —— 参照点是<strong>过去某刻</strong>。<code>I was working then.</code></span></div>
+      <div class="row"><span class="k">将来进行时</span><span class="v">will be + doing —— 参照点是<strong>将来某刻</strong>。<code>I will be working then.</code></span></div>
+    </div>
+    <p class="note">还有一条和前面各时态一样的<strong>主将从现</strong>:在 when / while / before / after / if 等从句里,<strong>不用</strong>将来进行时,用现在时。<code>When you arrive, I'll be waiting.</code>(× When you will be arriving)——从句 arrive 用现在时,主句 will be waiting 用将来进行时。</p>
+
+    <div class="sum"><b>小结:</b>三件事——① <b>will do</b>(整体事件)vs <b>will be doing</b>(进行画面),要画面 / 过程用后者;② <code>Will you be doing?</code> 是中性打听,比 <code>Will you do?</code>(请求)更客气;③ 它是“进行体”家族里参照点落在将来的那一员,从句里照样“主将从现”。</div>
+  </section>
+
+  <!-- ⑤ 判断 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>判断:三步快速定位</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>实战里怎么一眼判断该用将来进行时?
+      <span class="lim"><b>上一阶的局限:</b>前面讲“用在哪、怎么分”,这一阶给“怎么快速识别”的抓手。</span>
+    </div>
+    <p class="note">看到 <b style="color:var(--r5)">this time tomorrow / at 8 tonight / this time next week / when you arrive / all day tomorrow</b>(将来某刻或某段的时间语),而且句子想说“那时<strong>正在进行</strong>”,基本就是它的“指纹”。</p>
+    <h3>三步判断法</h3>
+    <ol class="steps">
+      <li>有没有一个<strong>将来的时间参照点</strong>(某刻 / 某段)?→ 有,才谈得上将来进行时。</li>
+      <li>那一刻 / 那一段,动作是“<strong>正在进行 / 持续</strong>”(要画面、要过程),还是只是“会发生”?→ 正在进行,用 <b>will be doing</b>;只说会发生,用 will do。</li>
+      <li>形式:<b>will be + -ing</b>,不分人称;否定 won't be doing;状态动词不进入进行式;从句里时间点用现在时(主将从现)。</li>
+    </ol>
+    <div class="sum"><b>小结:</b>先找将来的时间参照点,再判断“是否在进行”,最后套 will be + -ing。信号词是指纹,三步定好<strong>时态、形式、边界</strong>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>将来某刻 / 某段,动作正在进行(生动 + 确定)</td><td>把镜头推到将来,看动作“进行中”</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>句子骨架</td><td>will be + -ing,不分人称;陈述 / 疑问 / 特殊,满配三大从句</td><td>will 前移;will do → will be doing</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>某刻在进行 / 某段持续 / 顺理成章</td><td>都是“将来时间轴上的进行”</td></tr>
+        <tr class="o4"><td><span class="dot">④ 对比</span></td><td>怎么选</td><td>will do vs will be doing;委婉询问;进行体家族 + 主将从现</td><td>要画面 / 过程就用 be doing</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么识别</td><td>时间参照点 + 是否在进行 + 三步法</td><td>找参照点,判进行,套 will be -ing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流:遇到句子怎么定</h2>
+    <div class="flow">
+      <div class="q">句子里有“将来某刻 / 某段”的时间参照点吗?</div>
+      <div class="a"><span class="hit">有 →</span> 才可能用将来进行时,继续往下</div>
+      <div class="q">那一刻 / 那段,动作是“正在进行 / 持续”吗?</div>
+      <div class="a"><span class="hit">是（要画面、要过程）→</span> 用 <code>will be + -ing</code></div>
+      <div class="q">只是说“那时会发生 / 会去做”?</div>
+      <div class="a"><span class="hit4">是 →</span> 用一般将来时 <code>will do</code>,不用进行式</div>
+      <div class="q">是在 when / if 等从句里吗?</div>
+      <div class="a"><span class="hit4">是 →</span> 从句用现在时,主句才用 will be doing(主将从现)</div>
+      <div class="q">说的是“此刻正在进行”?</div>
+      <div class="a">是 → 那是现在进行时(am/is/are + doing),不是本课</div>
+    </div>
+  </div>
+
+  <footer>将来进行时 · 地基 → 满配骨架 → 功能 → 对比 → 判断 · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>

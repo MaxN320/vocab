@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一般将来时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- satmax skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.rel{color:#e6b850}   /* 定语从句 */
+.nom{color:#38cabf}   /* 名词性从句 */
+.adv{color:#f0876a}   /* 状语从句 */
+.freq{color:#b48ef0;font-weight:700}  /* 频率副词 */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>一般将来时 · 阶梯式笔记</h1>
+    <p class="sub">从“它锚定什么”起步,一阶叠一阶:地基 → 骨架 → 功能 → 谱系 → 判断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:它锚定“对未来的判断”,不是中性的时间标签</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一般将来时到底在表达什么?
+      <span class="lim"><b>为什么先讲:</b>名字骗人——“将来时”让人以为只是把动词往后推一格的中性操作;其实 will 天生带着说话人的<em>判断与意愿</em>。不先看清这点,后面选 will 还是 be going to 全会犯难。</span>
+    </div>
+    <p>核心一句话:一般将来时描述的是<strong>将来会发生的动作或状态</strong>,基本形式是 <code>will/shall + 动词原形</code>。但要抓住它的灵魂:will 不是中性的“未来”开关,它<strong>承载说话人此刻的态度</strong>——预测、决定、承诺,都装在里面。正因如此,同一件将来的事,选 will 还是别的说法,取决于你想表达多少“我的判断”。</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">I will help you.</div>
+        <div class="zh">我来帮你（此刻决定）。</div>
+        <div class="lbl">will — 凭意志的决定 / 承诺</div>
+      </div>
+      <div class="card now">
+        <div class="en">I'm going to help you.</div>
+        <div class="zh">我（本来就打算）帮你。</div>
+        <div class="lbl">be going to — 凭计划,同属将来时</div>
+      </div>
+    </div>
+    <p class="note">两者都属一般将来时。本课以 <b>will/shall</b> 为主线——它是最能体现“主观判断”的一员;be going to 放到第④阶展开。</p>
+    <div class="sum"><b>小结:</b>一般将来时 = 用 will/shall + 原形 说“将来会怎样”,而 will 天生带<strong>说话人的判断与意愿</strong>。记住这份“主观色彩”,后面选词、辨析全靠它。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:一个满配句子能塞多满</h2>
+        <div class="tag">怎么用 · 句子骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一个将来时的句子,成分排起来长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清“表达什么”,没给“句子的形状”。</span>
+    </div>
+    <p>主线形式极简:<strong>will + 动词原形</strong>,而且<strong>不分人称</strong>——第三人称单数也不加 -s(<code>He will go</code>,不是 <code>He wills</code>)。这正好甩掉了一般现在时那套 -s/-es 的麻烦。看三种句式:陈述 / 一般疑问 / 特殊疑问;关键规律和现在时一样:<strong>换时态只换谓语,骨架不变</strong>——这次谓语统一换成 will + 原形。下面每条都塞满“三大从句”,展示满配上限。</p>
+    <div class="legend2">
+      <span class="rel">〔定语从句〕</span>
+      <span class="nom">〔名词性从句〕</span>
+      <span class="adv">〔状语从句〕</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
+    </div>
+
+    <h3>A · will 句(will + 原形)</h3>
+    <p class="note">下面三句是<strong>同一句</strong>一步步变出来的:陈述句 → 一般疑问句 → 特殊疑问句,后一句都在前一句身上只动一处。will 是助动词,变疑问<strong>不借 do</strong>,靠 <b>will 自己前移</b>——这点和 be 句一样省事。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel">主语 <span class="rel">〔定语从句〕</span> · <b>will</b> · 谓语原形 · 宾语 <span class="nom">〔名词性从句〕</span> · <span class="adv">〔状语从句〕</span></div>
+    <div class="ex">
+      <div class="en">The teacher <span class="rel">who teaches us English</span> <b>will remind</b> us <span class="nom">that hard work pays off</span> <span class="adv">before the exam begins</span>.</div>
+      <div class="zh">教我们英语的那位老师,会在考试开始前提醒我们努力终有回报。</div>
+    </div>
+
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动:把主句的 <b>will</b> 直接提到主语前,<strong>不借 do</strong>;从句里的 teaches、pays、begins 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Will</b> the teacher <span class="rel">who teaches us English</span> remind us <span class="nom">that hard work pays off</span> <span class="adv">before the exam begins</span>?</div>
+      <div class="zh">教我们英语的那位老师,会在考试开始前提醒我们努力终有回报吗?</div>
+    </div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动:把要问的时间状语从句(<span class="adv">before the exam begins</span>)换成疑问词 <b>When</b> 提到最前,后面 will 的语序原样保留。</div>
+    <div class="ex">
+      <div class="en"><b>When</b> will the teacher <span class="rel">who teaches us English</span> remind us <span class="nom">that hard work pays off</span>?</div>
+      <div class="zh">教我们英语的那位老师,会在什么时候提醒我们努力终有回报?</div>
+    </div>
+
+    <h3>B · 三个易错点</h3>
+    <p class="note">will 句的骨架和 be 句一样干净,但初学最容易在这三处翻车。</p>
+    <div class="rows">
+      <div class="row"><span class="k">不分人称</span><span class="v">will 是助动词,所有人称都用 <b>will + 原形</b>,<strong>三单不加 -s</strong>。<code>He will go.</code>(× He wills / He will goes)</span></div>
+      <div class="row"><span class="k">否定</span><span class="v">will not 缩写成 <b>won't</b>。<code>They won't move.</code> 他们不会搬。它还能表<strong>拒绝 / 偏不</strong>:<code>He won't listen to me.</code> 他就是不肯听我的。</span></div>
+      <div class="row"><span class="k">shall</span><span class="v">主要用于 I/we 提<strong>建议、征求意见</strong>。<code>Shall we go?</code> 我们走吧?表纯将来现在多用 will,shall 偏正式 / 英式。</span></div>
+    </div>
+
+    <div class="sum"><b>小结:</b>will 句靠 <b>will 自己前移</b>撑起疑问、谓语一律<strong>回原形</strong>、三单不加 -s;否定用 <b>won't</b>。骨架不变,换将来时只把谓语换成 will + 原形。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:什么时候真的用它</h2>
+        <div class="tag">怎么用 · 三条骨架,每条 3 例</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子会搭了,到底在哪些场景该用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决“怎么搭”,没解决“何时用”。三种场景本质都是“说话人对未来的投射”,回扣第一阶。</span>
+    </div>
+
+    <h3>① 预测未来</h3>
+    <div class="skel">主语 · <b>will</b> · 谓语原形 · (常配 think / probably / I'm sure)</div>
+    <div class="ex"><div class="en">I think <span class="nom">that they <b>will move</b></span> the day after tomorrow.</div><div class="zh">我想他们后天就会搬走。</div></div>
+    <div class="ex"><div class="en">It <b>will</b> probably <b>rain</b> tomorrow.</div><div class="zh">明天大概会下雨。</div></div>
+    <div class="ex"><div class="en">She <b>will pass</b> the exam, I'm sure.</div><div class="zh">我确信她会通过考试。</div></div>
+
+    <h3>② 临时决定与意愿</h3>
+    <div class="skel">(当场情境) → 主语 · <b>will</b> · 谓语原形</div>
+    <div class="ex"><div class="en">The phone is ringing. I <b>will get</b> it.</div><div class="zh">电话响了,我去接。</div></div>
+    <div class="ex"><div class="en">It's cold. I <b>will close</b> the window.</div><div class="zh">好冷,我来关窗。</div></div>
+    <div class="ex"><div class="en">OK, I <b>will help</b> you.</div><div class="zh">好,我来帮你。</div></div>
+    <p class="note">这些决定都是<strong>说话当下</strong>才做的,没提前计划——所以用 will,不用 be going to。</p>
+
+    <h3>③ 承诺与保证</h3>
+    <div class="skel">主语 · <b>will</b>(常配 always / never)· 谓语原形</div>
+    <div class="ex"><div class="en">I <b>will miss</b> you.</div><div class="zh">我会想你的。</div></div>
+    <div class="ex"><div class="en">I <b>will always</b> be there for you.</div><div class="zh">我会一直在你身边。</div></div>
+    <div class="ex"><div class="en">I <b>will never</b> forget this.</div><div class="zh">我永远不会忘记这件事。</div></div>
+
+    <div class="sum"><b>小结:</b>预测、临时决定、承诺——三者是同一件事:<strong>说话人对未来的主观投射</strong>。判断、选择、意志,都由 will 托着。</div>
+  </section>
+
+  <!-- ④ 谱系 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>谱系:will 只是“说未来”的一种</h2>
+        <div class="tag">特殊情况 · 把 will 放回坐标系</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>将来的事,是不是都用 will?
+      <span class="lim"><b>上一阶的局限:</b>功能讲的都是“凭主观说未来”(will 的地盘),但有些将来的事<strong>更确定</strong>,英语反而不用 will。</span>
+    </div>
+
+    <h3>① 主将从现:从句里不用 will</h3>
+    <div class="skel">主句 <b>will do</b> + if / when / before / after + 主语 · <span class="adv">现在时谓语</span></div>
+    <div class="ex"><div class="en"><span class="adv">If it rains</span> tomorrow, we <b>will stay</b> home.</div><div class="zh">如果明天下雨,我们就待在家。<span style="color:var(--faint)">(× If it will rain)</span></div></div>
+    <div class="ex"><div class="en">I <b>will call</b> you <span class="adv">when I get</span> home.</div><div class="zh">我到家就给你打电话。<span style="color:var(--faint)">(× when I will get)</span></div></div>
+    <div class="ex"><div class="en">He <b>will tell</b> you <span class="adv">after he reads</span> it.</div><div class="zh">他看完后会告诉你。<span style="color:var(--faint)">(× after he will read)</span></div></div>
+    <p class="note">注意区分:这条只管<strong>时间 / 条件状语从句</strong>。<span class="nom">名词性从句</span>(that 从句)里 will 照留——“I think <span class="nom">that they <b>will</b> move</span>”就没错。这正是《一般现在时》第④阶讲的“主将从现”,只是这次从<strong>主句(将来时)</strong>这一侧看,两份笔记正好是一枚硬币的两面。</p>
+
+    <h3>② 把 will 放回谱系:一条由“规律”到“意志”的线</h3>
+    <p>英语表将来不是一种说法,而是按<strong>说话人的确定程度与主观态度</strong>铺开的一条谱系——越往后,说话人的“意志”越重。will 站在“凭意志 / 判断”那一端。</p>
+    <div class="rows">
+      <div class="row"><span class="k">现在时表将来</span><span class="v">确定到当规律陈述(时刻表 / 从句)。<code>The train leaves at 6.</code> 火车 6 点发车。</span></div>
+      <div class="row"><span class="k">be going to</span><span class="v">已有<strong>计划</strong>或<strong>迹象</strong>,但还没到“我此刻决定”。<code>It is going to rain.</code> 要下雨了(天上已有征兆)。</span></div>
+      <div class="row"><span class="k">will do</span><span class="v">说话人<strong>当场</strong>的判断、决心或承诺,主观意志最重。<code>I will finish it.</code> 我一定做完。</span></div>
+    </div>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">It is going to rain.</div>
+        <div class="zh">要下雨了。</div>
+        <div class="lbl">看征兆 — 基于迹象的预测</div>
+      </div>
+      <div class="card now">
+        <div class="en">I will help you.</div>
+        <div class="zh">我来帮你。</div>
+        <div class="lbl">凭意志 — 当场的决心 / 承诺</div>
+      </div>
+    </div>
+    <p class="note">所以别把 be going to 和 will 混着用:有<strong>现成计划或眼前迹象</strong>,用 be going to;是<strong>此刻的决定、承诺、判断</strong>,用 will。两者都属一般将来时,分工在“提前定”还是“当场定”。</p>
+
+    <h3>③ shall:提议与征求意见</h3>
+    <div class="skel"><b>Shall</b> + I / we · 谓语原形 · ?</div>
+    <div class="ex"><div class="en"><b>Shall</b> I open the window?</div><div class="zh">要我把窗户打开吗?</div></div>
+    <div class="ex"><div class="en"><b>Shall</b> we dance?</div><div class="zh">我们跳支舞吧?</div></div>
+    <div class="ex"><div class="en">Where <b>shall</b> we meet?</div><div class="zh">我们在哪儿碰面呢?</div></div>
+    <p class="note">现代英语表纯将来多用 will;shall 主要活在 I/we 的<strong>提议、征求对方意见</strong>里,语气比 will 更客气,英式英语用得更多。</p>
+
+    <div class="sum"><b>小结:</b>本阶三件事:其一,<strong>主将从现</strong>——时间 / 条件从句里用现在时,不用 will(名词性从句除外);其二,把 will 放回谱系——现在时(当规律)→ <b>be going to</b>(凭计划 / 迹象)→ <b>will</b>(凭意志),确定度递减而主观意志递增;其三,shall 用于 I/we 的提议。选哪种,取决于你要表达“既定规律 / 有计划有迹象 / 我此刻的决心”中的哪一个。</div>
+  </section>
+
+  <!-- ⑤ 判断 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>判断:三步快速定位</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>实战里怎么一眼判断该用将来时、又该用哪种?
+      <span class="lim"><b>上一阶的局限:</b>前面讲“用在哪、怎么分”,这一阶给“怎么快速识别”的抓手。</span>
+    </div>
+    <p class="note">看到 <b style="color:var(--r5)">tomorrow / next week / soon / in three days / the day after tomorrow</b>(时间信号),或 <b style="color:var(--r5)">think / believe / probably / I'm sure</b>(预测框架词),基本就是它的“指纹”。</p>
+    <h3>三步判断法</h3>
+    <ol class="steps">
+      <li>讲的是“将来会发生”的动作或状态吗?→ 是,基本就用一般将来时。</li>
+      <li>是“临时决定 / 预测 / 承诺”(凭说话人主观)吗?→ 用 <b>will</b>;是“已定计划 / 眼前迹象”吗?→ 用 <b>be going to</b>;是“时刻表 / 时间条件从句”里的将来吗?→ 用<b>现在时</b>(主将从现)。</li>
+      <li>谓语一律 <b>will + 原形</b>,不分人称、不加 -s;否定用 <b>won't</b>。</li>
+    </ol>
+    <div class="sum"><b>小结:</b>信号词是它的指纹;三步判断法帮你一次定好<strong>时态、选词(will / be going to / 现在时)、形式</strong>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>将来的动作 / 状态,will 带主观判断</td><td>说未来,还带“我的态度”</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>句子骨架</td><td>will + 原形,不分人称;陈述 / 疑问 / 特殊,满配三大从句</td><td>will 自己前移,三单不加 -s</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>预测 / 临时决定 / 承诺</td><td>都是“对未来的主观投射”</td></tr>
+        <tr class="o4"><td><span class="dot">④ 谱系</span></td><td>怎么分</td><td>主将从现;现在时 → be going to → will</td><td>越往后越凭意志</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么识别</td><td>信号词 + 三步判断法</td><td>看指纹,走三步定位</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流:遇到句子怎么定</h2>
+    <div class="flow">
+      <div class="q">这句讲的是“将来会发生”的事吗?</div>
+      <div class="a"><span class="hit">是 →</span> 用一般将来时,往下分:will / be going to / 现在时</div>
+      <div class="q">是“临时决定 / 预测 / 承诺”(凭主观)吗?</div>
+      <div class="a"><span class="hit">是 →</span> 用 <code>will + 原形</code>(三单不加 -s,否定 won't)</div>
+      <div class="q">是“已定计划 / 眼前迹象”吗?</div>
+      <div class="a"><span class="hit4">是 →</span> 用 <code>be going to + 原形</code></div>
+      <div class="q">是“时刻表 / 时间条件从句”里的将来吗?</div>
+      <div class="a"><span class="hit4">是 →</span> 从句用<strong>现在时</strong>,主句才用 will(主将从现)</div>
+      <div class="q">是“此刻正在发生”吗?</div>
+      <div class="a">是 → 那不是本课,用进行时(is/are + doing)</div>
+    </div>
+  </div>
+
+  <footer>一般将来时 · 地基 → 满配骨架 → 功能 → 谱系 → 判断 · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>

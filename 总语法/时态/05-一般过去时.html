@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一般过去时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 六阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --r6:#e0729e;
+    --danger:#ef6a6a;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);
+    line-height:1.75;padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;letter-spacing:.5px;line-height:1.2}
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{display:flex;gap:.35rem;margin-top:1.4rem}
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+  .rail span:nth-child(6){background:var(--r6)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);background:var(--surface);border:1px solid var(--border);
+    border-left:4px solid var(--c);border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+  section.rung.s6{--c:var(--r6)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{font-family:var(--serif);font-size:2.3rem;font-weight:700;line-height:1;color:var(--c);flex:none}
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;margin-top:.15rem}
+
+  /* 解决问题 / 上一阶局限 */
+  .why{background:var(--surface-2);border-radius:9px;padding:.75rem .95rem;margin:1rem 0 1.1rem;font-size:.93rem}
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;color:var(--text)}
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{border-left:2px solid var(--c);padding:.15rem 0 .15rem .85rem;margin:.7rem 0}
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 错误 / 正确例句 */
+  .ex.bad{border-left-color:var(--danger)}
+  .ex.bad .en{color:#f3a3a3;text-decoration:line-through;text-decoration-color:rgba(239,106,106,.5)}
+  .ex.bad .en::after{content:" ✗";color:var(--danger);text-decoration:none;font-family:var(--sans)}
+  .ex.good{border-left-color:var(--r2)}
+  .ex.good .en::after{content:" ✓";color:var(--r2);font-family:var(--sans)}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.a .lbl{color:var(--r1)}
+  .vs .card.b .lbl{color:var(--r6)}
+
+  /* 转换表 */
+  .conv{margin:.6rem 0}
+  .conv .row{display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px dashed var(--border);font-size:.95rem}
+  .conv .row:last-child{border-bottom:none}
+  .conv .from{font-family:var(--serif);color:#f3a3a3;min-width:5.5em}
+  .conv .arrow{color:var(--faint)}
+  .conv .to{font-family:var(--serif);color:var(--r2);font-weight:600;min-width:6em}
+  .conv .gloss{color:var(--muted);font-size:.85rem;margin-left:auto}
+
+  code{font-family:"SF Mono",Consolas,monospace;background:var(--surface-2);padding:.05rem .35rem;border-radius:5px;font-size:.88em}
+
+  /* 小结 */
+  .sum{margin-top:1.2rem;padding:.75rem .95rem;background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:9px;font-size:.94rem}
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)} .tbl tr.o6 .dot{color:var(--r6)}
+
+  /* 判断法 */
+  .decide{margin-top:1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .h2c{color:var(--r2);font-weight:600}
+  .flow .a .h4{color:var(--r4);font-weight:600}
+  .flow .a .h6{color:var(--r6);font-weight:600}
+  .flow .a .hd{color:var(--danger);font-weight:600}
+
+  /* 关键词卡 */
+  .kw{display:grid;grid-template-columns:1fr;gap:.55rem;margin:.6rem 0}
+  @media(min-width:560px){.kw{grid-template-columns:1fr 1fr 1fr}}
+  .kw .k{background:var(--surface-2);border-radius:9px;padding:.65rem .8rem}
+  .kw .k .t{font-size:.8rem;font-weight:700;margin-bottom:.25rem}
+  .kw .k .w{font-family:var(--serif);font-size:.95rem;color:var(--text);line-height:1.5}
+  .kw .k.a .t{color:var(--r4)} .kw .k.b .t{color:var(--r5)} .kw .k.c .t{color:var(--r6)}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>一般过去时 · 阶梯式笔记</h1>
+    <p class="sub">一条主线:站在现在,指向一个"已经关上门"的过去——把整件事封闭在过去、跟现在切断。这正是它和现在完成时的分水岭。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:把事情整个"关进"过去</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一般过去时到底在表达什么?
+      <span class="lim"><b>为什么先讲:</b>光记"过去发生的动作"不够——它真正的灵魂是"这件事整个封闭在过去、已经结束、跟现在切断"。这正是它区别于现在完成时的根。</span>
+    </div>
+    <p>核心一句话:一般过去时 = 站在现在,往回指一个"<strong>已经关门</strong>"的过去时段,把事件整个放进去,当成一件已结束的事实。三个字抓住它:<strong>封闭、切断、与现在无关</strong>。</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I lost my key.</div>
+        <div class="zh">我(那时)把钥匙弄丢了。</div>
+        <div class="lbl">一般过去时 — 就这么件事,封在过去讲完</div>
+      </div>
+      <div class="card b">
+        <div class="en">I have lost my key.</div>
+        <div class="zh">我把钥匙弄丢了(现在还没找到)。</div>
+        <div class="lbl">现在完成时 — 连着现在,还有结果</div>
+      </div>
+    </div>
+    <p class="note">同一件"丢钥匙",一般过去时只报道"过去发生过",完成时却把它牵到现在。差别不在事本身,在<strong>跟现在还连不连着</strong>。</p>
+    <div class="sum"><b>小结:</b>一般过去时的灵魂不是"过去"两个字,是"<strong>关上门的过去</strong>"——整件事封闭、已结束、和现在切断。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:Be 和实义动词,两套</h2>
+        <div class="tag">怎么用 · 造句的骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>知道它表"已结束的过去"了,句子怎么搭?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清"表达什么",没给"句子的形状"。</span>
+    </div>
+    <p>和一般现在时一样,分两套:<strong>be 动词句</strong> 和 <strong>实义动词句</strong>。换时态骨架不变,只有谓语换形。</p>
+
+    <h3>A · Be 动词句 → was / were</h3>
+    <p class="note"><code>I / he / she / it</code> 用 <b>was</b>;<code>you / we / they</code> 用 <b>were</b>。疑问、否定<strong>不借 did</strong>,be 自己前移(对上一般现在时 be 句那一套)。</p>
+    <div class="ex"><div class="en">She was happy yesterday.</div><div class="zh">她昨天很开心。</div></div>
+    <div class="ex"><div class="en">They were at home last night.</div><div class="zh">他们昨晚在家。</div></div>
+    <div class="ex sub"><div class="en">Was she happy? / She wasn't happy.</div><div class="zh">她开心吗? / 她(当时)不开心。&nbsp;<span style="color:var(--r2)">be 自己前移、加 not,不借 did</span></div></div>
+
+    <h3>B · 实义动词句 → 过去式(-ed / 不规则)</h3>
+    <p class="note">肯定句里,实义动词<strong>自己变过去式</strong>:规则加 -ed,不规则得背。疑问和否定才请来助手 <b>did</b>——而且 <strong>did 一出场,主动词立刻回原形</strong>。</p>
+    <div class="ex"><div class="en">I worked late yesterday.</div><div class="zh">我昨天工作到很晚。&nbsp;<span style="color:var(--r2)">规则:work → worked</span></div></div>
+    <div class="ex"><div class="en">He went home early.</div><div class="zh">他很早就回家了。&nbsp;<span style="color:var(--r2)">不规则:go → went</span></div></div>
+    <div class="ex"><div class="en">Did you go home?</div><div class="zh">你回家了吗?</div></div>
+    <div class="ex"><div class="en">I didn't go home.</div><div class="zh">我没回家。</div></div>
+    <div class="ex bad"><div class="en">Did you went home?</div><div class="zh">did 已经背走了"过去",动词必须回原形</div></div>
+    <div class="ex good"><div class="en">Did you go home?</div><div class="zh">这才对</div></div>
+
+    <div class="sum"><b>小结:</b>Be 句靠 <b>was/were</b>、自己前移;实义句肯定用<strong>过去式</strong>、疑问否定借 <b>did</b>。记死一条:<strong>did 一出场,主动词就回原形</strong>。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:过去发生、且已经结束</h2>
+        <div class="tag">怎么用 · 用在哪些场景</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>具体哪些情况用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",没说"用在哪"。</span>
+    </div>
+    <p>把"过去发生的动作或情况"摊开,三种典型都逃不过一个共同点——<strong>已经结束、封闭在过去</strong>。</p>
+
+    <h3>① 过去某一刻的动作</h3>
+    <div class="ex"><div class="en">She called me last night.</div><div class="zh">她昨晚给我打了电话。</div></div>
+    <div class="ex"><div class="en">I got up at seven this morning.</div><div class="zh">我今早七点起的床。</div></div>
+
+    <h3>② 过去持续一段、但已经结束的状态</h3>
+    <div class="ex"><div class="en">I lived in Beijing for ten years.</div><div class="zh">我在北京住过十年(现在不住了)。&nbsp;<span style="color:var(--r3)">整段十年封在过去</span></div></div>
+    <div class="ex"><div class="en">He worked there for five years.</div><div class="zh">他在那儿干了五年。</div></div>
+    <p class="note">和完成时对照:同样"住十年",一般过去时 = 已经搬走;完成时 <code>has lived … for ten years</code> = 现在还住着。差别还是"切断"还是"连着现在"。</p>
+
+    <h3>③ 过去一连串动作(讲故事的时态)</h3>
+    <div class="ex"><div class="en">I woke up, made coffee, and left.</div><div class="zh">我起床、煮了咖啡,就出门了。</div></div>
+    <p class="note">叙事、讲经过,是一般过去时的主场——一串已完成的动作按顺序排下来。</p>
+
+    <h3>④ 过去的习惯 / 反复动作(现在已不做)</h3>
+    <p class="note">过去反复发生、如今不再的动作或状态,也用一般过去时,常配 <code>always / every day / when I was young</code> 这类频率词。想把"过去习惯"点得更明,可换成 <code>used to</code> 或 <code>would</code>。</p>
+    <div class="ex"><div class="en">When I was a child, I walked to school every day.</div><div class="zh">小时候我每天走路上学。&nbsp;<span style="color:var(--r3)">过去时 + 频率词 = 过去习惯</span></div></div>
+    <div class="ex"><div class="en">I used to play the violin.</div><div class="zh">我以前拉小提琴(现在不拉了)。&nbsp;<span style="color:var(--r3)">used to = 过去习惯 / 状态</span></div></div>
+    <div class="ex"><div class="en">We would go to the beach every summer.</div><div class="zh">我们过去每年夏天都去海边。&nbsp;<span style="color:var(--r3)">would = 过去反复动作</span></div></div>
+    <p class="note"><code>used to</code> 习惯和状态都行(<code>I used to have long hair</code>);<code>would</code> 只用于反复<strong>动作</strong>,不能配状态(<s>I would have long hair</s>)。只发生一次的事,只能用一般过去时。</p>
+
+    <div class="sum"><b>小结:</b>一个动作、一段已结束的状态、一串故事、还是过去的习惯,只要<strong>整件事封闭在过去、已经结束</strong>,就用一般过去时(习惯还可用 <code>used to / would</code> 点明)。</div>
+  </section>
+
+  <!-- ④ 关键词 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>关键词:明确的"过去时间"是它的指纹</h2>
+        <div class="tag">怎么用 · 一眼认出的信号</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>怎么一眼看出该用过去时?
+      <span class="lim"><b>上一阶的局限:</b>前面讲"用在哪",这里给"信号词"抓手。</span>
+    </div>
+    <p>一般过去时最强的信号,是句子里出现一个<strong>明确的、已经结束的过去时间点</strong>。</p>
+    <div class="kw">
+      <div class="k a"><div class="t">时刻 / 时段</div><div class="w">yesterday<br>last night / week / year<br>this morning</div></div>
+      <div class="k b"><div class="t">往前推</div><div class="w">… ago<br>(two days ago)<br>in 2010</div></div>
+      <div class="k c"><div class="t">叙事 / 口语</div><div class="w">then · just now<br>when I was young</div></div>
+    </div>
+    <div class="ex"><div class="en">I saw him yesterday.</div><div class="zh">我昨天见到他了。</div></div>
+    <div class="ex"><div class="en">We met two years ago.</div><div class="zh">我们两年前认识的。</div></div>
+    <div class="ex"><div class="en">She was born in 2000.</div><div class="zh">她 2000 年出生。</div></div>
+    <p class="note">这些"确定的过去时间",正好是现在完成时<strong>用不了</strong>的(<code>I have seen him yesterday</code> ✗,见 03)。所以反过来:句子里有明确过去时间,基本就锁定一般过去时。</p>
+
+    <h3>小心:just now ≠ just</h3>
+    <div class="ex"><div class="en">I saw her just now.</div><div class="zh">我刚才见到她。&nbsp;<span style="color:var(--r4)">just now = 刚才,配一般过去时</span></div></div>
+    <div class="ex"><div class="en">I have just seen her.</div><div class="zh">我刚见到她。&nbsp;<span style="color:var(--muted)">just = 刚刚,配现在完成时</span></div></div>
+
+    <div class="sum"><b>小结:</b>见到 yesterday / …ago / last… / in + 过去年份 / just now,基本锁定一般过去时。它们是过去时的指纹,<strong>也是完成时的禁区</strong>。</div>
+  </section>
+
+  <!-- ⑤ 大坑 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>大坑:动词变形,考试最爱在这里扣分</h2>
+        <div class="tag">特殊情况 · 最容易错的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>哪些点最容易写错形?
+      <span class="lim"><b>上一阶的局限:</b>前面都在讲"何时用",这一阶专治"用错形"。</span>
+    </div>
+
+    <h3>① did 一出场,主动词回原形(再钉一遍)</h3>
+    <div class="ex bad"><div class="en">Did you saw it?</div><div class="zh">did 已表过去,后面必须原形</div></div>
+    <div class="ex good"><div class="en">Did you see it?</div><div class="zh"></div></div>
+    <div class="ex bad"><div class="en">I didn't saw it.</div><div class="zh"></div></div>
+    <div class="ex good"><div class="en">I didn't see it.</div><div class="zh"></div></div>
+
+    <h3>② 规则动词 -ed 的拼写</h3>
+    <div class="conv">
+      <div class="row"><span class="from">work</span><span class="arrow">→</span><span class="to">worked</span><span class="gloss">直接加 -ed</span></div>
+      <div class="row"><span class="from">like</span><span class="arrow">→</span><span class="to">liked</span><span class="gloss">词尾 e,只加 -d</span></div>
+      <div class="row"><span class="from">stop</span><span class="arrow">→</span><span class="to">stopped</span><span class="gloss">重读闭音节,双写末字母</span></div>
+      <div class="row"><span class="from">study</span><span class="arrow">→</span><span class="to">studied</span><span class="gloss">辅音 + y,变 i 加 -ed</span></div>
+      <div class="row"><span class="from">play</span><span class="arrow">→</span><span class="to">played</span><span class="gloss">元音 + y,直接加 -ed</span></div>
+    </div>
+
+    <h3>③ 高频不规则动词,得死背</h3>
+    <div class="conv">
+      <div class="row"><span class="from">go</span><span class="arrow">→</span><span class="to">went</span><span class="gloss">去</span></div>
+      <div class="row"><span class="from">have</span><span class="arrow">→</span><span class="to">had</span><span class="gloss">有</span></div>
+      <div class="row"><span class="from">do</span><span class="arrow">→</span><span class="to">did</span><span class="gloss">做</span></div>
+      <div class="row"><span class="from">see</span><span class="arrow">→</span><span class="to">saw</span><span class="gloss">看见</span></div>
+      <div class="row"><span class="from">get</span><span class="arrow">→</span><span class="to">got</span><span class="gloss">得到</span></div>
+      <div class="row"><span class="from">come</span><span class="arrow">→</span><span class="to">came</span><span class="gloss">来</span></div>
+      <div class="row"><span class="from">take</span><span class="arrow">→</span><span class="to">took</span><span class="gloss">拿</span></div>
+      <div class="row"><span class="from">make</span><span class="arrow">→</span><span class="to">made</span><span class="gloss">做 / 制造</span></div>
+      <div class="row"><span class="from">say</span><span class="arrow">→</span><span class="to">said</span><span class="gloss">说</span></div>
+      <div class="row"><span class="from">buy</span><span class="arrow">→</span><span class="to">bought</span><span class="gloss">买</span></div>
+      <div class="row"><span class="from">think</span><span class="arrow">→</span><span class="to">thought</span><span class="gloss">想</span></div>
+    </div>
+    <p class="note">不规则动词没有捷径,高频这十几个先背熟,其余边用边补。</p>
+
+    <h3>④ was/were 是 be,别和实义动词叠用</h3>
+    <div class="ex bad"><div class="en">She was worked here.</div><div class="zh">was 是 be,后面不能再叠一个实义过去式</div></div>
+    <div class="ex good"><div class="en">She worked here.</div><div class="zh">要么只用实义动词过去式</div></div>
+    <div class="ex good"><div class="en">She was working here.</div><div class="zh">要么 was + doing,那是过去进行时("当时正在")</div></div>
+
+    <div class="sum"><b>小结:</b>did 后还原原形;规则记 -ed 拼写、不规则死背高频表;<strong>was/were 是 be,不借 did,也别跟实义动词叠</strong>。</div>
+  </section>
+
+  <!-- ⑥ 判断 -->
+  <section class="rung s6">
+    <div class="rung-head">
+      <div class="num">6</div>
+      <div class="titles">
+        <h2>判断:跟现在完成时划清界限</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一般过去时和现在完成时老搞混,怎么一刀切开?
+      <span class="lim"><b>上一阶的局限:</b>过去时讲透了,最后给它和最容易混的完成时的分界。</span>
+    </div>
+    <p>两个都在讲过去的事。切开它俩,只需问一刀:<strong>这件事跟"现在"还连不连着?</strong></p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I lost my key.</div>
+        <div class="zh">只报道过去丢了这件事。</div>
+        <div class="lbl">切断 → 一般过去时</div>
+      </div>
+      <div class="card b">
+        <div class="en">I have lost my key.</div>
+        <div class="zh">现在还没找到,有结果。</div>
+        <div class="lbl">连现在 → 现在完成时</div>
+      </div>
+    </div>
+    <div class="ex"><div class="en">He lived in Beijing.</div><div class="zh">他在北京住过(现在不住)。&nbsp;<span style="color:var(--r6)">→ 一般过去时</span></div></div>
+    <div class="ex sub"><div class="en">He has lived in Beijing for ten years.</div><div class="zh">他在北京住了十年(还住着)。&nbsp;<span style="color:var(--muted)">→ 现在完成时</span></div></div>
+    <div class="ex"><div class="en">I saw that movie yesterday.</div><div class="zh">我昨天看了那部电影。&nbsp;<span style="color:var(--r6)">有 yesterday,只能过去时</span></div></div>
+    <div class="ex sub"><div class="en">I have seen that movie.</div><div class="zh">那部电影我看过。&nbsp;<span style="color:var(--muted)">问的是"看过没有"的经历</span></div></div>
+
+    <div class="sum"><b>小结:</b>过去时管"<strong>关上门的过去</strong>",完成时管"<strong>连到现在的过去</strong>"。有明确过去时间、且跟现在无关,就是一般过去时。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>站在现在指向"关门的过去",事件已结束、跟现在切断</td><td>灵魂是"封闭的过去"</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td>be:was/were;实义:过去式,疑问否定借 did</td><td>did 一来,动词回原形</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>用在哪</td><td>过去某刻动作 / 已结束状态 / 一串叙事 / 过去习惯(used to·would)</td><td>都是"已结束、封闭在过去"</td></tr>
+        <tr class="o4"><td><span class="dot">④ 关键词</span></td><td>信号</td><td>yesterday / …ago / last… / in+年份 / just now</td><td>过去时的指纹,完成时的禁区</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 大坑</span></td><td>动词变形</td><td>did 后原形;-ed 拼写;不规则死背;was/were 不叠实义</td><td>最容易扣分处</td></tr>
+        <tr class="o6"><td><span class="dot">⑥ 判断</span></td><td>跟完成时分界</td><td>切断=过去时,连现在=完成时</td><td>一刀:还连着现在吗</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 判断法 -->
+  <div class="decide">
+    <h2>一图流:遇到"过去的事"怎么定</h2>
+    <div class="flow">
+      <div class="q">主语后面是 be 还是实义动词?</div>
+      <div class="a"><span class="h2c">be →</span> 用 <strong>was/were</strong>,疑问自己前移、否定加 not</div>
+      <div class="a"><span class="h2c">实义 →</span> 肯定用<strong>过去式</strong>;疑问 / 否定借 <strong>did</strong>,动词回原形</div>
+      <div class="q">句里有明确的过去时间吗(yesterday / …ago / last… / in+过去年份)?</div>
+      <div class="a"><span class="h4">有 →</span> 基本锁定<strong>一般过去时</strong>(完成时用不了)</div>
+      <div class="q">这件事跟现在还连着吗?</div>
+      <div class="a"><span class="h6">切断、已结束 →</span> <strong>一般过去时</strong></div>
+      <div class="a"><span class="hd">连着现在(结果/持续/经历) →</span> 现在完成时(去看 03)</div>
+    </div>
+  </div>
+
+  <footer>一般过去时 · 地基 → 形式 → 功能 → 关键词 → 大坑 → 判断 · 一扇"关上门的过去",与现在切断</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>将来完成时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- satmax skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.rel{color:#e6b850}   /* 定语从句 */
+.nom{color:#38cabf}   /* 名词性从句 */
+.adv{color:#f0876a}   /* 状语从句 */
+.freq{color:#b48ef0;font-weight:700}  /* 频率副词 */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>将来完成时 · 阶梯式笔记</h1>
+    <p class="sub">从“它锚定什么”起步,一阶叠一阶:地基 → 骨架 → 功能 → 对比 → 判断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:站在未来某一刻,回望一件“已经做完”的事</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>将来完成时到底在表达什么?它和一般将来时差在哪?
+      <span class="lim"><b>为什么先讲:</b>都在讲将来,但将来完成时的独门之处是“<em>视角</em>”——它把你放到将来的某个点上,回头看一件到那时<em>已经完成</em>的事。不先抓住这个“未来回望”的视角,就会和 will do 混。</span>
+    </div>
+    <p>核心一句话:将来完成时描述<strong>到将来某个时间点为止,已经完成的动作</strong>。它的独特在视角——<strong>站在未来的某一刻,回望一件那时已经做完的事</strong>(Cambridge 的说法:从将来的一个点回看过去)。所以它总要有两样东西:一个<strong>将来的截止点</strong>(by + 时刻),和一个<strong>在那之前完成</strong>的动作。它是“截止日期”和“里程碑”的时态。</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">By 6 p.m., I'll have finished the report.</div>
+        <div class="zh">到六点,我就已经把报告做完了。</div>
+        <div class="lbl">will have done — 那刻之前已完成</div>
+      </div>
+      <div class="card now">
+        <div class="en">At 6 p.m., I'll finish the report.</div>
+        <div class="zh">六点我（才）做完报告。</div>
+        <div class="lbl">will do — 只说那时会做 / 发生</div>
+      </div>
+    </div>
+    <p class="note">关键差别在一个词:<code>by</code>(到…之前)对 <code>at</code>(在…那一刻)。by 6 → 六点<strong>前</strong>已完成;at 6 → 六点<strong>这一刻</strong>发生。<b>will</b> 标“将来”,<b>have + 过去分词</b> 标“已完成”。</p>
+    <div class="sum"><b>小结:</b>将来完成时 = 站在未来某刻回望,看一件<strong>到那时已经做完</strong>的事。记住这个“未来回望 + 截止点”的视角,后面选它还是一般将来时全靠它。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:一个满配句子能塞多满</h2>
+        <div class="tag">怎么用 · 句子骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一个将来完成时的句子,成分排起来长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清“表达什么”,没给“句子的形状”。</span>
+    </div>
+    <p>形式还是<strong>两层叠加</strong>:<code>will + have + 过去分词</code>——will 管“将来”,have + done 管“已完成”。和前面几个将来时一样<strong>不分人称</strong>(will 是情态动词,三单不加 -s)。把谓语从 <code>will do</code> 换成 <code>will have done</code>,就给动作加上“到某刻已完成”这层意思——<strong>骨架不变,只换谓语的“体”</strong>。下面每条塞满“三大从句”。</p>
+    <p class="note">延续上一篇的看法:<code>will have done</code> = will(情态动词)+ have done(完成式不定式)。过去分词 = 规则动词加 -ed(finish→finished),不规则动词单独记(write→written、do→done、go→gone)。</p>
+    <div class="legend2">
+      <span class="rel">〔定语从句〕</span>
+      <span class="nom">〔名词性从句〕</span>
+      <span class="adv">〔状语从句〕</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
+    </div>
+
+    <h3>A · will have done 句</h3>
+    <p class="note">下面三句是<strong>同一句</strong>一步步变出来的:陈述句 → 一般疑问句 → 特殊疑问句,后一句都在前一句身上只动一处。will 是助动词,变疑问<strong>不借 do</strong>,靠 <b>will 自己前移</b>。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel">主语 <span class="rel">〔定语从句〕</span> · <b>will have</b> · 过去分词 · 宾语 <span class="nom">〔名词性从句〕</span> · <span class="adv">〔状语从句(截止点)〕</span></div>
+    <div class="ex">
+      <div class="en">The teacher <span class="rel">who teaches us English</span> <b>will have explained</b> <span class="nom">what the paper covers</span> <span class="adv">by the time the exam begins</span>.</div>
+      <div class="zh">到考试开始的时候,教我们英语的那位老师已经把试卷的范围讲解完了。</div>
+    </div>
+
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动:把 <b>will</b> 提到主语前(have、explained 跟在后面原样不动),<strong>不借 do</strong>;从句里的 teaches、covers、begins 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Will</b> the teacher <span class="rel">who teaches us English</span> <b>have explained</b> <span class="nom">what the paper covers</span> <span class="adv">by the time the exam begins</span>?</div>
+      <div class="zh">到考试开始时,教我们英语的那位老师会已经把试卷范围讲完了吗?</div>
+    </div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动:把要问的宾语(名词性从句 <span class="nom">what the paper covers</span>)换成疑问词 <b>What</b> 提到最前,后面 will 的语序原样保留。</div>
+    <div class="ex">
+      <div class="en"><b>What</b> will the teacher <span class="rel">who teaches us English</span> <b>have explained</b> by the time the exam begins?</div>
+      <div class="zh">到考试开始时,教我们英语的那位老师会已经讲完了什么?</div>
+    </div>
+
+    <h3>B · 三个易错点</h3>
+    <p class="note">will have done 的骨架很规整,但初学最容易在这三处翻车。</p>
+    <div class="rows">
+      <div class="row"><span class="k">不分人称</span><span class="v">will 是情态动词,所有人称都用 <b>will have + 过去分词</b>,三单不加 -s。<code>She will have left.</code>(× will have leaves)</span></div>
+      <div class="row"><span class="k">否定</span><span class="v">won't have + 过去分词。<code>I won't have finished by then.</code> 到那时我还没做完。</span></div>
+      <div class="row"><span class="k">过去分词</span><span class="v">规则动词 -ed,不规则动词单独记。<code>I'll have written it.</code>(× will have wrote)</span></div>
+    </div>
+
+    <div class="sum"><b>小结:</b>will have done 靠 <b>will 前移</b>成疑问、谓语用 <b>have + 过去分词</b>、三单不加 -s;否定 won't have done。骨架不变,给动作加“到某刻已完成”这层意思,只需把 will do 换成 will have done。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:什么时候真的用它</h2>
+        <div class="tag">怎么用 · 三条骨架,每条 3 例</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子会搭了,到底在哪些场景该用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决“怎么搭”,没解决“何时用”。三种场景本质都是“到将来某刻,已经完成”,回扣第一阶。</span>
+    </div>
+
+    <h3>① by + 将来时刻:那刻之前做完</h3>
+    <div class="skel">主语 · <b>will have</b> · 过去分词 · by + 将来时刻</div>
+    <div class="ex"><div class="en">She <b>will have written</b> it by noon tomorrow.</div><div class="zh">到明天中午,她就已经把它写完了。</div></div>
+    <div class="ex"><div class="en">I <b>shall have finished</b> it by next Friday.</div><div class="zh">到下周五,我就把它完成了。</div></div>
+    <div class="ex"><div class="en">I <b>will have finished</b> the report by 5 p.m.</div><div class="zh">到五点,我就把报告做完了。</div></div>
+    <p class="note">主力信号词是 <b>by</b>(到…之前)——by Friday、by 5、by then、by 2030。<code>shall have done</code> 多用于 I / we,偏正式(如上面第二句),日常多用 will。</p>
+
+    <h3>② by the time + 从句:另一件事发生前,已完成</h3>
+    <div class="skel">主句 <b>will have done</b> + by the time + 主语 · <span class="adv">现在时谓语</span></div>
+    <div class="ex"><div class="en">By the time you arrive, I <b>will have cooked</b> dinner.</div><div class="zh">你到的时候,我已经把晚饭做好了。</div></div>
+    <div class="ex"><div class="en">By the time we get there, the kids <b>will have gone</b> to bed.</div><div class="zh">我们到那儿时,孩子们已经睡了。</div></div>
+    <div class="ex"><div class="en">By the time the movie ends, I <b>will have fallen</b> asleep.</div><div class="zh">电影演完时,我已经睡着了。</div></div>
+    <p class="note">参照点可以是一个<strong>从句</strong>(by the time…);从句里用<strong>现在时</strong>(arrive、get、ends),不用 will——又是“主将从现”。</p>
+
+    <h3>③ 到将来某刻的累计:里程碑 / 周年</h3>
+    <div class="skel">by + 将来时刻 · 主语 · <b>will have</b> · 过去分词 · for + 时长</div>
+    <div class="ex"><div class="en">By next month, I <b>will have worked</b> here for ten years.</div><div class="zh">到下个月,我在这儿就满十年了。</div></div>
+    <div class="ex"><div class="en">On 9 October, we <b>will have been</b> married for 50 years.</div><div class="zh">到 10 月 9 日,我们就结婚满 50 年了。</div></div>
+    <div class="ex"><div class="en">By the time he is thirty, he <b>will have visited</b> every continent.</div><div class="zh">到他三十岁时,他就走遍七大洲了。</div></div>
+    <p class="note">这类常配 <b>for + 时长</b>,表示“到那个点,已累计多久 / 多少”——里程碑、纪念日的说法。</p>
+
+    <div class="sum"><b>小结:</b>by 某刻完成、by the time 某事前完成、到某刻的累计——三者共享一个内核:<strong>到将来某个参照点为止,动作已经完成</strong>。它是“截止点 + 已完成”的时态。</div>
+  </section>
+
+  <!-- ④ 对比 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>对比:四种将来时,同一时刻四种视角</h2>
+        <div class="tag">特殊情况 · 放回坐标系</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一般将来时、将来进行时、将来完成时,到底怎么分?
+      <span class="lim"><b>上一阶的局限:</b>功能讲了它的地盘,但真正要一眼分清的,是这一族将来时在同一时刻的不同视角。</span>
+    </div>
+
+    <h3>① 同一时刻,四种视角</h3>
+    <p>把四个将来时放到“明天八点”这一个时刻上,差别就一清二楚了——同一件事(做晚饭),看的角度不同:</p>
+    <div class="rows">
+      <div class="row"><span class="k">will do</span><span class="v">一般将来时——那刻<strong>发生 / 会做</strong>(整体事件)。<code>At 8, I'll cook dinner.</code></span></div>
+      <div class="row"><span class="k">will be doing</span><span class="v">将来进行时——那刻<strong>正在做</strong>(进行中)。<code>At 8, I'll be cooking dinner.</code></span></div>
+      <div class="row"><span class="k">will have done</span><span class="v">将来完成时——那刻之前<strong>已做完</strong>(已完成)。<code>By 8, I'll have cooked dinner.</code></span></div>
+      <div class="row"><span class="k">will have been doing</span><span class="v">将来完成进行时——到那刻<strong>已持续做了一段</strong>(完成 + 进行)。<code>By 8, I'll have been cooking for an hour.</code></span></div>
+    </div>
+    <p class="note">最后一格 <code>will have been doing</code>(将来完成进行时)强调“到那刻<strong>已经持续做了多久</strong>”——By 8, I'll have been cooking for an hour = 到八点我已经做了一小时了。它是完成体 + 进行体的叠加,本篇不展开。</p>
+
+    <h3>② by / by the time / in:三种“截止”说法</h3>
+    <div class="rows">
+      <div class="row"><span class="k">by + 时刻</span><span class="v">“<strong>不晚于那一刻</strong>(之前某时完成)”。<code>by Friday / by 5 / by then</code></span></div>
+      <div class="row"><span class="k">by the time + 从句</span><span class="v">“<strong>到某事发生时</strong>(已完成)”;从句用现在时(主将从现)。<code>by the time you arrive</code></span></div>
+      <div class="row"><span class="k">in + 时段</span><span class="v">“<strong>在这段时间的末尾</strong>完成”。<code>in an hour / in three years' time</code></span></div>
+    </div>
+    <p class="note">at 只指“那一刻发生”,不含“之前完成”;要“某刻之前已完成”,得用 by / by the time / in。</p>
+
+    <h3>③ 放回“完成体”家族 + 主将从现</h3>
+    <p>把它和别的“完成”排在一起——都是“<strong>到某个参照点,动作已完成</strong>”,只是参照点不同:</p>
+    <div class="rows">
+      <div class="row"><span class="k">现在完成时</span><span class="v">have/has + done —— 参照点是<strong>此刻</strong>。<code>I have finished (by now).</code></span></div>
+      <div class="row"><span class="k">过去完成时</span><span class="v">had + done —— 参照点是<strong>过去某刻</strong>。<code>I had finished (by then).</code></span></div>
+      <div class="row"><span class="k">将来完成时</span><span class="v">will have + done —— 参照点是<strong>将来某刻</strong>。<code>I will have finished (by then).</code></span></div>
+    </div>
+    <p class="note">从句里那个“截止点”照样“主将从现”:<code>By the time you finish, I'll have left.</code>(finish 用现在时,主句 will have left 用将来完成时)。</p>
+
+    <div class="sum"><b>小结:</b>三件事——① 同一时刻四种视角:will do(发生)/ will be doing(在做)/ will have done(已做完)/ will have been doing(已做了一段);② 截止说法 by / by the time / in,别用只表“那刻发生”的 at;③ 它是“完成体”家族里参照点落在将来的那一员,从句里照样“主将从现”。</div>
+  </section>
+
+  <!-- ⑤ 判断 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>判断:三步快速定位</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>实战里怎么一眼判断该用将来完成时?
+      <span class="lim"><b>上一阶的局限:</b>前面讲“用在哪、怎么分”,这一阶给“怎么快速识别”的抓手。</span>
+    </div>
+    <p class="note">看到 <b style="color:var(--r5)">by + 将来时刻</b>(by Friday / by 5 / by then / by 2030)、<b style="color:var(--r5)">by the time + 从句</b>、<b style="color:var(--r5)">in + 时段</b>(in three years' time),而且句子想说“<strong>到那时已经做完</strong>”,基本就是它的“指纹”。</p>
+    <h3>三步判断法</h3>
+    <ol class="steps">
+      <li>有没有一个将来的<strong>截止点 / 参照点</strong>(by + 时刻 / by the time + 从句)?→ 有,才谈得上将来完成时。</li>
+      <li>到那个点,动作是“<strong>已经完成</strong>”吗?→ 是,用 <b>will have done</b>(而非 will do“会发生” / will be doing“在进行”)。</li>
+      <li>形式:<b>will have + 过去分词</b>,不分人称;否定 won't have done;从句里的截止点用现在时(主将从现)。</li>
+    </ol>
+    <div class="sum"><b>小结:</b>先找将来的截止点,再判断“到那时是否已完成”,最后套 will have + 过去分词。信号词(by …)是指纹,三步定好<strong>时态、形式、边界</strong>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>站在未来回望,到某刻已完成的动作</td><td>未来回望 + 截止点</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>句子骨架</td><td>will have + 过去分词,不分人称;陈述 / 疑问 / 特殊,满配三大从句</td><td>will 前移;will do → will have done</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>by 某刻完成 / by the time 某事前 / 到某刻累计</td><td>到参照点为止,已完成</td></tr>
+        <tr class="o4"><td><span class="dot">④ 对比</span></td><td>怎么分</td><td>四种将来时同一时刻四视角;by / by the time / in;完成体家族 + 主将从现</td><td>要“已做完”就用 have done</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么识别</td><td>截止点 + 是否已完成 + 三步法</td><td>找截止点,判完成,套 will have done</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流:遇到句子怎么定</h2>
+    <div class="flow">
+      <div class="q">句子里有“将来的截止点”吗(by + 时刻 / by the time + 从句)?</div>
+      <div class="a"><span class="hit">有 →</span> 才可能用将来完成时,继续往下</div>
+      <div class="q">到那个点,动作是“已经完成”吗?</div>
+      <div class="a"><span class="hit">是 →</span> 用 <code>will have + 过去分词</code></div>
+      <div class="q">只是说“那时会发生 / 那时在进行”?</div>
+      <div class="a"><span class="hit4">会发生 →</span> 一般将来时 will do;<span class="hit4">在进行 →</span> 将来进行时 will be doing</div>
+      <div class="q">那个截止点是 by the time 等从句吗?</div>
+      <div class="a"><span class="hit4">是 →</span> 从句用现在时,主句才用 will have done(主将从现)</div>
+      <div class="q">说的是“到现在已完成”?</div>
+      <div class="a">是 → 那是现在完成时(have/has + done),不是本课</div>
+    </div>
+  </div>
+
+  <footer>将来完成时 · 地基 → 满配骨架 → 功能 → 对比 → 判断 · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>

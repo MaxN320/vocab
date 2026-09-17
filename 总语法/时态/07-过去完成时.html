@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>过去完成时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 六阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --r6:#e0729e;
+    --danger:#ef6a6a;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);
+    line-height:1.75;padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;letter-spacing:.5px;line-height:1.2}
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{display:flex;gap:.35rem;margin-top:1.4rem}
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+  .rail span:nth-child(6){background:var(--r6)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);background:var(--surface);border:1px solid var(--border);
+    border-left:4px solid var(--c);border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+  section.rung.s6{--c:var(--r6)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{font-family:var(--serif);font-size:2.3rem;font-weight:700;line-height:1;color:var(--c);flex:none}
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;margin-top:.15rem}
+
+  /* 解决问题 / 上一阶局限 */
+  .why{background:var(--surface-2);border-radius:9px;padding:.75rem .95rem;margin:1rem 0 1.1rem;font-size:.93rem}
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;color:var(--text)}
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{border-left:2px solid var(--c);padding:.15rem 0 .15rem .85rem;margin:.7rem 0}
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 错误 / 正确例句 */
+  .ex.bad{border-left-color:var(--danger)}
+  .ex.bad .en{color:#f3a3a3;text-decoration:line-through;text-decoration-color:rgba(239,106,106,.5)}
+  .ex.bad .en::after{content:" ✗";color:var(--danger);text-decoration:none;font-family:var(--sans)}
+  .ex.good{border-left-color:var(--r2)}
+  .ex.good .en::after{content:" ✓";color:var(--r2);font-family:var(--sans)}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.a .lbl{color:var(--r6)}
+  .vs .card.b .lbl{color:var(--r4)}
+
+  code{font-family:"SF Mono",Consolas,monospace;background:var(--surface-2);padding:.05rem .35rem;border-radius:5px;font-size:.88em}
+
+  /* 时间轴:Time 0 / Time 1 */
+  .tl{background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--c);
+    border-radius:9px;padding:.9rem 1rem;margin:.85rem 0;font-size:.9rem;line-height:1.85}
+  .tl .t0{font-family:var(--serif);color:var(--r5);font-weight:700}
+  .tl .t1{font-family:var(--serif);color:var(--r4);font-weight:700}
+  .tl .axis{font-family:"SF Mono",Consolas,monospace;color:var(--faint);letter-spacing:-1px;margin:.2rem 0}
+  .tl .lab{color:var(--muted)}
+  .tl .t0tag{color:var(--r5);font-weight:700}
+  .tl .t1tag{color:var(--r4);font-weight:700}
+
+  /* 句型骨架 */
+  .pat{background:#0f1420;border:1px solid var(--border);border-radius:9px;
+    padding:.7rem .9rem;margin:.6rem 0;font-family:"SF Mono",Consolas,monospace;
+    font-size:.86rem;color:#bcd;line-height:1.7}
+  .pat b{color:var(--r6)}
+
+  /* 小结 */
+  .sum{margin-top:1.2rem;padding:.75rem .95rem;background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:9px;font-size:.94rem}
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)} .tbl tr.o6 .dot{color:var(--r6)}
+
+  /* 判断法 */
+  .decide{margin-top:1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .h5{color:var(--r5);font-weight:600}
+  .flow .a .h4{color:var(--r4);font-weight:600}
+  .flow .a .hd{color:var(--danger);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>过去完成时 · 阶梯式笔记</h1>
+    <p class="sub">一条主线:它是"过去的过去"——把现在完成时(03)的落脚点从"现在"整体后移到"过去某一刻",站在那儿回看更早就已完成的事。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:过去的过去</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>过去完成时到底在表达什么?
+      <span class="lim"><b>为什么先讲:</b>它是全套时态里最依赖"参照点"的一个。光记 <code>had + 过去分词</code> 没用——核心是"站在过去某一刻回头看,有件事更早就已经做完了"。</span>
+    </div>
+    <p>核心一句话:过去完成时 = 站在<strong>过去某一刻(记作 Time 1)</strong>,回看一件<strong>比它更早、在那之前就已完成的事(记作 Time 0)</strong>。它天生需要<strong>两个过去时间</strong>:一个当落脚点,一个是"落脚点之前就完成的"。</p>
+    <p class="note">它就是现在完成时的<strong>落脚点后移</strong>——和"过去进行时 = 现在进行时后移"是同一个动作:</p>
+    <div class="tl">
+      现在完成时:站在 <b class="t1">现在</b>,回看过去 → <code>have done</code><br>
+      过去完成时:站在 <b class="t1">过去某一刻</b>,回看更早的过去 → <code>had done</code>
+    </div>
+    <div class="ex"><div class="en">When I arrived at the station, the train had already left.</div><div class="zh">我到车站时,火车已经开走了。</div></div>
+    <div class="tl">
+      <div class="axis">Time 0 ─────────── Time 1 ─────────── 现在</div>
+      <span class="t0tag">Time 0</span> <span class="t0">the train had left</span> <span class="lab">火车先走(过去完成时)</span><br>
+      <span class="t1tag">Time 1</span> <span class="t1">I arrived</span> <span class="lab">我后到(一般过去时,过去的落脚点)</span>
+    </div>
+    <div class="sum"><b>小结:</b>它的灵魂是"<strong>过去的过去</strong>"——先有个过去落脚点(Time 1),再标出比它更早就完成的事(Time 0 = had done)。没有那个落脚点,它立不住。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:had + 过去分词</h2>
+        <div class="tag">怎么用 · 造句的骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子怎么搭?
+      <span class="lim"><b>上一阶的局限:</b>地基说清"表达什么",没给"句子的形状"。</span>
+    </div>
+    <p>公式一条:<strong>had + 过去分词(done)</strong>。最省事的一点:<strong>had 不分人称</strong>——所有主语都用 had,连 have/has 的单复数都不用管。否定 <code>had not (hadn't)</code>,疑问把 <code>had</code> 前移。</p>
+    <div class="ex"><div class="en">She had finished her homework before dinner.</div><div class="zh">晚饭前她已经写完作业了。</div></div>
+    <div class="ex"><div class="en">I hadn't seen him before that day.</div><div class="zh">那天之前我没见过他。</div></div>
+    <div class="ex"><div class="en">Had you met her before?</div><div class="zh">你之前见过她吗?</div></div>
+    <p class="note">过去分词和现在完成时用的是<strong>同一个</strong>(done);变的只是 have/has → had。所以学过 03,这里等于只换一个助动词。</p>
+    <div class="sum"><b>小结:</b>骨架 <code>had + done</code>,had 全人称通用;否定 hadn't、疑问 had 前移。就是把 03 的 have/has 换成 had。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:四个用武之地</h2>
+        <div class="tag">怎么用 · 用在哪些场景</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>具体什么时候用?
+      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",没说"用在哪"。</span>
+    </div>
+    <h3>① 过去某一时刻之前,已完成</h3>
+    <div class="ex"><div class="en">By nine o'clock, he had already gone home.</div><div class="zh">到九点时,他已经回家了。&nbsp;<span style="color:var(--r3)">参照 = "九点"这个过去时刻</span></div></div>
+    <p class="note"><code>By + 过去时间</code> 是它的经典搭配:"到那个时刻为止,事情已经完成"。</p>
+    <h3>② 过去某个动作之前,已完成</h3>
+    <div class="ex"><div class="en">When I arrived, the train had left.</div><div class="zh">我到时,火车已经走了。&nbsp;<span style="color:var(--r3)">参照 = "我到达"这个过去动作</span></div></div>
+    <p class="note">参照从"一个时刻"换成了"一个动作",但逻辑一样:had done 标"比这个参照更早就完成"。前两个是它的本行——排序;下面两个是它另外两个高频"住处"。</p>
+
+    <h3>③ 间接引语:转述过去的话时"退一格"</h3>
+    <p class="note">用过去的动词(said / told / asked…)转述别人说过的话,原句里的<strong>一般过去时和现在完成时,都退一格变过去完成时</strong>(backshift)。</p>
+    <div class="ex"><div class="en">"I finished it." → He said he had finished it.</div><div class="zh">"我做完了。" → 他说他(已经)做完了。&nbsp;<span style="color:var(--r3)">过去时 → 过去完成时</span></div></div>
+    <div class="ex"><div class="en">"I have never seen it." → She said she had never seen it.</div><div class="zh">"我从没见过。" → 她说她从没见过。&nbsp;<span style="color:var(--r3)">现在完成时 → 过去完成时</span></div></div>
+
+    <h3>④ 第三条件句 / wish:与过去相反的假设</h3>
+    <p class="note">谈"过去要是……就……了"(其实没发生),if 从句用过去完成时。这属于<strong>虚拟语气</strong>(细节单独展开),但结构先记住。</p>
+    <div class="ex"><div class="en">If I had known, I would have come.</div><div class="zh">我要是早知道,就来了(其实不知道,也没来)。&nbsp;<span style="color:var(--r3)">if + had done, would have done</span></div></div>
+    <div class="ex"><div class="en">I wish I had studied harder.</div><div class="zh">我真希望当初更用功(表过去的懊悔)。&nbsp;<span style="color:var(--muted)">wish / if only + had done</span></div></div>
+
+    <div class="sum"><b>小结:</b>四个用武之地:①② 给两个过去动作<strong>排先后</strong>;③ 间接引语里<strong>退一格</strong>;④ 第三条件句 / wish 表<strong>与过去相反的假设</strong>。</div>
+  </section>
+
+  <!-- ④ 主场 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>主场:两个过去动作,标出先后</h2>
+        <div class="tag">怎么用 · 最核心的价值</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>两件过去的事,怎么让人一眼看出谁先谁后?
+      <span class="lim"><b>上一阶的局限:</b>功能讲清"表什么",但它最实用的价值,是给两个过去动作<strong>排序</strong>。</span>
+    </div>
+    <p>一句话里两个过去动作:<strong>先发生的用 had done(Time 0),后发生的用一般过去时(Time 1)</strong>。过去完成时就是那个"更早"的路标。</p>
+
+    <p>看时态怎么<strong>改变顺序</strong>——同一组词,换个时态,先后就反了:</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">When I arrived, the train had left.</div>
+        <div class="zh">我到时,火车已经走了。</div>
+        <div class="lbl">had left → 火车"先"走(我到之前)</div>
+      </div>
+      <div class="card b">
+        <div class="en">When I arrived, the train left.</div>
+        <div class="zh">我一到,火车就开了。</div>
+        <div class="lbl">left → 火车"后"走(我到之后)</div>
+      </div>
+    </div>
+
+    <p>再看一个"前因"的例子——原因发生在前(Time 0),结果在后(Time 1):</p>
+    <div class="ex"><div class="en">He failed the exam because he had not studied the routing protocols.</div><div class="zh">他考试没过,因为他(之前)没学路由协议。</div></div>
+    <div class="tl">
+      <span class="t0tag">Time 0</span> <span class="t0">had not studied</span> <span class="lab">没复习(更早,前因)</span><br>
+      <span class="t1tag">Time 1</span> <span class="t1">failed</span> <span class="lab">挂科(后果,一般过去时)</span>
+    </div>
+
+    <p class="note">注意:只有当"先后顺序"重要、或不标清就会误解时,才需要它。要是顺序已被 before/after 说死,过去完成时常可省(下一阶讲)。</p>
+    <div class="sum"><b>小结:</b>两个过去动作排座位:<strong>先发生坐 had done,后发生坐一般过去时</strong>。时态本身就是"谁更早"的路标。</div>
+  </section>
+
+  <!-- ⑤ 关键词 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>关键词:连接词与固定句型</h2>
+        <div class="tag">怎么用 · 信号词 & 高频句型</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>哪些词、哪些句型是它的信号?
+      <span class="lim"><b>上一阶的局限:</b>会排序了,给信号词和高频句型抓手。</span>
+    </div>
+
+    <h3>① when / after / before / as soon as(时间从句)</h3>
+    <div class="ex"><div class="en">When I arrived at the station, the train had already left.</div><div class="zh">我到车站时,火车已经开走了。&nbsp;<span style="color:var(--r5)">Time 1 arrived / Time 0 had left</span></div></div>
+    <div class="ex"><div class="en">After she had finished dinner, she went out.</div><div class="zh">她吃完晚饭后,就出门了。</div></div>
+    <p class="note"><strong>重要:before / after 本身已经点明先后</strong>,所以过去完成时常可省,用两个一般过去时也对:<code>After she finished dinner, she went out.</code> ✓。用 had 只是更强调"先完成"。</p>
+
+    <h3>② no sooner … than(倒装,"刚……就……")</h3>
+    <div class="pat">No sooner + <b>had</b> + 主语 + 过去分词 + <b>than</b> + 一般过去式</div>
+    <div class="ex"><div class="en">No sooner had I sat down than the phone rang.</div><div class="zh">我刚坐下,电话就响了。</div></div>
+    <p class="note">先做完的(sat down)用 had done,紧接着发生的(rang)用一般过去时。<strong>No sooner 放句首,主句必须倒装</strong>(had 提到主语前)。</p>
+
+    <h3>③ hardly / scarcely / barely … when(倒装,同义)</h3>
+    <div class="pat">Hardly + <b>had</b> + 主语 + 过去分词 + <b>when</b> + 一般过去式</div>
+    <div class="ex"><div class="en">Hardly had I sat down when the phone rang.</div><div class="zh">我刚坐下,电话就响了。</div></div>
+    <p class="note">和 no sooner…than 一个意思、也要倒装。<strong>搭配别混:no sooner 配 than,hardly / scarcely / barely 配 when。</strong></p>
+
+    <div class="sum"><b>小结:</b>when / after / before / as soon as 领时间从句(before/after 可省 had);no sooner…<b>than</b> 和 hardly…<b>when</b> 是"刚……就……"的倒装句型,had 提到主语前。</div>
+  </section>
+
+  <!-- ⑥ 判断 -->
+  <section class="rung s6">
+    <div class="rung-head">
+      <div class="num">6</div>
+      <div class="titles">
+        <h2>判断:什么时候真的需要它</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>什么时候必须用、什么时候可省?
+      <span class="lim"><b>上一阶的局限:</b>句型会了,最后给"用不用"的判断,并跟 03 对照收口。</span>
+    </div>
+    <p>一刀:<strong>有没有一个"过去落脚点",且要强调"比它更早就完成"?</strong></p>
+    <p class="note">关键约束:过去完成时<strong>不能单独存在</strong>,必须依附一个过去落脚点。</p>
+    <div class="ex bad"><div class="en">I had eaten.</div><div class="zh">没头没尾,缺落脚点——不知道"在什么之前"</div></div>
+    <div class="ex good"><div class="en">I had eaten before he came.</div><div class="zh">补出落脚点(he came),句子才立得住</div></div>
+
+    <h3>跟现在完成时(03)对照收口</h3>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I have eaten.</div>
+        <div class="zh">我吃过了(现在饱着)。</div>
+        <div class="lbl">落脚点 = 现在 → have done</div>
+      </div>
+      <div class="card b">
+        <div class="en">I had eaten before he came.</div>
+        <div class="zh">他来之前我已经吃过了。</div>
+        <div class="lbl">落脚点 = 过去某刻 → had done</div>
+      </div>
+    </div>
+    <p class="note">一句话:把 03 的"现在"换成"过去某一刻",have → had,就是过去完成时。它俩是同一个"回看已完成"的动作,只是落脚点差一格。</p>
+    <div class="sum"><b>小结:</b>有过去落脚点、且要强调更早完成,才用它;顺序已被 before/after 说死、或根本没有落脚点,一般过去时就够。<strong>它就是 03 整体后移一格。</strong></div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>站在过去落脚点(Time 1),回看更早已完成的事(Time 0)</td><td>过去的过去(03 落脚点后移)</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td><code>had + 过去分词</code>,had 全人称通用</td><td>把 03 的 have/has 换成 had</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>用在哪</td><td>排先后;间接引语退一格;第三条件句 / wish</td><td>四个用武之地</td></tr>
+        <tr class="o4"><td><span class="dot">④ 主场</span></td><td>标先后</td><td>先发生 had done,后发生一般过去时</td><td>时态=谁更早的路标</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 关键词</span></td><td>句型</td><td>when/after/before/as soon as;no sooner…than;hardly…when</td><td>倒装:had 提到主语前</td></tr>
+        <tr class="o6"><td><span class="dot">⑥ 判断</span></td><td>用不用</td><td>要有落脚点+强调更早;顺序已明则可省</td><td>不能单独存在</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 判断法 -->
+  <div class="decide">
+    <h2>一图流:遇到"过去的事"要不要用 had done</h2>
+    <div class="flow">
+      <div class="q">有没有一个"过去落脚点"(Time 1:某时刻 / 某动作)?</div>
+      <div class="a"><span class="hd">没有 →</span> 别用过去完成时,一般过去时就行(它不能单独存在)</div>
+      <div class="q">要强调"更早那件已经先完成"吗?</div>
+      <div class="a"><span class="h5">要 →</span> 更早的用 <strong>had done</strong>(Time 0),落脚点用一般过去时(Time 1)</div>
+      <div class="a"><span class="h4">before/after 已点明顺序 →</span> had 可省,两个一般过去时也对</div>
+      <div class="q">是 no sooner / hardly / scarcely 开头?</div>
+      <div class="a"><span class="h5">倒装:</span> had + 主语 + done;<strong>no sooner…than / hardly…when</strong>(搭配别混)</div>
+    </div>
+  </div>
+
+  <footer>过去完成时 · 地基 → 形式 → 功能 → 标先后 → 句型 → 判断 · 过去的过去,一切依附一个过去落脚点</footer>
+
+</div>
+</body>
+</html>

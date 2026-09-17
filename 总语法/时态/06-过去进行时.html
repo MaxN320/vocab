@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>过去进行时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 六阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --r6:#e0729e;
+    --danger:#ef6a6a;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);
+    line-height:1.75;padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;letter-spacing:.5px;line-height:1.2}
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{display:flex;gap:.35rem;margin-top:1.4rem}
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+  .rail span:nth-child(6){background:var(--r6)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);background:var(--surface);border:1px solid var(--border);
+    border-left:4px solid var(--c);border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+  section.rung.s6{--c:var(--r6)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{font-family:var(--serif);font-size:2.3rem;font-weight:700;line-height:1;color:var(--c);flex:none}
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;margin-top:.15rem}
+
+  /* 解决问题 / 上一阶局限 */
+  .why{background:var(--surface-2);border-radius:9px;padding:.75rem .95rem;margin:1rem 0 1.1rem;font-size:.93rem}
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;color:var(--text)}
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{border-left:2px solid var(--c);padding:.15rem 0 .15rem .85rem;margin:.7rem 0}
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 错误 / 正确例句 */
+  .ex.bad{border-left-color:var(--danger)}
+  .ex.bad .en{color:#f3a3a3;text-decoration:line-through;text-decoration-color:rgba(239,106,106,.5)}
+  .ex.bad .en::after{content:" ✗";color:var(--danger);text-decoration:none;font-family:var(--sans)}
+  .ex.good{border-left-color:var(--r2)}
+  .ex.good .en::after{content:" ✓";color:var(--r2);font-family:var(--sans)}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.a .lbl{color:var(--r1)}
+  .vs .card.b .lbl{color:var(--r4)}
+
+  code{font-family:"SF Mono",Consolas,monospace;background:var(--surface-2);padding:.05rem .35rem;border-radius:5px;font-size:.88em}
+
+  /* 背景 + 事件 图示 */
+  .bgline{background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--c);
+    border-radius:9px;padding:.85rem 1rem;margin:.8rem 0;font-size:.9rem;line-height:1.9}
+  .bgline .bg{font-family:var(--serif);color:var(--r5)}
+  .bgline .ev{font-family:var(--serif);color:var(--r4);font-weight:700}
+  .bgline .lab{color:var(--muted)}
+
+  /* 小结 */
+  .sum{margin-top:1.2rem;padding:.75rem .95rem;background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:9px;font-size:.94rem}
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)} .tbl tr.o6 .dot{color:var(--r6)}
+
+  /* 判断法 */
+  .decide{margin-top:1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .h2c{color:var(--r2);font-weight:600}
+  .flow .a .h5{color:var(--r5);font-weight:600}
+  .flow .a .h4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>过去进行时 · 阶梯式笔记</h1>
+    <p class="sub">一条主线:把"现在进行时"那台钻进过程里的镜头,整体搬到过去某一刻——看当时正铺着什么过程,又被什么短动作打断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:钻进过去某一刻"正在进行"的过程</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>过去进行时到底在表达什么?
+      <span class="lim"><b>为什么先讲:</b>它不是"过去做了什么"(那是一般过去时的一个完成的点),而是"过去那一刻正铺着什么过程"。这个抓错,后面 while / when 全乱。</span>
+    </div>
+    <p>核心一句话:过去进行时 = 站在<strong>过去某一时刻</strong>,钻进当时正在展开、还没结束的过程里看它。说白了,就是把"现在进行时"那台镜头,整体<strong>后移到过去</strong>。</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I cooked dinner.</div>
+        <div class="zh">我做了晚饭(做完了)。</div>
+        <div class="lbl">一般过去时 — 一个完成的点</div>
+      </div>
+      <div class="card b">
+        <div class="en">I was cooking dinner.</div>
+        <div class="zh">我当时正在做晚饭。</div>
+        <div class="lbl">过去进行时 — 那一刻正铺着的过程</div>
+      </div>
+    </div>
+    <p class="note">和 02 呼应:现在进行时是"此刻站在过程里",过去进行时只是把站的位置从"现在"挪到"过去某一刻"。和 05 呼应:一般过去时看<strong>点</strong>(事发生了),过去进行时看<strong>段</strong>(过程正铺着)。</p>
+    <div class="sum"><b>小结:</b>它抓的不是"过去发生了什么",是"过去那一刻正在进行什么"。记住"<strong>点 vs 段</strong>"这一刀,后面全通。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:was / were + doing</h2>
+        <div class="tag">怎么用 · 造句的骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子怎么搭?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清"表达什么",没给"句子的形状"。</span>
+    </div>
+    <p>公式一条:<strong>was / were + 动词-ing</strong>。<code>I / he / she / it</code> 用 <b>was</b>;<code>you / we / they</code> 用 <b>were</b>。和现在进行时比,只是 be 从 am/is/are 换成 was/were,<strong>-ing 不动</strong>——骨架不变,只换时态。</p>
+    <div class="ex"><div class="en">I was reading at nine last night.</div><div class="zh">我昨晚九点在看书。</div></div>
+    <div class="ex"><div class="en">They were playing football.</div><div class="zh">他们当时在踢球。</div></div>
+    <div class="ex sub"><div class="en">Was she sleeping? / He wasn't listening.</div><div class="zh">她当时在睡吗? / 他当时没在听。&nbsp;<span style="color:var(--r2)">be 自己前移、加 not,不借 did</span></div></div>
+    <div class="sum"><b>小结:</b>骨架就一条 <code>was/were + doing</code>;疑问否定靠 be 自己前移,<strong>不借 did</strong>(对上现在进行时那套)。换时态只换 be。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:过去某一刻、或某一段,正在进行</h2>
+        <div class="tag">怎么用 · 用在哪些场景</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>具体哪些情况用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",没说"用在哪"。</span>
+    </div>
+    <h3>① 过去某一时刻,正在进行</h3>
+    <div class="ex"><div class="en">He was playing tennis at three yesterday afternoon.</div><div class="zh">昨天下午三点他正在打网球。&nbsp;<span style="color:var(--r3)">at three = 那一刻,正打着</span></div></div>
+    <h3>② 过去某一阶段内,正在进行</h3>
+    <div class="ex"><div class="en">He was playing tennis yesterday afternoon.</div><div class="zh">他昨天下午(那段时间)在打网球。&nbsp;<span style="color:var(--r3)">整个下午作背景,铺着这个过程</span></div></div>
+    <p class="note">这正对上 02 的"小窗 / 大窗"——一个是过去某一秒,一个是过去一段时期,只是都挪到了过去。</p>
+
+    <h3>③ 过去反复 / 恼人的习惯:was always doing</h3>
+    <p class="note">配 <code>always / constantly / forever</code>,强调过去某段时间里一件事<strong>反复发生</strong>,常带"烦人 / 没完没了"的口气——和一般过去时里中性的 used to 习惯不同。</p>
+    <div class="ex"><div class="en">He was always losing his keys.</div><div class="zh">他老是丢钥匙。&nbsp;<span style="color:var(--r3)">always + 进行时 = 反复 + 带情绪</span></div></div>
+    <div class="ex"><div class="en">My neighbors were constantly arguing.</div><div class="zh">我邻居没完没了地吵架。</div></div>
+
+    <h3>边界:状态动词不进进行式</h3>
+    <p class="note">和进行时家族一个规矩(<code>02</code> 讲过):<strong>状态动词</strong>(know / want / believe / like / need / belong…)描述状态、没有过程可展开,不用进行式。</p>
+    <div class="ex bad"><div class="en">I was knowing the answer.</div><div class="zh">know 是状态,不能进行</div></div>
+    <div class="ex good"><div class="en">I knew the answer.</div><div class="zh">状态动词 → 用一般过去时</div></div>
+    <p class="note">例外:少数词进进行式会换意思或为委婉,如 <code>I was having dinner</code>(have=吃,是动作)、<code>I was wondering if you could help</code>(更客气)。先记住:大多数状态动词不进进行式。</p>
+
+    <div class="sum"><b>小结:</b>过去某一刻、过去某一段"正铺着";还能配 <code>always</code> 表反复、恼人的习惯。但<strong>状态动词(know / belong…)不进进行式</strong>。</div>
+  </section>
+
+  <!-- ④ 主场 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>主场:一条背景 + 闯进来的短动作</h2>
+        <div class="tag">怎么用 · 最核心的用法</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>过去进行时最常怎么用?
+      <span class="lim"><b>上一阶的局限:</b>前面是"单独的过程",但它真正的主场,是给另一个动作<strong>当背景</strong>。</span>
+    </div>
+    <p>最典型的画面:一条长的、正在进行的动作<strong>铺着当背景</strong>(was doing),中途"啪"地插进来一个短的、一次性的动作(did / 一般过去时)。</p>
+    <div class="ex"><div class="en">While I was walking along the road, I met him.</div><div class="zh">我沿路走着的时候,遇见了他。</div></div>
+    <div class="bgline">
+      <span class="bg">was walking</span> <span class="lab">← 长背景,一直铺着(过去进行时)</span><br>
+      　　　　│<br>
+      　　　　└─ <span class="ev">met</span> <span class="lab">← 短事件,中途插进来(一般过去时)</span>
+    </div>
+
+    <h3>讲故事:背景铺开,事件一串</h3>
+    <div class="ex"><div class="en">Yesterday I was walking along the road, I met him, and we talked for a few minutes.</div><div class="zh">昨天我正沿路走着,遇见了他,我们聊了几分钟。</div></div>
+    <p class="note"><code>was walking</code> 是铺开的背景;<code>met</code>、<code>talked</code> 是背景上依次发生的完成动作。<strong>背景一层、事件一层</strong>,分工清楚。</p>
+    <div class="sum"><b>小结:</b>过去进行时的主场 = <strong>当背景</strong>。长背景铺着用 <code>was doing</code>,闯进来的短动作用 <code>did</code>。一层背景、一层事件。</div>
+  </section>
+
+  <!-- ⑤ 关键词 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>关键词:while 配背景,when 配事件</h2>
+        <div class="tag">怎么用 · while / when / as</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>while 和 when 到底怎么选?
+      <span class="lim"><b>上一阶的局限:</b>知道"背景 + 事件"了,但用哪个连接词领哪个,最容易错。</span>
+    </div>
+    <p>先记死一句:<strong>长背景 → was doing;短事件 → did</strong>。连接词只是贴在从句前的标签,跟着"长 / 短"走。</p>
+
+    <h3>while → 只领"正在进行的背景"(was doing)</h3>
+    <div class="ex"><div class="en">While I was walking along the road, I met him.</div><div class="zh">我走在路上时,遇见了他。</div></div>
+    <p class="note">while = "在……的过程中",天生配长背景。(两件事都在进行时,while 也能连两条背景:<code>While I was cooking, she was reading.</code>)</p>
+
+    <h3>when / as → 更灵活</h3>
+    <div class="ex"><div class="en">I was walking along the road when I met him.</div><div class="zh">我正走在路上,这时遇见了他。&nbsp;<span style="color:var(--r4)">when 领短事件 met</span></div></div>
+    <div class="ex"><div class="en">When I was walking along the road, I met him.</div><div class="zh">我走在路上时遇见了他。&nbsp;<span style="color:var(--r5)">when 也能领背景 = while</span></div></div>
+    <p class="note"><b>when</b> 两边都行:多数配"闯入的短动作"(did),也能配背景(was doing)。<b>as</b> ≈ while,配正在进行的背景。</p>
+
+    <div class="vs">
+      <div class="card a">
+        <div class="en">While I was cooking, the phone rang.</div>
+        <div class="zh">我做饭时,电话响了。</div>
+        <div class="lbl">while + 背景(was cooking) → 短动作 rang</div>
+      </div>
+      <div class="card b">
+        <div class="en">When the phone rang, I was cooking.</div>
+        <div class="zh">电话响时,我正在做饭。</div>
+        <div class="lbl">when + 短动作(rang) → 背景 was cooking</div>
+      </div>
+    </div>
+    <div class="sum"><b>小结:</b>长背景 <code>was doing</code>、短事件 <code>did</code>;<strong>while 专配背景,when 灵活</strong>(多配事件,也能配背景),as ≈ while。先判长短,再贴连接词。</div>
+  </section>
+
+  <!-- ⑥ 判断 -->
+  <section class="rung s6">
+    <div class="rung-head">
+      <div class="num">6</div>
+      <div class="titles">
+        <h2>判断:跟一般过去时的分工</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一句话里,哪个动词用过去进行、哪个用一般过去?
+      <span class="lim"><b>上一阶的局限:</b>连接词会选了,最后给"整句怎么排时态"的总抓手。</span>
+    </div>
+    <p>一句叙事里常常两种时态并存。切开它俩,只需问:<strong>这个动作是"铺开的背景",还是"插进来的一个点"?</strong></p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">I was cooking.</div>
+        <div class="zh">铺开的、正持续的过程(背景)。</div>
+        <div class="lbl">段 → 过去进行时</div>
+      </div>
+      <div class="card b">
+        <div class="en">The phone rang.</div>
+        <div class="zh">一次性、瞬间完成(事件)。</div>
+        <div class="lbl">点 → 一般过去时</div>
+      </div>
+    </div>
+    <div class="ex"><div class="en">When I arrived, they were having dinner.</div><div class="zh">我到的时候,他们正在吃饭。&nbsp;<span style="color:var(--r6)">arrived = 点(过去时),were having = 背景(过去进行)</span></div></div>
+    <p class="note">这正是 05 那条"点 vs 段"的延伸:一般过去时 = 一个个完成的点(推进剧情),过去进行时 = 铺开的背景(当时正进行)。谁在推进剧情用过去时,谁在当布景用过去进行时。</p>
+    <div class="sum"><b>小结:</b>铺开的背景用过去进行时(was doing),插进来的点用一般过去时(did)。一句话:<strong>谁是布景,谁是剧情</strong>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>站在过去某刻,钻进当时正在进行的过程(02 镜头后移)</td><td>点 vs 段:它看"段"</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td><code>was/were + doing</code>,疑问否定 be 前移不借 did</td><td>只把 be 换成 was/were</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>用在哪</td><td>过去某刻 / 某段正在进行;always 表反复习惯;状态动词除外</td><td>那时过程正铺着、没结束</td></tr>
+        <tr class="o4"><td><span class="dot">④ 主场</span></td><td>当背景</td><td>长背景 was doing + 闯入短动作 did</td><td>一层背景、一层事件</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 关键词</span></td><td>while/when</td><td>while 配背景;when 灵活(多配事件);as ≈ while</td><td>先判长短,再贴连接词</td></tr>
+        <tr class="o6"><td><span class="dot">⑥ 判断</span></td><td>跟过去时分工</td><td>背景=过去进行,点=一般过去</td><td>谁是布景,谁是剧情</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 判断法 -->
+  <div class="decide">
+    <h2>一图流:遇到"过去正在进行"怎么定</h2>
+    <div class="flow">
+      <div class="q">be 用 was 还是 were?</div>
+      <div class="a"><span class="h2c">was:</span> I / he / she / it　　<span class="h2c">were:</span> you / we / they　(疑问 be 前移、否定加 not,不借 did)</div>
+      <div class="q">这个动作是"铺开的背景",还是"插进来的点"?</div>
+      <div class="a"><span class="h5">背景(长、正进行) →</span> <strong>was/were doing</strong></div>
+      <div class="a"><span class="h4">点(短、一次性) →</span> <strong>一般过去时 did</strong></div>
+      <div class="q">从句用 while 还是 when?</div>
+      <div class="a"><span class="h5">while →</span> 领背景(was doing)　　<span class="h4">when →</span> 多领事件(did),也能领背景;as ≈ while</div>
+    </div>
+  </div>
+
+  <footer>过去进行时 · 地基 → 形式 → 功能 → 背景+事件 → while/when → 判断 · 一层铺开的背景,一层插入的点</footer>
+
+</div>
+</body>
+</html>

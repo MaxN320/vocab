@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一般过去将来时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- satmax skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.rel{color:#e6b850}   /* 定语从句 */
+.nom{color:#38cabf}   /* 名词性从句 */
+.adv{color:#f0876a}   /* 状语从句 */
+.freq{color:#b48ef0;font-weight:700}  /* 频率副词 */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>一般过去将来时 · 阶梯式笔记</h1>
+    <p class="sub">从“它锚定什么”起步,一阶叠一阶:地基 → 骨架 → 功能 → 对比 → 判断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:站在过去的某一刻,看“当时即将发生”的事</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一般过去将来时到底在表达什么?它和一般将来时什么关系?
+      <span class="lim"><b>为什么先讲:</b>一看到 would,很多人以为是“虚拟 / 委婉”。这里的 would 不是那个——它就是 <em>will 的过去形式</em>,表示“从过去看未来”。不先认清这个身份,后面全乱。</span>
+    </div>
+    <p>核心一句话:一般过去将来时表示<strong>从过去某个时间点来看,当时还没发生、但即将发生的动作</strong>。把它和一般将来时对齐就懂了:<code>will do</code> 是“从<strong>现在</strong>看未来”,<code>would do</code> 就是“从<strong>过去</strong>看未来”——<strong>把 will 整体往过去挪了一格</strong>。它最常出现在两个地方:<strong>转述过去说的话</strong>(间接引语),和<strong>过去的叙事</strong>(站在过去讲当时的“后来”)。</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">He said he would call.</div>
+        <div class="zh">他（当时）说他会打电话来。</div>
+        <div class="lbl">would do — 站在“他说”那一刻看未来</div>
+      </div>
+      <div class="card now">
+        <div class="en">He says he will call.</div>
+        <div class="zh">他（现在）说他会打电话来。</div>
+        <div class="lbl">will do — 站在现在看未来</div>
+      </div>
+    </div>
+    <p class="note">看清这对:says→said、will→would,整句“往过去退了一格”。这里的 <code>would</code> = will 的过去式,和 “I would love to…” 那种委婉的 would 同形不同用。</p>
+    <div class="sum"><b>小结:</b>一般过去将来时 = 站在过去某刻,看“当时即将发生”的事 = <strong>will 退到过去</strong>。记住这个“过去视角看未来”,后面选它还是一般将来时全靠它。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:一个满配句子能塞多满</h2>
+        <div class="tag">怎么用 · 句子骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一个过去将来时的句子,成分排起来长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清“表达什么”,没给“句子的形状”。</span>
+    </div>
+    <p>主线形式:<code>would + 动词原形</code>(所有人称通用);传统上第一人称 I / we 也可用 <code>should + 原形</code>(偏正式 / 英式,现在多让位给 would)。另一种常见形式是 <code>was/were going to + 原形</code>(be going to 的过去式,多表“打算 / 计划”)。和 will 一样<strong>不分人称</strong>(would 是情态动词,三单不加 -s)。它其实就是把一般将来时的 <code>will do</code> 退成 <code>would do</code>——<strong>骨架不变,只把 will 换成过去式 would</strong>。它多半出现在<strong>过去引导词后面的从句</strong>里。下面每条塞满“三大从句”。</p>
+    <p class="note">would 是 will 的过去式;转述时其他情态动词也一起退:can→could、may→might、shall→should / would、must→had to。</p>
+    <div class="legend2">
+      <span class="rel">〔定语从句〕</span>
+      <span class="nom">〔名词性从句〕</span>
+      <span class="adv">〔状语从句〕</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
+    </div>
+
+    <h3>A · would do 句</h3>
+    <p class="note">下面三句是<strong>同一句</strong>一步步变出来的:陈述句 → 一般疑问句 → 特殊疑问句,后一句都在前一句身上只动一处。would 是助动词,变疑问<strong>不借 do</strong>,靠 <b>would 自己前移</b>。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel">主语 <span class="rel">〔定语从句〕</span> · <b>would</b> · 谓语原形 · 宾语 <span class="nom">〔名词性从句〕</span> · <span class="adv">〔状语从句(过去时)〕</span></div>
+    <div class="ex">
+      <div class="en">The boy <span class="rel">who lived next door</span> <b>would soon discover</b> <span class="nom">what the letter really meant</span> <span class="adv">the moment he opened it</span>.</div>
+      <div class="zh">住在隔壁的那个男孩,一打开那封信,很快就会明白它到底意味着什么。</div>
+    </div>
+
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动:把 <b>would</b> 提到主语前(soon discover 跟在后面原样不动),<strong>不借 do</strong>;从句里的 lived、meant、opened 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Would</b> the boy <span class="rel">who lived next door</span> <b>soon discover</b> <span class="nom">what the letter really meant</span> <span class="adv">the moment he opened it</span>?</div>
+      <div class="zh">住在隔壁的那个男孩,一打开那封信,很快就会明白它到底意味着什么吗?</div>
+    </div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动:把要问的宾语(名词性从句 <span class="nom">what the letter really meant</span>)换成疑问词 <b>What</b> 提到最前,后面 would 的语序原样保留。</div>
+    <div class="ex">
+      <div class="en"><b>What</b> would the boy <span class="rel">who lived next door</span> <b>soon discover</b> <span class="adv">the moment he opened it</span>?</div>
+      <div class="zh">住在隔壁的那个男孩,一打开那封信,很快就会明白什么?</div>
+    </div>
+
+    <h3>B · 三个易错点</h3>
+    <p class="note">would 句的骨架和 will 句一样干净,但初学最容易在这三处翻车。</p>
+    <div class="rows">
+      <div class="row"><span class="k">不分人称</span><span class="v">would 是情态动词,所有人称都用 <b>would + 原形</b>,三单不加 -s。<code>He would go.</code>(× would goes)</span></div>
+      <div class="row"><span class="k">否定</span><span class="v">wouldn't + 原形。<code>He said he wouldn't come.</code> 他说他不会来。</span></div>
+      <div class="row"><span class="k">别混两种 would</span><span class="v">这里的 would = <strong>will 的过去式</strong>(过去看未来);它和 “I'd like… / Would you…?” 里表<strong>委婉、意愿、假设</strong>的 would 同形不同用,看语境区分。</span></div>
+    </div>
+
+    <div class="sum"><b>小结:</b>would do 靠 <b>would 前移</b>成疑问、谓语一律<strong>回原形</strong>、三单不加 -s;否定 wouldn't。把 will do 退成 would do——只换这一处。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:什么时候真的用它</h2>
+        <div class="tag">怎么用 · 三条骨架,每条 3 例</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子会搭了,到底在哪些场景该用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决“怎么搭”,没解决“何时用”。三种场景本质都是“站在过去看未来”,回扣第一阶。</span>
+    </div>
+
+    <h3>① 转述过去说的话（will → would）</h3>
+    <div class="skel">过去引导词(said / told / thought / knew) + that + 主语 · <b>would</b> · 原形</div>
+    <div class="ex"><div class="en">She said she <b>would</b> help.</div><div class="zh">她说她会帮忙。（直接引语:“I will help.”）</div></div>
+    <div class="ex"><div class="en">He told me he <b>would</b> be late.</div><div class="zh">他跟我说他会迟到。</div></div>
+    <div class="ex"><div class="en">I thought it <b>would</b> rain.</div><div class="zh">我（当时）以为会下雨。</div></div>
+    <p class="note">主句是过去时(said / thought…),宾语从句里的 will 就退成 would——这是间接引语最典型的“时态呼应”。</p>
+
+    <h3>② 过去叙事里的“后来”（would）</h3>
+    <div class="skel">过去语境 · 主语 · <b>would</b>(later / never / soon)· 原形</div>
+    <div class="ex"><div class="en">He left home at 18. He <b>would never</b> return.</div><div class="zh">他十八岁离开了家,再也没有回来。</div></div>
+    <div class="ex"><div class="en">In 2010, no one knew he <b>would become</b> president.</div><div class="zh">2010 年,没人知道他后来会当上总统。</div></div>
+    <div class="ex"><div class="en">It was a quiet morning — but everything <b>would soon</b> change.</div><div class="zh">那是个安静的早晨,但一切很快就要改变。</div></div>
+    <p class="note">站在过去的某一刻往后看,讲“当时还没发生、后来发生”的事——常配 later / soon / never。</p>
+
+    <h3>③ 过去的打算 / 计划（was/were going to,常含未实现）</h3>
+    <div class="skel">主语 · <b>was/were going to</b> · 原形 · (but…)</div>
+    <div class="ex"><div class="en">I <b>was going to</b> call you, but I forgot.</div><div class="zh">我本来打算给你打电话的,可我忘了。</div></div>
+    <div class="ex"><div class="en">We <b>were going to</b> travel, but the trip got cancelled.</div><div class="zh">我们本来要去旅行,结果行程取消了。</div></div>
+    <div class="ex"><div class="en">She <b>was going to</b> apply, but the job closed too quickly.</div><div class="zh">她本想申请,但那职位很快就关了。</div></div>
+    <p class="note"><code>was/were going to</code> 多表“过去的打算 / 计划”,而且常用来说这打算<strong>后来没实现</strong>(but…)。English Page:would 偏“许诺 / 自愿”,was going to 偏“计划”。</p>
+
+    <div class="sum"><b>小结:</b>转述过去的话、叙事里的“后来”、过去的打算——三者共享一个内核:<strong>站在过去,指向当时的未来</strong>。would 是主力,was/were going to 偏“计划(常未实现)”。</div>
+  </section>
+
+  <!-- ④ 对比 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>对比:把 will 整体“退一格”</h2>
+        <div class="tag">特殊情况 · 放回坐标系</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>它和一般将来时到底怎么对应?转述时整句怎么变?
+      <span class="lim"><b>上一阶的局限:</b>功能讲了它的地盘,但要真正用顺,得看清“从现在到过去”整套怎么退格。</span>
+    </div>
+
+    <h3>① 间接引语的“退格”（时态呼应）</h3>
+    <p>主句从现在变过去,直接引语里的动词整体<strong>往过去退一格</strong>——will 退成 would 只是其中一环:</p>
+    <div class="rows">
+      <div class="row"><span class="k">will → would</span><span class="v"><code>“I will go.”</code> → He said he <strong>would</strong> go.</span></div>
+      <div class="row"><span class="k">am/is/are → was/were</span><span class="v"><code>“I am busy.”</code> → He said he <strong>was</strong> busy.</span></div>
+      <div class="row"><span class="k">do/does → did</span><span class="v"><code>“I know.”</code> → He said he <strong>knew</strong>.</span></div>
+      <div class="row"><span class="k">can → could / may → might</span><span class="v"><code>“I can swim.”</code> → He said he <strong>could</strong> swim.</span></div>
+    </div>
+    <p class="note">shall 也退成 should / would,must 退成 had to。整套叫“时态呼应 / 退格(backshift)”。</p>
+
+    <h3>② 主过去将来,从过去（主将从现“退一格”）</h3>
+    <p>还记得一般将来时的“主将从现”吗?整体退到过去,就变成<strong>主句 would,时间 / 条件从句用过去时</strong>——不能用 would,也不能用现在时:</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">He said he would call me when he <b>arrived</b>.</div>
+        <div class="zh">他说他到了就给我打电话。</div>
+        <div class="lbl">从句用过去 — 主过去将来从过去</div>
+      </div>
+      <div class="card now">
+        <div class="en">He says he will call me when he <b>arrives</b>.</div>
+        <div class="zh">他说他到了就给我打电话。</div>
+        <div class="lbl">从句用现在 — 主将从现</div>
+      </div>
+    </div>
+    <p class="note">对照记:主将从现(will do + 现在时)整体退一格 → 主过去将来从过去(would do + 过去时)。<code>He said he would call when he arrived.</code>(× would arrive,× arrives)</p>
+
+    <h3>③ 放回坐标系:从现在 / 过去看未来</h3>
+    <p>把它和一般将来时并排,就是同一件事的两个视角:</p>
+    <div class="rows">
+      <div class="row"><span class="k">一般将来时</span><span class="v">will do —— 从<strong>现在</strong>看未来。<code>He will win.</code></span></div>
+      <div class="row"><span class="k">一般过去将来时</span><span class="v">would do —— 从<strong>过去</strong>看未来。<code>He said he would win.</code></span></div>
+    </div>
+    <p class="note">另外,过去的“未来”也有别的说法(Cambridge):was going to do(打算)、was doing / 过去进行表将来(安排)、was to do(注定 / 约定)。核心一员仍是 would do。</p>
+
+    <div class="sum"><b>小结:</b>三件事——① 间接引语整体<strong>退一格</strong>,will→would 只是其一;② 主将从现整体退一格 = <strong>主过去将来,从过去</strong>(would do + 过去时);③ 它就是一般将来时的“过去版”,从过去看未来。</div>
+  </section>
+
+  <!-- ⑤ 判断 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>判断:三步快速定位</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>实战里怎么一眼判断该用过去将来时?
+      <span class="lim"><b>上一阶的局限:</b>前面讲“用在哪、怎么分”,这一阶给“怎么快速识别”的抓手。</span>
+    </div>
+    <p class="note">看到<strong>过去的引导词</strong>(said / told / thought / knew / promised / hoped / wondered),或整段是<strong>过去叙事</strong>,而句子指向“当时还没发生、后来发生”的事——常配 the next day / later / soon / never、was/were going to,基本就是它的“指纹”。</p>
+    <h3>三步判断法</h3>
+    <ol class="steps">
+      <li>整个语境是“<strong>站在过去</strong>”吗(过去的转述 / 过去的叙事)?→ 是,才谈得上过去将来时。</li>
+      <li>说的是“当时还没发生、<strong>即将 / 后来发生</strong>”的事吗?→ 是,用 <b>would do</b>(表打算常用 was/were going to do)。</li>
+      <li>形式:<b>would + 原形</b>,不分人称;否定 wouldn't;时间 / 条件从句里用<strong>过去时</strong>(主过去将来,从过去)。</li>
+    </ol>
+    <div class="sum"><b>小结:</b>先确认“过去视角”,再判断“指向当时的未来”,最后套 would + 原形。过去引导词 + would 是指纹;从句记得用过去时。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>从过去某刻看“当时即将发生”的事(will 退到过去)</td><td>站在过去看未来</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>句子骨架</td><td>would / should + 原形(was/were going to),不分人称;满配三大从句</td><td>will do → would do</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>转述过去的话 / 过去叙事的“后来” / 过去的打算(常未实现)</td><td>站在过去,指向当时的未来</td></tr>
+        <tr class="o4"><td><span class="dot">④ 对比</span></td><td>怎么对应</td><td>间接引语退格;主过去将来从过去;从现在 / 过去看未来</td><td>把 will 整体退一格</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么识别</td><td>过去视角 + 指向当时的未来 + 三步法</td><td>过去引导词 + would,从句用过去</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流:遇到句子怎么定</h2>
+    <div class="flow">
+      <div class="q">整个语境是“站在过去”吗(过去转述 / 过去叙事)?</div>
+      <div class="a"><span class="hit">是 →</span> 才可能用过去将来时,继续往下</div>
+      <div class="q">说的是“当时还没发生、后来发生”的事吗?</div>
+      <div class="a"><span class="hit">是 →</span> 用 <code>would + 原形</code></div>
+      <div class="q">强调的是“过去的打算”(常没实现)?</div>
+      <div class="a"><span class="hit4">是 →</span> 多用 <code>was/were going to + 原形</code></div>
+      <div class="q">是在 when / if 等从句里吗?</div>
+      <div class="a"><span class="hit4">是 →</span> 从句用过去时(主过去将来,从过去)</div>
+      <div class="q">would 其实表“委婉 / 假设”(I'd like…)?</div>
+      <div class="a">是 → 那是虚拟 / 委婉的 would,不是本课</div>
+    </div>
+  </div>
+
+  <footer>一般过去将来时 · 地基 → 满配骨架 → 功能 → 对比 → 判断 · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>

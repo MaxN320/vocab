@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>过去完成进行时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --r6:#e0729e;
+    --danger:#ef6a6a;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);
+    line-height:1.75;padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  header.top{margin-bottom:2.6rem}
+  header.top h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;letter-spacing:.5px;line-height:1.2}
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{display:flex;gap:.35rem;margin-top:1.4rem}
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+  .rail span:nth-child(6){background:var(--r6)}
+
+  section.rung{
+    --c:var(--r1);background:var(--surface);border:1px solid var(--border);
+    border-left:4px solid var(--c);border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+  section.rung.s6{--c:var(--r6)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{font-family:var(--serif);font-size:2.3rem;font-weight:700;line-height:1;color:var(--c);flex:none}
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;margin-top:.15rem}
+
+  .why{background:var(--surface-2);border-radius:9px;padding:.75rem .95rem;margin:1rem 0 1.1rem;font-size:.93rem}
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;color:var(--text)}
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  .ex{border-left:2px solid var(--c);padding:.15rem 0 .15rem .85rem;margin:.7rem 0}
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  .ex.bad{border-left-color:var(--danger)}
+  .ex.bad .en{color:#f3a3a3;text-decoration:line-through;text-decoration-color:rgba(239,106,106,.5)}
+  .ex.bad .en::after{content:" ✗";color:var(--danger);text-decoration:none;font-family:var(--sans)}
+  .ex.good{border-left-color:var(--r2)}
+  .ex.good .en::after{content:" ✓";color:var(--r2);font-family:var(--sans)}
+
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.a .lbl{color:var(--r6)}
+  .vs .card.b .lbl{color:var(--r4)}
+
+  code{font-family:"SF Mono",Consolas,monospace;background:var(--surface-2);padding:.05rem .35rem;border-radius:5px;font-size:.88em}
+
+  /* 时间轴:Time 0 —— Time 1（持续线）*/
+  .tl{background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--c);
+    border-radius:9px;padding:.9rem 1rem;margin:.85rem 0;font-size:.9rem;line-height:1.85}
+  .tl .axis{font-family:"SF Mono",Consolas,monospace;color:var(--r4);letter-spacing:-1px;margin:.15rem 0;font-weight:700}
+  .tl .lab{color:var(--muted)}
+  .tl .t0tag{color:var(--r5);font-weight:700}
+  .tl .t1tag{color:var(--r4);font-weight:700}
+  .tl .run{color:var(--r5);font-weight:700}
+
+  .pat{background:#0f1420;border:1px solid var(--border);border-radius:9px;
+    padding:.7rem .9rem;margin:.6rem 0;font-family:"SF Mono",Consolas,monospace;
+    font-size:.86rem;color:#bcd;line-height:1.7}
+  .pat b{color:var(--r6)}
+
+  .sum{margin-top:1.2rem;padding:.75rem .95rem;background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:9px;font-size:.94rem}
+  .sum b{color:var(--c)}
+
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)} .tbl tr.o6 .dot{color:var(--r6)}
+
+  /* 四宫格：四种完成时 */
+  .matrix{width:100%;border-collapse:collapse;font-size:.88rem;margin:.5rem 0 .3rem;
+    border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .matrix th,.matrix td{padding:.7rem .75rem;border:1px solid var(--border);vertical-align:top}
+  .matrix thead th{background:var(--surface-2);color:var(--muted);font-weight:600;text-align:center}
+  .matrix tbody th{background:var(--surface-2);color:var(--muted);font-weight:600;text-align:left;white-space:nowrap}
+  .matrix td{font-family:var(--serif);color:var(--text)}
+  .matrix td .zh{font-family:var(--sans);color:var(--muted);font-size:.8rem;display:block;margin-top:.15rem}
+  .matrix td.here{background:color-mix(in srgb,var(--r6) 16%,transparent)}
+  .matrix td.here b{color:var(--r6)}
+
+  .decide{margin-top:1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .h5{color:var(--r5);font-weight:600}
+  .flow .a .h4{color:var(--r4);font-weight:600}
+  .flow .a .hd{color:var(--danger);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>过去完成进行时 · 阶梯式笔记</h1>
+    <p class="sub">一条主线:名字唬人,其实是两样你已会的东西叠一起——过去完成时(06)的"落脚点在过去" + 进行时(02/05)的"过程一直铺着"。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:过去落脚点之前,一直在进行</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>过去完成进行时到底在表达什么?
+      <span class="lim"><b>为什么先讲:</b>名字长(过去+完成+进行)吓人,但拆开就是两件旧事:过去完成时(06)"站在过去某刻回看",再加进行时"过程一直铺着、持续"。</span>
+    </div>
+    <p>核心一句话:站在<strong>过去某一刻(Time 1)</strong>,回看一个<strong>从更早(Time 0)一路持续、进行到那个落脚点</strong>的过程。<code>had been doing</code> = "在那个过去点之前,一直在做"。</p>
+    <p class="note">把名字拆成三层:<strong>过去</strong>(落脚点在过去) + <strong>完成</strong>(回看那个落脚点之前) + <strong>进行</strong>(强调过程一直铺着、持续)。</p>
+    <div class="tl">
+      <div class="axis">Time 0 ●━━━━━━━━━━━━━● Time 1 ────── 现在</div>
+      <span class="t0tag">Time 0</span> <span class="lab">过程开始(更早)</span>　　<span class="t1tag">Time 1</span> <span class="lab">过去落脚点</span><br>
+      中间整条 <span class="run">had been doing</span> <span class="lab">← 一直在进行 / 持续(是一条线,不是一个点)</span>
+    </div>
+    <div class="ex"><div class="en">She had been cooking before I came in.</div><div class="zh">我进来之前,她一直在做饭。&nbsp;<span style="color:var(--r5)">做饭从更早一路持续到"我进来"这个点</span></div></div>
+    <div class="sum"><b>小结:</b>它就是"过去的过去"再加一条"一直在进行"——落脚点在过去(Time 1),过程从更早(Time 0)一路持续到那儿。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:had + been + doing</h2>
+        <div class="tag">怎么用 · 造句的骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子怎么搭?
+      <span class="lim"><b>上一阶的局限:</b>地基说清"表达什么",没给"句子的形状"。</span>
+    </div>
+    <p>公式三段:<strong>had + been + 动词-ing</strong>。<code>had</code>(全人称通用) + <code>been</code>(be 的过去分词,<strong>永远不变</strong>) + <code>doing</code>(现在分词,表进行)。</p>
+    <div class="pat">had + <b>been</b> + doing　　←　把 06 的 <b>had done</b> 里的 done,换成 <b>been doing</b></div>
+    <div class="ex"><div class="en">They had been waiting for a long time.</div><div class="zh">他们已经等了很久了。</div></div>
+    <div class="ex"><div class="en">I hadn't been sleeping well those days.</div><div class="zh">那些天我一直没睡好。</div></div>
+    <div class="ex"><div class="en">Had you been waiting long?</div><div class="zh">你等很久了吗?</div></div>
+    <div class="sum"><b>小结:</b><code>had + been + doing</code> 三段固定:had 全人称、been 不变、doing 表进行。就是 06 的 <code>had done</code> 把 done 换成 been doing。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:从过去某时,持续到过去另一点</h2>
+        <div class="tag">怎么用 · 用在哪些场景</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>什么时候用?
+      <span class="lim"><b>上一阶的局限:</b>形式解决"怎么搭",没说"用在哪"。</span>
+    </div>
+    <h3>① 过去某时开始,持续到过去另一个时间点</h3>
+    <div class="ex"><div class="en">She had been cooking before I came in.</div><div class="zh">我进来之前,她一直在做饭。&nbsp;<span style="color:var(--r3)">从更早一路持续到"我进来"</span></div></div>
+    <h3>② 强调"一直在进行"——持续了多久</h3>
+    <div class="ex"><div class="en">He had been running for an hour when it started to rain.</div><div class="zh">开始下雨时,他已经跑了一个小时了。&nbsp;<span style="color:var(--r3)">for an hour = 强调持续时长</span></div></div>
+    <p class="note"><code>for + 时长</code> 是它的常见搭配,专门强调"到那个过去落脚点为止,已经进行了多久"。</p>
+
+    <h3>③ 用"一直在进行的动作",解释过去的结果 / 状态</h3>
+    <p class="note">这是它最出彩、最容易被漏掉的用法:过去某个状态 / 结果,是因为之前<strong>一直在进行</strong>某个动作。动作也许刚停,但它造成的结果在那个过去点上仍然重要——had been doing 就交代那个"前面一直在做的事"当原因。</p>
+    <div class="ex"><div class="en">Jason was tired because he had been jogging.</div><div class="zh">Jason 很累,因为他之前一直在跑步。&nbsp;<span style="color:var(--r3)">跑步→累(前因后果)</span></div></div>
+    <div class="ex"><div class="en">The ground was wet because it had been raining.</div><div class="zh">地是湿的,因为之前一直在下雨。&nbsp;<span style="color:var(--r3)">雨也许刚停,但"地湿"这个结果还在</span></div></div>
+    <p class="note">注意:这一类<strong>常常没有 for + 时长</strong>,重点不在"多久",而在"这个一直在进行的动作,造成了后来的结果"。</p>
+
+    <div class="sum"><b>小结:</b>两大用法:一是从过去某时<strong>持续到过去另一点</strong>(常配 for + 时长,强调多久);二是用"之前一直在进行的动作"<strong>解释过去的结果 / 状态</strong>(常无时长)。</div>
+  </section>
+
+  <!-- ④ 对比 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>对比:had done vs had been doing</h2>
+        <div class="tag">怎么用 · 结果 vs 过程</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>它跟过去完成时(06)差在哪?
+      <span class="lim"><b>上一阶的局限:</b>它自己讲清了,但最容易和 06 混,这一阶专门切开。</span>
+    </div>
+    <p>一刀切开:<strong>一个看结果,一个看过程</strong>。</p>
+    <div class="vs">
+      <div class="card a">
+        <div class="en">When you called, I had finished my work.</div>
+        <div class="zh">你打来时,我已经把活干完了。</div>
+        <div class="lbl">had done → 看结果:完没完(工作做完了)</div>
+      </div>
+      <div class="card b">
+        <div class="en">When you called, I had been working for hours.</div>
+        <div class="zh">你打来时,我已经连着工作好几小时了。</div>
+        <div class="lbl">had been doing → 看过程:做了多久、一直在做</div>
+      </div>
+    </div>
+    <p>再体会一次"结果 vs 过程"的味道差别:</p>
+    <div class="ex"><div class="en">He had cleaned the car.</div><div class="zh">他把车洗好了。&nbsp;<span style="color:var(--r4)">看结果:车现在干净了</span></div></div>
+    <div class="ex sub"><div class="en">He had been cleaning the car.</div><div class="zh">他(之前)一直在洗车。&nbsp;<span style="color:var(--muted)">看过程:也许还没洗完、身上湿漉漉的</span></div></div>
+    <p class="note">这跟"现在完成时 vs 现在完成进行时"(have done vs have been doing)是<strong>同一刀</strong>,只是落脚点从"现在"挪到了"过去"。</p>
+
+    <h3>边界:状态动词不用 had been doing</h3>
+    <p class="note">和进行时家族一个规矩(<code>02</code> 讲过):<strong>状态动词</strong>(be / have / know / like / understand / belong…)没有"过程"可展开,不进进行形式。想表"到过去某点前一直……",改用<strong>过去完成时 had done</strong>。</p>
+    <div class="ex bad"><div class="en">The car had been belonging to him for years.</div><div class="zh">belong 是状态,不能用 been doing</div></div>
+    <div class="ex good"><div class="en">The car had belonged to him for years.</div><div class="zh">状态动词 → 用 had done</div></div>
+    <div class="ex good"><div class="en">We had known each other for years before we became friends.</div><div class="zh">know 同理,用 had known</div></div>
+
+    <div class="sum"><b>小结:</b><code>had done</code> 看结果(完没完),<code>had been doing</code> 看过程(做了多久、一直在做);<strong>状态动词只能用 had done</strong>。同一刀,落脚点在过去。</div>
+  </section>
+
+  <!-- ⑤ 常用搭配 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>常用搭配:before / when / by the time</h2>
+        <div class="tag">怎么用 · 谁来标"过去落脚点"</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>哪些词是它的信号?
+      <span class="lim"><b>上一阶的局限:</b>会区分了,给信号词抓手。</span>
+    </div>
+    <p>它离不开一个过去落脚点(Time 1)。<strong>before / when / by the time</strong> 就是负责领出那个点的连接词——<strong>从句里的动词用一般过去时(那个点),主句用 had been doing(持续到那个点)</strong>。</p>
+    <div class="ex"><div class="en">She had been cooking before I came in.</div><div class="zh">我进来前,她一直在做饭。&nbsp;<span style="color:var(--r5)">before → 落脚点 I came in</span></div></div>
+    <div class="ex"><div class="en">He had been running for an hour when it started to rain.</div><div class="zh">开始下雨时,他已跑了一小时。&nbsp;<span style="color:var(--r5)">when → 落脚点 it started to rain</span></div></div>
+    <div class="ex"><div class="en">By the time she arrived, I had been waiting for two hours.</div><div class="zh">她到的时候,我已经等了两个小时了。&nbsp;<span style="color:var(--r5)">by the time → 落脚点 she arrived</span></div></div>
+    <p class="note"><code>by the time</code> 尤其爱配它——"到……的时候,已经(持续)……了"。时长除了 <code>for + 时段</code>,也能用 <code>since + 起点</code>:<code>She had been working there since 2010.</code>;问时长用 <code>How long had you been waiting?</code></p>
+    <div class="sum"><b>小结:</b>before / when / by the time 领出过去落脚点(从句用一般过去时),主句 <code>had been doing</code> 表"持续到那个点";时长用 <code>for + 时段</code> 或 <code>since + 起点</code>。</div>
+  </section>
+
+  <!-- ⑥ 判断 -->
+  <section class="rung s6">
+    <div class="rung-head">
+      <div class="num">6</div>
+      <div class="titles">
+        <h2>判断:四种完成时,一起看</h2>
+        <div class="tag">收口 · 把整族摆上桌</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>什么时候真的用它?它在整个"完成家族"里站哪?
+      <span class="lim"><b>上一阶的局限:</b>它自己讲透了,最后把四种完成时摆一起,一眼看清坐标。</span>
+    </div>
+    <p>用它的两个条件,缺一不可:<strong>① 有过去落脚点(Time 1);② 强调"到那点之前一个过程一直在进行",而不是"完成了一件事"</strong>。只想说"完成了"→ 用 had done;没有过去落脚点 → 用过去进行时 / 一般过去时。</p>
+
+    <h3>四宫格:横看落脚点,竖看结果/过程</h3>
+    <table class="matrix">
+      <thead>
+        <tr><th></th><th>看结果(完成)</th><th>看过程(完成进行)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>落脚点 = 现在</th>
+          <td>have done<span class="zh">现在完成时(03)</span></td>
+          <td>have been doing<span class="zh">现在完成进行时</span></td>
+        </tr>
+        <tr>
+          <th>落脚点 = 过去</th>
+          <td>had done<span class="zh">过去完成时(06)</span></td>
+          <td class="here"><b>had been doing</b><span class="zh">过去完成进行时(本篇)</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">横轴:落脚点在<strong>现在</strong>还是<strong>过去</strong>(have / had);纵轴:你要<strong>结果</strong>还是<strong>过程</strong>(done / been doing)。本篇 = <strong>落脚点在过去 + 看过程</strong>那一格。</p>
+    <div class="sum"><b>小结:</b>它是四种完成里"<strong>落脚点在过去 + 看过程</strong>"的那一格。有过去落脚点、且强调持续过程,才用 <code>had been doing</code>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>过去落脚点(Time 1)之前,过程从更早(Time 0)一路持续</td><td>过去的过去 + 一直在进行</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>怎么造句</td><td><code>had + been + doing</code>,been 永不变</td><td>had done 的 done 换成 been doing</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>用在哪</td><td>持续到过去某点(for/since);或用一直在进行的动作解释过去结果</td><td>看时长,或看"前因"</td></tr>
+        <tr class="o4"><td><span class="dot">④ 对比</span></td><td>vs 06</td><td>had done 看结果;had been doing 看过程</td><td>完没完 vs 做了多久</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 搭配</span></td><td>信号词</td><td>before / when / by the time 领落脚点(从句过去时)</td><td>by the time + for 时长</td></tr>
+        <tr class="o6"><td><span class="dot">⑥ 判断</span></td><td>整族坐标</td><td>四宫格:have/had × done/been doing</td><td>落脚点在过去 + 看过程</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 判断法 -->
+  <div class="decide">
+    <h2>一图流:遇到"过去的持续"要不要用 had been doing</h2>
+    <div class="flow">
+      <div class="q">有没有一个过去落脚点(Time 1:before / when / by the time 领出的过去点)?</div>
+      <div class="a"><span class="hd">没有 →</span> 别用它,用过去进行时 / 一般过去时</div>
+      <div class="q">你要强调"结果完成",还是"过程一直在进行"?</div>
+      <div class="a"><span class="h4">结果(完没完) →</span> <strong>had done</strong>(过去完成时,06)</div>
+      <div class="a"><span class="h5">过程 / 时长,或解释过去结果的原因 →</span> <strong>had been doing</strong>(本篇;状态动词除外,用 had done)</div>
+      <div class="q">别忘了</div>
+      <div class="a"><span class="h5">配 for + 时段 或 since + 起点</span> 强调持续多久</div>
+    </div>
+  </div>
+
+  <footer>过去完成进行时 · 地基 → 形式 → 功能 → 对比 → 搭配 → 判断 · 过去落脚点之前,一条一直在进行的线</footer>
+
+</div>
+</body>
+</html>

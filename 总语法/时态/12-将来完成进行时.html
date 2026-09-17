@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>将来完成进行时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- satmax skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.rel{color:#e6b850}   /* 定语从句 */
+.nom{color:#38cabf}   /* 名词性从句 */
+.adv{color:#f0876a}   /* 状语从句 */
+.freq{color:#b48ef0;font-weight:700}  /* 频率副词 */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>将来完成进行时 · 阶梯式笔记</h1>
+    <p class="sub">从“它锚定什么”起步,一阶叠一阶:地基 → 骨架 → 功能 → 对比 → 判断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:站在未来某刻回望,强调一个动作“已经持续了多久”</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>将来完成进行时到底在表达什么?它和将来完成时差在哪?
+      <span class="lim"><b>为什么先讲:</b>名字最长、最像“叠 buff”,很多人一看就慌。其实它只把两样东西合在一起:将来完成时的“<em>未来回望</em>”视角,加上进行时的“<em>持续、还在进行</em>”。抓住“回望 + 强调时长”,一点不玄。</span>
+    </div>
+    <p>核心一句话:将来完成进行时描述<strong>一个从(过去 / 现在 / 将来)某刻开始、一直延续到将来某个参照点的动作</strong>,重点在<strong>“到那时已经持续了多久”</strong>。它的视角和将来完成时一样——<strong>站在未来的某一刻往回看</strong>;但它不看“做完没有”,而是<strong>强调这段动作的时长与“一直在进行”</strong>(Cambridge:从将来的一点回看,强调 length / duration)。所以它几乎总要带一个<strong>时长</strong>(for + 一段时间)。</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">By 12, they'll have been working for six hours.</div>
+        <div class="zh">到十二点,他们就已经连续干了六个小时了。</div>
+        <div class="lbl">will have been doing — 强调“持续了多久”</div>
+      </div>
+      <div class="card now">
+        <div class="en">By 12, they'll have finished their work.</div>
+        <div class="zh">到十二点,他们就已经把活干完了。</div>
+        <div class="lbl">will have done — 强调“做完了”</div>
+      </div>
+    </div>
+    <p class="note">差别在焦点:<code>will have done</code> 看<strong>结果</strong>(做完了);<code>will have been doing</code> 看<strong>过程与时长</strong>(干了多久、还在干)。所以后者几乎离不开 <b>for + 时长</b>。<b>will</b> 标“将来”,<b>have been + -ing</b> 标“一直在进行到那刻”。</p>
+    <div class="sum"><b>小结:</b>将来完成进行时 = 站在未来某刻回望,强调一个动作<strong>已经持续了多久、且延续到那刻</strong>。记住“回望 + 强调时长(for…)”这个内核。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:一个满配句子能塞多满</h2>
+        <div class="tag">怎么用 · 句子骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一个将来完成进行时的句子,成分排起来长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清“表达什么”,没给“句子的形状”。</span>
+    </div>
+    <p>形式是<strong>三层叠加</strong>:<code>will + have + been + 动词-ing</code>——will 管“将来”,have been 管“完成”(延续到某刻),-ing 管“进行”(一直在做)。和前面几个将来时一样<strong>不分人称</strong>(will 是情态动词,三单不加 -s;而且 <code>will have been</code> 整块都不随主语变)。它其实就是把将来完成时的 <code>will have done</code> 里的 done 换成 <code>been doing</code>——<strong>骨架不变,只把“体”叠到最满</strong>。下面每条塞满“三大从句”。</p>
+    <p class="note">延续前几篇看法:<code>will have been doing</code> = will(情态动词)+ have been doing(完成进行式不定式)。V-ing 拼写:lie→lying、run→running(重复末辅音)。</p>
+    <div class="legend2">
+      <span class="rel">〔定语从句〕</span>
+      <span class="nom">〔名词性从句〕</span>
+      <span class="adv">〔状语从句〕</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
+    </div>
+
+    <h3>A · will have been doing 句</h3>
+    <p class="note">下面三句是<strong>同一句</strong>一步步变出来的:陈述句 → 一般疑问句 → 特殊疑问句,后一句都在前一句身上只动一处。will 是助动词,变疑问<strong>不借 do</strong>,靠 <b>will 自己前移</b>。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel"><span class="adv">〔状语从句(截止点)〕</span> · 主语 <span class="rel">〔定语从句〕</span> · <b>will have been</b> · 谓语-ing · 宾语 <span class="nom">〔名词性从句〕</span> · for + 时长</div>
+    <div class="ex">
+      <div class="en"><span class="adv">By the time the final exam begins</span>, the teacher <span class="rel">who teaches us English</span> <b>will have been coaching</b> us <span class="nom">on what the paper covers</span> for three weeks.</div>
+      <div class="zh">到期末考试开始时,教我们英语的那位老师已经带我们复习考试内容整整三周了。</div>
+    </div>
+
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动:把 <b>will</b> 提到主语前(have been、coaching 跟在后面原样不动),<strong>不借 do</strong>;从句里的 teaches、covers、begins 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Will</b> the teacher <span class="rel">who teaches us English</span> <b>have been coaching</b> us <span class="nom">on what the paper covers</span> for three weeks <span class="adv">by the time the final exam begins</span>?</div>
+      <div class="zh">到期末考试开始时,教我们英语的那位老师会已经带我们复习考试内容三周了吗?</div>
+    </div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动:把要问的<strong>时长</strong>换成疑问词 <b>How long</b> 提到最前,后面 will 的语序原样保留。</div>
+    <div class="ex">
+      <div class="en"><b>How long</b> will the teacher <span class="rel">who teaches us English</span> <b>have been coaching</b> us <span class="adv">by the time the final exam begins</span>?</div>
+      <div class="zh">到期末考试开始时,教我们英语的那位老师会已经带我们复习多久了?</div>
+    </div>
+
+    <h3>B · 三个易错点</h3>
+    <p class="note">这是“最长”的时态,但骨架很规整,初学最容易在这三处翻车。</p>
+    <div class="rows">
+      <div class="row"><span class="k">不分人称</span><span class="v">will 是情态动词,<b>will have been</b> 整块不随主语变,-ing 也不变。<code>She will have been working.</code>(× will have been works)</span></div>
+      <div class="row"><span class="k">否定</span><span class="v">won't have been + -ing。<code>By then I won't have been waiting long.</code> 到那时我还没等多久。</span></div>
+      <div class="row"><span class="k">状态动词</span><span class="v">be、know、like 等<strong>状态动词</strong>不进入进行式,改用将来完成时。<code>By June, I'll have known her for ten years.</code>(× will have been knowing)</span></div>
+    </div>
+
+    <div class="sum"><b>小结:</b>will have been doing 靠 <b>will 前移</b>成疑问、谓语用 <b>have been + -ing</b>、整块不随主语变;否定 won't have been doing。它就是把将来完成时的 done 换成 been doing——把“体”叠到最满。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:什么时候真的用它</h2>
+        <div class="tag">怎么用 · 三条骨架,每条 3 例</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子会搭了,到底在哪些场景该用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决“怎么搭”,没解决“何时用”。三种场景本质都是“到将来某刻,一段动作已持续了多久”,回扣第一阶。</span>
+    </div>
+
+    <h3>① by + 将来时刻 + for + 时长:到那刻已持续多久（核心）</h3>
+    <div class="skel">by + 将来时刻 · 主语 · <b>will have been</b> · 谓语-ing · for + 时长</div>
+    <div class="ex"><div class="en">By 12, they <b>will have been working</b> on the farm for six hours.</div><div class="zh">到十二点,他们在农场就已经连续干了六个小时了。</div></div>
+    <div class="ex"><div class="en">By 6 p.m., I <b>will have been working</b> for eight hours.</div><div class="zh">到下午六点,我就已经工作八个小时了。</div></div>
+    <div class="ex"><div class="en">By next month, she <b>will have been learning</b> Spanish for a year.</div><div class="zh">到下个月,她学西班牙语就满一年了。</div></div>
+    <p class="note">这是最典型的用法:<b>by + 时刻</b> 给参照点,<b>for + 时长</b> 给时长。缺了 for + 时长,英语常改用将来进行时——所以“时长”几乎是它的标配。</p>
+
+    <h3>② by the time + 从句:另一件事发生前,已持续多久</h3>
+    <div class="skel">主句 <b>will have been doing</b> + for + 时长 + by the time + 主语 · <span class="adv">现在时谓语</span></div>
+    <div class="ex"><div class="en">By the time the show starts, they <b>will have been waiting</b> in line for hours.</div><div class="zh">演出开始时,他们已经排了好几个小时的队了。</div></div>
+    <div class="ex"><div class="en">By the time you arrive, I <b>will have been studying</b> for three hours.</div><div class="zh">你到的时候,我已经学了三个小时了。</div></div>
+    <div class="ex"><div class="en">By the time she finishes, he <b>will have been waiting</b> for ages.</div><div class="zh">等她弄完,他已经等了老半天了。</div></div>
+    <p class="note">参照点是<strong>从句</strong>(by the time…);从句里用<strong>现在时</strong>(starts、arrive、finishes),不用将来——又是“主将从现”。</p>
+
+    <h3>③ 解释将来某个状态的原因（因果）</h3>
+    <div class="skel">将来的状态 · because + 主语 · <b>will have been</b> · 谓语-ing</div>
+    <div class="ex"><div class="en">He'll be tired because he <b>will have been running</b> all morning.</div><div class="zh">他会很累,因为他跑了一上午。</div></div>
+    <div class="ex"><div class="en">They'll be hungry because they <b>will have been travelling</b> all day.</div><div class="zh">他们会很饿,因为赶了一整天路。</div></div>
+    <div class="ex"><div class="en">Her eyes will hurt because she <b>will have been staring</b> at the screen for hours.</div><div class="zh">她眼睛会疼,因为盯屏幕盯了好几个小时。</div></div>
+    <p class="note">用“一直在进行”的这段动作,来<strong>解释将来某个状态的成因</strong>——这是它很地道的一个用法(English Page)。</p>
+
+    <div class="sum"><b>小结:</b>到某刻已持续多久、某事发生前已持续多久、解释将来状态的成因——三者共享一个内核:<strong>强调一段动作到将来某参照点为止的“时长与延续”</strong>。for + 时长几乎是它的指纹。</div>
+  </section>
+
+  <!-- ④ 对比 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>对比:done 还是 been doing?顺便收齐“将来族”</h2>
+        <div class="tag">特殊情况 · 放回坐标系</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>它和将来完成时(will have done)、将来进行时(will be doing)到底怎么分?
+      <span class="lim"><b>上一阶的局限:</b>功能讲了它的地盘,但真正要一眼分清的,是它和邻近两个将来时的焦点差别。</span>
+    </div>
+
+    <h3>① will have done vs will have been doing:结果 vs 时长</h3>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">By 2030, they'll have been researching a cure for 20 years.</div>
+        <div class="zh">到 2030 年,他们研究解药就已经二十年了。</div>
+        <div class="lbl">时长 / 过程 — 研究了多久</div>
+      </div>
+      <div class="card now">
+        <div class="en">By 2030, they'll have found a cure.</div>
+        <div class="zh">到 2030 年,他们就已经找到解药了。</div>
+        <div class="lbl">结果 / 完成 — 找到了没有</div>
+      </div>
+    </div>
+    <p>同一个截止点,<code>will have done</code> 看<strong>结果</strong>(做完 / 找到);<code>will have been doing</code> 看<strong>过程与时长</strong>(做了多久、还在做)。要“完成的结果”,用前者;要“持续的时长”,用后者(常配 for + 时长)。</p>
+
+    <h3>② will be doing vs will have been doing:那刻在进行 vs 到那刻已持续多久</h3>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">At 8, I'll be cooking.</div>
+        <div class="zh">八点我正在做饭。</div>
+        <div class="lbl">那一刻在进行</div>
+      </div>
+      <div class="card now">
+        <div class="en">By 8, I'll have been cooking for an hour.</div>
+        <div class="zh">到八点我已经做了一小时了。</div>
+        <div class="lbl">到那刻已持续多久</div>
+      </div>
+    </div>
+    <p class="note">都带“进行”的味道,但焦点不同:<code>will be doing</code> 定格<strong>某一刻正在进行</strong>;<code>will have been doing</code> 回望<strong>到某刻为止已经持续了多久</strong>。少了 for + 时长,英语常用将来进行时代替(English Page)。</p>
+
+    <h3>③ 收齐“将来族” + 主将从现</h3>
+    <p>把“明天八点”当参照点,整族将来时就排齐了(前四个在《将来完成时》讲过,这里补上完成进行):</p>
+    <div class="rows">
+      <div class="row"><span class="k">will do</span><span class="v">那刻<strong>发生</strong>。<code>At 8, I'll cook.</code></span></div>
+      <div class="row"><span class="k">will be doing</span><span class="v">那刻<strong>正在做</strong>。<code>At 8, I'll be cooking.</code></span></div>
+      <div class="row"><span class="k">will have done</span><span class="v">那刻前<strong>已做完</strong>。<code>By 8, I'll have cooked.</code></span></div>
+      <div class="row"><span class="k">will have been doing</span><span class="v">到那刻<strong>已持续做了多久</strong>。<code>By 8, I'll have been cooking for an hour.</code></span></div>
+    </div>
+    <p class="note">再把它放回“完成进行”家族——都是“到某参照点,一段动作已持续了多久”:现在完成进行 <code>have been doing</code>(到此刻)、过去完成进行 <code>had been doing</code>(到过去某刻)、将来完成进行 <code>will have been doing</code>(到将来某刻)。从句里那个截止点照样“主将从现”:<code>By the time you arrive, I'll have been waiting for an hour.</code>(arrive 用现在时)。</p>
+
+    <div class="sum"><b>小结:</b>三件事——① <b>will have done</b>(结果)vs <b>will have been doing</b>(时长),要时长 / 过程用后者、常配 for;② <b>will be doing</b>(那刻在进行)vs <b>will have been doing</b>(到那刻已持续多久);③ 它是“完成进行”家族里参照点落在将来的那一员,从句里照样“主将从现”。</div>
+  </section>
+
+  <!-- ⑤ 判断 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>判断:三步快速定位</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>实战里怎么一眼判断该用将来完成进行时?
+      <span class="lim"><b>上一阶的局限:</b>前面讲“用在哪、怎么分”,这一阶给“怎么快速识别”的抓手。</span>
+    </div>
+    <p class="note">看到 <b style="color:var(--r5)">by + 将来时刻</b>(by 12 / by then)或 <b style="color:var(--r5)">by the time + 从句</b>,<strong>而且带 for + 时长</strong>(for six hours / for three years),句子强调“到那时<strong>已经持续了多久</strong>”,基本就是它的“指纹”。</p>
+    <h3>三步判断法</h3>
+    <ol class="steps">
+      <li>有没有一个将来的<strong>截止点</strong>(by + 时刻 / by the time + 从句),而且句子在强调<strong>一段时长</strong>(for…)?→ 是,才谈得上将来完成进行时。</li>
+      <li>焦点是“<strong>持续了多久、还在进行</strong>”(而非“做完了”)吗?→ 是,用 <b>will have been doing</b>;若是“到那刻已完成的结果”,用 will have done。</li>
+      <li>形式:<b>will have been + -ing</b>,整块不随主语变;否定 won't have been doing;状态动词改用将来完成时;从句里的截止点用现在时(主将从现)。</li>
+    </ol>
+    <div class="sum"><b>小结:</b>先找将来截止点 + for 时长,再确认焦点是“时长 / 延续”,最后套 will have been + -ing。<b>by … + for …</b> 是它的指纹,三步定好<strong>时态、形式、边界</strong>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>站在未来回望,强调动作已持续的时长(延续到那刻)</td><td>未来回望 + 强调时长(for…)</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>句子骨架</td><td>will have been + -ing(整块不随主语变);陈述 / 疑问 / 特殊,满配三大从句</td><td>done → been doing,把“体”叠到最满</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>by 某刻已持续 / by the time 某事前已持续 / 解释将来状态成因</td><td>强调到参照点的时长与延续</td></tr>
+        <tr class="o4"><td><span class="dot">④ 对比</span></td><td>怎么分</td><td>结果 vs 时长;那刻在进行 vs 到那刻已持续多久;完成进行家族 + 主将从现</td><td>要“持续多久”就用 been doing</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么识别</td><td>截止点 + for 时长 + 焦点是时长 + 三步法</td><td>by…+for…,判时长,套 will have been -ing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流:遇到句子怎么定</h2>
+    <div class="flow">
+      <div class="q">有将来截止点(by + 时刻 / by the time + 从句),且句子强调“一段时长(for…)”吗?</div>
+      <div class="a"><span class="hit">是 →</span> 才可能用将来完成进行时,继续往下</div>
+      <div class="q">焦点是“持续了多久、还在进行”吗?</div>
+      <div class="a"><span class="hit">是 →</span> 用 <code>will have been + -ing</code></div>
+      <div class="q">焦点其实是“到那刻已做完的结果”?</div>
+      <div class="a"><span class="hit4">是 →</span> 用将来完成时 will have done(常不带 for 时长)</div>
+      <div class="q">动词是 be / know / like 等状态动词?</div>
+      <div class="a"><span class="hit4">是 →</span> 不用进行式,改用将来完成时 will have done</div>
+      <div class="q">说的是“到此刻已持续多久”?</div>
+      <div class="a">是 → 那是现在完成进行时(have been + doing),不是本课</div>
+    </div>
+  </div>
+
+  <footer>将来完成进行时 · 地基 → 满配骨架 → 功能 → 对比 → 判断 · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>
