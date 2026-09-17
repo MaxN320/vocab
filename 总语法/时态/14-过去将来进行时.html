@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>过去将来进行时 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- satmax skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.rel{color:#e6b850}   /* 定语从句 */
+.nom{color:#38cabf}   /* 名词性从句 */
+.adv{color:#f0876a}   /* 状语从句 */
+.freq{color:#b48ef0;font-weight:700}  /* 频率副词 */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>过去将来进行时 · 阶梯式笔记</h1>
+    <p class="sub">从“它锚定什么”起步,一阶叠一阶:地基 → 骨架 → 功能 → 对比 → 判断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基:站在过去,看“当时的将来某刻正在进行”</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>过去将来进行时到底在表达什么?它和一般过去将来时差在哪?
+      <span class="lim"><b>为什么先讲:</b>这个时态有<em>两层</em>都在名字里——“过去将来”管视角,“进行”管画面。不先把这两层拆开,就会和 would do、和过去进行时(was doing)搅在一起。</span>
+    </div>
+    <p>核心一句话:过去将来进行时描述的是<strong>站在过去某个时刻往前看,在“当时还没到的那一刻”,一个动作正处于进行中</strong>。它是把<strong>将来进行时整体退一格</strong>的产物:<code>will be doing</code> 的观察点在现在,<code>would be doing</code> 的观察点搬到了过去。一般过去将来时(<code>would do</code>)只说“那件事后来会发生”,把动作当一个整体;过去将来进行时(<code>would be doing</code>)把镜头推到那个未来时刻,让你看见动作<strong>正在半途</strong>。</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">He said that at 8 the next morning he <b>would be flying</b> to Tokyo.</div>
+        <div class="zh">他说第二天早上八点他正在飞往东京的途中。</div>
+        <div class="lbl">would be doing — 定格“那时正在进行”的画面</div>
+      </div>
+      <div class="card now">
+        <div class="en">He said that the next morning he <b>would fly</b> to Tokyo.</div>
+        <div class="zh">他说第二天早上他会飞往东京。</div>
+        <div class="lbl">would do — 只说“后来会发生”,不带画面</div>
+      </div>
+    </div>
+    <p class="note">三层叠在一起看就清楚了:<b>would</b> 标“从过去看的将来”,<b>be + doing</b> 标“进行”。所以它同时继承了将来进行时的两层色彩——<strong>画面感强</strong>、<strong>顺理成章不刻意</strong>——只是整幅画挂在过去的墙上。</p>
+    <div class="sum"><b>小结:</b>过去将来进行时 = <strong>过去的视角 + 将来的时刻 + 进行的画面</strong>。记住“站在过去往前看,看见动作正在进行”,后面选它还是 would do 全靠它。</div>
+  </section>
+
+  <!-- ② 形式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>形式:一个满配句子能塞多满</h2>
+        <div class="tag">怎么用 · 句子骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>一个过去将来进行时的句子,成分排起来长什么样?
+      <span class="lim"><b>上一阶的局限:</b>地基只说清“表达什么”,没给“句子的形状”。</span>
+    </div>
+    <p>形式是<strong>两层叠加</strong>:<code>would + be + 动词-ing</code>——would 管“从过去看的将来”,be + doing 管“进行”。和一般过去将来时一样<strong>不分人称</strong>(would 是情态动词,三单不加 -s)。其实只要把一般过去将来时的谓语从 <code>would do</code> 换成 <code>would be doing</code>,就给动作加上了“进行中”这层镜头,<strong>骨架不变,只换谓语</strong>。下面每条都塞满“三大从句”。</p>
+    <p class="note">换个角度看清结构:would 就是 will 的<strong>过去式</strong>,所以将来进行时的 <code>will be doing</code> 一退格就是 <code>would be doing</code>,后面的 be + -ing 原样不动——<strong>退格只退在助动词上</strong>。另有一个同义骨架 <code>was/were going to be doing</code>,更强调“过去就已定下的安排”。</p>
+    <div class="legend2">
+      <span class="rel">〔定语从句〕</span>
+      <span class="nom">〔名词性从句〕</span>
+      <span class="adv">〔状语从句〕</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
+    </div>
+
+    <h3>A · would be doing 句</h3>
+    <p class="note">下面三句是<strong>同一句</strong>一步步变出来的:陈述句 → 一般疑问句 → 特殊疑问句,后一句都在前一句身上只动一处。would 是助动词,变疑问<strong>不借 do</strong>,靠 <b>would 自己前移</b>。</p>
+
+    <div class="stype">陈述句（基句）</div>
+    <div class="skel">时间点状语 · 主语 <span class="rel">〔定语从句〕</span> · <b>would be</b> · 谓语-ing · 宾语 <span class="nom">〔名词性从句〕</span> · <span class="adv">〔状语从句〕</span></div>
+    <div class="ex">
+      <div class="en">By that time the next day, the teacher <span class="rel">who taught us English</span> <b>would be explaining</b> <span class="nom">what the exam covered</span> <span class="adv">while we took notes</span>.</div>
+      <div class="zh">到第二天那个时候,教我们英语的那位老师正在讲解考试的范围,我们则在记笔记。</div>
+    </div>
+
+    <div class="stype">一般疑问句　←　由陈述句变</div>
+    <div class="skel">改动:把 <b>would</b> 提到主语前(be、doing 跟在后面原样不动),<strong>不借 do</strong>;从句里的 taught、covered、took 都不动。</div>
+    <div class="ex">
+      <div class="en"><b>Would</b> the teacher <span class="rel">who taught us English</span> <b>be explaining</b> <span class="nom">what the exam covered</span> <span class="adv">while we took notes</span>?</div>
+      <div class="zh">到第二天那个时候,教我们英语的那位老师会正在讲解考试范围、我们在记笔记吗?</div>
+    </div>
+
+    <div class="stype">特殊疑问句　←　由一般疑问句变</div>
+    <div class="skel">改动:把要问的时间点换成疑问词 <b>When</b> 提到最前,后面 would 的语序原样保留。</div>
+    <div class="ex">
+      <div class="en"><b>When</b> would the teacher <span class="rel">who taught us English</span> <b>be explaining</b> <span class="nom">what the exam covered</span>?</div>
+      <div class="zh">教我们英语的那位老师,会在什么时候讲解考试的范围?</div>
+    </div>
+
+    <h3>B · 三个易错点</h3>
+    <p class="note">would be doing 的骨架很规整,但初学最容易在这三处翻车。</p>
+    <div class="rows">
+      <div class="row"><span class="k">不分人称</span><span class="v">would 是情态动词,所有人称都用 <b>would be + -ing</b>,三单不加 -s。<code>She would be working.</code>(× She would be works)</span></div>
+      <div class="row"><span class="k">否定</span><span class="v">wouldn't be + -ing。<code>He said he wouldn't be working then.</code> 他说那时他不在上班。</span></div>
+      <div class="row"><span class="k">别和过去进行时混</span><span class="v">was/were doing 说的是“<strong>过去某刻正在进行</strong>”,已经发生;would be doing 说的是“<strong>站在过去看,还没到的那一刻正在进行</strong>”。<code>I was working.</code>(当时在做) ≠ <code>I would be working.</code>(那时之后才在做)</span></div>
+    </div>
+    <p class="note">状态动词的老规矩照旧:be、know、like 等<strong>状态动词</strong>本身不表“进行”,不进入进行式,直接用一般过去将来时。<code>She said Jane would be at home.</code>(× would be being at home)</p>
+
+    <div class="sum"><b>小结:</b>would be doing 靠 <b>would 前移</b>成疑问、谓语用 <b>be + -ing</b>、三单不加 -s;否定 wouldn't be doing。骨架不变,给动作加“进行中”这层镜头,只需把 would do 换成 would be doing。</div>
+  </section>
+
+  <!-- ③ 功能 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>功能:什么时候真的用它</h2>
+        <div class="tag">怎么用 · 三条骨架,每条 3 例</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>句子会搭了,到底在哪些场景该用它?
+      <span class="lim"><b>上一阶的局限:</b>形式解决“怎么搭”,没解决“何时用”。三种场景本质都是“从过去看的将来某刻,动作正在进行”,回扣第一阶。</span>
+    </div>
+
+    <h3>① 转述过去说的话（will be doing → would be doing）</h3>
+    <div class="skel">主句过去时(said / told / knew) · that · 主语 · <b>would be</b> · 谓语-ing</div>
+    <div class="ex"><div class="en">She said she <b>would be waiting</b> at the station.</div><div class="zh">她说她会在车站等着（那时正等）。</div></div>
+    <div class="ex"><div class="en">He told me he <b>would be working</b> all that weekend.</div><div class="zh">他告诉我那整个周末他都在工作。</div></div>
+    <div class="ex"><div class="en">I knew they <b>would be having</b> dinner at that hour.</div><div class="zh">我知道那个点他们正在吃晚饭。</div></div>
+    <p class="note">直接引语里的 <code>I will be waiting.</code>,转述时 will <strong>退格</strong>成 would,be + -ing 不变——这是它最常出现的场合。</p>
+
+    <h3>② 过去叙事里的“那时正在……”</h3>
+    <div class="skel">过去叙事背景 · 主语 · <b>would be</b> · 谓语-ing · 将来时间点状语(the next day / an hour later)</div>
+    <div class="ex"><div class="en">He left early; an hour later he <b>would be sitting</b> on a plane to Paris.</div><div class="zh">他早早离开了;一小时后,他就坐在飞往巴黎的飞机上了。</div></div>
+    <div class="ex"><div class="en">She packed her bags. The next morning she <b>would be driving</b> south.</div><div class="zh">她收拾好行李。第二天早上,她就一路向南开着车了。</div></div>
+    <div class="ex"><div class="en">At that moment nobody guessed that in ten years he <b>would be running</b> the company.</div><div class="zh">那一刻谁也没想到,十年后他正掌管着这家公司。</div></div>
+    <p class="note">这一类是<strong>叙事视角</strong>的用法:作者站在故事的“当时”,提前把镜头摇到后来的某一刻,定格一幅进行中的画面——比 would do 更有代入感。</p>
+
+    <h3>③ 过去已定的安排 / 顺理成章会在做</h3>
+    <div class="skel">主语 · <b>would be</b>（或 <b>was/were going to be</b>）· 谓语-ing(事情按当时的计划自然发生)</div>
+    <div class="ex"><div class="en">We had it all planned: we <b>would be leaving</b> at 8 the next morning.</div><div class="zh">我们全安排好了:第二天早上八点出发（已定）。</div></div>
+    <div class="ex"><div class="en">Don't worry, he said — he <b>would be seeing</b> Tom later anyway.</div><div class="zh">他说别担心,他反正等下会见到 Tom。</div></div>
+    <div class="ex"><div class="en">She told me she <b>was going to be staying</b> with her parents for a few months.</div><div class="zh">她跟我说她要在父母那儿住上几个月。</div></div>
+    <p class="note">这层意思是“<strong>按当时事情的自然发展,那会儿正好在做</strong>”,不含“特意去做”的意味——把将来进行时的“确定、不刻意”原样搬进了过去。</p>
+
+    <div class="sum"><b>小结:</b>转述、叙事、已定安排——三者共享一个内核:<strong>把动作放进“过去之后、当时未到”的时间轴,看它正在进行</strong>。画面与确定,都从这里来。</div>
+  </section>
+
+  <!-- ④ 对比 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>对比:would do 还是 would be doing?</h2>
+        <div class="tag">特殊情况 · 放回坐标系</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>同一件“过去看来会发生”的事,什么时候用 would do,什么时候用 would be doing?
+      <span class="lim"><b>上一阶的局限:</b>功能讲了它的地盘,但最容易错的是它和一般过去将来时、和过去进行时的边界。</span>
+    </div>
+
+    <h3>① would do vs would be doing:整体事件 vs 进行画面</h3>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">He said that at 8 he <b>would be having</b> dinner.</div>
+        <div class="zh">他说八点他正在吃晚饭（已在半途）。</div>
+        <div class="lbl">进行中 — 强调那刻在进行</div>
+      </div>
+      <div class="card now">
+        <div class="en">He said that at 8 he <b>would have</b> dinner.</div>
+        <div class="zh">他说八点他（才）吃晚饭（那时开始）。</div>
+        <div class="lbl">整体事件 — 只说会发生</div>
+      </div>
+    </div>
+    <p>同一时刻,<code>would do</code> 把动作当<strong>一个整体事件</strong>(那时发生 / 开始);<code>would be doing</code> 把动作当<strong>正在进行的过程</strong>(那时已在半途)。要“画面”和“过程”,用 would be doing;只说“会发生”,用 would do。</p>
+
+    <h3>② 别和过去进行时混:参照点不同</h3>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">At 8 last night I <b>was working</b>.</div>
+        <div class="zh">昨晚八点我在工作（已发生的事实）。</div>
+        <div class="lbl">过去进行时 — 参照点就是那个过去时刻</div>
+      </div>
+      <div class="card now">
+        <div class="en">He said that at 8 I <b>would be working</b>.</div>
+        <div class="zh">他说（那之后的）八点我会在工作。</div>
+        <div class="lbl">过去将来进行时 — 参照点在“当时的以后”</div>
+      </div>
+    </div>
+    <p class="note">最实用的分辨法:问一句“<strong>说话 / 叙事的那一刻,这事发生了没有?</strong>”——已经在发生,用 <code>was/were doing</code>;还没到、是往前看的,用 <code>would be doing</code>。</p>
+
+    <h3>③ 放回“进行体”家族 + 主过去将来从过去</h3>
+    <p>把它和别的“进行”排在一起就清楚了——都是“<strong>在某个参照点,动作正在进行</strong>”,只是参照点不同:</p>
+    <div class="rows">
+      <div class="row"><span class="k">现在进行时</span><span class="v">am/is/are + doing —— 参照点是<strong>此刻</strong>。<code>I am working now.</code></span></div>
+      <div class="row"><span class="k">过去进行时</span><span class="v">was/were + doing —— 参照点是<strong>过去某刻</strong>。<code>I was working then.</code></span></div>
+      <div class="row"><span class="k">将来进行时</span><span class="v">will be + doing —— 参照点是<strong>将来某刻</strong>。<code>I will be working then.</code></span></div>
+      <div class="row"><span class="k">过去将来进行时</span><span class="v">would be + doing —— 参照点是<strong>从过去看的将来某刻</strong>。<code>He said I would be working then.</code></span></div>
+    </div>
+    <p class="note">从句规则也跟着“退一格”:主句用过去将来进行时,when / while / before / after / if 等从句里<strong>不用</strong> would,用<strong>一般过去时</strong>——即“<strong>主过去将来,从过去</strong>”。<code>He said that when we arrived, she would be waiting.</code>(× when we would arrive)</p>
+
+    <div class="sum"><b>小结:</b>三件事——① <b>would do</b>(整体事件)vs <b>would be doing</b>(进行画面),要画面 / 过程用后者;② 和过去进行时的分水岭是“叙事那刻发生了没有”;③ 它是“进行体”家族里参照点落在“过去之将来”的那一员,从句照样退一格用过去时。</div>
+  </section>
+
+  <!-- ⑤ 判断 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>判断:三步快速定位</h2>
+        <div class="tag">收口 · 实战抓手</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决:</b>实战里怎么一眼判断该用过去将来进行时?
+      <span class="lim"><b>上一阶的局限:</b>前面讲“用在哪、怎么分”,这一阶给“怎么快速识别”的抓手。</span>
+    </div>
+    <p class="note">看到 <b style="color:var(--r5)">said / told / knew + that</b>,或者 <b style="color:var(--r5)">the next day / an hour later / that evening / by that time</b>(过去坐标下的“以后”),而且句子想说“那时<strong>正在进行</strong>”,基本就是它的“指纹”。</p>
+    <h3>三步判断法</h3>
+    <ol class="steps">
+      <li>观察点在<strong>过去</strong>吗(有过去的说 / 想 / 叙事背景)?→ 在过去,才谈得上“过去将来”。</li>
+      <li>那个“<strong>当时还没到的时刻</strong>”,动作是“正在进行 / 持续”(要画面、要过程),还是只是“会发生”?→ 正在进行,用 <b>would be doing</b>;只说会发生,用 would do。</li>
+      <li>形式:<b>would be + -ing</b>,不分人称;否定 wouldn't be doing;状态动词不进入进行式;从句里用一般过去时(主过去将来从过去)。</li>
+    </ol>
+    <div class="sum"><b>小结:</b>先确认观察点在过去,再判断“那一刻是否在进行”,最后套 would be + -ing。信号词是指纹,三步定好<strong>时态、形式、边界</strong>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>表达什么</td><td>从过去看的将来某刻,动作正在进行(画面 + 确定)</td><td>站在过去往前看,看动作“进行中”</td></tr>
+        <tr class="o2"><td><span class="dot">② 形式</span></td><td>句子骨架</td><td>would be + -ing,不分人称;陈述 / 疑问 / 特殊,满配三大从句</td><td>would 前移;would do → would be doing</td></tr>
+        <tr class="o3"><td><span class="dot">③ 功能</span></td><td>何时用</td><td>转述过去的话 / 过去叙事的“后来” / 过去已定的安排</td><td>都是“过去之将来轴上的进行”</td></tr>
+        <tr class="o4"><td><span class="dot">④ 对比</span></td><td>怎么选</td><td>would do vs would be doing;与过去进行时分界;进行体家族 + 主过去将来从过去</td><td>要画面 / 过程就用 be doing</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么识别</td><td>观察点在过去 + 是否在进行 + 三步法</td><td>定过去视角,判进行,套 would be -ing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流:遇到句子怎么定</h2>
+    <div class="flow">
+      <div class="q">观察点在过去吗(said / told / 过去叙事背景)?</div>
+      <div class="a"><span class="hit">在 →</span> 才可能用过去将来进行时,继续往下</div>
+      <div class="q">那个“当时还没到的时刻”,动作是“正在进行 / 持续”吗?</div>
+      <div class="a"><span class="hit">是（要画面、要过程）→</span> 用 <code>would be + -ing</code></div>
+      <div class="q">只是说“后来会发生 / 会去做”?</div>
+      <div class="a"><span class="hit4">是 →</span> 用一般过去将来时 <code>would do</code>,不用进行式</div>
+      <div class="q">是在 when / if 等从句里吗?</div>
+      <div class="a"><span class="hit4">是 →</span> 从句用一般过去时,主句才用 would be doing(主过去将来从过去)</div>
+      <div class="q">说的是“过去那一刻已经在进行”?</div>
+      <div class="a">是 → 那是过去进行时(was/were + doing),不是本课</div>
+    </div>
+  </div>
+
+  <footer>过去将来进行时 · 地基 → 满配骨架 → 功能 → 对比 → 判断 · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>
