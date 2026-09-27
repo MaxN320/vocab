@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>非谓语动词 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#161b22;
+    --panel-2:#1c2230;
+    --ink:#e6edf3;
+    --ink-soft:#9da7b3;
+    --ink-faint:#6b7482;
+    --line:#2a313c;
+
+    /* 五阶主题色 —— 冷到暖，像温度逐级升高 */
+    --s1:#4dd0e1;  /* 青  一句一个当家 */
+    --s2:#66bb6a;  /* 绿  to do */
+    --s3:#ffca28;  /* 黄  doing */
+    --s4:#ff8a65;  /* 橙  done */
+    --s5:#ba68c8;  /* 紫  换装变义 */
+
+    --zh:#7f8896;
+    --code:#0a0e14;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #13202e 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, #17131f 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:860px;margin:0 auto;padding:56px 22px 120px}
+
+  /* ---------- 头部 ---------- */
+  header.hero{margin-bottom:14px}
+  .kicker{
+    font-family:"SF Mono",Consolas,monospace;
+    letter-spacing:.34em;
+    text-transform:uppercase;
+    font-size:.68rem;
+    color:var(--ink-faint);
+    margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(2rem,5.5vw,3rem);
+    line-height:1.1;
+    margin:0 0 16px;
+    font-weight:800;
+    letter-spacing:-.01em;
+  }
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:60ch}
+  .lead b{color:var(--ink)}
+
+  /* ---------- 贯穿全篇的地基条 ---------- */
+  .thesis{
+    margin:34px 0 10px;
+    padding:16px 20px;
+    border-left:3px solid var(--s1);
+    background:linear-gradient(90deg,rgba(77,208,225,.08),transparent);
+    border-radius:0 10px 10px 0;
+    font-size:.96rem;
+    color:var(--ink-soft);
+  }
+  .thesis b{color:var(--s1)}
+
+  /* ---------- 阶梯竖轴 ---------- */
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{
+    content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;
+    background:linear-gradient(var(--s1),var(--s2),var(--s3),var(--s4),var(--s5));
+    opacity:.5;
+  }
+
+  .step{position:relative;padding-left:56px;margin-bottom:44px}
+  .dot{
+    position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;
+    display:grid;place-items:center;font-weight:800;font-size:.9rem;color:var(--bg);
+    box-shadow:0 0 0 6px var(--bg), 0 0 22px -4px currentColor;
+    z-index:2;
+  }
+  .s1 .dot{background:var(--s1);color:#052}
+  .s2 .dot{background:var(--s2)}
+  .s3 .dot{background:var(--s3);color:#3a2c00}
+  .s4 .dot{background:var(--s4)}
+  .s5 .dot{background:var(--s5)}
+
+  .step h2{
+    margin:0 0 4px;font-size:1.34rem;font-weight:750;letter-spacing:-.01em;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  }
+  .s1 h2 .tag{color:var(--s1)} .s2 h2 .tag{color:var(--s2)}
+  .s3 h2 .tag{color:var(--s3)} .s4 h2 .tag{color:var(--s4)} .s5 h2 .tag{color:var(--s5)}
+  .formula{
+    font-family:"SF Mono",Consolas,monospace;font-size:.82rem;
+    padding:2px 10px;border-radius:20px;border:1px solid var(--line);
+    color:var(--ink-soft);background:var(--panel);white-space:nowrap;
+  }
+
+  /* 问题 / 为什么 卡 */
+  .why{
+    margin:14px 0 18px;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;
+  }
+  .why .row{display:flex;gap:0;border-bottom:1px solid var(--line)}
+  .why .row:last-child{border-bottom:0}
+  .why .lab{
+    flex:0 0 96px;padding:11px 14px;font-size:.74rem;letter-spacing:.06em;
+    color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;
+    font-family:"SF Mono",Consolas,monospace;
+  }
+  .why .val{padding:11px 16px;font-size:.94rem;color:var(--ink-soft)}
+  .why .val b{color:var(--ink)}
+
+  /* 例句块 */
+  .egs{display:flex;flex-direction:column;gap:12px;margin:16px 0 8px}
+  .eg{
+    background:var(--code);border:1px solid var(--line);border-radius:10px;
+    padding:13px 16px;
+  }
+  .eg .en{font-size:1.04rem;letter-spacing:.01em}
+  .eg .zh{color:var(--zh);font-size:.85rem;margin-top:3px}
+  .eg .bad{color:#ff7b7b;text-decoration:line-through;text-decoration-color:rgba(255,123,123,.6)}
+  /* 成分着色：主干用亮色，挂件用各自颜色 */
+  .S{color:#7aa2ff;font-weight:600}
+  .V{color:#ff9d7a;font-weight:600}
+  .O{color:#8ce99a;font-weight:600}
+  .P{color:#f2a6ff;font-weight:600}
+  .Mn{color:#ffd47a}                 /* 方式 */
+  .Pl{color:#6ee7d8}                 /* 地点 */
+  .T{color:#ff8fb0}                  /* 时间 */
+  .N{color:#8ce99a;font-weight:700;text-decoration:underline;text-underline-offset:4px} /* 被修饰的名词 */
+  .A{color:#c8a6ff}                  /* 定语 */
+  .adv{color:var(--ink-faint);font-style:italic}
+  /* 三套制服 */
+  .TD{color:#66bb6a;font-weight:600}
+  .ING{color:#ffca28;font-weight:600}
+  .ED{color:#ff8a65;font-weight:600}
+
+  /* 成分小图例 */
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;margin:10px 0 2px;color:var(--ink-faint)}
+  .legend span b{font-weight:700}
+
+  /* 小结 */
+  .sum{
+    margin-top:16px;padding:12px 16px 12px 18px;border-radius:0 10px 10px 0;
+    font-size:.9rem;color:var(--ink-soft);
+  }
+  .s1 .sum{border-left:3px solid var(--s1);background:rgba(77,208,225,.06)}
+  .s2 .sum{border-left:3px solid var(--s2);background:rgba(102,187,106,.06)}
+  .s3 .sum{border-left:3px solid var(--s3);background:rgba(255,202,40,.06)}
+  .s4 .sum{border-left:3px solid var(--s4);background:rgba(255,138,101,.06)}
+  .s5 .sum{border-left:3px solid var(--s5);background:rgba(186,104,206,.06)}
+  .sum b{color:var(--ink)}
+
+  .callout{
+    margin:12px 0;padding:12px 16px;border-radius:10px;background:var(--panel-2);
+    border:1px dashed var(--line);font-size:.9rem;color:var(--ink-soft);
+  }
+  .callout b{color:var(--ink)}
+
+  /* ---------- 总览表 ---------- */
+  .overview{margin-top:24px}
+  h3.block{
+    font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em;
+    padding-left:14px;border-left:4px solid var(--ink);
+  }
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:18px}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+  th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--panel-2);color:var(--ink);font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  tbody tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;text-align:center;width:44px}
+  tr[data-s="1"] td.num{color:var(--s1)} tr[data-s="2"] td.num{color:var(--s2)}
+  tr[data-s="3"] td.num{color:var(--s3)} tr[data-s="4"] td.num{color:var(--s4)}
+  tr[data-s="5"] td.num{color:var(--s5)}
+  td code{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:var(--ink)}
+  td .mini{color:var(--zh);font-size:.78rem;display:block;margin-top:2px}
+
+  /* ---------- 判断流程 ---------- */
+  .flow{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+  .qnode{
+    display:flex;gap:14px;align-items:flex-start;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  }
+  .qnode .q{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);
+    display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;
+    font-weight:800;font-size:.82rem;color:var(--ink-soft)}
+  .qnode .body{flex:1}
+  .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .yes{color:#8ce99a} .qnode .no{color:var(--ink-faint)}
+  .qnode .arm{font-size:.9rem;margin-top:2px;color:var(--ink-soft)}
+  .qnode .arm b{font-weight:700}
+
+  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:520px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>非谓语动词：to do / doing / done</h1>
+    <p class="lead">同一个动词，一会儿是 <b>to go</b>，一会儿是 <b>going</b>，一会儿又是 <b>gone</b>——这不是英语故意刁难。它们是动词在"<b>不当谓语</b>"时必须换上的三套制服，每套制服都自带意思。看懂制服，就不用背了。</p>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基：</b>一个简单句里，<b>只能有一个</b>当家的<span class="V">谓语动词</span>（它负责时态、跟主语配合）。第二个、第三个动词想进句子，就必须<b>换上制服</b>，表明"我不是当家的"。英语靠<b>形式</b>标记身份——这就是《极简英语思维》说的"制服控"。
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step s1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>一句一个当家的：第二个动词必须换装<span class="formula">S + V + <span class="TD">to do</span> / <span class="ING">doing</span> / <span class="ED">done</span></span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">中文可以把动词随便串：<b>"我想去看电影"</b>——想、去、看，三个动词挨着，一个字不用改。英语能不能也这样？</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">不能。英语的谓语动词要"挂牌"：时态、单复数都标在它身上。如果三个动词原样排着，听者分不清<b>谁才是那个挂牌的</b>。所以只留一个当家，其余的换制服。</div></div>
+      </div>
+
+      <div class="legend">
+        <span><b class="V">V</b> 当家的谓语</span><span><b class="TD">to do</b></span><span><b class="ING">doing</b></span><span><b class="ED">done</b></span>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="bad">I want go.</span>　✗　→　<span class="S">I</span> <span class="V">want</span> <span class="TD">to go</span>.　✓</div><div class="zh">我想去。（want 当家，go 换上 to 的制服）</div></div>
+        <div class="eg"><div class="en"><span class="bad">He likes swim.</span>　✗　→　<span class="S">He</span> <span class="V">likes</span> <span class="ING">swimming</span>.　✓</div><div class="zh">他喜欢游泳。（likes 当家，swim 换上 -ing 的制服）</div></div>
+        <div class="eg"><div class="en"><span class="S">I</span> <span class="V">want</span> <span class="TD">to go</span> <span class="TD">to see</span> a film.</div><div class="zh">我想去看电影。（三个动词，只有 want 是真谓语）</div></div>
+      </div>
+
+      <div class="callout"><b>一招找当家的：</b>哪个动词身上带着时态和人称变化（wants / wanted / is / has），哪个就是谓语。其余动词如果前面有 to、后面有 -ing，或者是 -ed / 过去分词形式又前面没有 be / have 帮忙——它们就是<b>非谓语</b>，穿着制服在打工。</div>
+
+      <div class="sum">📍 <b>小结：</b>非谓语不是新语法，是一条<b>规矩</b>：一句一个当家的，多余的动词换装。接下来三阶，分别看三套制服各自代表什么意思。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step s2">
+      <div class="dot">2</div>
+      <h2><span class="tag">怎么用</span>to do：朝着一个还没到的目标<span class="formula">to + 动词原形</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">三套制服里，什么时候穿 to do？</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">to 本来就是介词"到、朝向"（go <b>to</b> school）。所以 to do 天生带着一个箭头：<b>指向一件还没发生的事</b>——想做、打算做、为了做。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="TD">to do</b> ＝ → 还没做，朝它去</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">I</span> <span class="V">hope</span> <span class="TD">to see</span> you again.</div><div class="zh">我希望再见到你。（见面还没发生）</div></div>
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">went</span> to the shop <span class="TD">to buy</span> some milk.</div><div class="zh">她去商店买牛奶。（去商店的<b>目的</b>）</div></div>
+        <div class="eg"><div class="en"><span class="S">I</span> <span class="V">have</span> a lot of work <span class="TD">to do</span>.</div><div class="zh">我有很多工作<b>要做</b>。（修饰 work：待完成的工作）</div></div>
+      </div>
+
+      <div class="callout"><b>常跟 to do 的动词，几乎都"朝向未来"：</b>want / hope / plan / decide / agree / promise / learn / forget（忘了要去做）。<br>
+      看到这些词，后面的动词就穿 <span class="TD">to</span>：He <b>decided to</b> leave. / We <b>plan to</b> travel.</div>
+
+      <div class="sum">📍 <b>小结：</b><span class="TD">to do</span> = 一支<b>指向前方的箭</b>：目标、打算、目的、待办。凡是"还没做"，先想到它。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step s3">
+      <div class="dot">3</div>
+      <h2><span class="tag">进一阶</span>doing：这件事本身，或者正在进行<span class="formula">动词 + ing</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">不是指向未来的时候呢？比如"喜欢游泳""读书很有趣"——这里说的是<b>活动本身</b>。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">-ing 是"<b>进行中</b>"的标记（she is swimm<b>ing</b>）。把一个动作变成 doing，就像按下暂停键拍了张照片：<b>这个动作正在发生的样子</b>，或者<b>这项活动整体</b>，可以拿来当名词用。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="ING">doing</b> ＝ 🎞 活动本身 / 正在进行</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="ING">Reading</span> <span class="V">is</span> fun.</div><div class="zh">读书很有趣。（doing 当主语：说的是"读书"这项活动）</div></div>
+        <div class="eg"><div class="en"><span class="S">I</span> <span class="V">enjoy</span> <span class="ING">cooking</span>.</div><div class="zh">我喜欢做饭。（享受的是做饭的过程）</div></div>
+        <div class="eg"><div class="en">Look at the <span class="ING">sleeping</span> baby.</div><div class="zh">看那个<b>正在睡觉的</b>宝宝。（修饰名词：正在进行）</div></div>
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">is</span> good at <span class="ING">singing</span>.</div><div class="zh">她擅长唱歌。（介词 at 后面要接名词 → 动词得穿 -ing 才进得去）</div></div>
+      </div>
+
+      <div class="callout"><b>最容易漏的一条：</b>介词（at / in / of / for / about / without…）后面<b>只能接 doing</b>，不能接 to do。<br>
+      Thank you <b>for helping</b> me. / He left <b>without saying</b> goodbye.<br>
+      常跟 doing 的动词：enjoy / finish / mind / keep / practise / give up——它们说的都是<b>一件正在做或已经在做的事</b>。</div>
+
+      <div class="sum">📍 <b>小结：</b><span class="ING">doing</span> = 一张<b>正在进行的照片</b>：活动本身、正在发生、介词后面。和 to do 的"箭头"正好相反。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step s4">
+      <div class="dot">4</div>
+      <h2><span class="tag">特殊情况</span>done：被做了，已经完了<span class="formula">过去分词</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">前两套制服，名词都是动作的<b>发出者</b>（宝宝在睡）。要是名词是<b>被动作处理的那一方</b>呢？比如"被打破的杯子"。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">过去分词（broken / written / used）本来就是被动和完成时用的形式（is broken / has written）。单独拎出来，它还带着这两层意思：<b>被…的</b>、<b>已经…了的</b>。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="ED">done</b> ＝ ✅ 被做了 / 已完成</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">a <span class="ED">broken</span> cup</div><div class="zh">一只<b>被打破的</b>杯子（杯子不会自己打破）</div></div>
+        <div class="eg"><div class="en">a book <span class="ED">written</span> in English</div><div class="zh">一本<b>用英语写的</b>书（长了就放后面 → 参见<a href="../../04-语序-重要先说.html" style="color:inherit">语序篇</a>第四阶）</div></div>
+        <div class="eg"><div class="en"><span class="ED">spoken</span> English　／　a <span class="ED">used</span> car</div><div class="zh">口语（被说出来的英语）／二手车（被用过的车）</div></div>
+      </div>
+
+      <div class="callout"><b>doing 和 done 修饰名词时，只问一个问题：名词是主动做，还是被做？</b><br>
+      a <span class="ING">falling</span> leaf 正在落下的叶子（叶子自己落）<br>
+      a <span class="ED">fallen</span> leaf 已经落下的叶子（落完了）<br>
+      a <span class="ING">boring</span> film 让人无聊的电影 ／ <span class="ED">bored</span> students 感到无聊的学生（学生是<b>被</b>弄无聊的）</div>
+
+      <div class="sum">📍 <b>小结：</b><span class="ED">done</span> = <b>一个盖了"已处理"章的东西</b>：被动、完成。和 doing 是一对：doing 主动在做，done 被做完了。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step s5">
+      <div class="dot">5</div>
+      <h2><span class="tag">高级技巧</span>换一套制服，意思就变<span class="formula">stop <span class="TD">to do</span> ≠ stop <span class="ING">doing</span></span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">有些动词后面 to do 和 doing <b>都能跟</b>，还意思不一样。这些要一个个背吗？</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">不用。把第二、三阶的"箭头"和"照片"套上去，意思自己就出来了：<b>to do 指向还没做的事，doing 指已经在做 / 做过的事</b>。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="TD">to do</b> → 还没做</span><span><b class="ING">doing</b> 🎞 已经在做/做过</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">He <span class="V">stopped</span> <span class="ING">smoking</span>.　／　He <span class="V">stopped</span> <span class="TD">to smoke</span>.</div><div class="zh">他戒烟了（停掉<b>正在做的</b>抽烟）／他停下来，<b>为了去</b>抽支烟</div></div>
+        <div class="eg"><div class="en"><span class="V">Remember</span> <span class="TD">to lock</span> the door.　／　I <span class="V">remember</span> <span class="ING">locking</span> the door.</div><div class="zh">记得<b>要去</b>锁门（还没锁）／我记得<b>锁过</b>门了（已经锁了）</div></div>
+        <div class="eg"><div class="en">I <span class="V">forgot</span> <span class="TD">to call</span> her.　／　I'll never <span class="V">forget</span> <span class="ING">meeting</span> you.</div><div class="zh">我忘了<b>给她打电话</b>（没打）／我永远不会忘记<b>和你相遇</b>（遇过了）</div></div>
+      </div>
+
+      <div class="callout">同一套逻辑还能解释 <b>try to do</b>（努力去做，还没成）vs <b>try doing</b>（试着做做看，已经在做）。遇到新的"两个都能跟"的动词，别急着查表，先问：<b>这件事发生了没有？</b></div>
+
+      <div class="sum">📍 <b>小结：</b>第五阶不是新规则，是<b>第二阶 + 第三阶的对比</b>。三套制服各有意思，所以换装就会换意思——这正是"制服控"的好处。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ================= 总览表 ================= -->
+  <section class="overview">
+    <h3 class="block">一张总览表</h3>
+    <p class="lead" style="margin-top:10px">三套制服，每套自带一个画面。<b>先想画面，再选形式。</b></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th class="num">#</th><th>形式</th><th>画面</th><th>常见用法</th><th>例句</th></tr>
+        </thead>
+        <tbody>
+          <tr data-s="2"><td class="num">→</td><td><code class="TD">to do</code></td><td>箭头：指向还没做的事</td><td>想/打算做；目的；待办</td><td><code>I want to go.</code><span class="mini">我想去。</span></td></tr>
+          <tr data-s="3"><td class="num">🎞</td><td><code class="ING">doing</code></td><td>照片：活动本身 / 正在进行</td><td>当主语宾语；介词后；主动修饰</td><td><code>I enjoy reading.</code><span class="mini">我喜欢读书。</span></td></tr>
+          <tr data-s="4"><td class="num">✅</td><td><code class="ED">done</code></td><td>盖章：被做了 / 已完成</td><td>被动修饰名词</td><td><code>a broken cup</code><span class="mini">打破的杯子</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 判断流程 ================= -->
+  <section class="overview">
+    <h3 class="block">判断：第二个动词穿哪套？四问定型</h3>
+    <p class="lead" style="margin-top:10px">句子里已经有一个当家的谓语，又来了一个动词，从上往下问：</p>
+
+    <div class="flow">
+      <div class="qnode">
+        <div class="q">Q1</div>
+        <div class="body">
+          <div class="ask">它前面紧挨着一个介词（at / for / of / without…）吗？</div>
+          <div class="arm"><span class="yes">是</span> → <b class="ING">doing</b>（good at singing）｜<span class="no">否</span> → 往下</div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q2</div>
+        <div class="body">
+          <div class="ask">它在修饰一个名词吗？名词是被这个动作处理的吗？</div>
+          <div class="arm"><span class="yes">被处理</span> → <b class="ED">done</b>（a broken cup）｜<span class="yes">名词自己在做</span> → <b class="ING">doing</b>（a sleeping baby）｜<span class="no">不是修饰名词</span> → 往下</div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q3</div>
+        <div class="body">
+          <div class="ask">这件事还没发生，是想做、要做、为了做吗？</div>
+          <div class="arm"><span class="yes">是</span> → <b class="TD">to do</b>（decide to leave / went there to buy…）｜<span class="no">否</span> → 往下</div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q4</div>
+        <div class="body">
+          <div class="ask">说的是这项活动本身，或者已经在做、做过了？</div>
+          <div class="arm"><span class="yes">是</span> → <b class="ING">doing</b>（enjoy cooking / remember locking）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:18px">🧭 <b>一条主线记全篇：</b>一句只有一个当家的动词，其余换制服。<span class="TD">to do</span> 是<b>箭头</b>（还没做），<span class="ING">doing</span> 是<b>照片</b>（正在做 / 活动本身），<span class="ED">done</span> 是<b>盖章</b>（被做了）。拿不准时，别背表，先问这三个画面里哪个对得上。</div>
+  </section>
+
+  <footer>
+    <b>回看地基：</b>非谓语动词不是"第三种动词"，是同一个动词在不当家时穿的三套制服。制服的意思都来自它的老本行：<span class="TD">to</span> 来自"朝向"，<span class="ING">-ing</span> 来自进行时，<span class="ED">done</span> 来自被动和完成时。参考：杨海英《极简英语思维》下篇"制服控"第十五章。
+  </footer>
+
+</div>
+</body>
+</html>

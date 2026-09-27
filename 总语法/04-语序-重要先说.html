@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语语序：重要先说 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#161b22;
+    --panel-2:#1c2230;
+    --ink:#e6edf3;
+    --ink-soft:#9da7b3;
+    --ink-faint:#6b7482;
+    --line:#2a313c;
+
+    /* 五阶主题色 —— 冷到暖，像温度逐级升高 */
+    --s1:#4dd0e1;  /* 青  主干先说 */
+    --s2:#66bb6a;  /* 绿  状语后挂 */
+    --s3:#ffca28;  /* 黄  状语提前 */
+    --s4:#ff8a65;  /* 橙  定语前后 */
+    --s5:#ba68c8;  /* 紫  定语排队 */
+
+    --zh:#7f8896;
+    --code:#0a0e14;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #13202e 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, #17131f 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:860px;margin:0 auto;padding:56px 22px 120px}
+
+  /* ---------- 头部 ---------- */
+  header.hero{margin-bottom:14px}
+  .kicker{
+    font-family:"SF Mono",Consolas,monospace;
+    letter-spacing:.34em;
+    text-transform:uppercase;
+    font-size:.68rem;
+    color:var(--ink-faint);
+    margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(2rem,5.5vw,3rem);
+    line-height:1.1;
+    margin:0 0 16px;
+    font-weight:800;
+    letter-spacing:-.01em;
+  }
+  .lead{color:var(--ink-soft);font-size:1.02rem;max-width:60ch}
+  .lead b{color:var(--ink)}
+
+  /* ---------- 贯穿全篇的地基条 ---------- */
+  .thesis{
+    margin:34px 0 10px;
+    padding:16px 20px;
+    border-left:3px solid var(--s1);
+    background:linear-gradient(90deg,rgba(77,208,225,.08),transparent);
+    border-radius:0 10px 10px 0;
+    font-size:.96rem;
+    color:var(--ink-soft);
+  }
+  .thesis b{color:var(--s1)}
+
+  /* ---------- 阶梯竖轴 ---------- */
+  .ladder{position:relative;margin-top:30px}
+  .ladder::before{
+    content:"";position:absolute;left:19px;top:8px;bottom:40px;width:2px;
+    background:linear-gradient(var(--s1),var(--s2),var(--s3),var(--s4),var(--s5));
+    opacity:.5;
+  }
+
+  .step{position:relative;padding-left:56px;margin-bottom:44px}
+  .dot{
+    position:absolute;left:6px;top:2px;width:30px;height:30px;border-radius:50%;
+    display:grid;place-items:center;font-weight:800;font-size:.9rem;color:var(--bg);
+    box-shadow:0 0 0 6px var(--bg), 0 0 22px -4px currentColor;
+    z-index:2;
+  }
+  .s1 .dot{background:var(--s1);color:#052}
+  .s2 .dot{background:var(--s2)}
+  .s3 .dot{background:var(--s3);color:#3a2c00}
+  .s4 .dot{background:var(--s4)}
+  .s5 .dot{background:var(--s5)}
+
+  .step h2{
+    margin:0 0 4px;font-size:1.34rem;font-weight:750;letter-spacing:-.01em;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  }
+  .s1 h2 .tag{color:var(--s1)} .s2 h2 .tag{color:var(--s2)}
+  .s3 h2 .tag{color:var(--s3)} .s4 h2 .tag{color:var(--s4)} .s5 h2 .tag{color:var(--s5)}
+  .formula{
+    font-family:"SF Mono",Consolas,monospace;font-size:.82rem;
+    padding:2px 10px;border-radius:20px;border:1px solid var(--line);
+    color:var(--ink-soft);background:var(--panel);white-space:nowrap;
+  }
+
+  /* 问题 / 为什么 卡 */
+  .why{
+    margin:14px 0 18px;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;
+  }
+  .why .row{display:flex;gap:0;border-bottom:1px solid var(--line)}
+  .why .row:last-child{border-bottom:0}
+  .why .lab{
+    flex:0 0 96px;padding:11px 14px;font-size:.74rem;letter-spacing:.06em;
+    color:var(--ink-faint);background:var(--panel-2);text-transform:uppercase;
+    font-family:"SF Mono",Consolas,monospace;
+  }
+  .why .val{padding:11px 16px;font-size:.94rem;color:var(--ink-soft)}
+  .why .val b{color:var(--ink)}
+
+  /* 例句块 */
+  .egs{display:flex;flex-direction:column;gap:12px;margin:16px 0 8px}
+  .eg{
+    background:var(--code);border:1px solid var(--line);border-radius:10px;
+    padding:13px 16px;
+  }
+  .eg .en{font-size:1.04rem;letter-spacing:.01em}
+  .eg .zh{color:var(--zh);font-size:.85rem;margin-top:3px}
+  .eg .bad{color:#ff7b7b;text-decoration:line-through;text-decoration-color:rgba(255,123,123,.6)}
+  /* 成分着色：主干用亮色，挂件用各自颜色 */
+  .S{color:#7aa2ff;font-weight:600}
+  .V{color:#ff9d7a;font-weight:600}
+  .O{color:#8ce99a;font-weight:600}
+  .P{color:#f2a6ff;font-weight:600}
+  .Mn{color:#ffd47a}                 /* 方式 */
+  .Pl{color:#6ee7d8}                 /* 地点 */
+  .T{color:#ff8fb0}                  /* 时间 */
+  .N{color:#8ce99a;font-weight:700;text-decoration:underline;text-underline-offset:4px} /* 被修饰的名词 */
+  .A{color:#c8a6ff}                  /* 定语 */
+  .adv{color:var(--ink-faint);font-style:italic}
+
+  /* 成分小图例 */
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;margin:10px 0 2px;color:var(--ink-faint)}
+  .legend span b{font-weight:700}
+
+  /* 小结 */
+  .sum{
+    margin-top:16px;padding:12px 16px 12px 18px;border-radius:0 10px 10px 0;
+    font-size:.9rem;color:var(--ink-soft);
+  }
+  .s1 .sum{border-left:3px solid var(--s1);background:rgba(77,208,225,.06)}
+  .s2 .sum{border-left:3px solid var(--s2);background:rgba(102,187,106,.06)}
+  .s3 .sum{border-left:3px solid var(--s3);background:rgba(255,202,40,.06)}
+  .s4 .sum{border-left:3px solid var(--s4);background:rgba(255,138,101,.06)}
+  .s5 .sum{border-left:3px solid var(--s5);background:rgba(186,104,206,.06)}
+  .sum b{color:var(--ink)}
+
+  .callout{
+    margin:12px 0;padding:12px 16px;border-radius:10px;background:var(--panel-2);
+    border:1px dashed var(--line);font-size:.9rem;color:var(--ink-soft);
+  }
+  .callout b{color:var(--ink)}
+
+  /* ---------- 总览表 ---------- */
+  .overview{margin-top:24px}
+  h3.block{
+    font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em;
+    padding-left:14px;border-left:4px solid var(--ink);
+  }
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:18px}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+  th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--panel-2);color:var(--ink);font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;font-family:"SF Mono",Consolas,monospace}
+  tbody tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;text-align:center;width:44px}
+  tr[data-s="1"] td.num{color:var(--s1)} tr[data-s="2"] td.num{color:var(--s2)}
+  tr[data-s="3"] td.num{color:var(--s3)} tr[data-s="4"] td.num{color:var(--s4)}
+  tr[data-s="5"] td.num{color:var(--s5)}
+  td code{font-family:"SF Mono",Consolas,monospace;font-size:.82rem;color:var(--ink)}
+  td .mini{color:var(--zh);font-size:.78rem;display:block;margin-top:2px}
+
+  /* ---------- 判断流程 ---------- */
+  .flow{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+  .qnode{
+    display:flex;gap:14px;align-items:flex-start;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  }
+  .qnode .q{flex:0 0 26px;height:26px;border-radius:7px;background:var(--panel-2);
+    display:grid;place-items:center;font-family:"SF Mono",Consolas,monospace;
+    font-weight:800;font-size:.82rem;color:var(--ink-soft)}
+  .qnode .body{flex:1}
+  .qnode .ask{font-weight:650;margin-bottom:3px}
+  .qnode .yes{color:#8ce99a} .qnode .no{color:var(--ink-faint)}
+  .qnode .arm{font-size:.9rem;margin-top:2px;color:var(--ink-soft)}
+  .qnode .arm b{font-weight:700}
+
+  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:.82rem}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:520px){
+    .why .lab{flex-basis:74px;font-size:.66rem}
+    .step{padding-left:48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Feynman · 第一性原理 · 阶梯递进</div>
+    <h1>英语语序：重要先说</h1>
+    <p class="lead">中国人说英语最常见的"怪"，不是单词错，是<b>顺序错</b>。中文习惯先铺垫、后结论；英语正相反，<b>先亮底牌，再补细节</b>。这一篇只用这一个原理，把"状语放哪、定语放哪、几个修饰语怎么排"一次串起来。</p>
+  </header>
+
+  <div class="thesis">
+    <b>贯穿全篇的地基：</b>英语是个"势利眼"——<b>越重要的越往前站</b>。什么最重要？<span class="S">谁</span> + <span class="V">做了什么</span>（+ <span class="O">对什么</span>），也就是<a href="00-五大基本句型.html" style="color:inherit">五大基本句型</a>里的主干。时间、地点、方式、各种修饰，都是<b>配角</b>，一律往后排。后面五阶，全是这一句话的展开。
+  </div>
+
+  <div class="ladder">
+
+    <!-- ===== 第一阶 ===== -->
+    <section class="step s1">
+      <div class="dot">1</div>
+      <h2><span class="tag">是什么</span>主干先说：先亮底牌<span class="formula">S + V (+ O) + 其余</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">中文和英语讲同一件事，<b>信息的出场顺序</b>不一样。</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">中文把时间、地点、原因先铺好，最后才说"干了啥"；英语的听者第一秒就想知道<b>谁干了啥</b>，背景信息等会儿再给。</div></div>
+      </div>
+
+      <div class="legend">
+        <span><b class="S">S</b> 主语</span><span><b class="V">V</b> 谓语</span><span><b class="O">O</b> 宾语</span><span class="adv">灰斜体＝配角（状语）</span>
+      </div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">I</span> <span class="V">read</span> <span class="O">a book</span> <span class="adv">in the library yesterday</span>.</div><div class="zh">我<u>昨天在图书馆</u>看了一本书。（中文：配角在中间；英语：配角全挪到句尾）</div></div>
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">was</span> <span class="P">late</span> <span class="adv">because of the rain</span>.</div><div class="zh"><u>因为下雨</u>，她迟到了。（中文：原因先说；英语：结论先说）</div></div>
+        <div class="eg"><div class="en"><span class="S">It</span> <span class="V">is</span> <span class="P">hard</span> <span class="adv">to learn English</span>.</div><div class="zh"><u>学英语</u>很难。</div></div>
+      </div>
+
+      <div class="callout">第三句最能看出"势利眼"：真正的主语是 "to learn English"，但它太长，英语不愿意让听者等。于是先用一个空壳 <b>It</b> 占住主语位，把<b>判断"很难"</b>先说出来，长长的主语挪到最后。这叫<b>形式主语</b>——它存在的唯一理由，就是"重要先说"。</div>
+
+      <div class="sum">📍 <b>小结：</b>说英语前先问自己：<b>"谁 + 干了啥"是什么？</b>先把它说出口，剩下的全部往后挂。这是后面四阶的出发点。</div>
+    </section>
+
+    <!-- ===== 第二阶 ===== -->
+    <section class="step s2">
+      <div class="dot">2</div>
+      <h2><span class="tag">怎么用</span>状语往后挂：方式 → 地点 → 时间<span class="formula">主干 + 怎样 + 在哪 + 何时</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">第一阶说配角要往后排。可配角不止一个时，<b>它们之间谁先谁后</b>？</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">还是"势利眼"：<b>跟动作关系越近的越靠前</b>。"怎么做"就是动作本身的样子，最近；"在哪做"是动作的场景，次之；"什么时候"离动作最远，排最后。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="Mn">方式</b> 怎样</span><span><b class="Pl">地点</b> 在哪</span><span><b class="T">时间</b> 何时</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="V">sang</span> <span class="Mn">beautifully</span> <span class="Pl">at the party</span> <span class="T">last night</span>.</div><div class="zh">她<span class="T">昨晚</span><span class="Pl">在聚会上</span><span class="Mn">唱得很美</span>。（中文正好倒过来：时间 → 地点 → 方式）</div></div>
+        <div class="eg"><div class="en"><span class="S">We</span> <span class="V">walked</span> <span class="Mn">slowly</span> <span class="Pl">to school</span> <span class="T">this morning</span>.</div><div class="zh">我们<span class="T">今天早上</span><span class="Mn">慢慢地</span>走<span class="Pl">去学校</span>。</div></div>
+        <div class="eg"><div class="en"><span class="S">He</span> <span class="V">lives</span> <span class="Pl">in a small town</span> <span class="T">now</span>.</div><div class="zh">他<span class="T">现在</span><span class="Pl">住在一个小镇上</span>。</div></div>
+      </div>
+
+      <div class="callout"><b>一个偷懒的记法：</b>把中文里"时间、地点、方式"这一串<b>整个倒过来</b>，就是英语的顺序。<br>
+      另一个规律：同类的时间或地点叠在一起时，<b>先小后大</b>——<span class="T">at 8 o'clock on Monday</span>（8 点 → 周一），<span class="Pl">in a café in London</span>（咖啡馆 → 伦敦）。中文又是反的："周一 8 点""伦敦的一家咖啡馆"。</div>
+
+      <div class="sum">📍 <b>小结：</b>状语的<b>默认位置是句尾</b>，排队规则是<b>离动词越近越先说</b>：方式 → 地点 → 时间，同类先小后大。</div>
+    </section>
+
+    <!-- ===== 第三阶 ===== -->
+    <section class="step s3">
+      <div class="dot">3</div>
+      <h2><span class="tag">进一阶</span>状语提前：抢镜，或贴着动词<span class="formula">时间, 主干 ／ S + always + V</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">可你明明见过 <i>Yesterday, I…</i> 和 <i>She always…</i>——状语<b>不在句尾</b>。这跟第二阶矛盾吗？</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">不矛盾，还是"势利眼"。状语一旦<b>变重要了</b>——要强调、要转场、要改变整句的意思——它就有资格往前站。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="T">时间</b></span><span><b class="Pl">地点</b></span><span><b class="Mn">频率/程度</b></span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en"><span class="T">Last summer</span>, <span class="S">we</span> <span class="V">went</span> <span class="Pl">to the sea</span>.</div><div class="zh">去年夏天，我们去了海边。（讲故事时先交代时间当"场景切换"）</div></div>
+        <div class="eg"><div class="en"><span class="S">She</span> <span class="Mn">always</span> <span class="V">gets up</span> <span class="T">early</span>.</div><div class="zh">她总是起得很早。（频率词贴在<b>实义动词前</b>）</div></div>
+        <div class="eg"><div class="en"><span class="S">He</span> <span class="V">is</span> <span class="Mn">always</span> <span class="P">late</span>.</div><div class="zh">他总是迟到。（遇到 be 动词，频率词放在 <b>be 后</b>）</div></div>
+        <div class="eg"><div class="en"><span class="Mn">Only</span> <span class="S">Tom</span> <span class="V">saw</span> <span class="O">her</span>. ／ <span class="S">Tom</span> <span class="Mn">only</span> <span class="V">saw</span> <span class="O">her</span>.</div><div class="zh">只有汤姆看见了她。／汤姆只是看见了她（没做别的）。——位置一变，意思就变</div></div>
+      </div>
+
+      <div class="callout"><b>三种提前，三个理由：</b><br>
+      · <b>抢镜</b>：时间、地点放句首加逗号，是为了<b>换场景、做强调</b>（Last summer, … / In China, …）。<br>
+      · <b>贴动词</b>：always / often / usually / never / sometimes 这些<b>频率词</b>，是给动作打分的，所以紧贴动词——实义动词<b>前</b>，be 动词和助动词<b>后</b>（I have never seen it）。<br>
+      · <b>管范围</b>：only / just / even 放在谁前面，就修饰谁。</div>
+
+      <div class="sum">📍 <b>小结：</b>句尾是状语的"默认座位"；只有当它<b>变重要</b>（强调、转场）或者<b>专门修饰动作</b>（频率）时，才往前挪。例外也在"势利眼"的逻辑之内。</div>
+    </section>
+
+    <!-- ===== 第四阶 ===== -->
+    <section class="step s4">
+      <div class="dot">4</div>
+      <h2><span class="tag">特殊情况</span>定语：短的在前，长的在后<span class="formula">形容词 + N ／ N + 一长串</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">前三阶在管整个句子。缩小到一个<b>名词</b>身上，修饰它的东西（定语）放哪？</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">中文不管定语多长，都堆在名词<b>前面</b>（"那个<u>坐在窗边穿红衣服的</u>女孩"）。英语受不了：<b>名词才是主角，得先出场</b>。只有单个词的短定语可以站前面，一长就得挪到后面。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="N">N</b> 被修饰的名词</span><span><b class="A">定语</b></span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">a <span class="A">red</span> <span class="N">car</span>　／　the <span class="A">old</span> <span class="N">man</span></div><div class="zh">一辆红色的车／那个老人（单个词：放前面，和中文一样）</div></div>
+        <div class="eg"><div class="en">the <span class="N">man</span> <span class="A">in the car</span></div><div class="zh"><u>车里的</u>那个男人（介词短语：放后面）</div></div>
+        <div class="eg"><div class="en">a <span class="N">girl</span> <span class="A">who can speak French</span></div><div class="zh">一个<u>会说法语的</u>女孩（从句：放后面 → 这就是<a href="从句/01-定语从句.html" style="color:inherit">定语从句</a>）</div></div>
+        <div class="eg"><div class="en">some<span class="N">thing</span> <span class="A">to eat</span>　／　some<span class="N">thing</span> <span class="A">important</span></div><div class="zh"><u>吃的</u>东西／<u>重要的</u>事（-thing 词比较特殊，连单个形容词也放后面）</div></div>
+      </div>
+
+      <div class="callout"><b>中译英的标准动作：</b>看到中文"……的 + 名词"，先<b>把名词拎出来说</b>，再回头把"……的"挂到后面。<br>
+      那个<u>坐在窗边的</u>女孩 → the <span class="N">girl</span> <span class="A">sitting by the window</span><br>
+      <b>读英语时反过来：</b>看到名词后面紧跟着 in / on / who / which / that / to do / doing，先想到"这是在修饰前面那个名词"，别把它当成句子的下一步。书虫里读不顺的长句，一大半卡在这儿。</div>
+
+      <div class="sum">📍 <b>小结：</b>定语也讲"势利眼"：<b>名词先出场</b>。单词可以站前，<b>短语和从句一律站后</b>。</div>
+    </section>
+
+    <!-- ===== 第五阶 ===== -->
+    <section class="step s5">
+      <div class="dot">5</div>
+      <h2><span class="tag">高级技巧</span>前面挤了好几个形容词：谁贴着名词？<span class="formula">看法 → 大小 → 新旧 → 颜色 → 产地 → 材料 + N</span></h2>
+
+      <div class="why">
+        <div class="row"><div class="lab">要解决</div><div class="val">第四阶说单词定语放名词前。可要是<b>好几个</b>单词定语一起上呢？</div></div>
+        <div class="row"><div class="lab">为什么</div><div class="val">这回"势利眼"换了个方向：<b>越是这个东西本身固有的属性，越贴近名词</b>。"好看"是你的看法，随时会变，站最外面；"木头做的"是它的本质，改不了，贴着名词站。</div></div>
+      </div>
+
+      <div class="legend"><span><b class="A">定语</b>（越往右越"固有"）</span><span><b class="N">N</b> 名词</span></div>
+
+      <div class="egs">
+        <div class="eg"><div class="en">a <span class="A">nice</span> <span class="A">big</span> <span class="A">old</span> <span class="A">brown</span> <span class="A">wooden</span> <span class="N">table</span></div><div class="zh">一张漂亮的大旧棕色木桌（看法 → 大小 → 新旧 → 颜色 → 材料）</div></div>
+        <div class="eg"><div class="en">a <span class="A">beautiful</span> <span class="A">little</span> <span class="A">Chinese</span> <span class="N">cup</span></div><div class="zh">一个漂亮的中国小杯子（看法 → 大小 → 产地）</div></div>
+        <div class="eg"><div class="en">a <span class="A">big</span> <span class="A">black</span> <span class="N">dog</span>　✓　／　<span class="bad">a black big dog</span>　✗</div><div class="zh">一条大黑狗——母语者听到后一个会觉得"别扭"，虽然说不出为什么</div></div>
+      </div>
+
+      <div class="callout">实际开口时很少堆超过<b>两三个</b>，不用背全表。记住一条就够用：<b>主观的在外，客观的在里</b>——nice / beautiful 这类"看法词"永远排第一，材料、用途排最后贴着名词。</div>
+
+      <div class="sum">📍 <b>小结：</b>前置定语的排队，是"势利眼"的另一种面貌：<b>跟名词本质关系越近，站得越近</b>。和第二阶"离动词越近越先说"是同一个道理。</div>
+    </section>
+
+  </div><!-- /ladder -->
+
+  <!-- ================= 总览表 ================= -->
+  <section class="overview">
+    <h3 class="block">一张总览表：中文 vs 英语</h3>
+    <p class="lead" style="margin-top:10px">每一行都是同一个原理——<b>重要的先说、关系近的站近</b>——在不同位置上的体现。</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th class="num">#</th><th>管什么</th><th>中文顺序</th><th>英语顺序</th><th>例子</th></tr>
+        </thead>
+        <tbody>
+          <tr data-s="1"><td class="num">1</td><td>整句</td><td>背景 → 结论</td><td>主干 → 背景</td><td><code>I read a book in the library.</code><span class="mini">我在图书馆看书。</span></td></tr>
+          <tr data-s="2"><td class="num">2</td><td>多个状语</td><td>时间 → 地点 → 方式</td><td>方式 → 地点 → 时间</td><td><code>She sang well there last night.</code><span class="mini">她昨晚在那儿唱得很好。</span></td></tr>
+          <tr data-s="3"><td class="num">3</td><td>状语提前</td><td>—</td><td>强调/转场放句首；频率词贴动词</td><td><code>She always gets up early.</code><span class="mini">她总是起得早。</span></td></tr>
+          <tr data-s="4"><td class="num">4</td><td>定语</td><td>一律放名词前</td><td>单词在前，短语/从句在后</td><td><code>the girl in red</code><span class="mini">穿红衣服的女孩</span></td></tr>
+          <tr data-s="5"><td class="num">5</td><td>多个形容词</td><td>比较随意</td><td>看法 → 大小 → 新旧 → 颜色 → 产地 → 材料</td><td><code>a big black dog</code><span class="mini">一条大黑狗</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 判断流程 ================= -->
+  <section class="overview">
+    <h3 class="block">应用：一句中文，四步变英语</h3>
+    <p class="lead" style="margin-top:10px">例：<b>"我妹妹上周六在公园里开心地放了一只红色的大风筝。"</b></p>
+
+    <div class="flow">
+      <div class="qnode">
+        <div class="q">Q1</div>
+        <div class="body">
+          <div class="ask">主干是什么？谁 + 干了啥 + 对什么？</div>
+          <div class="arm">→ <span class="S">My sister</span> <span class="V">flew</span> <span class="O">a kite</span>. <b>先说出来。</b></div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q2</div>
+        <div class="body">
+          <div class="ask">名词前有几个单词定语？按"看法→大小→…→颜色"排</div>
+          <div class="arm">→ a <span class="A">big</span> <span class="A">red</span> <span class="N">kite</span>（大小在颜色前）</div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q3</div>
+        <div class="body">
+          <div class="ask">剩下的状语，按"方式 → 地点 → 时间"挂到句尾</div>
+          <div class="arm">→ <span class="Mn">happily</span> <span class="Pl">in the park</span> <span class="T">last Saturday</span></div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q4</div>
+        <div class="body">
+          <div class="ask">有没有哪个状语想强调、要挪到句首？</div>
+          <div class="arm"><span class="no">没有</span> → 保持原样｜<span class="yes">想强调时间</span> → <span class="T">Last Saturday</span>, my sister …</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="egs" style="margin-top:14px">
+      <div class="eg"><div class="en"><span class="S">My sister</span> <span class="V">flew</span> <span class="O">a <span class="A">big</span> <span class="A">red</span> kite</span> <span class="Mn">happily</span> <span class="Pl">in the park</span> <span class="T">last Saturday</span>.</div><div class="zh">我妹妹上周六在公园里开心地放了一只红色的大风筝。</div></div>
+    </div>
+
+    <div class="callout" style="margin-top:18px">🧭 <b>一条主线记全篇：</b>中文是"先铺垫、后亮底牌"，英语是"<b>先亮底牌、再补细节</b>"。所有位置规则只是在反复回答一个问题：<b>这个成分跟主角（动词/名词）关系有多近？</b>越近越靠前，越远越靠后。</div>
+  </section>
+
+  <footer>
+    <b>回看地基：</b>语序不是一堆"放这儿、放那儿"的规定，是一个"势利眼"在不同位置上的判断：句子里，<span class="S">主干</span>最重要，先说；状语里，<span class="Mn">方式</span>离动作最近，先说；定语里，名词先出场，<span class="A">长修饰</span>后挂。参考：杨海英《极简英语思维》上篇"势利眼"。
+  </footer>
+
+</div>
+</body>
+</html>
