@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>情态动词</title>
+<style>
+:root{
+  --ink:#141821;
+  --panel:#1a202a;
+  --rule:#2b3543;
+  --text:#d6dbe3;
+  --dim:#8b95a5;
+  --faint:#5f6a7a;
+  --blue:#6fa8e6;
+  --blue-bg:rgba(111,168,230,.09);
+  --orange:#e5a15e;
+  --orange-bg:rgba(229,161,94,.09);
+  --paper:#e8e3d9;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.01em;
+}
+
+/* 版面:正文 + 右侧目录 */
+.page{
+  display:grid;grid-template-columns:minmax(0,760px) 212px;gap:60px;
+  max-width:1032px;margin:0 auto;padding:0 28px;
+}
+.wrap{min-width:0;padding-bottom:120px}
+
+/* 头部 */
+header{padding:88px 0 0}
+h1{font-size:34px;line-height:1.3;margin:0 0 20px;font-weight:600;letter-spacing:.06em}
+.thesis{font-size:17px;color:var(--dim);margin:0;line-height:1.9}
+.thesis b{color:var(--text);font-weight:600}
+.legend{margin-top:24px;font-size:13.5px;color:var(--faint)}
+.legend span{margin-right:20px}
+
+/* 四问 */
+.asks{margin:28px 0 0;padding:0}
+.asks li{
+  list-style:none;display:grid;grid-template-columns:1fr auto;gap:16px;
+  padding:10px 0;font-size:15px;align-items:baseline;
+  border-top:1px solid rgba(43,53,67,.55);
+}
+.asks li:first-child{border-top:none}
+.asks .where{font-size:13px;color:var(--faint);white-space:nowrap}
+
+/* 路线图 */
+.map{
+  margin:36px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:6px 0;
+}
+.map-row{
+  display:grid;grid-template-columns:76px 1fr;gap:14px;
+  padding:11px 2px;font-size:14.5px;align-items:baseline;
+}
+.map-row + .map-row{border-top:1px solid rgba(43,53,67,.55)}
+.map-row .n{font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.1em}
+.map-row .t{color:var(--text)}
+.map-row .t em{font-style:normal;color:var(--dim)}
+a.map-row{text-decoration:none}
+a.map-row:hover .t{color:#fff}
+
+/* 阶梯 */
+.stage{margin-top:78px;scroll-margin-top:28px}
+.stage-no{display:block;font-family:var(--serif);font-size:14px;color:var(--faint);margin-bottom:10px;letter-spacing:.12em}
+.stage > h2{font-size:22px;font-weight:600;margin:0;letter-spacing:.04em;color:#eef1f5}
+
+/* 承上 */
+.bridge{margin:20px 0 0;padding-left:16px;border-left:2px solid var(--rule)}
+.bridge .before{margin:0;font-size:14.5px;color:var(--faint);line-height:1.8}
+.bridge .after{margin:4px 0 0;font-size:15px;color:var(--text);line-height:1.8}
+
+h3{font-size:16.5px;font-weight:600;margin:38px 0 12px;color:#e3e8ef;letter-spacing:.03em;scroll-margin-top:28px}
+h3.minor{font-size:14.5px;font-weight:600;margin:28px 0 10px;color:var(--dim);letter-spacing:.02em;padding-left:12px;border-left:2px solid var(--rule)}
+p{margin:14px 0}
+b{color:#f0f3f7;font-weight:600}
+
+/* 例句 */
+.ex{margin:18px 0;padding:2px 0 2px 18px;border-left:1px solid var(--rule)}
+.en{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--paper);margin:0}
+.en u{text-decoration:none;border-bottom:1px solid rgba(232,227,217,.45);padding-bottom:1px}
+.zh{margin:3px 0 0;font-size:14.5px;color:var(--dim);line-height:1.75}
+.ex + .ex{margin-top:14px}
+.note{font-size:13.5px;color:var(--faint);margin:5px 0 0}
+
+/* 还原演示 */
+.restore{
+  margin:20px 0;background:var(--panel);border:1px solid var(--rule);
+  border-radius:3px;padding:16px 20px;
+}
+.restore + .restore{margin-top:12px}
+.restore .en{font-size:16.5px}
+.restore .arrow{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.8}
+.restore .arrow b{color:var(--blue);font-weight:600}
+.restore .arrow .sep{color:var(--faint);margin:0 8px}
+.restore .zh{margin-top:10px}
+
+/* 推导链 */
+.chain{margin:26px 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:8px 0}
+.step{display:grid;grid-template-columns:26px 1fr;gap:16px;padding:16px 24px}
+.step + .step{border-top:1px solid rgba(43,53,67,.6)}
+.step-n{font-family:var(--serif);font-size:14px;color:var(--faint);padding-top:3px}
+.step:last-child .step-n{color:var(--blue)}
+.step .en{font-size:16.5px}
+.step:last-child .en{color:#fff}
+.step-why{font-size:13.5px;color:var(--dim);margin:6px 0 0}
+.hl{color:var(--blue)}
+.dimtext{color:var(--dim)}
+
+/* callout */
+.box{margin:26px 0;padding:16px 20px;border-radius:3px;font-size:14.5px;line-height:1.8}
+.box p{margin:8px 0}
+.box p:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+.box .en{font-size:16px}
+.box .zh{font-size:14px}
+.box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
+.derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
+.rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
+.tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
+.derive .tag{color:var(--blue)}
+.rote .tag{color:var(--orange)}
+
+/* 小结 */
+.sum{margin:36px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:14.5px;color:var(--dim)}
+.sum b{color:var(--text)}
+
+/* 表格 */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl td{overflow-wrap:anywhere}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px;border-bottom-color:#3a4655}
+.tbl td:first-child{font-family:var(--serif);color:var(--paper)}
+.tbl td:first-child,.tbl th:first-child,.tbl.k2 td:nth-child(2),.tbl.k2 th:nth-child(2){word-break:keep-all;overflow-wrap:break-word}
+.tbl tr:last-child td{border-bottom:none}
+.nw{white-space:nowrap}
+
+/* 对比 */
+.pair{margin:22px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.pair > div{padding:16px 20px}
+.pair > div + div{border-top:1px solid var(--rule);background:var(--panel)}
+.pair .verdict{font-size:13.5px;color:var(--blue);margin:7px 0 0}
+.pair > div + div .verdict{color:var(--orange)}
+
+/* 流程 */
+.flow{margin:24px 0;padding:0;counter-reset:f}
+.flow li{
+  list-style:none;position:relative;padding:0 0 22px 34px;
+  border-left:1px solid var(--rule);margin-left:8px;
+}
+.flow li:last-child{border-left-color:transparent;padding-bottom:0}
+.flow li::before{
+  counter-increment:f;content:counter(f);
+  position:absolute;left:-9px;top:2px;width:18px;height:18px;
+  background:var(--ink);border:1px solid var(--rule);border-radius:50%;
+  font-size:11px;line-height:16px;text-align:center;color:var(--dim);font-family:var(--serif);
+}
+.flow .q{font-weight:600;color:#eef1f5;font-size:15px;margin:0}
+.flow .a{font-size:14.5px;color:var(--dim);margin:5px 0 0}
+
+footer{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
+
+/* ── 右侧目录 ── */
+.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:88px 0 60px;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc-h{font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin:0 0 14px;padding-left:13px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc .item{margin:0}
+.toc a{
+  display:block;text-decoration:none;color:var(--dim);
+  font-size:13.5px;line-height:1.55;padding:6px 0 6px 13px;
+  border-left:1px solid var(--rule);transition:color .15s,border-color .15s;
+}
+.toc a:hover{color:var(--text)}
+.toc .item > a .num{font-family:var(--serif);color:var(--faint);margin-right:7px;font-size:12.5px}
+.toc .item.active > a{color:#eef1f5;border-left-color:var(--blue)}
+.toc .item.active > a .num{color:var(--blue)}
+.toc .subs{display:none;padding:2px 0 6px}
+.toc .item.active .subs{display:block}
+.toc .subs a{font-size:12.5px;color:var(--faint);padding:4px 0 4px 26px;line-height:1.5}
+.toc .subs a:hover{color:var(--dim)}
+.toc .subs a.on{color:var(--text);border-left-color:#3f4b5c}
+
+/* 窄屏:目录收成按钮 */
+.toc-btn{
+  display:none;position:fixed;right:18px;bottom:18px;z-index:30;
+  width:46px;height:46px;border-radius:50%;cursor:pointer;
+  background:var(--panel);border:1px solid #3a4655;color:var(--text);
+  font-size:13px;font-family:var(--sans);line-height:1;
+}
+.scrim{display:none;position:fixed;inset:0;background:rgba(10,13,18,.6);z-index:20}
+body.nav-open .scrim{display:block}
+
+@media (max-width:1080px){
+  .page{grid-template-columns:minmax(0,1fr);max-width:816px;gap:0}
+  .toc-btn{display:block}
+  .toc{
+    position:fixed;top:0;right:0;bottom:0;width:250px;z-index:25;
+    background:#171d26;border-left:1px solid var(--rule);
+    padding:28px 18px 40px;max-height:none;
+    transform:translateX(100%);transition:transform .2s ease;
+  }
+  body.nav-open .toc{transform:translateX(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .toc{transition:none}
+}
+
+@media (max-width:600px){
+  .page{padding:0 20px}
+  .wrap{padding-bottom:80px}
+  header{padding-top:56px}
+  h1{font-size:27px}
+  .step{grid-template-columns:20px 1fr;gap:12px;padding:14px 16px}
+  .map-row{grid-template-columns:56px 1fr;gap:10px}
+  .en{font-size:16px}
+  .stage{margin-top:58px}
+  .asks li{grid-template-columns:1fr}
+  .asks .where{white-space:normal}
+  .tbl{font-size:13.5px}
+  .tbl th,.tbl td{padding:9px 8px}
+}
+
+/* 错例删除线 */
+s{color:var(--orange);text-decoration-thickness:1px}
+/* 独立公式行(.box 内的规则优先级更高,不受影响) */
+.formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:18px 0;line-height:1.7}
+/* 正文里的交叉引用 */
+.xref{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(111,168,230,.4)}
+.xref:hover{border-bottom-color:var(--blue)}
+
+/* 速查表:首列(逻辑名)不拆行 */
+.quick td:first-child,.quick th:first-child{white-space:nowrap}
+
+/* 自检清单(在 .asks 基础上加序号) */
+.checks{counter-reset:c}
+.checks li{grid-template-columns:26px 1fr auto}
+.checks li::before{
+  counter-increment:c;content:counter(c);
+  font-family:var(--serif);font-size:13px;color:var(--faint);padding-top:2px;
+}
+@media (max-width:600px){ .checks li{grid-template-columns:22px 1fr} }
+
+/* 课外补充标记 */
+.extra{display:inline-block;font-size:11.5px;font-weight:600;line-height:1.5;color:var(--dim);border:1px solid #3a4655;border-radius:3px;padding:0 6px;margin-left:8px;vertical-align:2px;letter-spacing:.06em;font-family:var(--sans)}
+.legend .extra{margin-left:0;margin-right:4px;vertical-align:1px}
+h3.minor .extra{vertical-align:1px}
+</style>
+</head>
+<body>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="page">
+
+<div class="wrap">
+<header>
+  <h1>情态动词</h1>
+  <p class="thesis">整章只解决一个问题：<b>说话人怎么看这件事</b>。同一个动作，加上 must、can、may、should，就带上了"必须""能""可以""应该"的态度；同一个词换一种用法，又能表示"我有几成把握"。情态动词不是一堆零散的词义，而是<b>两把刻度尺</b>：一把量态度，一把量把握。</p>
+
+  <ol class="asks">
+    <li><span>一、情态动词长什么样，两个功能是什么</span><span class="where">阶段一</span></li>
+    <li><span>二、四组核心词：must / have to、can / be able to、may、should</span><span class="where">阶段二、三、四</span></li>
+    <li><span>三、其余的情态：will / would、shall、need / dare、used to、would rather</span><span class="where">阶段五</span></li>
+    <li><span>四、推测：把握有几成，现在、进行、过去怎么说</span><span class="where">阶段六、七</span></li>
+    <li><span>五、情态 + have done：推测过去，还是"本该"</span><span class="where">阶段七</span></li>
+    <li><span>六、和语态、时态叠在一起，哪些错误最常见</span><span class="where">阶段八、九</span></li>
+  </ol>
+
+  <p class="legend"><span>📖 蓝色 = 能推导出来的判断机制</span><span>🧷 橙色 = 直接记用法 / 语法约定</span><span><span class="extra">补充</span> = 课上没展开、补上的核心内容</span></p>
+
+  <div class="map">
+    <a class="map-row" href="#s1"><span class="n">一</span><span class="t">情态动词是什么 <em>—— 后接原形，两个功能，两把刻度尺</em></span></a>
+    <a class="map-row" href="#s2"><span class="n">二</span><span class="t">must 与 have to <em>—— 两种否定，时态与主客观</em></span></a>
+    <a class="map-row" href="#s3"><span class="n">三</span><span class="t">can 与 be able to <em>—— 时态，was able to 成功做到</em></span></a>
+    <a class="map-row" href="#s4"><span class="n">四</span><span class="t">may、should 与建议的强弱 <em>—— 委婉程度，should have done，had better</em></span></a>
+    <a class="map-row" href="#s5"><span class="n">五</span><span class="t">其余的情态 <em>—— will / would、shall、need / dare、used to、would rather</em></span></a>
+    <a class="map-row" href="#s6"><span class="n">六</span><span class="t">推测：把握有几成 <em>—— 肯定、否定、疑问各用什么词</em></span></a>
+    <a class="map-row" href="#s7"><span class="n">七</span><span class="t">情态 + have done <em>—— 推测过去，还是"本该"</em></span></a>
+    <a class="map-row" href="#s8"><span class="n">八</span><span class="t">三态叠加 <em>—— 情态 × 时态 × 语态</em></span></a>
+    <a class="map-row" href="#s9"><span class="n">九</span><span class="t">边界：改错清单 <em>—— 最常见的错误</em></span></a>
+    <a class="map-row" href="#s10"><span class="n">十</span><span class="t">本质：说话人的立场 <em>—— 两把刻度尺</em></span></a>
+    <a class="map-row" href="#s11"><span class="n">总</span><span class="t">使用总览与自检 <em>—— 三张速查表、五步流程、33 题</em></span></a>
+  </div>
+</header>
+
+<!-- ══ 阶段一 ══ -->
+<section class="stage" id="s1">
+  <span class="stage-no">阶段一</span>
+  <h2>情态动词是什么</h2>
+
+  <div class="bridge">
+    <p class="after">谓语动词要过三关：语态、时态、情态。前两关讲的是事情本身 —— 谁对谁做、什么时候做；情态讲的是说话人：他觉得这件事必须做、能做、可以做、应该做，或者他对这件事有几成把握。</p>
+  </div>
+
+  <h3 id="s1a">长什么样：情态动词 + 动词原形</h3>
+
+  <p>常见的情态动词：can / could、may / might、must、shall / should、will / would、ought to。另外还有几个"半情态"：need、dare、used to、had better，以及 have to、be able to 这样的替身短语。</p>
+
+  <table class="tbl">
+    <tr><th>特点</th><th>✓</th><th>✗</th></tr>
+    <tr><td>后面只接<wbr>动词原形</td><td>He can swim.</td><td><s>He can swims.</s>　<s>He can to swim.</s></td></tr>
+    <tr><td>没有人称<wbr>和数的变化</td><td>She must go.</td><td><s>She musts go.</s></td></tr>
+    <tr><td>否定、疑问<wbr>直接用它，<wbr>不借 do</td><td>He can't swim. ／ Can he swim?</td><td><s>Does he can swim?</s></td></tr>
+    <tr><td>两个情态动词<wbr>不能连用</td><td>He will be able to swim.</td><td><s>He will can swim.</s></td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 它是谓语里"打头"的那个助动词</span>
+    <p>情态动词和 do / does / did、am / is / are、have / has 一样，是站在谓语最前面的助动词：否定和疑问都由它负责，后面的动词只能用原形。一个谓语只能有一个打头的助动词，所以 will 和 can 不能挤在一起 —— 要用替身 will be able to（阶段三）。</p>
+  </div>
+
+  <h3 id="s1b">两个功能：态度与把握</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">The best and most beautiful things in the world <b>cannot</b> be seen or even touched — they <b>must</b> be felt with the heart.</p>
+      <p class="verdict">基本义：表达态度。cannot 是"不能"（没有这个能力），must 是"必须"。</p>
+    </div>
+    <div>
+      <p class="en">It <b>can't</b> be true!</p>
+      <p class="verdict">推测义：《乱世佳人》里，女主角听说北方军队要打过来，连说这一句。can't 不是"没能力"，而是"不可能是真的"。</p>
+    </div>
+  </div>
+  <p class="note">上面那句名言常被认为出自海伦·凯勒。她 1891 年的信里原话是 … cannot be seen nor even touched, but just felt in the heart，流传版本改成了 must be felt with the heart —— 多出一个情态动词，语气从"描述"变成了"要求"。</p>
+
+  <table class="tbl">
+    <tr><th>情态动词</th><th>基本义：态度</th><th>推测义：把握</th></tr>
+    <tr><td>must</td><td>You must wear a seat belt.（必须）</td><td>He must be tired.（一定是）</td></tr>
+    <tr><td>can</td><td>She can speak French.（能）</td><td>It can't be true.（不可能）</td></tr>
+    <tr><td>may</td><td>You may leave now.（可以）</td><td>He may be at home.（也许）</td></tr>
+    <tr><td>could</td><td>Could you help me?（委婉请求）</td><td>It could rain later.（可能）</td></tr>
+    <tr><td>should <span class="extra">补充</span></td><td>You should see a doctor.（应该）</td><td>They should be there by now.（按理应该）</td></tr>
+    <tr><td>will <span class="extra">补充</span></td><td>I'll help you.（意愿）</td><td>That'll be the postman.（多半是）</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 读到情态动词，先问：它在表态度，还是在推测？</span>
+    <p>课上特别强调：<b>每一个情态动词都有这两个功能</b>。同一个 must，You must go 是"必须"，He must be tired 是"一定"。两套用法要分开记，不然会把"不可能"读成"不能"，把"可能"读成"可以"。</p>
+    <p>本章阶段二到五讲基本义，阶段六、七讲推测。</p>
+  </div>
+
+  <h3 id="s1c">两把刻度尺</h3>
+
+  <table class="tbl">
+    <tr><th>刻度</th><th>从强到弱</th></tr>
+    <tr><td>义务与建议</td><td>must / have to（必须）→ had better（最好，否则有后果）→ should / ought to（应该）→ could / might（不妨试试）</td></tr>
+    <tr><td>许可与请求</td><td>can（直白）→ could / may（委婉）→ might（最客气）</td></tr>
+    <tr><td>能力</td><td>can / be able to（能、会）；could / was able to（过去）</td></tr>
+    <tr><td>把握（肯定）</td><td>事实 is → must / will（一定、多半）→ should（按理应该）→ may（也许）→ might / could（可能）</td></tr>
+    <tr><td>把握（否定）</td><td>can't / couldn't（不可能）→ may not / might not（可能不）</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 不要一个词一个词地背意思</span>
+    <p>每个情态动词都是某把尺子上的一格。知道了它在哪把尺子上、在第几格，意思和语气就都出来了：You must go 比 You should go 强；He may be ill 比 He must be ill 没把握。</p>
+  </div>
+
+  <h3 id="s1d">时态受限：替身与"过去式"</h3>
+
+  <p>情态动词只有原形，最多有一个"过去式形式"（could、might、would、should），后面又只能接原形 —— 时态处处受限。英语有两个办法：</p>
+
+  <table class="tbl">
+    <tr><th>办法</th><th>怎么做</th><th>例</th></tr>
+    <tr><td>换替身短语</td><td>must → have to；can → be able to；should → ought to；may → be allowed to</td><td>I had to leave early. ／ I'll be able to help you.</td></tr>
+    <tr><td>借完成式</td><td>情态动词 + have done，把时间推到过去</td><td>He must have left. ／ You should have told me.</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 "过去式"不一定表示过去<span class="extra">补充</span></span>
+    <p class="formula">Could you help me? ／ Would you like some tea? ／ It might rain.</p>
+    <p>这三句说的都是现在或将来：could、would 表示客气，might 表示把握小。could、might、would 真正表示过去，只在几种情况里：过去的能力（I could swim at five）、过去的习惯（would，阶段五）、间接引语（He said he would come）。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>情态动词 + 动词原形；没有人称变化，自己负责否定和疑问，两个不能连用。每个情态动词都有两个功能：基本义表态度，推测义表把握。它们分布在两把刻度尺上。时态受限时，要么换替身，要么用 + have done；could、might、would 常表客气或推测，不一定表示过去。</p>
+</section>
+
+<!-- ══ 阶段二 ══ -->
+<section class="stage" id="s2">
+  <span class="stage-no">阶段二</span>
+  <h2>must 与 have to</h2>
+
+  <div class="bridge">
+    <p class="before">从态度尺最强的一格开始。</p>
+    <p class="after">must 表示"必须"。它有两个难点：否定有两种；时态太少，要靠 have to 来补。</p>
+  </div>
+
+  <h3 id="s2a">must 的基本义：必须</h3>
+
+  <div class="ex">
+    <p class="en">All passengers <b>must</b> wear seat belts.</p>
+    <p class="zh">所有乘客必须系好安全带。（责任、义务）</p>
+  </div>
+  <div class="ex">
+    <p class="en">You <b>must</b> see this film — it's brilliant!</p>
+    <p class="zh">这部电影你一定要看，太棒了！（强烈推荐）<span class="extra">补充</span></p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">You <b>must</b> wear a mask in public places.</p>
+      <p class="verdict">must：强，没得选。前几年公共场合"必须"戴口罩。</p>
+    </div>
+    <div>
+      <p class="en">You <b>should</b> wear a mask during flu season.</p>
+      <p class="verdict">should：弱，可以不做。现在流感季"应该"戴，戴不戴自己决定。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 Must I …? 怎么回答<span class="extra">补充</span></span>
+    <p class="formula">— Must I finish it today?<br>— Yes, you must. ／ No, you needn't. ／ No, you don't have to.</p>
+    <p>否定回答不能说 No, you mustn't —— 那是"不准你今天做完"。</p>
+  </div>
+
+  <h3 id="s2b">must 的两种否定</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">You <b>mustn't</b> say things like that.</p>
+      <p class="verdict">形式否定 mustn't ＝ 禁止：你不准那样说话。</p>
+    </div>
+    <div>
+      <p class="en">You <b>needn't</b> leave. ＝ You <b>don't need to</b> leave. ＝ You <b>don't have to</b> leave.</p>
+      <p class="verdict">意义否定 ＝ 不必：你没必要走。</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">If you tell the truth, you <b>don't have to</b> remember anything.</p>
+    <p class="zh">说真话的人，什么都不必记。（马克·吐温，1894 年笔记）</p>
+    <p class="note">反过来说：撒谎的人得记住每一个编出来的细节，不然就会被拆穿。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 "必须"的反面是"不必"，不是"禁止"</span>
+    <p>must 加上 not，意思是"必须不做" ＝ 禁止。想说"不必做"，要借 needn't、don't need to、don't have to。can 只有一种否定 can't，must 却有两种。</p>
+    <p class="note">need 是半情态动词：needn't 是把它当情态动词用，自己就能否定；don't need to 是当实义动词用，要借 don't。意思一样（阶段五）。</p>
+  </div>
+
+  <h3 id="s2c">must 与 have to：时态与主客观</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 区别一：时态（最主要）</span>
+    <p><b>must：</b>只能表示现在和将来 —— I must finish my homework now. ／ We must study hard.（现在、将来都要）</p>
+    <p><b>have to：</b>什么时态都行 —— has / have to（现在）、had to（过去）、will have to（将来）。</p>
+    <p>"昨晚我必须做作业，所以没去聚会"，must 表达不了（没有 musted，must 后面也不能接 did），只能用 had to。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 区别二：主观还是客观</span>
+    <p>must 偏主观：说话人自己认为必须。have to 主观、客观都能用：外部条件逼着你做的事，用 have to。</p>
+    <div class="ex">
+      <p class="en">My eyes aren't very good, so I <b>have to</b> wear glasses.</p>
+      <p class="zh">我视力不好，必须戴眼镜。（视力差 → 客观决定）</p>
+    </div>
+    <div class="ex">
+      <p class="en">The doctor says I <b>have to</b> take this medicine three times a day.　In South Korea, men <b>have to</b> do military service.</p>
+      <p class="zh">医生说这药我一天得吃三次。／ 在韩国，男性必须服兵役。（医嘱、法律 → 客观）</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 have to 不等于"不得不"</span>
+    <p>初高中常见的说法是"must 必须，have to 不得不"。不准确：放进过去、将来里，had to、will have to 就是普通的"必须"。很多时候两个词可以互换；只有客观条件决定的事，才一定用 have to。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>填 must 还是 have to</th><th>答案</th><th>为什么</th></tr>
+    <tr><td>I ___ take a taxi yesterday because the buses were on strike.</td><td><span class="nw">had to</span></td><td>过去的"必须"，只有 had to 能表达</td></tr>
+    <tr><td>We ___ get up early tomorrow — the train leaves at six.</td><td>must ／ <span class="nw">will have to</span></td><td>有 tomorrow，两个都行；没有将来时间，只能用 will have to</td></tr>
+    <tr><td>My eyes aren't very good. I ___ wear glasses.</td><td><span class="nw">have to</span></td><td>前一句交代了客观原因</td></tr>
+  </table>
+
+  <h3 id="s2d">口语里的 must 与 have to<span class="extra">补充</span></h3>
+
+  <table class="tbl">
+    <tr><th>说法</th><th>意思</th><th>例</th></tr>
+    <tr><td>have got to</td><td>＝ have to，英式口语</td><td>I've got to go now.</td></tr>
+    <tr><td>Why must you …?</td><td>你干嘛非得……（带不满）</td><td>Why must you always interrupt me?</td></tr>
+    <tr><td>You must come …</td><td>热情的邀请</td><td>You must come and visit us sometime.</td></tr>
+  </table>
+
+  <p class="sum"><b>小结：</b>must 表示必须，语气比 should 强。它的否定有两种：mustn't 禁止，needn't / don't need to / don't have to 不必；Must I…? 的否定回答用 needn't。must 与 have to 最主要的区别在时态（must 只有现在、将来），其次是主客观：客观条件决定的，用 have to。</p>
+</section>
+
+<!-- ══ 阶段三 ══ -->
+<section class="stage" id="s3">
+  <span class="stage-no">阶段三</span>
+  <h2>can 与 be able to</h2>
+
+  <div class="bridge">
+    <p class="before">must 和 have to 最主要的区别在时态。</p>
+    <p class="after">把这个思路挪到 can 和 be able to 上，一样成立 —— 而且在过去时里，还藏着一个更细的区别。</p>
+  </div>
+
+  <h3 id="s3a">can 的基本义</h3>
+
+  <div class="ex">
+    <p class="en">She <b>can</b> speak three languages.　This stadium <b>can</b> be emptied in ten minutes.</p>
+    <p class="zh">她会说三种语言。／ 这座体育场十分钟内就能清场。（能力；后一句是情态 + 被动）</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Can</b> I use your phone?　You <b>can</b> sit anywhere you like.</p>
+    <p class="zh">我能用一下你的电话吗？／ 你想坐哪儿都行。（请求、许可；更委婉的说法见阶段四）</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 can 还能表示"有时会"<span class="extra">补充</span></span>
+    <p class="formula">Smoking <b>can</b> cause cancer. ／ It <b>can</b> be very cold here in winter.</p>
+    <p>这是"一般情况下有这种可能"，不是对某件具体事的猜测。猜"他现在可能在家"，不说 He can be at home，要说 He may / might / could be at home（阶段六）。</p>
+  </div>
+
+  <h3 id="s3b">can 与 be able to：时态的区别</h3>
+
+  <table class="tbl">
+    <tr><th>时态</th><th>can</th><th>be able to</th></tr>
+    <tr><td>将来</td><td>can（要带将来时间：one day）</td><td>will be able to（不带时间也行）</td></tr>
+    <tr><td>现在</td><td>can（口语里更常用）</td><td>am / is / are able to（写作时可以换着用）</td></tr>
+    <tr><td>过去</td><td>could</td><td>was / were able to（有区别，见下一节）</td></tr>
+    <tr><td>完成时</td><td>——</td><td>have / has been able to</td></tr>
+    <tr><td>跟在<wbr>情态动词后</td><td>——（没有 might can）</td><td>might / may / will be able to</td></tr>
+  </table>
+
+  <table class="tbl">
+    <tr><th>练习</th><th>答案</th></tr>
+    <tr><td>Lily ___ drive, but she doesn't have a car.</td><td>can ／ is able to</td></tr>
+    <tr><td>I ___ (not) sleep well recently.</td><td>haven't been able to（有 recently，用现在完成时，can 办不到）</td></tr>
+    <tr><td>Tom might ___ help us tomorrow.</td><td>be able to（前面已经有情态动词 might）</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 课上的《摩登家庭》：将来的"能"</span>
+    <p>Gloria 死活不承认自己老花眼，Jay 逼了她很久，她终于松口：I'll wear them（will 在这里表意愿：我愿意戴）。Jay 心里想的却是：以后我耳朵越来越背，她眼睛越来越花 —— I <b>won't be able to</b> hear her, she <b>won't be able to</b> see me，我们就能一直过下去了。</p>
+    <p>"将来会听不见"只能用 won't be able to。要是说 can't hear her，就成了"现在已经听不见了"。</p>
+  </div>
+
+  <h3 id="s3c">could 与 was able to：成功做到</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">She <b>could</b> / <b>was able to</b> play the violin at five.</p>
+      <p class="verdict">过去的能力（五岁就会拉），两个都行。</p>
+    </div>
+    <div>
+      <p class="en">She <b>was able to</b> give a concert in London at eleven.</p>
+      <p class="verdict">具体的某一次成功（十一岁真的开了音乐会），只能用 was able to。</p>
+    </div>
+  </div>
+  <p class="note">课上讲的是一位小提琴神童的故事。要是写成 could give a concert，读起来就像"那时有能力开，但开没开成不知道"。</p>
+
+  <div class="ex">
+    <p class="en">At first they didn't want to come, but we <b>were able to</b> persuade them.</p>
+    <p class="zh">一开始他们不想来，但我们成功说服了他们。（用 could，就成了"我们本有能力说服"，没说服成）</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>句子</th><th>填</th><th>为什么</th></tr>
+    <tr><td>Despite the heavy snow, we ___ get home in less than an hour yesterday.</td><td><span class="nw">were able to</span></td><td>昨天那一次，具体事件</td></tr>
+    <tr><td>I lived near the office, so I ___ get there in ten minutes.</td><td>could ／ <span class="nw">was able to</span></td><td>没说哪一次，是过去的一般能力</td></tr>
+    <tr><td>When she was the manager, she ___ take a holiday whenever she wanted.</td><td>could ／ <span class="nw">was able to</span></td><td>同上</td></tr>
+    <tr><td>I was very busy, but I ___ take a short holiday at Christmas.</td><td><span class="nw">was able to</span></td><td>圣诞节那一次，具体事件</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 问一句：是不是具体的某一次？</span>
+    <p>是具体某一次做成了，只能用 was able to（≈ managed to）；只是说过去有这个能力，两个都行。</p>
+    <p>否定时没有这个区别：couldn't 和 wasn't able to 都是"没能做到"。<span class="extra">补充</span></p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 was able to 还在强调"不容易"</span>
+    <p>I took a photo 已经表示"拍了照"，为什么还要说 I was able to take a photo？因为后者强调困难：终于抓拍到了、爬到山顶才拍到了。</p>
+    <p>课上的新闻：2012 年澳网男单决赛，德约科维奇和纳达尔打了近六个小时，报道写的是 Djokovic <b>was able to</b> beat Nadal —— 两人实力相当，赢得不容易。</p>
+    <p>"难"是你自己觉得难就行：春运抢到一张火车票，也可以说 I was able to buy a ticket。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>can 表示能力、许可，也能表示"一般情况下有时会"。can 与 be able to 的区别在时态：完成时、将来（不带时间）、跟在别的情态动词后面，只能用 be able to。过去具体某一次成功做到，只能用 was able to，它还带着"不容易"；否定时 couldn't 和 wasn't able to 没有区别。</p>
+</section>
+
+<!-- ══ 阶段四 ══ -->
+<section class="stage" id="s4">
+  <span class="stage-no">阶段四</span>
+  <h2>may、should 与建议的强弱</h2>
+
+  <div class="bridge">
+    <p class="before">四个核心词还剩两个：may 和 should。</p>
+    <p class="after">may 的要点在委婉程度，should 的要点在"过去的应该"怎么说。顺带把"建议"这把尺子排一排。</p>
+  </div>
+
+  <h3 id="s4a">may 与 can：委婉程度</h3>
+
+  <p class="formula">直白 → 委婉：can ＜ could ≈ may ＜ might</p>
+
+  <div class="ex">
+    <p class="en">Can I have the phone now? → <b>May</b> I have the phone now?</p>
+    <p class="zh">我现在能用电话了吗？→ 请问我现在可以用电话吗？</p>
+    <p class="note">课上的片段：女儿对妈妈说 Can I…，妈妈马上纠正成 May I…。中文靠"请问"这类敬语表示客气，英语靠换一个情态动词。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Might</b> I play your pianoforte?</p>
+    <p class="zh">我可以弹一下您家的钢琴吗？</p>
+    <p class="note">电影《理智与情感》里，Marianne 到别人家做客时这样问。might 最客气，今天已经很少这么说了，但确实有这种用法。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 may 的回答与另外两个用法<span class="extra">补充</span></span>
+    <p class="formula">— May I come in?<br>— Yes, of course. ／ Yes, you may. ／ No, I'm afraid you can't. ／ No, you mustn't.（语气很重：不准）</p>
+    <p><b>be allowed to：</b>may 是说话人给的许可；be allowed to 是规则允许，还能变时态 —— Are we allowed to take photos here? ／ We weren't allowed to leave.</p>
+    <p><b>表祝愿：</b>May 放在句首 —— May you be happy! ／ May all your dreams come true!</p>
+  </div>
+
+  <h3 id="s4b">should ＝ ought to</h3>
+
+  <div class="ex">
+    <p class="en">You <b>should</b> / <b>ought to</b> see a doctor.　You <b>shouldn't</b> drink and drive.</p>
+    <p class="zh">你应该去看医生。／ 你不该酒驾。</p>
+    <p class="note">should 和 ought to 意思、用法完全一样。ought to 的否定是 ought not to。</p>
+  </div>
+  <div class="ex">
+    <p class="en">It's late and you're tired. You <b>should</b> go to bed.</p>
+    <p class="zh">很晚了，你也累了，该睡了。（现在应该做 → should do）</p>
+  </div>
+
+  <h3 id="s4c">过去的"应该"：should have done</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 should 没有过去式，就借完成式</span>
+    <p>should 和 ought to 都没有过去式，后面还只能接原形 —— 没法写 should went。办法是借用完成式：<b>should / ought to + have done</b> 表示"过去应该做"。而过去"应该做"，本身就意味着当时<b>没做</b>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">She <b>should have come</b> to see me yesterday, but she forgot.</p>
+    <p class="zh">她昨天本该来看我的，却忘了。</p>
+  </div>
+  <div class="ex">
+    <p class="en">You <b>should have asked</b> for permission before you left the table.</p>
+    <p class="zh">你离席之前，本该先问一声的。</p>
+    <p class="note">决定答案的是 left：说的是过去的事。</p>
+  </div>
+  <div class="ex">
+    <p class="en">You <b>shouldn't have told</b> him.<span class="extra">补充</span></p>
+    <p class="zh">你本不该告诉他的。（shouldn't have done：本不该做，却做了）</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 别靠中文"本应该"来判断</span>
+    <p>中文说"他昨天应该来看我"，不一定会说出"本应该"三个字。判断靠时态线索：yesterday、forgot、left —— 说的是过去，就只能用 should have done。</p>
+  </div>
+
+  <h3 id="s4d">had better：最好……，不然<span class="extra">补充</span></h3>
+
+  <div class="ex">
+    <p class="en">You'<b>d better</b> leave now, or you'll miss the train.　You'<b>d better not</b> tell anyone.</p>
+    <p class="zh">你最好现在就走，不然赶不上火车了。／ 你最好谁都别告诉。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 had better 的三个注意</span>
+    <p><b>后面接原形：</b><s>had better to leave</s>。<b>否定把 not 放在 better 后面：</b>had better not do，<s>hadn't better</s>。<b>形式像过去式，说的却是现在和将来。</b></p>
+    <p>它比 should 重，常带"不这么做就有麻烦"的警告意味，对长辈、上级要慎用。</p>
+  </div>
+
+  <h3 id="s4e">建议的强弱<span class="extra">补充</span></h3>
+
+  <table class="tbl">
+    <tr><th>说法</th><th>语气</th></tr>
+    <tr><td>You <b>must</b> stop smoking.</td><td>必须：医生下命令</td></tr>
+    <tr><td>You'<b>d better</b> stop smoking.</td><td>最好：再抽就要出问题了</td></tr>
+    <tr><td>You <b>should</b> stop smoking.</td><td>应该：朋友劝你</td></tr>
+    <tr><td>You <b>could</b> try chewing gum instead.</td><td>不妨：给个办法，听不听随你</td></tr>
+    <tr><td>You <b>might</b> want to talk to a doctor.</td><td>很客气的提议</td></tr>
+  </table>
+
+  <p class="sum"><b>小结：</b>may 和 can 都能表示许可、请求，委婉程度 can ＜ could ≈ may ＜ might；be allowed to 是规则允许；May you… 表祝愿。should ＝ ought to，过去本该做却没做用 should have done，本不该做却做了用 shouldn't have done。had better 是带警告的"最好"，后接原形。建议从强到弱：must ＞ had better ＞ should ＞ could / might。</p>
+</section>
+
+<!-- ══ 阶段五 ══ -->
+<section class="stage" id="s5">
+  <span class="stage-no">阶段五</span>
+  <h2>其余的情态<span class="extra">补充</span></h2>
+
+  <div class="bridge">
+    <p class="before">课上讲的是 must、can、may、should 四个核心词。</p>
+    <p class="after">剩下几个同样常用：will / would、shall、need / dare、used to、would rather。课上只顺带提了 will 的"意愿"，这一阶补齐。</p>
+  </div>
+
+  <h3 id="s5a">will / would：意愿与倾向</h3>
+
+  <table class="tbl">
+    <tr><th>用法</th><th>will</th><th>would</th></tr>
+    <tr><td>意愿</td><td>I'll help you. ／ Will you marry me?</td><td>He said he would help. ／ Would you like some tea?（客气地提供）</td></tr>
+    <tr><td>请求</td><td>Will you close the door?</td><td>Would you close the door, please?（更客气）</td></tr>
+    <tr><td>习惯、特性</td><td>Oil will float on water. ／ He'll sit there for hours without a word.</td><td>When I was a kid, I would go fishing with my grandpa every summer.（过去的习惯）</td></tr>
+    <tr><td>"不肯"</td><td>The car won't start.</td><td>The door wouldn't open.</td></tr>
+    <tr><td>推测</td><td>That'll be the postman.（多半是）</td><td>——</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 will 的底色是"意愿、倾向"</span>
+    <p>人愿意做（I'll help you）；东西总会这样（油总会浮在水上）；东西"不肯"（车打不着火，门怎么都打不开）。"将来"其实就是从"意愿、倾向"引申出来的。课上 Gloria 那句 I'll wear them，就是"我愿意戴"。</p>
+  </div>
+
+  <h3 id="s5b">shall：征求意见</h3>
+
+  <div class="ex">
+    <p class="en"><b>Shall</b> I open the window?　<b>Shall</b> we go?</p>
+    <p class="zh">要我把窗户打开吗？／ 我们走吧？（用在 I、we 的疑问句里，征求对方意见）</p>
+  </div>
+  <div class="ex">
+    <p class="en">The tenant <b>shall</b> pay the rent on the first day of each month.</p>
+    <p class="zh">承租人应于每月一日支付租金。（法律、合同里的"应当"）</p>
+  </div>
+  <p class="note">shall 表示将来（I shall…）今天已经很少用了，主要剩下这两种用法。</p>
+
+  <h3 id="s5c">need / dare：半情态</h3>
+
+  <table class="tbl">
+    <tr><th></th><th>当情态动词</th><th>当实义动词</th></tr>
+    <tr><td>need</td><td>You needn't worry. ／ Need I come?</td><td>You don't need to worry. ／ Do I need to come? ／ He needs to rest.</td></tr>
+    <tr><td>dare</td><td>I daren't tell him. ／ How dare you speak to me like that!</td><td>I don't dare (to) tell him. ／ Nobody dared to move.</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 两套用法，看它借不借 do</span>
+    <p><b>当情态动词：</b>多用于否定和疑问，自己否定、自己提问，后接原形，没有三单。</p>
+    <p><b>当实义动词：</b>有三单、有过去式，否定和疑问要借 do，后面接 to do。</p>
+    <p>肯定句里一般当实义动词：He <b>needs to</b> rest，不说 <s>He need rest</s>。</p>
+  </div>
+
+  <h3 id="s5d">used to 与 would：过去的习惯</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">I <b>used to</b> smoke.<br>There <b>used to</b> be a cinema here.</p>
+      <p class="verdict">used to do：过去常常（现在不了）。动作、状态都能用。</p>
+    </div>
+    <div>
+      <p class="en">Every summer, we <b>would</b> go fishing with Grandpa.<br><s>There would be a cinema here.</s></p>
+      <p class="verdict">would：只用于过去反复发生的<b>动作</b>，不能用于状态。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 used to 三兄弟，再记一遍</span>
+    <p class="formula">used to do 过去常常 ／ be used to doing 习惯于（to 是介词）／ be used to do 被用来做</p>
+    <p>used to 的否定和疑问要借 did：I <b>didn't use to</b> like coffee. ／ <b>Did</b> you <b>use to</b> live here?</p>
+  </div>
+
+  <h3 id="s5e">would rather 与几个固定表达</h3>
+
+  <table class="tbl k2">
+    <tr><th>表达</th><th>意思</th><th>例</th></tr>
+    <tr><td>would rather do (than do)</td><td>宁愿</td><td>I'd rather stay at home than go out tonight. ／ I'd rather not say.</td></tr>
+    <tr><td>would rather sb did</td><td>宁愿别人……（虚拟）</td><td>I'd rather you didn't smoke here.</td></tr>
+    <tr><td>may / might as well do</td><td>不妨，还不如</td><td>We might as well walk — the bus won't come for ages.</td></tr>
+    <tr><td>can't help doing</td><td>忍不住</td><td>I couldn't help laughing.</td></tr>
+    <tr><td>can't … too …</td><td>越……越好</td><td>You can't be too careful.（再小心也不为过）</td></tr>
+    <tr><td>cannot but do</td><td>不得不（书面）</td><td>I cannot but admire his courage.</td></tr>
+  </table>
+  <p class="note">would rather、had better 后面都直接接原形，否定都把 not 放在最后：would rather not do、had better not do。</p>
+
+  <p class="sum"><b>小结：</b>will / would 的底色是意愿和倾向：意愿、请求、习惯特性、"不肯"，would 更客气。shall 用于征求意见和法律条文。need、dare 当情态动词多用于否定疑问，当实义动词要借 do、接 to do。过去的习惯：used to 动作状态都行，would 只管动作。would rather、may as well、can't help、can't … too … 是常用固定表达。</p>
+</section>
+
+<!-- ══ 阶段六 ══ -->
+<section class="stage" id="s6">
+  <span class="stage-no">阶段六</span>
+  <h2>推测：把握有几成</h2>
+
+  <div class="bridge">
+    <p class="before">前五阶讲的都是情态动词的基本义：态度。</p>
+    <p class="after">第二个功能是推测。课上开了个头（Tom 为什么没来），这一阶把整套推测讲完：用哪个词、肯定否定疑问怎么说、时间怎么表示。</p>
+  </div>
+
+  <h3 id="s6a">可能性阶梯</h3>
+
+  <p>课上的例子：Tom 今天没来上课，Why is Tom absent?</p>
+
+  <table class="tbl">
+    <tr><th>说法</th><th>把握</th><th>谁会这么说</th></tr>
+    <tr><td>He <b>is</b> sick.</td><td>100%：事实</td><td>刚和他通过电话的好朋友</td></tr>
+    <tr><td>He <b>must</b> be sick.</td><td>很有把握：有依据的推测</td><td>早上看到他脸色发白的同桌</td></tr>
+    <tr><td>He <b>may</b> be sick.</td><td>一半一半</td><td>为了接老师的话，随口一说的同学</td></tr>
+    <tr><td>He <b>could</b> / <b>might</b> be sick.</td><td>把握更小</td><td>同上</td></tr>
+  </table>
+
+  <div class="ex">
+    <p class="en">He <b>must be</b> in pain.</p>
+    <p class="zh">他一定很疼。</p>
+    <p class="note">课上看的新闻照片：一次握手之后，对方手上留下了一道道白印子。媒体写的是 must be，不是 is —— 那是从照片推出来的，不是本人说的。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 最有把握的，恰恰没有情态动词</span>
+    <p>陈述事实，直接用时态（He is sick）。一加情态动词，就说明这是推测：must 有依据，很有把握；may 一半一半；could、might 更没把握。</p>
+    <p class="note">课上给过比例：must 约九成，may 约五成，could / might 更低。后两者实际差不多，不必抠数字。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 阶梯上还有两格：will 和 should<span class="extra">补充</span></span>
+    <div class="ex">
+      <p class="en">(The doorbell rings.) That'<b>ll</b> be the postman.</p>
+      <p class="zh">（门铃响了）多半是送信的。—— will：凭经验、凭规律判断，很有把握。</p>
+    </div>
+    <div class="ex">
+      <p class="en">The film <b>should</b> be good — it has great reviews.</p>
+      <p class="zh">这部电影按理应该不错，评价很高。—— should：按常理推，比 may 有把握。</p>
+    </div>
+    <p class="formula">事实 is ＞ must / will ＞ should / ought to ＞ may ＞ might / could</p>
+  </div>
+
+  <h3 id="s6b">肯定、否定、疑问，用的词不一样<span class="extra">补充</span></h3>
+
+  <table class="tbl">
+    <tr><th>句型</th><th>用哪些词</th><th>例</th></tr>
+    <tr><td>肯定</td><td>must、will、should、may、might、could</td><td>He must be at home. ／ He may be at home.</td></tr>
+    <tr><td>否定</td><td>can't、couldn't（不可能）；may not、might not（可能不）</td><td>He can't be at home. ／ He may not be at home.</td></tr>
+    <tr><td>疑问</td><td>can、could</td><td>Can it be true? ／ Could he be ill?</td></tr>
+  </table>
+
+  <div class="pair">
+    <div>
+      <p class="en">He <b>may not</b> be at home.</p>
+      <p class="verdict">可能不在家：把握一般。</p>
+    </div>
+    <div>
+      <p class="en">He <b>can't</b> be at home.</p>
+      <p class="verdict">不可能在家：很有把握的否定。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 推测里的三个"不能"</span>
+    <p><b>mustn't 不表推测：</b><s>It mustn't be true.</s> → It can't be true.（mustn't 只表示禁止）</p>
+    <p><b>may 不用于推测性提问：</b><s>May he be ill?</s> → Could he be ill?</p>
+    <p><b>can 的肯定句不推测具体的事：</b><s>He can be at home now.</s> → He may / might / could be at home now.（can 的肯定句只表示"一般情况下有时会"，阶段三）</p>
+  </div>
+
+  <h3 id="s6c">推测里的 could、might 不表示过去</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">When I was young, I <b>could</b> swim for hours.</p>
+      <p class="verdict">基本义：can 的过去式，过去的能力。</p>
+    </div>
+    <div>
+      <p class="en">He <b>could</b> be at home now.</p>
+      <p class="verdict">推测义：他现在可能在家 —— 说的是现在，could 只表示把握小。</p>
+    </div>
+  </div>
+  <p class="note">might 也一样：It might rain tonight 说的是今晚。推测过去，要用下一阶的 + have done。</p>
+
+  <h3 id="s6d">推测的时间：靠后面的原形部分<span class="extra">补充</span></h3>
+
+  <table class="tbl">
+    <tr><th>推测什么</th><th>形式</th><th>例</th></tr>
+    <tr><td>现在的状态</td><td>情态动词 + be / do</td><td>He must be at home.</td></tr>
+    <tr><td>此刻<wbr>正在进行</td><td>情态动词 + be doing</td><td>Don't call now — he must be sleeping.</td></tr>
+    <tr><td>将来</td><td>may / might / could / will + do</td><td>It may rain tomorrow.</td></tr>
+    <tr><td>过去</td><td>情态动词 + have done</td><td>He must have left already.</td></tr>
+    <tr><td>过去某段时间<wbr>一直在</td><td>情态动词 + have been doing</td><td>She must have been waiting for hours.</td></tr>
+    <tr><td>被动</td><td>情态动词 + be done ／ have been done</td><td>The wallet must have been found.</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 情态动词不动，时间交给后面</span>
+    <p>情态动词后面只能接原形，所以推测的时间全靠后面那一截：be / do 管现在，be doing 管正在，have done 管过去。</p>
+    <p class="note">must 一般不推测将来：He must come tomorrow 是"他明天必须来"。推测将来用 will、may、might、should：He should arrive by five（他按理五点前到）。</p>
+  </div>
+
+  <h3 id="s6e">反意疑问句：跟着 must 后面的部分走<span class="extra">补充</span></h3>
+
+  <table class="tbl k2">
+    <tr><th>陈述部分</th><th>附加疑问</th><th>为什么</th></tr>
+    <tr><td>He must be tired,</td><td><span class="nw">isn't he?</span></td><td>问的是"他累不累"：看 be</td></tr>
+    <tr><td>You must have seen the film,</td><td><span class="nw">haven't you?</span></td><td>问的是"你看没看过"：看 have seen</td></tr>
+    <tr><td>He must have left yesterday,</td><td><span class="nw">didn't he?</span></td><td>有明确的过去时间，按一般过去时问</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 附加疑问问的是那件事，不是"必须"</span>
+    <p>must 在这里只是说话人的把握，要核实的是后面那件事本身 —— 所以附加疑问不用 mustn't，而是照着 must 后面的动词来。这是考试里的老考点。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>推测的把握从高到低：事实 is ＞ must / will ＞ should ＞ may ＞ might / could。肯定句用 must、may 等；否定用 can't（不可能）、may not（可能不）；疑问用 can / could。mustn't 不表推测，may 不用于推测性提问，can 的肯定句不推测具体的事。时间靠后面：be 管现在，be doing 管正在，have done 管过去。反意疑问句跟着 must 后面的部分走。</p>
+</section>
+
+<!-- ══ 阶段七 ══ -->
+<section class="stage" id="s7">
+  <span class="stage-no">阶段七</span>
+  <h2>情态 + have done：推测过去，还是"本该"</h2>
+
+  <div class="bridge">
+    <p class="before">推测过去的事、评价过去做得对不对，都得把时间推到过去。</p>
+    <p class="after">情态动词后面只能接原形，这一步全靠 have done。可同样是 + have done，有的是推测，有的是遗憾 —— 这一阶把它们分开。</p>
+  </div>
+
+  <h3 id="s7a">为什么是 have done</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 借完成式，把时间推到过去</span>
+    <p>must、should 没有过去式；could、might 的过去式形式又被拿去表客气、表推测了。情态动词后面还只能接原形 —— 没法写 must left、should went。</p>
+    <p>办法是借完成式：<b>情态动词 + have done</b>。这和非谓语里的 having done、to have done 是同一个思路：形式上不允许用过去时，就用完成式把时间往前推。</p>
+    <p>课上留过一个悬念："钱包昨天肯定是被人捡到了"—— must 没有过去式，写成 The wallet <b>must have been found</b>。</p>
+  </div>
+
+  <h3 id="s7b">推测过去<span class="extra">补充</span></h3>
+
+  <table class="tbl k2">
+    <tr><th>形式</th><th>意思</th><th>例</th></tr>
+    <tr><td>must have done</td><td>一定做过</td><td>He must have missed the train — he isn't here yet.</td></tr>
+    <tr><td>can't / couldn't have done</td><td>不可能做过</td><td>She can't have said that — she was abroad at the time.</td></tr>
+    <tr><td>may / might have done</td><td>也许做过</td><td>I may have left my keys in the car.</td></tr>
+    <tr><td>could have done</td><td>可能做过（把握小）</td><td>He could have taken the wrong bus.</td></tr>
+    <tr><td>should have done</td><td>按理应该<wbr>已经……</td><td>They should have arrived by now.</td></tr>
+  </table>
+
+  <div class="pair">
+    <div>
+      <p class="en">He <b>must have left</b>.</p>
+      <p class="verdict">推测：他一定已经走了。</p>
+    </div>
+    <div>
+      <p class="en">He <b>had to</b> leave.</p>
+      <p class="verdict">基本义的过去：他当时不得不走。两句常被混淆。</p>
+    </div>
+  </div>
+
+  <h3 id="s7c">本该与本不该：对过去的评价</h3>
+
+  <table class="tbl k2">
+    <tr><th>形式</th><th>意思</th><th>例</th></tr>
+    <tr><td>should / ought to have done</td><td>本该做，却没做</td><td>You should have told me earlier.</td></tr>
+    <tr><td>shouldn't have done <span class="extra">补充</span></td><td>本不该做，却做了</td><td>I shouldn't have eaten so much.</td></tr>
+    <tr><td>needn't have done <span class="extra">补充</span></td><td>本不必做，却做了</td><td>You needn't have brought an umbrella — it didn't rain.</td></tr>
+    <tr><td>could have done <span class="extra">补充</span></td><td>本来能……，却没有；差点</td><td>We could have won the match. ／ You could have been killed!</td></tr>
+    <tr><td>might have done <span class="extra">补充</span></td><td>本可以……（带责备）</td><td>You might have told me you were coming!</td></tr>
+    <tr><td>would have done <span class="extra">补充</span></td><td>本来会……（虚拟语气）</td><td>I would have helped you, but I was busy.</td></tr>
+  </table>
+
+  <div class="pair">
+    <div>
+      <p class="en">You <b>needn't have come</b>.</p>
+      <p class="verdict">你来了，其实不必来。</p>
+    </div>
+    <div>
+      <p class="en">You <b>didn't need to</b> come.</p>
+      <p class="verdict">你没必要来 —— 通常意味着就没来，至少没说来没来。</p>
+    </div>
+  </div>
+
+  <h3 id="s7d">推测还是遗憾：怎么分</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 先看情态动词</span>
+    <p><b>must、can't、may：</b>几乎都是推测 —— 对过去的事有几成把握。</p>
+    <p><b>should、shouldn't、needn't、would：</b>几乎都是评价 —— 说的都是没有照这样发生的事。</p>
+    <p><b>could、might：</b>两种都有，要看语境：</p>
+    <div class="pair">
+      <div>
+        <p class="en">He <b>could have taken</b> the wrong bus.<br>She <b>might have forgotten</b>.</p>
+        <p class="verdict">推测：他也许坐错车了；她可能忘了。</p>
+      </div>
+      <div>
+        <p class="en">You <b>could have taken</b> a taxi!<br>You <b>might have warned</b> me!</p>
+        <p class="verdict">评价、责备：你本可以打车的；你本可以提醒我一声的。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">You <b>should have called</b> me.</p>
+      <p class="verdict">评价：你本该给我打电话的（但没打）。</p>
+    </div>
+    <div>
+      <p class="en">He <b>must have called</b> while I was out.</p>
+      <p class="verdict">推测：我出去的时候，他一定打过电话。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 这里已经是虚拟语气的门口</span>
+    <p>should have done、could have done、would have done 说的都是"没发生的事"。虚拟语气里"与过去事实相反"的主句，用的正是这组形式：If I had known, I <b>would have told</b> you.</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>情态动词后面只能接原形，推测过去、评价过去都借 have done。推测：must have done 一定做过，can't have done 不可能做过，may / might / could have done 也许做过。评价：should have done 本该做没做，shouldn't have done 本不该做却做了，needn't have done 本不必做却做了，could / might have done 本可以，would have done 本来会。must、can't、may 看推测，should、needn't、would 看评价，could、might 看语境。</p>
+</section>
+
+<!-- ══ 阶段八 ══ -->
+<section class="stage" id="s8">
+  <span class="stage-no">阶段八</span>
+  <h2>三态叠加：情态 × 时态 × 语态</h2>
+
+  <div class="bridge">
+    <p class="before">情态动词是谓语的最外层。</p>
+    <p class="after">它和语态、时态怎么叠在一起，课上开头用三道题复习过。这一阶把步骤和全部组合列出来。</p>
+  </div>
+
+  <h3 id="s8a">三步写法：语态 → 时态 → 情态</h3>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">this car · drive · for five years by next month</p><p class="step-why">语态：车是被开的 → be driven。时态：到将来某一点、持续一段时间 → 本该用将来完成进行，但它没有被动 → 将来完成 will have been driven（课上也接受 will be driven）。没有情态。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en">trees · plant · at this time yesterday</p><p class="step-why">语态：树是被种的 → be planted。时态：昨天此刻 → 过去进行 were being planted。没有情态。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div><p class="en">it · use · then · 不能</p><p class="step-why">语态：被使用 → be used。时态：then，过去 → was used。情态："不能" → 时态交给 can，变成 could → could not be used。</p></div>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 别想一口气写出来</span>
+    <p>刚开始练的时候，一口气写最容易丢词：丢 being、丢 be、把过去分词写成过去式。一步一步来：<b>① 写 be done；② 加时态；③ 问有没有情态</b>。写多了，速度自然就上来了。</p>
+  </div>
+
+  <h3 id="s8b">时态转到情态上</h3>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">Planes <b>are</b> heard day and night.</p><p class="step-why">只有语态和时态：时态落在 be 上。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en">Planes <b>can be</b> heard day and night.</p><p class="step-why">加上情态"能"：be 被卡成原形，时态改由 can 体现（来来往往的飞机，日夜不绝于耳）。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div><p class="en">The airport <b>could not be</b> used then.</p><p class="step-why">要说过去：情态动词自己变成过去式。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">四</span>
+      <div><p class="en">The wallet <b>must have been</b> found.</p><p class="step-why">情态动词没有过去式（must）：借 have been 把时间推到过去。</p></div>
+    </div>
+  </div>
+
+  <h3 id="s8c">完整矩阵<span class="extra">补充</span></h3>
+
+  <table class="tbl">
+    <tr><th>以 must 为例</th><th>主动</th><th>被动</th></tr>
+    <tr><td>一般</td><td>must do</td><td>must be done</td></tr>
+    <tr><td>进行</td><td>must be doing</td><td>——（几乎不用）</td></tr>
+    <tr><td>完成</td><td>must have done</td><td>must have been done</td></tr>
+    <tr><td>完成进行</td><td>must have been doing</td><td>——</td></tr>
+  </table>
+
+  <table class="tbl">
+    <tr><th>例</th><th>意思</th></tr>
+    <tr><td>The work <b>must be done</b> today.</td><td>这活今天必须干完。（基本义 + 被动）</td></tr>
+    <tr><td>He <b>must be working</b> now.</td><td>他这会儿一定在工作。（推测 + 进行）</td></tr>
+    <tr><td>The letter <b>must have been sent</b> by mistake.</td><td>这封信一定是寄错了。（推测 + 完成 + 被动）</td></tr>
+    <tr><td>Her eyes are red. She <b>must have been crying</b>.</td><td>她眼睛红红的，一定是一直在哭。（推测 + 完成进行）</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 情态动词永远打头，后面的形式只管时间和语态</span>
+    <p class="formula">情态动词 ＋ [ be / have been ] ＋ [ doing / done ]</p>
+    <p>换成 can't、may、should、could 等，结构完全一样，只是态度或把握不同：The letter <b>can't have been sent</b> yet（信不可能已经寄出）；The work <b>should be finished</b> by Friday（按理周五前能完工）。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>写谓语三步走：先语态（be done），再时态（落在 be 上），最后情态（时态交给情态动词）。情态动词给不了过去时，就借 have been。完整组合：情态动词 + do / be doing / have done / have been doing，被动 + be done / have been done。</p>
+</section>
+
+<!-- ══ 阶段九 ══ -->
+<section class="stage" id="s9">
+  <span class="stage-no">阶段九</span>
+  <h2>边界：改错清单</h2>
+
+  <div class="bridge">
+    <p class="before">前八阶把形式、基本义、推测和叠加讲完了。</p>
+    <p class="after">最常见的错误集中放在这里：每一条都能在前面找到原因。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>错例</th><th>错在哪</th><th>改正</th></tr>
+    <tr><td><s>He can swims.</s>　<s>He can to swim.</s></td><td>形式：后面只接原形</td><td>He can swim.</td></tr>
+    <tr><td><s>Does he can swim?</s></td><td>形式：不借 do</td><td>Can he swim?</td></tr>
+    <tr><td><s>Tom might can help us.</s></td><td>形式：两个情态动词不能连用</td><td>Tom might be able to help us.</td></tr>
+    <tr><td><s>You had better to leave.</s>　<s>You hadn't better leave.</s></td><td>形式：had better 接原形，not 放在后面</td><td>You'd better leave. ／ You'd better not leave.</td></tr>
+    <tr><td><s>I would rather to stay.</s></td><td>形式：would rather 接原形</td><td>I'd rather stay.</td></tr>
+    <tr><td><s>He need rest.</s>　<s>He needs not worry.</s></td><td>形式：need 在肯定句当实义动词；当情态动词没有三单</td><td>He needs to rest. ／ He needn't worry.</td></tr>
+    <tr><td><s>You mustn't come tomorrow.</s>（想说<wbr>"不必"）</td><td>基本义：mustn't 是禁止</td><td>You don't have to / needn't come tomorrow.</td></tr>
+    <tr><td><s>I must go to the bank yesterday.</s></td><td>基本义：must 没有过去时</td><td>I had to go to the bank yesterday.</td></tr>
+    <tr><td><s>Despite the snow, we could get home in an hour.</s></td><td>基本义：具体某一次成功，不用 could</td><td>we were able to get home in an hour</td></tr>
+    <tr><td><s>She should come to see me yesterday.</s></td><td>基本义：过去的"应该"用 should have done</td><td>She should have come to see me yesterday.</td></tr>
+    <tr><td><s>There would be a cinema here.</s></td><td>基本义：would 只表示过去反复的动作，不管状态</td><td>There used to be a cinema here.</td></tr>
+    <tr><td><s>It mustn't be true.</s></td><td>推测：否定推测用 can't</td><td>It can't be true.</td></tr>
+    <tr><td><s>May he be ill?</s></td><td>推测：may 不用于推测性提问</td><td>Could he be ill?</td></tr>
+    <tr><td><s>He can be at home now.</s>（想说<wbr>"可能在家"）</td><td>推测：can 的肯定句不推测具体的事</td><td>He may / might / could be at home now.</td></tr>
+    <tr><td><s>He must left yesterday.</s></td><td>推测：推测过去用 + have done</td><td>He must have left yesterday.</td></tr>
+    <tr><td><s>He must be tired, mustn't he?</s></td><td>推测：附加疑问跟着 must 后面的部分走</td><td>He must be tired, isn't he?</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 改错时问三个问题</span>
+    <p><b>① 形式：</b>后面是不是原形？有没有借 do？是不是两个情态动词挤在一起？had better、would rather 后面有没有多出一个 to？</p>
+    <p><b>② 功能：</b>这里是表态度还是推测？用的词在不在对的刻度上 —— mustn't 还是 needn't，can't 还是 mustn't？</p>
+    <p><b>③ 时间：</b>这个情态动词给得了需要的时间吗？给不了，就换替身（had to、was able to）或用 + have done。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>错误分三类：形式错（后接非原形、借 do、情态连用、had better / would rather 加 to、need 用错），基本义错（mustn't 当"不必"、must 表过去、could 表具体成功、should 表过去、would 管状态），推测错（mustn't 表推测、may 提问、can 推测具体的事、推测过去不用 have done、附加疑问用 mustn't）。</p>
+</section>
+
+<!-- ══ 阶段十 ══ -->
+<section class="stage" id="s10">
+  <span class="stage-no">阶段十</span>
+  <h2>本质：说话人的立场</h2>
+
+  <div class="bridge">
+    <p class="after">到这里，可以把一个个情态动词的名字暂时放下了。</p>
+  </div>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">He is at home.</p><p class="step-why">事实：说话人不表态，只陈述。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en">He must be at home.</p><p class="step-why">说话人很有把握。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div><p class="en">He may be at home.</p><p class="step-why">说话人不太确定。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">四</span>
+      <div><p class="en">He can't be at home.</p><p class="step-why">说话人认为不可能。</p></div>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 时态说事情，情态说人</span>
+    <p>时态回答"事情发生在什么时候、处在什么状态"；情态回答"说话人怎么看"：他要求不要求、允许不允许、有没有把握。情态动词一上来，读者就知道后面那件事是"要求"还是"猜测"。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>同一个词</th><th>在态度尺上</th><th>在把握尺上</th></tr>
+    <tr><td>must</td><td>必须</td><td>一定是</td></tr>
+    <tr><td>can</td><td>能、可以</td><td>can't：不可能</td></tr>
+    <tr><td>may</td><td>可以（委婉）</td><td>也许</td></tr>
+    <tr><td>should</td><td>应该</td><td>按理应该</td></tr>
+    <tr><td>could</td><td>能（过去）、委婉请求、本可以</td><td>可能（把握小）</td></tr>
+    <tr><td>will</td><td>意愿</td><td>多半是</td></tr>
+  </table>
+
+  <p>中文靠"必须""可能""应该""不可能"这些词分头表达；英语把它们都压在谓语的最前面。所以学情态动词，就是认清每个词在两把尺子上各占哪一格，再用"原形 / be doing / have done"去对准时间。</p>
+
+  <p class="sum"><b>小结：</b>情态动词把说话人放进了句子。它有两把刻度尺：态度（必须、应该、可以、能）和把握（一定、应该、也许、不可能）。同一个词在两把尺子上各有位置；时间交给后面的原形部分。</p>
+</section>
+
+<!-- ══ 总览 ══ -->
+<section class="stage" id="s11">
+  <span class="stage-no">总览</span>
+  <h2>使用总览与自检</h2>
+
+  <h3 id="s11a">速查一：情态动词总表</h3>
+
+  <table class="tbl quick">
+    <tr><th>情态动词</th><th>基本义：态度</th><th>推测义：把握</th></tr>
+    <tr><td>can / could</td><td>能力；许可、请求（could 更委婉）；could 也表过去的能力</td><td>can't 不可能；could 可能（把握小）</td></tr>
+    <tr><td>may / might</td><td>许可、请求（比 can 委婉，might 最客气）；May you… 祝愿</td><td>may 也许；might 更没把握；may not 可能不</td></tr>
+    <tr><td>must / have to</td><td>必须（mustn't 禁止，needn't 不必）；have to 能变各种时态，偏客观</td><td>must 一定（否定用 can't）</td></tr>
+    <tr><td>should / ought to</td><td>应该；should have done 本该做却没做</td><td>should 按理应该</td></tr>
+    <tr><td>will / would</td><td>意愿、请求、习惯特性（would 更客气，也表过去的习惯）</td><td>will 多半是</td></tr>
+    <tr><td>shall</td><td>Shall I / we …? 征求意见；法律条文里的"应当"</td><td>——</td></tr>
+    <tr><td>need / dare</td><td>半情态：needn't、Need I…?、daren't、How dare you!</td><td>——</td></tr>
+    <tr><td>had better</td><td>最好（带警告：不这样做会有麻烦）</td><td>——</td></tr>
+    <tr><td>would rather</td><td>宁愿；后面接原形</td><td>——</td></tr>
+    <tr><td>used to</td><td>过去常常，现在不了</td><td>——</td></tr>
+  </table>
+
+  <h3 id="s11b">速查二：刻度</h3>
+
+  <table class="tbl quick">
+    <tr><th>刻度</th><th>从强到弱</th></tr>
+    <tr><td>义务与建议</td><td>must / have to ＞ had better ＞ should / ought to ＞ could / might</td></tr>
+    <tr><td>许可与请求</td><td>can（直白）＜ could ≈ may ＜ might（最客气）</td></tr>
+    <tr><td>把握（肯定）</td><td>事实 is ＞ must / will ＞ should ＞ may ＞ might / could</td></tr>
+    <tr><td>把握（否定）</td><td>can't / couldn't（不可能）＞ may not / might not（可能不）</td></tr>
+    <tr><td>推测性提问</td><td>Can …? ／ Could …?（不用 may、must）</td></tr>
+  </table>
+
+  <h3 id="s11c">速查三：情态动词 + have done</h3>
+
+  <table class="tbl quick">
+    <tr><th>用途</th><th>形式与意思</th></tr>
+    <tr><td>推测过去</td><td>must have done 一定做过 ／ can't have done 不可能做过 ／ may / might / could have done 也许做过 ／ should have done 按理应该已经做了</td></tr>
+    <tr><td>评价过去</td><td>should have done 本该做却没做 ／ shouldn't have done 本不该做却做了 ／ needn't have done 本不必做却做了 ／ could / might have done 本可以 ／ would have done 本来会</td></tr>
+    <tr><td>被动</td><td>must have been done ／ should have been done …</td></tr>
+  </table>
+
+  <h3 id="s11d">使用流程：五步</h3>
+
+  <ol class="flow">
+    <li>
+      <p class="q">判断功能。</p>
+      <p class="a">这里是表态度（必须、能、可以、应该），还是推测（一定、也许、不可能）？</p>
+    </li>
+    <li>
+      <p class="q">选刻度上的那一格。</p>
+      <p class="a">态度要多强、把握有多大？肯定、否定、疑问各用对的词：否定推测用 can't，推测性提问用 can / could。</p>
+    </li>
+    <li>
+      <p class="q">定时间。</p>
+      <p class="a">现在 + do / be；正在 + be doing；过去 + have done。基本义需要的时态情态动词给不了，就换替身：had to、was able to、will be able to。</p>
+    </li>
+    <li>
+      <p class="q">加语态。</p>
+      <p class="a">是被动，就在后面的原形部分写 be done 或 have been done。</p>
+    </li>
+    <li>
+      <p class="q">检查形式。</p>
+      <p class="a">后面是原形；不借 do；两个情态动词不连用；had better、would rather 后面直接接原形，否定把 not 放在后面。</p>
+    </li>
+  </ol>
+
+  <h3 id="s11e">费曼自检</h3>
+
+  <p>能从"功能 → 刻度 → 时间 → 语态"一步步推出下面这些，才算掌握了情态动词，而不是记住了一串中文意思。答不上来的，右边标了回哪一阶。</p>
+
+  <ol class="asks checks">
+    <li><span>情态动词和普通动词在形式上有哪些不同？为什么不能说 He will can swim？</span><span class="where">阶段一</span></li>
+    <li><span>情态动词的两个功能是什么？It can't be true. 里的 can't 是哪一种？</span><span class="where">阶段一</span></li>
+    <li><span>Could you help me? 里的 could 说的是过去吗？</span><span class="where">阶段一</span></li>
+    <li><span>情态动词时态受限时，有哪两种办法？</span><span class="where">阶段一</span></li>
+    <li><span>mustn't 和 needn't 有什么不同？— Must I finish it today? 的否定回答怎么说？</span><span class="where">阶段二</span></li>
+    <li><span>must 和 have to 最主要的区别是什么？"视力不好，必须戴眼镜"为什么用 have to？</span><span class="where">阶段二</span></li>
+    <li><span>"昨天我必须去银行"为什么不能用 must？</span><span class="where">阶段二</span></li>
+    <li><span>I haven't ___ sleep well recently. 为什么只能填 been able to？</span><span class="where">阶段三</span></li>
+    <li><span>过去时里 could 和 was able to 有什么区别？否定时呢？</span><span class="where">阶段三</span></li>
+    <li><span>I took a photo. 和 I was able to take a photo. 有什么不同？</span><span class="where">阶段三</span></li>
+    <li><span>Smoking can cause cancer. 里的 can 和 He may be at home. 里的 may 有什么不同？</span><span class="where">阶段三、六</span></li>
+    <li><span>Can I… / May I… / Might I… 哪个最客气？</span><span class="where">阶段四</span></li>
+    <li><span>"她昨天本该来看我"怎么说？为什么不能用 should come？</span><span class="where">阶段四</span></li>
+    <li><span>had better 后面接什么？否定怎么写？</span><span class="where">阶段四</span></li>
+    <li><span>按语气从强到弱排：should、must、could、had better。</span><span class="where">阶段四</span></li>
+    <li><span>will 的"底色"是什么？The car won't start. 里的 won't 是什么意思？</span><span class="where">阶段五</span></li>
+    <li><span>Shall I open the window? 里的 shall 是什么用法？</span><span class="where">阶段五</span></li>
+    <li><span>He needn't worry. 和 He doesn't need to worry. 有什么不同？为什么不说 He need rest？</span><span class="where">阶段五</span></li>
+    <li><span>used to 和 would 都能表示过去的习惯，区别在哪？</span><span class="where">阶段五</span></li>
+    <li><span>He is sick. / He must be sick. / He may be sick. 说话人的把握各有多大？</span><span class="where">阶段六</span></li>
+    <li><span>"他不可能在家"为什么用 can't，不用 mustn't？</span><span class="where">阶段六</span></li>
+    <li><span>为什么不说 May he be ill?，要怎么问？</span><span class="where">阶段六</span></li>
+    <li><span>"别打电话，他这会儿一定在睡觉"，must 后面接什么？</span><span class="where">阶段六</span></li>
+    <li><span>He must be tired, ___? 附加疑问怎么填？为什么？</span><span class="where">阶段六</span></li>
+    <li><span>为什么推测过去要用 must have done，不能说 must left？</span><span class="where">阶段七</span></li>
+    <li><span>He must have left. 和 He had to leave. 有什么不同？</span><span class="where">阶段七</span></li>
+    <li><span>You needn't have come. 和 You didn't need to come. 有什么不同？</span><span class="where">阶段七</span></li>
+    <li><span>You could have taken a taxi! 和 He could have taken the wrong bus. 哪个是推测？</span><span class="where">阶段七</span></li>
+    <li><span>should have called 和 must have called 有什么不同？</span><span class="where">阶段七</span></li>
+    <li><span>"机场当时没能被使用"怎么一步步写出来？</span><span class="where">阶段八</span></li>
+    <li><span>She must have been crying. 这个谓语叠了哪几层？</span><span class="where">阶段八</span></li>
+    <li><span>There would be a cinema here. 错在哪？</span><span class="where">阶段九</span></li>
+    <li><span>为什么说情态动词是"两把刻度尺"？各举一个例子。</span><span class="where">阶段十</span></li>
+  </ol>
+</section>
+
+<footer>下一步：虚拟语气。阶段七里的 should have done、could have done、would have done，已经站在虚拟语气的门口：它们说的都是"没有发生的事"。虚拟语气要做的，就是用"时态后退"把与事实相反的假设写出来 —— 形式本身就告诉读者：这不是真的。</footer>
+
+</div><!-- /wrap -->
+
+<nav class="toc" id="toc">
+  <p class="toc-h">目录</p>
+  <ol>
+    <li class="item" data-sec="s1">
+      <a href="#s1"><span class="num">一</span>情态动词是什么</a>
+      <div class="subs">
+        <a href="#s1a">长什么样</a>
+        <a href="#s1b">两个功能</a>
+        <a href="#s1c">两把刻度尺</a>
+        <a href="#s1d">时态受限</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s2">
+      <a href="#s2"><span class="num">二</span>must 与 have to</a>
+      <div class="subs">
+        <a href="#s2a">must 的基本义</a>
+        <a href="#s2b">两种否定</a>
+        <a href="#s2c">时态与主客观</a>
+        <a href="#s2d">口语与语气</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s3">
+      <a href="#s3"><span class="num">三</span>can 与 be able to</a>
+      <div class="subs">
+        <a href="#s3a">can 的基本义</a>
+        <a href="#s3b">时态的区别</a>
+        <a href="#s3c">was able to</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s4">
+      <a href="#s4"><span class="num">四</span>may、should、建议</a>
+      <div class="subs">
+        <a href="#s4a">may 与 can</a>
+        <a href="#s4b">should ＝ ought to</a>
+        <a href="#s4c">should have done</a>
+        <a href="#s4d">had better</a>
+        <a href="#s4e">建议的强弱</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s5">
+      <a href="#s5"><span class="num">五</span>其余的情态</a>
+      <div class="subs">
+        <a href="#s5a">will / would</a>
+        <a href="#s5b">shall</a>
+        <a href="#s5c">need / dare</a>
+        <a href="#s5d">used to 与 would</a>
+        <a href="#s5e">would rather 与固定表达</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s6">
+      <a href="#s6"><span class="num">六</span>推测</a>
+      <div class="subs">
+        <a href="#s6a">可能性阶梯</a>
+        <a href="#s6b">肯定、否定、疑问</a>
+        <a href="#s6c">could 不表过去</a>
+        <a href="#s6d">推测的时间</a>
+        <a href="#s6e">反意疑问句</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s7">
+      <a href="#s7"><span class="num">七</span>情态 + have done</a>
+      <div class="subs">
+        <a href="#s7a">为什么是 have done</a>
+        <a href="#s7b">推测过去</a>
+        <a href="#s7c">本该与本不该</a>
+        <a href="#s7d">推测还是遗憾</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s8">
+      <a href="#s8"><span class="num">八</span>三态叠加</a>
+      <div class="subs">
+        <a href="#s8a">三步写法</a>
+        <a href="#s8b">时态转到情态上</a>
+        <a href="#s8c">完整矩阵</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s9">
+      <a href="#s9"><span class="num">九</span>改错清单</a>
+      <div class="subs">
+        <a href="#s9">高频错误</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s10">
+      <a href="#s10"><span class="num">十</span>本质：说话人的立场</a>
+      <div class="subs">
+        <a href="#s10">两把刻度尺</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s11">
+      <a href="#s11"><span class="num">总</span>总览与自检</a>
+      <div class="subs">
+        <a href="#s11a">速查一：总表</a>
+        <a href="#s11b">速查二：刻度</a>
+        <a href="#s11c">速查三：have done</a>
+        <a href="#s11d">五步流程</a>
+        <a href="#s11e">费曼自检</a>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+</div><!-- /page -->
+
+<button class="toc-btn" id="tocBtn" aria-label="打开目录">目录</button>
+
+<script>
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.toc .item'));
+  var subLinks = [].slice.call(document.querySelectorAll('.toc .subs a'));
+  var secs = items.map(function(it){ return document.getElementById(it.dataset.sec); });
+  var subs = subLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var ticking = false;
+
+  function activeIndex(list, offset){
+    var idx = 0;
+    for (var i = 0; i < list.length; i++){
+      if (list[i] && list[i].getBoundingClientRect().top <= offset) idx = i;
+    }
+    return idx;
+  }
+
+  function update(){
+    ticking = false;
+    var i = activeIndex(secs, 120);
+    items.forEach(function(it, n){ it.classList.toggle('active', n === i); });
+
+    var j = activeIndex(subs, 140);
+    subLinks.forEach(function(a, n){ a.classList.toggle('on', n === j); });
+
+    // 把当前项滚进目录可视区(仅宽屏侧栏)
+    var cur = items[i];
+    if (cur && window.innerWidth > 1080){
+      var toc = document.getElementById('toc');
+      var t = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+      if (t < 0 || t > toc.clientHeight - 60) toc.scrollTop += t - toc.clientHeight / 2;
+    }
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+
+  // 窄屏抽屉
+  var btn = document.getElementById('tocBtn');
+  var scrim = document.getElementById('scrim');
+  function close(){ document.body.classList.remove('nav-open'); }
+  btn.addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
+  scrim.addEventListener('click', close);
+  document.getElementById('toc').addEventListener('click', function(e){
+    if (e.target.tagName === 'A') close();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>
