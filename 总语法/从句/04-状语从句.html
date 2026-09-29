@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>状语从句</title>
+<style>
+:root{
+  --ink:#141821;
+  --panel:#1a202a;
+  --rule:#2b3543;
+  --text:#d6dbe3;
+  --dim:#8b95a5;
+  --faint:#5f6a7a;
+  --blue:#6fa8e6;
+  --blue-bg:rgba(111,168,230,.09);
+  --orange:#e5a15e;
+  --orange-bg:rgba(229,161,94,.09);
+  --paper:#e8e3d9;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.01em;
+}
+
+/* 版面:正文 + 右侧目录 */
+.page{
+  display:grid;grid-template-columns:minmax(0,760px) 212px;gap:60px;
+  max-width:1032px;margin:0 auto;padding:0 28px;
+}
+.wrap{min-width:0;padding-bottom:120px}
+
+/* 头部 */
+header{padding:88px 0 0}
+h1{font-size:34px;line-height:1.3;margin:0 0 20px;font-weight:600;letter-spacing:.06em}
+.thesis{font-size:17px;color:var(--dim);margin:0;line-height:1.9}
+.thesis b{color:var(--text);font-weight:600}
+.legend{margin-top:24px;font-size:13.5px;color:var(--faint)}
+.legend span{margin-right:20px}
+
+/* 四问 */
+.asks{margin:28px 0 0;padding:0}
+.asks li{
+  list-style:none;display:grid;grid-template-columns:1fr auto;gap:16px;
+  padding:10px 0;font-size:15px;align-items:baseline;
+  border-top:1px solid rgba(43,53,67,.55);
+}
+.asks li:first-child{border-top:none}
+.asks .where{font-size:13px;color:var(--faint);white-space:nowrap}
+
+/* 路线图 */
+.map{
+  margin:36px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:6px 0;
+}
+.map-row{
+  display:grid;grid-template-columns:76px 1fr;gap:14px;
+  padding:11px 2px;font-size:14.5px;align-items:baseline;
+}
+.map-row + .map-row{border-top:1px solid rgba(43,53,67,.55)}
+.map-row .n{font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.1em}
+.map-row .t{color:var(--text)}
+.map-row .t em{font-style:normal;color:var(--dim)}
+a.map-row{text-decoration:none}
+a.map-row:hover .t{color:#fff}
+
+/* 阶梯 */
+.stage{margin-top:78px;scroll-margin-top:28px}
+.stage-no{display:block;font-family:var(--serif);font-size:14px;color:var(--faint);margin-bottom:10px;letter-spacing:.12em}
+.stage > h2{font-size:22px;font-weight:600;margin:0;letter-spacing:.04em;color:#eef1f5}
+
+/* 承上 */
+.bridge{margin:20px 0 0;padding-left:16px;border-left:2px solid var(--rule)}
+.bridge .before{margin:0;font-size:14.5px;color:var(--faint);line-height:1.8}
+.bridge .after{margin:4px 0 0;font-size:15px;color:var(--text);line-height:1.8}
+
+h3{font-size:16.5px;font-weight:600;margin:38px 0 12px;color:#e3e8ef;letter-spacing:.03em;scroll-margin-top:28px}
+h3.minor{font-size:14.5px;font-weight:600;margin:28px 0 10px;color:var(--dim);letter-spacing:.02em;padding-left:12px;border-left:2px solid var(--rule)}
+p{margin:14px 0}
+b{color:#f0f3f7;font-weight:600}
+
+/* 例句 */
+.ex{margin:18px 0;padding:2px 0 2px 18px;border-left:1px solid var(--rule)}
+.en{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--paper);margin:0}
+.en u{text-decoration:none;border-bottom:1px solid rgba(232,227,217,.45);padding-bottom:1px}
+.zh{margin:3px 0 0;font-size:14.5px;color:var(--dim);line-height:1.75}
+.ex + .ex{margin-top:14px}
+.note{font-size:13.5px;color:var(--faint);margin:5px 0 0}
+
+/* 还原演示 */
+.restore{
+  margin:20px 0;background:var(--panel);border:1px solid var(--rule);
+  border-radius:3px;padding:16px 20px;
+}
+.restore + .restore{margin-top:12px}
+.restore .en{font-size:16.5px}
+.restore .arrow{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.8}
+.restore .arrow b{color:var(--blue);font-weight:600}
+.restore .arrow .sep{color:var(--faint);margin:0 8px}
+.restore .zh{margin-top:10px}
+
+/* 推导链 */
+.chain{margin:26px 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:8px 0}
+.step{display:grid;grid-template-columns:26px 1fr;gap:16px;padding:16px 24px}
+.step + .step{border-top:1px solid rgba(43,53,67,.6)}
+.step-n{font-family:var(--serif);font-size:14px;color:var(--faint);padding-top:3px}
+.step:last-child .step-n{color:var(--blue)}
+.step .en{font-size:16.5px}
+.step:last-child .en{color:#fff}
+.step-why{font-size:13.5px;color:var(--dim);margin:6px 0 0}
+.hl{color:var(--blue)}
+.dimtext{color:var(--dim)}
+
+/* callout */
+.box{margin:26px 0;padding:16px 20px;border-radius:3px;font-size:14.5px;line-height:1.8}
+.box p{margin:8px 0}
+.box p:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+.box .en{font-size:16px}
+.box .zh{font-size:14px}
+.box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
+.derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
+.rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
+.tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
+.derive .tag{color:var(--blue)}
+.rote .tag{color:var(--orange)}
+
+/* 小结 */
+.sum{margin:36px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:14.5px;color:var(--dim)}
+.sum b{color:var(--text)}
+
+/* 表格 */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl td{overflow-wrap:anywhere}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px;border-bottom-color:#3a4655}
+.tbl td:first-child{font-family:var(--serif);color:var(--paper)}
+.tbl tr:last-child td{border-bottom:none}
+
+/* 对比 */
+.pair{margin:22px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.pair > div{padding:16px 20px}
+.pair > div + div{border-top:1px solid var(--rule);background:var(--panel)}
+.pair .verdict{font-size:13.5px;color:var(--blue);margin:7px 0 0}
+.pair > div + div .verdict{color:var(--orange)}
+
+/* 流程 */
+.flow{margin:24px 0;padding:0;counter-reset:f}
+.flow li{
+  list-style:none;position:relative;padding:0 0 22px 34px;
+  border-left:1px solid var(--rule);margin-left:8px;
+}
+.flow li:last-child{border-left-color:transparent;padding-bottom:0}
+.flow li::before{
+  counter-increment:f;content:counter(f);
+  position:absolute;left:-9px;top:2px;width:18px;height:18px;
+  background:var(--ink);border:1px solid var(--rule);border-radius:50%;
+  font-size:11px;line-height:16px;text-align:center;color:var(--dim);font-family:var(--serif);
+}
+.flow .q{font-weight:600;color:#eef1f5;font-size:15px;margin:0}
+.flow .a{font-size:14.5px;color:var(--dim);margin:5px 0 0}
+
+footer{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
+
+/* ── 右侧目录 ── */
+.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:88px 0 60px;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc-h{font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin:0 0 14px;padding-left:13px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc .item{margin:0}
+.toc a{
+  display:block;text-decoration:none;color:var(--dim);
+  font-size:13.5px;line-height:1.55;padding:6px 0 6px 13px;
+  border-left:1px solid var(--rule);transition:color .15s,border-color .15s;
+}
+.toc a:hover{color:var(--text)}
+.toc .item > a .num{font-family:var(--serif);color:var(--faint);margin-right:7px;font-size:12.5px}
+.toc .item.active > a{color:#eef1f5;border-left-color:var(--blue)}
+.toc .item.active > a .num{color:var(--blue)}
+.toc .subs{display:none;padding:2px 0 6px}
+.toc .item.active .subs{display:block}
+.toc .subs a{font-size:12.5px;color:var(--faint);padding:4px 0 4px 26px;line-height:1.5}
+.toc .subs a:hover{color:var(--dim)}
+.toc .subs a.on{color:var(--text);border-left-color:#3f4b5c}
+
+/* 窄屏:目录收成按钮 */
+.toc-btn{
+  display:none;position:fixed;right:18px;bottom:18px;z-index:30;
+  width:46px;height:46px;border-radius:50%;cursor:pointer;
+  background:var(--panel);border:1px solid #3a4655;color:var(--text);
+  font-size:13px;font-family:var(--sans);line-height:1;
+}
+.scrim{display:none;position:fixed;inset:0;background:rgba(10,13,18,.6);z-index:20}
+body.nav-open .scrim{display:block}
+
+@media (max-width:1080px){
+  .page{grid-template-columns:minmax(0,1fr);max-width:816px;gap:0}
+  .toc-btn{display:block}
+  .toc{
+    position:fixed;top:0;right:0;bottom:0;width:250px;z-index:25;
+    background:#171d26;border-left:1px solid var(--rule);
+    padding:28px 18px 40px;max-height:none;
+    transform:translateX(100%);transition:transform .2s ease;
+  }
+  body.nav-open .toc{transform:translateX(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .toc{transition:none}
+}
+
+@media (max-width:600px){
+  .page{padding:0 20px}
+  .wrap{padding-bottom:80px}
+  header{padding-top:56px}
+  h1{font-size:27px}
+  .step{grid-template-columns:20px 1fr;gap:12px;padding:14px 16px}
+  .map-row{grid-template-columns:56px 1fr;gap:10px}
+  .en{font-size:16px}
+  .stage{margin-top:58px}
+  .asks li{grid-template-columns:1fr}
+  .asks .where{white-space:normal}
+  .tbl{font-size:13.5px}
+  .tbl th,.tbl td{padding:9px 8px}
+}
+
+/* 错例删除线 */
+s{color:var(--orange);text-decoration-thickness:1px}
+/* 独立公式行(.box 内的规则优先级更高,不受影响) */
+.formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:18px 0;line-height:1.7}
+/* 正文里的交叉引用 */
+.xref{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(111,168,230,.4)}
+.xref:hover{border-bottom-color:var(--blue)}
+
+/* 速查表:首列(逻辑名)不拆行 */
+.quick td:first-child,.quick th:first-child{white-space:nowrap}
+
+/* 自检清单(在 .asks 基础上加序号) */
+.checks{counter-reset:c}
+.checks li{grid-template-columns:26px 1fr auto}
+.checks li::before{
+  counter-increment:c;content:counter(c);
+  font-family:var(--serif);font-size:13px;color:var(--faint);padding-top:2px;
+}
+@media (max-width:600px){ .checks li{grid-template-columns:22px 1fr} }
+</style>
+</head>
+<body>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="page">
+
+<div class="wrap">
+<header>
+  <h1>状语从句</h1>
+  <p class="thesis">整章只解决一个问题：<b>一整句话怎样去修饰另一句话里的动作</b>——交代它发生的时间、地点、原因、结果、目的、条件、方式，或者拿它来比较、让一步。九种状语从句不是九套语法，它们是同一个位置上的九种逻辑关系，<b>而逻辑关系全靠连词表达</b>。</p>
+
+  <ol class="asks">
+    <li><span>一、状语修饰谁，一整句话怎么变成状语</span><span class="where">阶段一</span></li>
+    <li><span>二、它和并列句、名词性从句、定语从句怎么分</span><span class="where">阶段二</span></li>
+    <li><span>三、九种逻辑关系，各靠哪些连词</span><span class="where">阶段三、五、六、七</span></li>
+    <li><span>四、时态怎么配：黄金组合与"主将从现"</span><span class="where">阶段四</span></li>
+    <li><span>五、放在哪、怎么写，哪些边界必须单独记</span><span class="where">阶段八、九</span></li>
+  </ol>
+
+  <p class="legend"><span>📖 蓝色 = 能推导出来的判断机制</span><span>🧷 橙色 = 直接记用法 / 语法约定</span></p>
+
+  <div class="map">
+    <a class="map-row" href="#s1"><span class="n">一</span><span class="t">一整句话坐在状语的位置上 <em>—— 状语修饰谁，连词决定逻辑</em></span></a>
+    <a class="map-row" href="#s2"><span class="n">二</span><span class="t">先和别的从句划清界线 <em>—— 只连句子，两句只要一个连词</em></span></a>
+    <a class="map-row" href="#s3"><span class="n">三</span><span class="t">时间与地点 <em>—— when / while / as / until，where 自带"那个地方"</em></span></a>
+    <a class="map-row" href="#s4"><span class="n">四</span><span class="t">时态配合 <em>—— 三个黄金组合与"主将从现"</em></span></a>
+    <a class="map-row" href="#s5"><span class="n">五</span><span class="t">原因与结果 <em>—— because / since / as / for，so / such / such that</em></span></a>
+    <a class="map-row" href="#s6"><span class="n">六</span><span class="t">目的与条件 <em>—— so that + 情态动词，if / unless / as long as</em></span></a>
+    <a class="map-row" href="#s7"><span class="n">七</span><span class="t">方式、比较与让步 <em>—— as if，than，although / no matter</em></span></a>
+    <a class="map-row" href="#s8"><span class="n">八</span><span class="t">放在哪、怎么写 <em>—— 句首还是句尾，用从句替掉 very，连词断句</em></span></a>
+    <a class="map-row" href="#s9"><span class="n">九</span><span class="t">必须单独处理的边界 <em>—— 多义连词、倒装、省略、介词还是连词</em></span></a>
+    <a class="map-row" href="#s10"><span class="n">十</span><span class="t">本质：把逻辑写在明处 <em>—— 英语形合，中文意合</em></span></a>
+    <a class="map-row" href="#s11"><span class="n">总</span><span class="t">使用总览与自检 <em>—— 九种逻辑速查、五步流程、31 题</em></span></a>
+  </div>
+</header>
+
+<!-- ══ 阶段一 ══ -->
+<section class="stage" id="s1">
+  <span class="stage-no">阶段一</span>
+  <h2>一整句话坐在状语的位置上</h2>
+
+  <div class="bridge">
+    <p class="after">先不管九种状语从句的名字。只看一件事：本来修饰动作的是一个词、一个短语，现在换成了一整句话。</p>
+  </div>
+
+  <h3 id="s1a">状语到底修饰谁</h3>
+
+  <p>状语修饰的是<b>谓语动词</b>，也就是句子里的那个动作。它负责给动作交代背景：什么时候发生、在哪儿发生、为什么发生……</p>
+
+  <div class="ex">
+    <p class="en">They were waiting <u>at the station</u> <u>all morning</u>.</p>
+    <p class="zh">他们整个上午都在车站等着。</p>
+    <p class="note">at the station 说明 waiting 在哪儿发生 → 地点状语；all morning 说明它持续了多久 → 时间状语。两个一起出现时，英语一般先说地点、后说时间。</p>
+  </div>
+
+  <p>状语能回答的问题一共九个，每个问题对应一种状语从句：</p>
+
+  <table class="tbl">
+    <tr><th>回答的问题</th><th>名称</th><th>典型连词</th></tr>
+    <tr><td>什么时候？</td><td>时间状语从句</td><td>when / while / before / after / since / until</td></tr>
+    <tr><td>在哪儿？</td><td>地点状语从句</td><td>where / wherever / everywhere</td></tr>
+    <tr><td>为什么？</td><td>原因状语从句</td><td>because / since / as / now that</td></tr>
+    <tr><td>结果怎样？</td><td>结果状语从句</td><td>so … that / such … that</td></tr>
+    <tr><td>为了什么？</td><td>目的状语从句</td><td>so that / in order that</td></tr>
+    <tr><td>什么条件下？</td><td>条件状语从句</td><td>if / unless / as long as</td></tr>
+    <tr><td>以什么方式？</td><td>方式状语从句</td><td>as / as if / the way</td></tr>
+    <tr><td>和谁比？</td><td>比较状语从句</td><td>than / as … as</td></tr>
+    <tr><td>尽管怎样？</td><td>让步状语从句</td><td>although / even if / no matter …</td></tr>
+  </table>
+
+  <div class="box rote">
+    <span class="tag">🧷 九种，两两一组记</span>
+    <p class="formula">时间 · 地点 ｜ 原因 · 结果 ｜ 目的 · 条件 ｜ 方式 · 比较 ｜ 让步</p>
+    <p>前四组两两相对，最好记。最后一个"让步"名字最怪，换成两个字就懂了：<b>转折</b>。让步状语从句说的就是"虽然……（但）……"。</p>
+  </div>
+
+  <h3 id="s1b">从一个词，变成一整句话</h3>
+
+  <p>同一个状语位置，可以由一个词、一个短语，或者一整句话来承担：</p>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">They waited <b>there</b>.</p><p class="step-why">一个副词作地点状语。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en">They waited <b>at the bus stop</b>.</p><p class="step-why">一个介词短语作地点状语。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div><p class="en">They waited <b>where the bus had dropped them</b>.</p><p class="step-why">一整句话作地点状语 —— 这就是地点状语从句。</p></div>
+    </div>
+  </div>
+
+  <div class="restore">
+    <p class="en">The train arrived <b>at noon</b>. → The train arrived <b>while they were waiting</b>.</p>
+    <p class="arrow">说明 arrived 的时间<span class="sep">→</span>从一个短语换成 while 引导的一整句话</p>
+    <p class="zh">火车中午到了。→ 他们正等着的时候，火车到了。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 整章就这一句话</span>
+    <p><b>把一整句话打包起来，去做原本由一个词或短语承担的状语。</b></p>
+    <p>这和名词性从句是同一个动作，只是坐的位置不同：名词性从句坐在名词的位置上（主语、宾语、表语、同位语），状语从句坐在状语的位置上，修饰一个动作。</p>
+  </div>
+
+  <h3 id="s1c">连词决定逻辑</h3>
+
+  <p>两个句子一个字不改，只换中间的连词：</p>
+
+  <table class="tbl">
+    <tr><th>He left the party ___ she arrived.</th><th>意思</th><th>逻辑</th></tr>
+    <tr><td>when</td><td>她到的时候，他走了。</td><td>时间</td></tr>
+    <tr><td>before</td><td>她还没到，他就走了。</td><td>时间 · 先后</td></tr>
+    <tr><td>as soon as</td><td>她一到，他就走了。</td><td>时间 · 一……就</td></tr>
+    <tr><td>because</td><td>他走，是因为她来了。</td><td>原因</td></tr>
+    <tr><td>in case</td><td>他先走了，免得她来了碰上。</td><td>目的 · 以防</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 逻辑关系的表达，靠的是连词</span>
+    <p>句子本身没变，逻辑却完全不同 —— 逻辑不在句子里，<b>在连词上</b>。</p>
+    <p>所以学状语从句，本质上就是学连词。读的时候反过来用：<b>看到连词，就知道后面这整句话是来交代时间、原因、条件……的</b>。哪怕它写得再长、离主句再远，它出现的目的都只是说明另一个动作。</p>
+  </div>
+
+  <h3 id="s1d">判断类型只看连词，不看位置</h3>
+
+  <p>名词性从句的类型要看它<b>前面那个词</b>：跟在 know 后面是宾语从句，跟在 is 后面是表语从句。状语从句正好相反 —— 类型就写在连词自己身上，放在哪儿都不变：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en"><b>Because</b> it rained, we stayed at home.</p>
+      <p class="verdict">放在句首：原因状语从句。</p>
+    </div>
+    <div>
+      <p class="en">We stayed at home <b>because</b> it rained.</p>
+      <p class="verdict">放在句尾：还是原因状语从句。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 删除测试：删掉它，主句还站得住</span>
+    <p>状语是修饰成分，整块删掉，主句仍然完整，只是少了背景信息：</p>
+    <p class="formula">We stayed at home [because it rained]. → We stayed at home. ✓</p>
+    <p>名词性从句是主干成分，删掉之后句子就缺了一块：</p>
+    <p class="formula">The problem is [that we have no money]. → The problem is. ✗</p>
+    <p>读长句时，这是一把快刀：<b>状语从句可以先整块拿掉，看清主干，再放回来。</b></p>
+  </div>
+
+  <p class="sum"><b>小结：</b>状语修饰动作；状语从句就是一整句话来做这个状语。逻辑全在连词上，所以判断类型只看连词，不看位置。删掉状语从句，主句依然完整。</p>
+</section>
+
+<!-- ══ 阶段二 ══ -->
+<section class="stage" id="s2">
+  <span class="stage-no">阶段二</span>
+  <h2>先和别的从句划清界线</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶知道了：状语从句的逻辑全在连词上。</p>
+    <p class="after">但并列句也靠连词，名词性从句、定语从句也有连词，有的连词甚至长得一模一样。先把边界划清。</p>
+  </div>
+
+  <h3 id="s2a">从属连词只连句子，所以不用管"成分对等"</h3>
+
+  <p>并列连词 and / but / or 既能连两个句子，也能连两个词、两个短语，所以它最怕的是<b>成分不对等</b>。从属连词 when / because / although… 只做一件事：把一个完整的句子挂到主句上。</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">She likes <u>reading</u> and <u>swimming</u>.</p>
+      <p class="verdict">并列连词：能连两个成分，所以两边必须对等。</p>
+    </div>
+    <div>
+      <p class="en">She went home <b>because</b> <u>she was tired</u>.</p>
+      <p class="verdict">从属连词：后面一定是完整的主谓结构，不存在"对等"问题。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 before / after / since / until 是"两栖"的</span>
+    <p>后面接一整句话时是连词，接名词或 doing 时是介词。认不出前一种，就会漏掉一个从句：</p>
+    <div class="ex">
+      <p class="en">Students benefit from learning to code <b>before they get to college</b>.</p>
+      <p class="zh">学生在上大学之前学点编程会有好处。（before + 句子 → 时间状语从句）</p>
+    </div>
+    <div class="ex">
+      <p class="en">… <b>before getting to college</b> ／ … <b>before college</b></p>
+      <p class="zh">before + doing ／ before + 名词 → 介词短语，不是从句。</p>
+    </div>
+    <p>别因为 before、after 太简单就不把它们当连词 —— 断句时，它们和 where、which 一样重要。</p>
+  </div>
+
+  <h3 id="s2b">两个句子，只要一个连词</h3>
+
+  <p>名词性从句那一篇说过：连词的作用是把一个句子<b>降一级</b>。两个句子合成一句，只需要降一次，也就只需要一个连词。</p>
+
+  <div class="pair">
+    <div>
+      <p class="en"><s>Although he is old, but he works hard.</s></p>
+      <p class="verdict">✗ although 已经把前一句降级，but 又来连一次 —— 两个句子，两个连词，多了一个。</p>
+    </div>
+    <div>
+      <p class="en">Although he is old, he works hard. ／ He is old, but he works hard.</p>
+      <p class="verdict">✓ 二选一：要么用从属连词 although，要么用并列连词 but。</p>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en"><s>Because it rained, so we stayed at home.</s></p>
+      <p class="verdict">✗ 同样是两个连词。</p>
+    </div>
+    <div>
+      <p class="en">Because it rained, we stayed at home. ／ It rained, so we stayed at home.</p>
+      <p class="verdict">✓ 只留一个。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么中文可以"虽然……但是……"</span>
+    <p>中文的关联词成对出现很自然："虽然……但是……""因为……所以……"。英语里这两个位置上的词都是连词，只能留一个。</p>
+    <p>想保留"还是""仍然"的语气，就用<b>副词</b> —— 副词不负责连接句子：</p>
+    <div class="ex">
+      <p class="en">Although he is old, he <b>still</b> works hard.</p>
+      <p class="zh">虽然他年纪大了，却仍然工作很努力。（still 是副词，可以留）</p>
+    </div>
+  </div>
+
+  <h3 id="s2c">同一个 where / when，三种身份</h3>
+
+  <p>名词性从句、定语从句、状语从句可以共用同一个引导词。判断看它在主句里干什么：</p>
+
+  <table class="tbl">
+    <tr><th>句子</th><th>引导词前面</th><th>身份</th></tr>
+    <tr><td>I don't know <b>where he lives</b>.</td><td>know 缺宾语</td><td>名词性从句（宾语）</td></tr>
+    <tr><td>This is the town <b>where he lives</b>.</td><td>地点名词 town</td><td>定语从句（修饰 town）</td></tr>
+    <tr><td>Stay <b>where you are</b>.</td><td>stay 不缺成分</td><td>地点状语从句（修饰 stay）</td></tr>
+    <tr><td>I don't know <b>when he will come</b>.</td><td>know 缺宾语</td><td>名词性从句（宾语）</td></tr>
+    <tr><td>I still remember the day <b>when we met</b>.</td><td>时间名词 day</td><td>定语从句（修饰 day）</td></tr>
+    <tr><td><b>When he comes</b>, I'll tell him.</td><td>修饰 tell</td><td>时间状语从句</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 三步判断</span>
+    <p><b>① 主句缺不缺成分？</b>缺主语、宾语、表语 → 名词性从句。</p>
+    <p><b>② 前面有没有一个名词，它在限定这个名词？</b>有 → 定语从句。</p>
+    <p><b>③ 都不是，整块在交代动作的时间、地点、原因……</b> → 状语从句。</p>
+    <p>再对比 when 那三句的第一句和第三句：宾语从句里说将来可以用 will（when he will come），时间状语从句里不行（when he comes）。原因在<a class="xref" href="#s4d">阶段四</a>。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>从属连词只连句子，不用管成分对等；两个句子只要一个连词，所以 although 不和 but 同用、because 不和 so 同用。同一个 where / when 可以是三种从句 —— 先看主句缺不缺成分，再看前面有没有名词。</p>
+</section>
+
+<!-- ══ 阶段三 ══ -->
+<section class="stage" id="s3">
+  <span class="stage-no">阶段三</span>
+  <h2>时间与地点</h2>
+
+  <div class="bridge">
+    <p class="before">前两阶是总原则。</p>
+    <p class="after">从这一阶开始逐个过连词，先从最具体的两个问题开始：什么时候？在哪儿？</p>
+  </div>
+
+  <h3 id="s3a">时间：四组连词</h3>
+
+  <p>一想到时间状语从句，大多数人只想得起 when、while。其实时间连词有四组，后两组都是<b>好几个词组成的短语</b>，最容易漏掉。</p>
+
+  <h3 class="minor">① 当……时</h3>
+  <table class="tbl">
+    <tr><th>连词</th><th>意思</th><th>例</th></tr>
+    <tr><td>when</td><td>当……时</td><td>When I got home, it was dark.</td></tr>
+    <tr><td>while</td><td>在……期间</td><td>While I was cooking, the phone rang.</td></tr>
+    <tr><td>as</td><td>当……时；一边……一边；随着</td><td>As he grew older, he became quieter.</td></tr>
+    <tr><td>whenever</td><td>每当；无论何时</td><td>Whenever I see her, she smiles.</td></tr>
+  </table>
+
+  <h3 class="minor">② 先后与起止</h3>
+  <table class="tbl">
+    <tr><th>连词</th><th>意思</th><th>例</th></tr>
+    <tr><td>before / after</td><td>在……之前 / 之后</td><td>Think before you speak.</td></tr>
+    <tr><td>since</td><td>自从</td><td>I've known her since we were children.</td></tr>
+    <tr><td>until / till</td><td>直到</td><td>Wait here until I come back.</td></tr>
+    <tr><td>by the time</td><td>到……的时候（为止）</td><td>By the time we arrived, the film had started.</td></tr>
+    <tr><td>once</td><td>一旦</td><td>Once you begin, you must finish.</td></tr>
+  </table>
+  <p class="note">until 和 till 意思相同，till 更口语；放在句首时一般用 until。</p>
+
+  <h3 class="minor">③ 名词短语当连词</h3>
+  <table class="tbl">
+    <tr><th>连词</th><th>意思</th><th>例</th></tr>
+    <tr><td>the moment / the minute / the second / the instant</td><td>……的那一刻 ＝ 一……就</td><td>The moment I saw him, I knew.</td></tr>
+    <tr><td>every time / each time</td><td>每次</td><td>Every time I call, she's out.</td></tr>
+    <tr><td>the first / last / next time</td><td>第一次 / 上次 / 下次……的时候</td><td>Call me the next time you're in town.</td></tr>
+    <tr><td>the day / the night / the year</td><td>……的那天 / 那晚 / 那年</td><td>The day he left, it snowed.</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 名词短语为什么能当连词</span>
+    <p class="formula">the moment you leave　≈　the moment (that) you leave</p>
+    <p>本来是"名词 + 省略了 that 的定语从句"——"你离开的那一刻"。用得多了，整个名词短语就凝固成了一个连词，后面直接接句子。the day、every time、the first time 都是这么来的。</p>
+    <p class="note">英文老歌名 The Day You Went Away 就是这个结构：the day + you went away。</p>
+  </div>
+
+  <h3 class="minor">④ 一……就</h3>
+  <table class="tbl">
+    <tr><th>连词</th><th>要点</th></tr>
+    <tr><td>as soon as</td><td>最常用，放句首句尾都行</td></tr>
+    <tr><td>the moment / the minute / the second / the instant</td><td>同上一组，更强调"那一瞬间"</td></tr>
+    <tr><td>immediately / directly / instantly</td><td>副词直接当连词用（多见于英式英语）</td></tr>
+    <tr><td>no sooner … than</td><td>主句多用过去完成时；否定词提前要倒装（<a class="xref" href="#s4b">阶段四</a>）</td></tr>
+    <tr><td>hardly / scarcely … when (before)</td><td>同上</td></tr>
+  </table>
+
+  <p>课上的两个笑话，一个用 as soon as，一个用 until：</p>
+
+  <div class="ex">
+    <p class="en">— What time do you get up in the summer holidays?<br>— <b>As soon as</b> the sun begins to come through my window.<br>— Isn't that quite early?<br>— My room faces west.</p>
+    <p class="zh">——暑假你几点起床？——太阳一照进我的窗户我就起。——那不是很早吗？——我的房间朝西。</p>
+    <p class="note">回答省掉了主句 I get up，as soon as 从句修饰的就是它。朝西的窗户要到傍晚才照得进太阳。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Until</b> I was thirteen, I thought my name was "Shut up".</p>
+    <p class="zh">直到十三岁，我都以为自己的名字叫"闭嘴"。</p>
+    <p class="note">until 从句交代"以为"这件事持续到什么时候。</p>
+  </div>
+
+  <h3 id="s3b">when / while / as 怎么分工</h3>
+
+  <table class="tbl">
+    <tr><th>连词</th><th>能接的动作</th><th>特点</th></tr>
+    <tr><td>when</td><td>延续的、短暂的都行</td><td>最通用；还能表"就在这时（突然）"</td></tr>
+    <tr><td>while</td><td>只接延续性动作</td><td>强调"在……期间"，常配进行时</td></tr>
+    <tr><td>as</td><td>延续的、短暂的都行</td><td>强调"同时发生"、"随着……"</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么 while 只接"长"动作</span>
+    <p>while 本来就是"一段时间"的意思（a while ＝ 一会儿）。它引导的从句必须撑得起一段时间。</p>
+    <p>arrive、enter、leave 这样的短暂动作只是时间轴上的一个点，撑不起"一段"，所以不能放进 while 从句。不一定非得用进行时，但必须是延续性的。</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">He entered the room <b>when / while / as</b> the meeting was going on.</p>
+      <p class="verdict">✓ 从句是"会议进行"这个长动作，三个都行。</p>
+    </div>
+    <div>
+      <p class="en">The meeting was going on <b>when / as</b> he entered. ／ <s>… while he entered.</s></p>
+      <p class="verdict">从句换成"走进来"这个短动作：when、as 照样能用，while 出局。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 when 和 as 各有一个专属用法</span>
+    <p><b>when ＝"就在这时"：</b>sb was doing … when … 表示正在做某事，突然发生了另一件事。</p>
+    <div class="ex">
+      <p class="en">I was reading in bed <b>when</b> the lights went out.</p>
+      <p class="zh">我正躺在床上看书，这时灯灭了。</p>
+    </div>
+    <p><b>as ＝"随着"：</b>两个变化同步发生。</p>
+    <div class="ex">
+      <p class="en"><b>As</b> time went by, the pain faded.</p>
+      <p class="zh">随着时间过去，痛苦渐渐淡了。</p>
+    </div>
+  </div>
+
+  <h3 id="s3c">until 与 not … until</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">He <b>waited until</b> she came.</p>
+      <p class="verdict">他一直等到她来。wait 是延续动作，直接用。</p>
+    </div>
+    <div>
+      <p class="en">He <b>didn't leave until</b> she came. ／ <s>He left until she came.</s></p>
+      <p class="verdict">直到她来他才走。leave 是瞬间动作，必须先否定。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 和 while 是同一个道理</span>
+    <p>until 的意思是"<b>一直</b>持续到某一刻"。主句的动作必须撑得起这个"一直"。</p>
+    <p>wait、stay、work 撑得起，直接用。leave、arrive、start 撑不起 —— 但"<b>一直没走</b>"是一个可以持续的状态，所以瞬间动作要配 not：not … until ＝ 直到……才。</p>
+  </div>
+
+  <p class="note">not … until 的强调句 It was not until … that … 和倒装 Not until … did …，见<a class="xref" href="#s9b">阶段九</a>。</p>
+
+  <h3 id="s3d">in doing / on doing：不是从句，但表时间</h3>
+
+  <p>介词短语也能承担同样的时间逻辑。严格说它不算从句，但读的时候要和从句一样反应：</p>
+
+  <div class="restore">
+    <p class="en"><b>In going through the forest</b>, he found a lot of rare plants.</p>
+    <p class="arrow">in + doing<span class="sep">→</span>＝ When he was going through the forest</p>
+    <p class="zh">穿过森林的时候，他发现了很多珍稀植物。</p>
+  </div>
+  <div class="restore">
+    <p class="en"><b>In crossing the river</b>, he came across many natural wonders.</p>
+    <p class="arrow">in + doing<span class="sep">→</span>＝ While he was crossing the river</p>
+    <p class="zh">过河的时候，他遇到了很多自然奇观。</p>
+  </div>
+  <div class="restore">
+    <p class="en"><b>On arriving</b> at the station, she called her mother.</p>
+    <p class="arrow">on + doing<span class="sep">→</span>＝ As soon as she arrived at the station</p>
+    <p class="zh">她一到车站就给妈妈打了电话。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 in doing 和 on doing 分开记</span>
+    <p><b>in doing ＝ 在……的过程中</b>（对应 when / while，是一段）</p>
+    <p><b>on doing ＝ 一……就</b>（对应 as soon as，是一个点）</p>
+  </div>
+
+  <h3 id="s3e">地点：where / wherever / everywhere</h3>
+
+  <p>地点状语从句的连词只有三个，而且都和 where 有关：</p>
+
+  <div class="restore">
+    <p class="en">Stay <b>here</b>. → Stay <b>where you are</b>.</p>
+    <p class="arrow">一个副词作地点状语<span class="sep">→</span>换成 where 引导的一整句话</p>
+    <p class="zh">待在这儿。→ 待在你现在待的地方别动。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en"><b>Where</b> there is a will, there is a way.</p>
+    <p class="zh">有志者，事竟成。（有意愿的地方，就有路）</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Where</b> one door shuts, another opens.</p>
+    <p class="zh">一扇门关上的地方，另一扇门会打开。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Generally, air is heavily polluted <b>where there are factories</b>.</p>
+    <p class="zh">通常来说，有工厂的地方空气污染就严重。</p>
+  </div>
+  <div class="ex">
+    <p class="en">A driver should slow down <b>where there are schools</b>.</p>
+    <p class="zh">司机在有学校的地方应该减速。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Wherever</b> he happens to be, John can make himself at home.</p>
+    <p class="zh">不管到了哪儿，约翰都能让自己像在家一样自在。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Everywhere</b> they went, the visitors were warmly received.</p>
+    <p class="zh">来访者走到哪里都受到热情接待。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 状语的 where 自带"那个地方"</span>
+    <p class="formula">where you found it　≈　in the place where you found it</p>
+    <p>地点状语从句的 where 自己就包含了"那个地方"，所以前面不需要、也不能再有地点名词。一旦前面出现了名词，它就变成修饰那个名词的定语从句：</p>
+    <div class="pair">
+      <div>
+        <p class="en">Put it back <b>where you found it</b>.</p>
+        <p class="verdict">前面没有名词，修饰 put → 地点状语从句。</p>
+      </div>
+      <div>
+        <p class="en">Put it back in the drawer <b>where you found it</b>.</p>
+        <p class="verdict">前面有 drawer，修饰 drawer → 定语从句。</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="sum"><b>小结：</b>时间连词分四组，别漏了 the moment、every time、no sooner … than 这些短语。while 只接延续动作；until 的主句要撑得起"一直"，撑不起就用 not … until。in doing ≈ when doing，on doing ≈ as soon as。地点状语从句只有 where / wherever / everywhere，自带"那个地方"。</p>
+</section>
+
+<!-- ══ 阶段四 ══ -->
+<section class="stage" id="s4">
+  <span class="stage-no">阶段四</span>
+  <h2>时态配合：三个黄金组合与"主将从现"</h2>
+
+  <div class="bridge">
+    <p class="before">时间状语从句几乎总是和时态一起出现。</p>
+    <p class="after">下面三个组合是阅读、写作里最高频的搭配，外加一条真正的硬规则。先说清楚：组合是"常见"，不是"必须"；只有主将从现是"必须"。</p>
+  </div>
+
+  <h3 id="s4a">组合一：was doing + did —— 长动作里插进一个短动作</h3>
+
+  <p class="formula">过去进行时（长动作，铺背景） ＋ 一般过去时（短动作，插进来）</p>
+
+  <div class="ex">
+    <p class="en">I <b>was cooking</b> supper <b>when</b> she <b>arrived</b>.</p>
+    <p class="zh">我正在做晚饭，她到了。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>As</b> Miguel <b>was eating</b>, the doorbell <b>rang</b>.</p>
+    <p class="zh">米格尔正在吃饭，门铃响了。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么进行时天然是"长"的</span>
+    <p>进行时说的是"那一刻正在做"：前一秒在做，后一秒还在做 —— 它天然是一段，不是一个点。所以<b>能用进行时的动作，都是延续性的</b>。</p>
+    <p>一般过去时则把动作看成一个整体、一个点。一段 ＋ 一个点 ＝ 在一个过程里发生了一件事 —— 这就是讲故事时铺背景的标准写法。</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">I <b>took</b> a test. Then I …</p>
+      <p class="verdict">把考试当成一件事：读者期待你按时间顺序讲下一件事（考完去吃了顿大餐……）。</p>
+    </div>
+    <div>
+      <p class="en">I <b>was taking</b> a test when …</p>
+      <p class="verdict">把考试当成一段背景：读者期待听到考试<b>过程中</b>发生了什么。</p>
+    </div>
+  </div>
+
+  <h3 id="s4b">组合二：had done + did —— 两个过去动作的先后</h3>
+
+  <p class="formula">过去完成时（先发生） ＋ 一般过去时（后发生）</p>
+
+  <div class="ex">
+    <p class="en">They <b>had got</b> everything ready <b>before</b> I <b>arrived</b>.</p>
+    <p class="zh">我到之前，他们已经把一切都准备好了。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>After</b> he <b>had worked</b> in the factory for ten years, he <b>went</b> abroad.</p>
+    <p class="zh">他在工厂干了十年，然后出了国。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The concert <b>had hardly begun before</b> all the lights <b>went</b> out.</p>
+    <p class="zh">音乐会刚一开始，所有的灯就灭了。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 表先后，其实有三种手段</span>
+    <p><b>① 按叙述顺序写：</b>I went into the room and took off my shoes. —— 读者会默认先进门，但语法上没有锁死。</p>
+    <p><b>② 用表先后的连词：</b>After I went into the room, I took off my shoes. —— 连词把顺序锁死了。</p>
+    <p><b>③ 用过去完成时：</b>允许把先发生的事写在后面，也不会乱。</p>
+    <p>三种可以单用，也可以叠用。After he <b>had worked</b> … 就是 ②＋③ 叠在一起；连词已经锁定先后时，换成 After he <b>worked</b> … 同样成立。黄金组合是"最稳"，不是"唯一"。</p>
+  </div>
+
+  <p>但当连词本身不管先后时（比如 when），时态就成了唯一的线索 —— 换一个时态，意思就变了：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">When I got to the station, the train <b>left</b>.</p>
+      <p class="verdict">我一到站，火车就开了（先到站，后开车）。</p>
+    </div>
+    <div>
+      <p class="en">When I got to the station, the train <b>had left</b>.</p>
+      <p class="verdict">我到站时，火车已经开走了（先开车，后到站）。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 no sooner … than / hardly … when</span>
+    <p>主句多用过去完成时，从句用一般过去时。否定词提到句首时，主句要部分倒装（助动词提前）：</p>
+    <div class="ex">
+      <p class="en">He had no sooner got off the train than his daughter ran towards him.<br>→ <b>No sooner had he got off</b> the train than his daughter ran towards him.</p>
+      <p class="zh">他一下火车，女儿就朝他跑了过来。</p>
+    </div>
+    <div class="ex">
+      <p class="en">She was scarcely out of sight when they arrived.<br>→ <b>Scarcely was she</b> out of sight when they arrived.</p>
+      <p class="zh">她刚走出视线，他们就到了。</p>
+    </div>
+    <p><b>搭配不能混：</b>no sooner 配 than，hardly / scarcely 配 when（或 before）。no sooner 是比较级（"不比……更早"），所以配比较结构的 than —— 字面意思就是"他下车，并不比女儿跑过来更早"，两件事几乎同时。</p>
+  </div>
+
+  <h3 id="s4c">组合三：since + did，主句 have done</h3>
+
+  <p class="formula">主句现在完成时（持续到现在） ＋ since + 一般过去时（起点）</p>
+
+  <div class="ex">
+    <p class="en"><b>Since</b> he <b>left</b> Nanjing, I <b>haven't heard</b> from him.</p>
+    <p class="zh">自从他离开南京，我就再没收到过他的消息。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Since</b> she <b>left</b> Tokyo, she <b>has kept up</b> a correspondence with her former friends.</p>
+    <p class="zh">离开东京以后，她一直和以前的朋友保持通信。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 一个点，一段线</span>
+    <p>since 从句给的是<b>起点</b>，一个过去的点，所以用一般过去时；主句说的是从那个点一直延续到现在的<b>一段</b>，所以用现在完成时（或现在完成进行时）。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 三个相关句型</span>
+    <div class="ex">
+      <p class="en">It is / has been three years <b>since</b> he left.</p>
+      <p class="zh">他离开已经三年了。（It is + 时间段 + since …）</p>
+    </div>
+    <div class="ex">
+      <p class="en">It will be two weeks <b>before</b> the results come out.</p>
+      <p class="zh">要过两周结果才出来。（It will be + 时间段 + before …）</p>
+    </div>
+    <div class="ex">
+      <p class="en">It was not long <b>before</b> he regretted it.</p>
+      <p class="zh">没过多久他就后悔了。（It was not long before …）</p>
+    </div>
+  </div>
+
+  <h3 id="s4d">硬规则：主将从现</h3>
+
+  <p>时间状语从句（以及<a class="xref" href="#s6d">阶段六</a>的条件状语从句）说<b>将来</b>的事时，主句用将来时，从句用一般现在时。</p>
+
+  <div class="ex">
+    <p class="en"><b>The moment</b> you <b>leave</b> this room, you <b>will get</b> a big surprise.</p>
+    <p class="zh">你一走出这个房间，就会大吃一惊。</p>
+    <p class="note">说这话时人还没离开，"离开"是将来的事，但从句用的是一般现在时 leave。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>By the time</b> you <b>read</b> this, the probe <b>will have sent</b> us thousands of pictures.</p>
+    <p class="zh">等你读到这里时，探测器已经给我们发回了成千上万张照片。</p>
+    <p class="note">主句可以是任何一种将来：一般将来时、将来完成时、现在进行时表将来都算。</p>
+  </div>
+  <div class="ex">
+    <p class="en">… <b>the minute</b> Monica and I <b>break up</b>, I'm moving right back in with you.</p>
+    <p class="zh">……我和莫妮卡一分手，我立马就搬回来跟你住。</p>
+    <p class="note">《老友记》里 Chandler 要搬去和女友莫妮卡同住，为了安慰室友 Joey 说了这句（莫妮卡就站在旁边）。连词是 the minute；从句 break up 是一般现在时；主句用现在进行时表将来，听起来像"已经安排好了" —— 难怪莫妮卡当场不乐意。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么从句里不用 will</span>
+    <p>这里的 will 是"<b>预测</b>"：我预测某件事会发生。</p>
+    <p>但时间 / 条件从句里的那件事不是被预测的对象，而是一个<b>先设定好的前提</b>："等你离开的时候（假定它发生了）→ 你会吃惊"。预测只发生在主句，从句用一般现在时把前提摆出来就够了。</p>
+    <p>这个解释还能直接推出两个"例外"：</p>
+    <p><b>① 宾语从句可以用 will。</b>I don't know when he <b>will</b> come. ／ I wonder if it <b>will</b> rain. —— 这里的 when / if 从句问的是"这件事本身会不会、什么时候发生"，内容就是一个预测，所以要用 will（<a class="xref" href="#s2c">阶段二</a>的"三种身份"在这里派上用场）。</p>
+    <p><b>② 表"意愿"的 will 可以留。</b>If you <b>will</b> wait a moment, I'll fetch the manager. —— 如果您<b>愿意</b>稍等，我去叫经理。这个 will 不是预测，是"愿意"。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 完整版：主将从现、主祈从现、主情从现</span>
+    <p>主句是将来时、祈使句，或带情态动词时，时间 / 条件从句都用一般现在时表将来：</p>
+    <div class="ex">
+      <p class="en">Please tell him to wait <b>if</b> John <b>comes</b>.　You can go out <b>when</b> you <b>finish</b> your homework.</p>
+      <p class="zh">约翰要是来了，请让他等一下。／ 作业写完了你就可以出去。</p>
+    </div>
+    <p>这条只管"说将来"。讲过去的事，时间从句照常用过去时，不受影响。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>三个黄金组合 —— was doing + did（长包短）、had done + did（先后）、since + did / have done（从起点到现在）—— 是常见，不是必须。连词本身不管先后时，时态就是唯一线索。唯一的硬规则是主将从现：从句是设定好的前提，不做预测，所以不用 will。</p>
+</section>
+
+<!-- ══ 阶段五 ══ -->
+<section class="stage" id="s5">
+  <span class="stage-no">阶段五</span>
+  <h2>原因与结果</h2>
+
+  <div class="bridge">
+    <p class="before">时间和地点是最具体的背景。</p>
+    <p class="after">因果是阅读里最核心的逻辑。原因状语从句和结果状语从句是一对，放在一起学。说起原因，要想到三类：一看就知道的连词、看着不像的连词、只能接名词的介词短语。</p>
+  </div>
+
+  <h3 id="s5a">原因：四个核心连词</h3>
+
+  <table class="tbl">
+    <tr><th>连词</th><th>语气</th><th>位置</th><th>用法要点</th></tr>
+    <tr><td>because</td><td>最强</td><td>前后都行，多在句尾</td><td>直接回答 why，给出新信息</td></tr>
+    <tr><td>since</td><td>中</td><td>多在句首</td><td>"既然"：双方都已经知道的原因</td></tr>
+    <tr><td>as</td><td>最弱</td><td>多在句首</td><td>顺带一提的原因；as 意思太多，要靠上下文</td></tr>
+    <tr><td>for</td><td>弱</td><td>只能在主句之后</td><td>推断的依据，常用逗号隔开</td></tr>
+  </table>
+
+  <div class="ex">
+    <p class="en"><b>Since</b> the speaker can't come, we will have to cancel the meeting.</p>
+    <p class="zh">既然演讲人来不了，我们只好取消会议。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>As</b> she was young, she was not equal to the task.</p>
+    <p class="zh">她还年轻，担不起这项工作。（换成 because 语气更重）</p>
+  </div>
+  <div class="ex">
+    <p class="en">There must be no one in the house, <b>for</b> the door is locked.</p>
+    <p class="zh">屋里肯定没人，因为门锁着。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Day is breaking, <b>for</b> the birds are singing.</p>
+    <p class="zh">天快亮了，因为鸟儿在叫。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Someone in the house must be ill, <b>for</b> the doctor has just come out.</p>
+    <p class="zh">屋里肯定有人病了，因为医生刚从里面出来。</p>
+    <p class="note">门锁着不等于一定没人，鸟叫也不等于一定天亮。for 给的不是直接原因，而是"我为什么这么判断"的依据 —— 所以主句里常见 must。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么 for 只能放在后面</span>
+    <p>严格地说，for 是<b>并列连词</b>，和 and / but / or / so 是一家。并列连词只能夹在两个句子中间，不能带着一个句子跑到句首。</p>
+    <p class="formula"><s>For the door is locked, there must be no one in the house.</s> ✗</p>
+    <p>它出现在"原因"这一章，是因为它表达的逻辑是原因。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 只有 because 能做的两件事</span>
+    <p><b>单独回答 why：</b>— Why were you late? — <b>Because</b> I missed the bus.（不能用 since / as / for）</p>
+    <p><b>放进强调句：</b>It was <b>because</b> he was ill that he didn't come.</p>
+  </div>
+
+  <h3 id="s5b">看起来不像原因的原因连词</h3>
+
+  <p>这一组最大的风险是按字面误译：</p>
+
+  <table class="tbl">
+    <tr><th>连词</th><th>别译成</th><th>实际意思</th></tr>
+    <tr><td>now (that)</td><td>现在</td><td>既然、由于</td></tr>
+    <tr><td>seeing (that)</td><td>看到</td><td>鉴于、因为</td></tr>
+    <tr><td>considering (that)</td><td>考虑</td><td>考虑到、鉴于</td></tr>
+    <tr><td>given (that)</td><td>给予</td><td>考虑到、鉴于</td></tr>
+    <tr><td>in that</td><td>在那里面</td><td>因为、在于</td></tr>
+    <tr><td>inasmuch as / in as much as</td><td>——</td><td>因为、鉴于（正式）</td></tr>
+  </table>
+
+  <div class="ex">
+    <p class="en"><b>Seeing that</b> she was seriously ill, they sent for the doctor.</p>
+    <p class="zh">因为她病得很重，他们派人去请了医生。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Now that</b> they know each other better, they get along just fine.</p>
+    <p class="zh">既然彼此更了解了，他们相处得也很融洽。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Given that</b> time is short, we'd better start now.</p>
+    <p class="zh">考虑到时间紧，我们最好现在就开始。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The film is unusual <b>in that</b> it has no dialogue at all.</p>
+    <p class="zh">这部电影的特别之处在于它完全没有对白。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Inasmuch as</b> he had been warmly invited to return, he paid them another visit.</p>
+    <p class="zh">因为受到热情邀请再回去，他又去拜访了一次。</p>
+    <p class="note">inasmuch as 可以连写，也可以拆成 in as much as，不是打错了。多见于小说和正式文体。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 "名词 + that"整体表原因</span>
+    <p class="formula">on the grounds that ／ for the reason that ／ owing to the fact that ／ on account of the fact that ／ due to the fact that</p>
+    <p>严格说，这里的 that 从句是同位语从句，在补充 grounds / reason / fact 的内容。但整个结构的逻辑是原因，读的时候统一当"因为"。</p>
+    <p class="note">课上同一组里还列了 for fear that。它的意思是"唯恐、以免"，逻辑上是否定的目的，放到<a class="xref" href="#s6c">阶段六</a>更准确。</p>
+  </div>
+
+  <h3 id="s5c">从句，还是介词短语</h3>
+
+  <p>同一个原因，可以用连词接句子，也可以用介词接名词：</p>
+
+  <div class="restore">
+    <p class="en">The project will not continue <b>because they lack funds</b>.</p>
+    <p class="arrow">because<span class="sep">→</span>连词，后面接完整的句子</p>
+  </div>
+  <div class="restore">
+    <p class="en">The project will not continue <b>because of / owing to a lack of funds</b>.</p>
+    <p class="arrow">because of / owing to<span class="sep">→</span>介词，后面接名词短语</p>
+  </div>
+  <div class="restore">
+    <p class="en"><b>Owing to the fact that they lack funds</b>, the project will not continue.</p>
+    <p class="arrow">介词后面想接一整句话<span class="sep">→</span>先垫一个 the fact，再接 that 从句</p>
+    <p class="zh">由于缺乏资金，这个项目不会再继续了。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 和名词性从句是同一条规则</span>
+    <p>介词后面不能直接跟 that 从句。想接一整句话，就先垫一个能装内容的名词：</p>
+    <p class="formula">介词 + that 从句 ✗　｜　介词 + the fact + that 从句 ✓</p>
+    <p>这正是名词性从句篇阶段四"介词后"那一条。owing to the fact that、despite the fact that 都是这么来的。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 表原因的介词短语，后面只接名词</span>
+    <p class="formula">because of ／ owing to ／ due to ／ on account of ／ thanks to ／ as a result of</p>
+    <p>thanks to 多用于好的原因（也可以用来反讽）。</p>
+  </div>
+
+  <h3 id="s5d">修饰谁，就放在谁旁边</h3>
+
+  <p>课上一道真题长句里有两个 because。保留原结构、改写措辞如下：</p>
+
+  <div class="ex">
+    <p class="en">One educator believes allowing students to give up a foreign language <b>because they find it hard</b> is a mistake, <b>because every subject, whether art, math or language, adds something to a well-rounded life</b>.</p>
+    <p class="zh">一位教育者认为，因为学生觉得外语难就允许他们放弃，是不对的 —— 因为每一门学科，无论艺术、数学还是语言，都在帮助人全面发展。</p>
+  </div>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">One educator believes [ … ]</p><p class="step-why">believes 后面省略了 that，整块是宾语从句。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en">allowing students to give up a foreign language <b>[because they find it hard]</b></p><p class="step-why">第一个 because 紧贴 give up，只说明"学生为什么放弃"。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div><p class="en">[allowing … hard] is a mistake, <b>[because every subject …]</b></p><p class="step-why">第二个 because 放在宾语从句末尾，说明"为什么说这是个错误"。</p></div>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 位置 ＝ 修饰范围</span>
+    <p>原因状语一般放在句首或句尾，修饰整个句子。但如果它只修饰其中一个动作，就必须<b>紧贴那个动作</b>。</p>
+    <p>这句话如果把两个 because 都挪到句尾，读者就分不清哪个原因对应哪件事了。</p>
+    <p class="note">句中的 whether art, math or language 也是状语：省略了的让步状语"无论是……还是……"，见<a class="xref" href="#s7c">阶段七</a>。</p>
+  </div>
+
+  <h3 id="s5e">结果：so … that / such … that</h3>
+
+  <div class="ex">
+    <p class="en">The wind was <b>so strong that</b> we could hardly move forward.</p>
+    <p class="zh">风大得我们几乎寸步难行。</p>
+    <p class="note">"风大"的"大"是 strong，不是 big。</p>
+  </div>
+  <div class="ex">
+    <p class="en">It was <b>such a cold day that</b> all the pipes in the house froze up.</p>
+    <p class="zh">天冷得屋里所有的水管都冻住了。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 so 管形容词、副词；such 管名词</span>
+    <p>so strong：strong 是形容词 → so。such a cold day：核心是名词 day，cold 只是修饰它的 → such。</p>
+    <p><b>判断只看核心词：</b>核心是名词（哪怕前面有形容词）就用 such。所以看到 horrible 别急着用 so：</p>
+    <p class="formula">It was <b>such</b> horrible weather that we stayed indoors all day.</p>
+    <p>核心是名词 weather（不可数，所以连 a 都没有）。</p>
+  </div>
+
+  <p>两种写法可以互换，只要换掉核心词：</p>
+
+  <div class="restore">
+    <p class="en">It was such a cold day that … → The day was so cold that … → It was so cold that …</p>
+    <p class="arrow">核心是名词 day<span class="sep">→</span>核心换成形容词 cold，such 就换成 so</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 so / such 的搭配细节</span>
+    <table class="tbl">
+      <tr><th>结构</th><th>例</th></tr>
+      <tr><td>so + 形容词 / 副词</td><td>so tired ／ so well</td></tr>
+      <tr><td>so + many / much / few / little + 名词</td><td>so many people ／ so much noise</td></tr>
+      <tr><td>so + 形容词 + a / an + 单数名词</td><td>so cold a day（正式，＝ such a cold day）</td></tr>
+      <tr><td>such + a / an + 形容词 + 单数名词</td><td>such a big breakfast</td></tr>
+      <tr><td>such + 形容词 + 复数 / 不可数名词</td><td>such kind people ／ such horrible weather</td></tr>
+      <tr><td>such a lot of + 名词</td><td>such a lot of work（不说 <s>so a lot of</s>）</td></tr>
+    </table>
+    <p><b>一个坑：</b>little 表"少"时用 so（so little money），表"小"时是普通形容词，用 such（such little children）。</p>
+    <p><b>that 可以省：</b>The wind was so strong we could hardly move. 意思不变。</p>
+  </div>
+
+  <h3 class="minor">练一练：两句之间是因果，用 so 还是 such？</h3>
+  <table class="tbl">
+    <tr><th>合成一句</th><th>为什么</th></tr>
+    <tr><td>The film was <b>so</b> boring (that) half the audience fell asleep.</td><td>boring 是形容词</td></tr>
+    <tr><td>It was <b>such</b> a lovely day (that) we had lunch in the garden.</td><td>核心是 a lovely day</td></tr>
+    <tr><td>He spoke <b>so</b> quickly (that) nobody could follow him.</td><td>quickly 是副词</td></tr>
+    <tr><td>There was <b>so</b> much noise (that) I couldn't hear a thing.</td><td>much + 名词</td></tr>
+    <tr><td>They are <b>such</b> kind people (that) everyone wants to work with them.</td><td>核心是复数名词 people</td></tr>
+    <tr><td>It was <b>such</b> terrible weather (that) the flight was cancelled.</td><td>核心是不可数名词 weather</td></tr>
+  </table>
+  <p class="note">做这种题，第一步永远是先确认两句之间<b>真的是因果</b>，再选 so 还是 such。结构是为逻辑服务的。</p>
+
+  <h3 id="s5f">such that：把程度交给结果去说</h3>
+
+  <p>so 和 such 后面都得写出一个具体的词（strong、a cold day）。但如果主语是一个<b>抽象名词</b>，很难找到恰好的形容词，英语就直接用连在一起的 such that：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">The pain was <b>so bad</b> that he couldn't sleep.</p>
+      <p class="verdict">程度被 bad 一个词说死了。</p>
+    </div>
+    <div>
+      <p class="en">The pain was <b>such that</b> he couldn't sleep.</p>
+      <p class="verdict">疼到了什么地步？让他睡不着的地步 —— 程度由结果来量。</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <p class="en">The difference is <b>such that</b> anyone can perceive it.</p>
+    <p class="zh">差别之大，任何人都能察觉。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Yet, on the surface, everything is different; and the tension is <b>such that</b> we only long for the guard to blow his whistle and put an end to the farce.</p>
+    <p class="zh">可表面上一切都变了样；气氛僵到这种地步，我们只盼着列车员快点吹哨，结束这场闹剧。</p>
+    <p class="note">课上例句，出自 Max Beerbohm 的散文 Seeing People Off（《送行》，1909）：头天晚上已经郑重道过别，第二天在站台上反而无话可说。自己写，多半是 We were so nervous that …；作者把形容词 nervous 换成了名词 tension。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 不写形容词，为什么语气反而更重</span>
+    <p>写成 so nervous、so big，程度被一个词框住了。写成 such that，读者只能从结果（盼着哨响、疼得睡不着）去感受程度 —— 自己脑补出来的，往往比作者给的任何一个形容词都重。</p>
+    <p>所以 such that 特别适合 tension / pain / difference / nature / paradox 这类抽象名词 —— 本来就很难给它们找一个恰好的形容词。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 倒装：Such + be + 主语 + that …</span>
+    <p>把 such 提到句首，主语和 be 倒装，语气更强：</p>
+    <div class="ex">
+      <p class="en">Human nature is such that … → <b>Such is</b> human nature <b>that</b> people are born with a love of gain.</p>
+      <p class="zh">人的本性就是如此：生来就好利。（课上用来翻译荀子《性恶》"今人之性，生而有好利焉"）</p>
+    </div>
+    <div class="ex">
+      <p class="en">And <b>such is</b> the paradox of living, this ecstasy comes when one is most alive, and it comes as a complete forgetfulness that one is alive.</p>
+      <p class="zh">生命的悖论就是如此：这种狂喜在一个人活得最炽烈的时候降临，而它降临的方式，恰恰是完全忘了自己还活着。</p>
+      <p class="note">Jack London《野性的呼唤》（The Call of the Wild）。such 提到句首，is 提到主语前；that 被省掉，用逗号代替。下文紧接着举例：艺术家沉浸在创作里、士兵杀红了眼的时候 —— 人最狂喜的时刻，恰恰意识不到自己在狂喜。</p>
+    </div>
+  </div>
+
+  <h3 id="s5g">原因从句和结果从句：重心都在主句</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en"><b>Because</b> the wind was strong, we could hardly move forward.</p>
+      <p class="verdict">主句是"走不动" → 重心在结果。</p>
+    </div>
+    <div>
+      <p class="en">The wind was <b>so strong that</b> we could hardly move forward.</p>
+      <p class="verdict">主句是"风大" → 重心在原因。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 听起来像绕口令，其实只有一条</span>
+    <p>"原因状语从句强调结果，结果状语从句强调原因" —— 背起来绕，其实就是：<b>主句承载主要信息，从句提供背景</b>。原因从句里，原因是从句，所以重心在结果；结果从句里，结果是从句，所以重心在原因。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>原因分三类 —— because / since / as / for；now that / seeing that / in that 这类"看着不像"的；because of / owing to 这类只接名词的介词。for 是并列连词，只能放后面。修饰谁就放谁旁边。结果看核心词：形容词副词用 so，名词用 such；抽象名词作主语，用 such that 把程度交给结果。</p>
+</section>
+
+<!-- ══ 阶段六 ══ -->
+<section class="stage" id="s6">
+  <span class="stage-no">阶段六</span>
+  <h2>目的与条件</h2>
+
+  <div class="bridge">
+    <p class="before">因果说的是已经成立的关系。</p>
+    <p class="after">目的和条件说的是还没实现的事：为了什么、在什么条件下。所以这一阶的从句里，常出现情态动词和"主将从现"。</p>
+  </div>
+
+  <h3 id="s6a">目的：so that / in order that + 情态动词</h3>
+
+  <p class="formula">主句 + so that / in order that + 主语 + can / could / may / might / will / would + 动词</p>
+
+  <div class="ex">
+    <p class="en">Study hard <b>so that</b> you <b>can</b> pass the entrance exam.</p>
+    <p class="zh">好好学习，好通过入学考试。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>In order that</b> she <b>would</b> not misunderstand him, he wrote her a long letter to explain.</p>
+    <p class="zh">为了不让她误会，他给她写了一封长信解释。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The taller children stood at the back <b>so that</b> everyone <b>could</b> see.</p>
+    <p class="zh">高个子的孩子站到后面，好让大家都能看见。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The FTC once proposed a "do not track" option for web browsers <b>so that</b> users <b>could</b> stop advertisers from following them.</p>
+    <p class="zh">美国联邦贸易委员会曾提议给浏览器加一个"禁止追踪"选项，好让用户能拒绝广告商追踪自己。（据考研真题句改写）</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 为什么目的从句离不开情态动词</span>
+    <p>目的是"希望能做到"的事 —— 还没发生，说的是可能性和能力。而表达可能性和能力，正是情态动词的职责。</p>
+    <p>所以读到 so that，<b>先往后找情态动词</b>：找到了，就是目的。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 位置与压缩</span>
+    <p><b>位置：</b>in order that 放句首、句尾都常见；so that 一般放句尾，口语里偶尔也提到句首，比如课上的 So that everyone could see, the taller children stood at the back.</p>
+    <p><b>压缩：</b>主句、从句主语相同时，可以换成不定式 —— Study hard <b>in order to / so as to</b> pass the exam. 这是下一章非谓语动词的内容。</p>
+  </div>
+
+  <h3 id="s6b">so that：目的还是结果？</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">He got up early <b>so that</b> he <b>could</b> catch the first bus.</p>
+      <p class="verdict">有情态动词 → 目的：为了赶上头班车。</p>
+    </div>
+    <div>
+      <p class="en">He got up early, <b>so that</b> he <b>caught</b> the first bus.</p>
+      <p class="verdict">没有情态动词，常有逗号 → 结果：结果赶上了头班车。</p>
+    </div>
+  </div>
+
+  <p>课上《老友记》的片段：Rachel 把两页菜谱混在一起，做出了一道夹着牛肉的甜点。朋友们不忍心说难吃，纷纷找借口端着盘子躲开。其中一个借口的思路，正好把两种从句都用上了（下句为改写）：</p>
+
+  <div class="ex">
+    <p class="en">It's <b>so</b> good <b>that</b> I'm taking it out to the balcony — <b>so that</b> I <b>can</b> enjoy the view while I eat.</p>
+    <p class="zh">太好吃了，我要端到阳台上去吃 —— 好一边看风景一边吃。</p>
+    <p class="note">前一个是 so + 形容词 + that，没有情态动词：结果。后一个 so that 连在一起，后面有 can：目的。</p>
+  </div>
+
+  <h3 id="s6c">否定的目的：以免、以防</h3>
+
+  <div class="ex">
+    <p class="en">He wrote down the address <b>for fear that</b> he <b>might</b> forget it.</p>
+    <p class="zh">他把地址记了下来，唯恐忘了。</p>
+  </div>
+  <div class="ex">
+    <p class="en">She spoke quietly <b>lest</b> she <b>(should) wake</b> the baby.</p>
+    <p class="zh">她压低声音说话，以免吵醒孩子。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Take an umbrella <b>in case</b> it <b>rains</b>.</p>
+    <p class="zh">带把伞，以防下雨。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 三个词的细节</span>
+    <p><b>for fear that</b> 后面常用 might / should。</p>
+    <p><b>lest</b> 很正式，后面用 (should) + 动词原形。</p>
+    <p><b>in case</b> 后面常用一般现在时；它还有一个"万一"的意思，属于条件（见下文）。</p>
+  </div>
+
+  <h3 id="s6d">条件：if 和它的一群替身</h3>
+
+  <table class="tbl">
+    <tr><th>连词</th><th>意思</th><th>要点</th></tr>
+    <tr><td>if</td><td>如果</td><td>最通用</td></tr>
+    <tr><td>unless</td><td>除非</td><td>＝ if … not，后面一般不再加 not</td></tr>
+    <tr><td>as long as / so long as</td><td>只要</td><td>条件一满足就成立</td></tr>
+    <tr><td>provided (that) / providing (that)</td><td>假如、只要</td><td>不是"提供"</td></tr>
+    <tr><td>on condition that</td><td>在……条件下</td><td>正式，常用于约定、协议</td></tr>
+    <tr><td>suppose / supposing (that) / assuming (that)</td><td>假设</td><td>引出一个设想；suppose / supposing 后面常接问句</td></tr>
+    <tr><td>in case</td><td>万一</td><td>也可表"以防"（目的）</td></tr>
+    <tr><td>only if</td><td>只有……才</td><td>放句首时主句倒装</td></tr>
+  </table>
+
+  <div class="ex">
+    <p class="en"><b>If</b> we want light, we must conquer darkness.</p>
+    <p class="zh">想要光明，就得先战胜黑暗。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>If</b> the love between two people is meant to last, why must they be together day and night?</p>
+    <p class="zh">两情若是久长时，又岂在朝朝暮暮。（秦观《鹊桥仙》）</p>
+  </div>
+  <div class="ex">
+    <p class="en">You can't discover new oceans <b>unless</b> you dare to lose sight of the shore.</p>
+    <p class="zh">除非敢于驶离岸边的视线，否则发现不了新的海洋。</p>
+    <p class="note">unless ＝ if … not：If you don't dare to lose sight of the shore, you can't discover new oceans.</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>As long as</b> you keep on trying, you will succeed.</p>
+    <p class="zh">只要一直尝试，你终将成功。</p>
+  </div>
+  <div class="ex">
+    <p class="en">You can borrow my car <b>provided (that)</b> you return it by Friday.</p>
+    <p class="zh">只要你周五前还回来，车就可以借给你。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Supposing</b> I don't get a day off, what shall we do?</p>
+    <p class="zh">假如我没放假，咱们怎么办？</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>In case</b> John comes, please tell him to wait.</p>
+    <p class="zh">万一约翰来了，请让他等一下。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 条件从句同样主将从现</span>
+    <p class="formula">If it <b>rains</b> tomorrow, we <b>will</b> stay at home.</p>
+    <p>原理和<a class="xref" href="#s4d">阶段四</a>一样：条件从句是一个先设定好的前提，不做预测，所以不用 will。provided、as long as、unless 这些替身也一样。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 only if 和 if only 不是一回事</span>
+    <div class="pair">
+      <div>
+        <p class="en"><b>Only if</b> you practise every day <b>will you</b> improve.</p>
+        <p class="verdict">只有每天练，你才会进步。条件；放句首时主句倒装。</p>
+      </div>
+      <div>
+        <p class="en"><b>If only</b> I had listened to her!</p>
+        <p class="verdict">我要是听了她的话该多好！表愿望，常接虚拟，不需要主句。</p>
+      </div>
+    </div>
+    <p class="note">课上的条件连词表里也列了 if only。它表达的是愿望，不是条件，单独拎出来防混。</p>
+  </div>
+
+  <h3 id="s6e">一个主句，可以挂好几个状语从句</h3>
+
+  <div class="ex">
+    <p class="en"><b>If</b> you treat an argument as a game, you can win by cheating — <b>as long as</b> nobody notices.</p>
+    <p class="zh">如果你把争论当成游戏，那么靠耍花招也能赢 —— 只要没人发现。（据考研真题句改写）</p>
+    <p class="note">主句 you can win by cheating 同时挂了两个条件：if … 和 as long as …。一个句子只能有一个主句，但可以有很多个状语从句。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>目的看情态动词：so that / in order that 后面有 can / could / may / might / would 才是目的，没有就可能是结果。否定的目的用 for fear that / lest / in case。条件连词以 if 为核心，unless ＝ if … not，provided / supposing 别按字面译；条件从句同样主将从现。only if 是条件，if only 是愿望。</p>
+</section>
+
+<!-- ══ 阶段七 ══ -->
+<section class="stage" id="s7">
+  <span class="stage-no">阶段七</span>
+  <h2>方式、比较与让步</h2>
+
+  <div class="bridge">
+    <p class="before">前面六种状语都在交代背景：时间、地点、原因、结果、目的、条件。</p>
+    <p class="after">最后三种更像是描写和转折：以什么方式、跟谁比、尽管怎样。</p>
+  </div>
+
+  <h3 id="s7a">方式：as / as if / as though / the way</h3>
+
+  <div class="ex">
+    <p class="en">Please do it <b>as</b> I told you.</p>
+    <p class="zh">请按我说的去做。</p>
+  </div>
+  <div class="ex">
+    <p class="en">They watched her closely, <b>as</b> a cat watches a mouse.</p>
+    <p class="zh">他们紧紧盯着她，就像猫盯着老鼠。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Just as</b> water is the most important of liquids, (so) air is the most important of gases.</p>
+    <p class="zh">正如水是最重要的液体，空气是最重要的气体。</p>
+    <p class="note">just as …, so … ＝ 正如……，……也……。</p>
+  </div>
+  <div class="ex">
+    <p class="en">She sings <b>the way</b> her mother used to.</p>
+    <p class="zh">她唱歌的样子，就像她妈妈当年一样。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 as if / as though：真实的，还是假想的</span>
+    <div class="ex">
+      <p class="en">It looks <b>as if</b> it's going to rain.</p>
+      <p class="zh">看样子要下雨了。（很可能是真的 → 正常时态）</p>
+    </div>
+    <div class="ex">
+      <p class="en">He talks <b>as if</b> he <b>knew</b> everything.</p>
+      <p class="zh">他说起话来，好像什么都知道似的。（与现在事实相反 → 过去式）</p>
+    </div>
+    <div class="ex">
+      <p class="en">She stared at me <b>as though</b> she <b>had seen</b> a ghost.</p>
+      <p class="zh">她瞪着我，好像见了鬼一样。（与过去事实相反 → 过去完成式）</p>
+    </div>
+  </div>
+
+  <h3 id="s7b">比较：than / as … as / not so … as</h3>
+
+  <table class="tbl">
+    <tr><th>连词</th><th>意思</th></tr>
+    <tr><td>than</td><td>比……更……（分出高下）</td></tr>
+    <tr><td>as … as</td><td>和……一样（比了，结果一样）</td></tr>
+    <tr><td>not so / not as … as</td><td>不如……（＝ 反过来的 than）</td></tr>
+    <tr><td>the same … as</td><td>和……相同</td></tr>
+  </table>
+
+  <div class="ex">
+    <p class="en">Batteries can die faster <b>than</b> we realize.</p>
+    <p class="zh">电池耗尽的速度，可能比我们意识到的更快。</p>
+    <p class="note">比较的两个对象：电池实际耗尽的速度 vs 我们以为的速度。</p>
+  </div>
+  <div class="ex">
+    <p class="en">She dances <b>as</b> gracefully <b>as</b> her sister (does).</p>
+    <p class="zh">她跳舞和她妹妹一样优雅。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Your watch is not <b>the same as</b> mine.</p>
+    <p class="zh">你的表和我的不一样。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The girl is <b>as</b> innocent <b>as</b> she is pretty.</p>
+    <p class="zh">这姑娘既天真又漂亮。</p>
+    <p class="note">同一个人的两个特点用 as … as 连起来，不译成"和她自己一样"，译成"既……又……"。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 比较从句几乎总在省略，还原出来才能对齐</span>
+    <p class="formula">She dances as gracefully as her sister <span class="dimtext">(dances)</span>.</p>
+    <p>比的是"她跳舞"和"她妹妹跳舞"。读的时候把省掉的部分补回去，比较对象就清楚了；写的时候反过来检查：<b>两边比的是不是同一类东西</b>。</p>
+    <div class="pair">
+      <div>
+        <p class="en"><s>The population of Shanghai is larger than Beijing.</s></p>
+        <p class="verdict">✗ 拿"人口"和"城市"比。</p>
+      </div>
+      <div>
+        <p class="en">The population of Shanghai is larger than <b>that of</b> Beijing.</p>
+        <p class="verdict">✓ that 指代 the population，人口比人口。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 the + 比较级，the + 比较级 ＝ 越……越……</span>
+    <div class="ex">
+      <p class="en"><b>The harder</b> you work, <b>the luckier</b> you get.</p>
+      <p class="zh">你越努力，就越幸运。</p>
+    </div>
+    <p>前半句其实是条件：说将来时同样主将从现 —— The sooner you <b>start</b>, the sooner you <b>will</b> finish.</p>
+  </div>
+
+  <h3 id="s7c">让步：although / though / even if …</h3>
+
+  <p>让步状语从句就是转折："虽然……""即使……""无论……"。连词以 though 为核心，再加一组"无论"：</p>
+
+  <table class="tbl">
+    <tr><th>连词</th><th>意思</th><th>要点</th></tr>
+    <tr><td>although / though / even though</td><td>虽然、尽管</td><td>说的是事实；although 更正式</td></tr>
+    <tr><td>even if</td><td>即使</td><td>说的是假设</td></tr>
+    <tr><td>while</td><td>虽然</td><td>多放句首；也常表对比"而"</td></tr>
+    <tr><td>as</td><td>虽然</td><td>必须倒装：Young as he is …</td></tr>
+    <tr><td>no matter + what / who / where / how …</td><td>无论……</td><td>只能作状语</td></tr>
+    <tr><td>whatever / whoever / wherever / however …</td><td>无论……</td><td>＝ no matter + 疑问词</td></tr>
+    <tr><td>whether … or …</td><td>无论是……还是……</td><td>两种情况都不影响主句</td></tr>
+    <tr><td>for all that ／ granted (that) ／ granting (that)</td><td>尽管 ／ 就算</td><td>正式；granted 别译成"同意"</td></tr>
+    <tr><td>despite / in spite of the fact that</td><td>尽管</td><td>介词 + the fact + 同位语从句</td></tr>
+  </table>
+
+  <div class="ex">
+    <p class="en"><b>Although</b> we usually feel sad before we cry, some studies suggest that our muscles can also trigger emotions.</p>
+    <p class="zh">虽然我们通常先感到悲伤、再流泪，但有研究表明，肌肉反应也能反过来引发情绪。（据考研真题句改写）</p>
+    <p class="note">中文要补一个"但"，英文不能补 but（<a class="xref" href="#s2b">阶段二</a>）。</p>
+  </div>
+  <div class="ex">
+    <p class="en">None of this will be easy, but you can begin <b>even if</b> nobody else does.</p>
+    <p class="zh">这些都不容易，但就算没有别人开始，你也可以先开始。</p>
+    <p class="note">这句里 but 和 even if 同时出现，却不冲突：一共三个句子、两处连接 —— but 把前两句并列起来，even if 把第三句挂在第二句上。每处连接只用一个连词。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>While</b> she is a likeable girl, she can be extremely difficult to work with.</p>
+    <p class="zh">她虽然讨人喜欢，但一起共事时可能极难相处。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Whether</b> you like it <b>or not</b>, the meeting will go ahead.</p>
+    <p class="zh">不管你喜不喜欢，会议照开。</p>
+  </div>
+
+  <div class="restore">
+    <p class="en"><b>Although he was ill</b>, he went to work.</p>
+    <p class="arrow">同一个让步，另外两种写法<span class="sep">→</span><b>In spite of his illness</b>, … ／ <b>Despite the fact that he was ill</b>, …</p>
+    <p class="zh">虽然病了，他还是去上班了。（although + 句子；in spite of + 名词；despite the fact that + 句子）</p>
+  </div>
+
+  <h3 class="minor" id="s7c1">even though 还是 even if</h3>
+  <div class="pair">
+    <div>
+      <p class="en"><b>Even though</b> it was raining, we went out.</p>
+      <p class="verdict">虽然（当时确实）在下雨，我们还是出去了。→ 事实</p>
+    </div>
+    <div>
+      <p class="en"><b>Even if</b> it rains tomorrow, we'll go out.</p>
+      <p class="verdict">即使明天下雨，我们也要出去。→ 假设（照样主将从现）</p>
+    </div>
+  </div>
+
+  <h3 class="minor" id="s7c2">whatever 和 no matter what 不完全相等</h3>
+  <div class="pair">
+    <div>
+      <p class="en"><b>Whatever</b> you do, do it well. ＝ <b>No matter what</b> you do, do it well.</p>
+      <p class="verdict">✓ 作状语时，两者可以互换。</p>
+    </div>
+    <div>
+      <p class="en">Take <b>whatever</b> you need. ／ <s>Take no matter what you need.</s></p>
+      <p class="verdict">✗ whatever 还能引导名词性从句（"任何……的东西"），no matter what 不能。</p>
+    </div>
+  </div>
+  <div class="box derive">
+    <span class="tag">📖 从字面就能推出来</span>
+    <p>no matter 的字面意思是"没关系、不要紧"。它只能用来说"<b>无论……都不影响主句</b>"，没法变成一个可以被拿走的"东西"。所以它只作状语，不作宾语。</p>
+  </div>
+
+  <h3 class="minor" id="s7c3">as 表让步，必须倒装</h3>
+  <div class="ex">
+    <p class="en"><b>Young as</b> he is, he knows a lot.</p>
+    <p class="zh">他虽然年轻，懂得却很多。（＝ Although he is young, …）</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Child as</b> he was, he understood what had happened.</p>
+    <p class="zh">虽然还是个孩子，他明白发生了什么。</p>
+    <p class="note">名词提到 as 前面时，去掉冠词：不说 <s>A child as he was</s>。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Much as</b> I like it, I can't afford it.</p>
+    <p class="zh">虽然我很喜欢，但买不起。</p>
+  </div>
+  <p class="note">though 也能这样倒装（Young though he is, …），although 不能。</p>
+
+  <p class="sum"><b>小结：</b>方式用 as / as if / the way，as if 可接虚拟。比较从句几乎总在省略，还原出来检查比较对象是否对等。让步以 though 为核心：although 不和 but 同用；even though 说事实，even if 说假设；whatever 两用，no matter what 只作状语；as 表让步必须倒装。</p>
+</section>
+
+<!-- ══ 阶段八 ══ -->
+<section class="stage" id="s8">
+  <span class="stage-no">阶段八</span>
+  <h2>放在哪、怎么写</h2>
+
+  <div class="bridge">
+    <p class="before">前七阶解决的是"看懂"：每种逻辑靠什么连词。</p>
+    <p class="after">这一阶解决"怎么用"：从句放在哪、怎么用它把句子写具体、长句里怎么把它断出来。</p>
+  </div>
+
+  <h3 id="s8a">放句首，还是放句尾</h3>
+
+  <p>状语从句的位置很灵活。放句首时后面加逗号，放句尾时一般不加：</p>
+
+  <div class="pair">
+    <div>
+      <p class="en"><b>If you need help</b>, call me.</p>
+      <p class="verdict">先搭好框架（如果需要帮助），再给主要信息。</p>
+    </div>
+    <div>
+      <p class="en">Call me <b>if you need help</b>.</p>
+      <p class="verdict">先给主要信息（给我打电话），再补上条件。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 句首搭舞台，句尾作补充</span>
+    <p>句首的从句先搭好一个"舞台"，读者带着这个框架去读主句；句尾的从句是补充，主句先把核心信息交出来。所以：</p>
+    <p><b>时间、条件、让步</b>常放句首：When … ／ If … ／ Although …</p>
+    <p><b>原因、目的、结果</b>常放句尾：… because … ／ … so that … ／ … so … that …</p>
+    <p>这和名词性从句篇讲的"信息重量"是同一个倾向：<b>长的、新的、重要的信息往后放</b>。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 位置被锁死的几个</span>
+    <p><b>只能在后：</b>for（原因）、so … that / such … that（结果）、表结果的 , so that。</p>
+    <p><b>多在句首：</b>since（既然）、as（原因）、表让步的 while、倒装的 as（Young as he is）。</p>
+    <p><b>只修饰一部分时：</b>紧贴它修饰的那个动作（<a class="xref" href="#s5d">阶段五</a>）。</p>
+  </div>
+
+  <h3 id="s8b">用状语从句替掉 very</h3>
+
+  <p>结果状语从句和方式状语从句有个共同点：它们都在对主句做<b>精准描述</b>。写作时，很多 very 都可以用它们换掉：</p>
+
+  <table class="tbl">
+    <tr><th>用了什么</th><th>平铺</th><th>写具体</th></tr>
+    <tr><td>so … that</td><td>This cake is very good.</td><td>This cake is so good that I'm going to eat it slowly, bite by bite.</td></tr>
+    <tr><td>as</td><td>They watched her very closely.</td><td>They watched her as a cat watches a mouse.</td></tr>
+    <tr><td>so … that</td><td>I love you very much.</td><td>I love you so much that I'd cross an ocean for you.</td></tr>
+    <tr><td>the way</td><td>I love you very much.</td><td>I love you the way the desert loves the rain.</td></tr>
+    <tr><td>such that</td><td>We were very nervous.</td><td>The tension was such that no one said a word.</td></tr>
+    <tr><td>such that</td><td>I was very hungry.</td><td>The hunger was such that I could have eaten a horse.</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 very 只说"很"，从句说"到什么地步"</span>
+    <p>very 只告诉读者程度很高，高到什么地步没说。so … that 和 such that 用一个<b>结果</b>来量程度，as 和 the way 用一个<b>画面</b>来比程度 —— 读者看到的是结果和画面，而不是一个空洞的"很"。</p>
+  </div>
+
+  <h3 id="s8c">长难句：先找连词，再断句</h3>
+
+  <p>每次读长句，只做四个字：<b>连词断句</b>。下面这句和课上那道真题句结构相同（一个主句 + before + where + which）：</p>
+
+  <div class="ex">
+    <p class="en">Students often gain a lot from picking up some programming <b>before</b> they start university, <b>where</b> first-year computing courses tend to be overcrowded, <b>which</b> can put off those with little experience or confidence.</p>
+    <p class="zh">学生在上大学之前学点编程，往往收获很大 —— 大学一年级的计算机课常常人满为患，这会把经验少、信心不足的学生劝退。</p>
+  </div>
+
+  <ol class="flow">
+    <li>
+      <p class="q">Students often gain a lot from picking up some programming</p>
+      <p class="a">前面没有连词 → <b>主句</b>：学生从学编程中收获很大。</p>
+    </li>
+    <li>
+      <p class="q">before they start university</p>
+      <p class="a">连词 before + 完整句子 → <b>时间状语从句</b>，修饰 gain：上大学之前。</p>
+    </li>
+    <li>
+      <p class="q">where first-year computing courses tend to be overcrowded</p>
+      <p class="a">前面有地点名词 university，又隔着逗号 → <b>非限定性定语从句</b>：在大学里，一年级的课人满为患。</p>
+    </li>
+    <li>
+      <p class="q">which can put off those with little experience or confidence</p>
+      <p class="a">逗号 + which，前面找不到合适的具体名词 → 指代前面整件事（课程太挤）→ <b>非限定性定语从句</b>。</p>
+    </li>
+  </ol>
+
+  <div class="box derive">
+    <span class="tag">📖 每出现一个新的主谓结构，就往前找它的连词</span>
+    <p>一个主句，三个从句。断句只靠一个动作：看到新的主语 + 谓语，往前找连词。连词告诉你这是哪一类从句；状语从句的连词还会直接告诉你逻辑 —— 这里是时间。</p>
+    <p>课上这句话里最容易漏的，恰恰是最简单的 before：注意力全放在 where、which 上，反而没把 before 当连词。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>时间、条件、让步多在句首搭框架；原因、目的、结果多在句尾作补充；for 和 so … that 只能在后。写作时用 so … that、such that、as 把 very 写具体。读长句靠"连词断句"：每个新的主谓结构，都往前找它的连词。</p>
+</section>
+
+<!-- ══ 阶段九 ══ -->
+<section class="stage" id="s9">
+  <span class="stage-no">阶段九</span>
+  <h2>必须单独处理的边界</h2>
+
+  <div class="bridge">
+    <p class="before">前八阶是主干，大多能推出来。</p>
+    <p class="after">剩下的是长在主干上、推不出来或者特别容易混的分叉。橙色框在这一阶占比最高。</p>
+  </div>
+
+  <h3 id="s9a">一、一词多义的连词：先判逻辑，再翻译</h3>
+
+  <p>as、while、since、so that 这几个词，一个词身兼好几种逻辑。as 意思最多，所以表原因时语气最弱 —— 光看它本身，读者没法确定你在说哪一种。</p>
+
+  <table class="tbl">
+    <tr><th>例句</th><th>意思</th><th>判断线索</th></tr>
+    <tr><td><b>As</b> he grew older, he became quieter.</td><td>随着（时间）</td><td>两个变化同步发生</td></tr>
+    <tr><td><b>As</b> it was late, we went home.</td><td>因为（原因）</td><td>前句是后句的理由</td></tr>
+    <tr><td>Do <b>as</b> I say.</td><td>像……那样（方式）</td><td>说明动作怎么做</td></tr>
+    <tr><td>Young <b>as</b> he is, …</td><td>虽然（让步）</td><td>形容词 / 名词提到 as 前</td></tr>
+    <tr><td>He is <b>as</b> tall <b>as</b> I am.</td><td>和……一样（比较）</td><td>前面有 as + 形容词 / 副词</td></tr>
+    <tr><td><b>While</b> I was out, he called.</td><td>当……时（时间）</td><td>从句是延续动作</td></tr>
+    <tr><td>I like tea, <b>while</b> she likes coffee.</td><td>而（对比）</td><td>前后是可以对照的两件事</td></tr>
+    <tr><td><b>While</b> I admit it's hard, I don't think it's impossible.</td><td>虽然（让步）</td><td>多在句首，后面是转折</td></tr>
+    <tr><td><b>Since</b> he left, I've been alone.</td><td>自从（时间）</td><td>主句常用现在完成时</td></tr>
+    <tr><td><b>Since</b> you're here, help me.</td><td>既然（原因）</td><td>主句常是祈使、建议</td></tr>
+    <tr><td>…, <b>so that</b> he missed the bus.</td><td>结果</td><td>无情态动词，常有逗号</td></tr>
+    <tr><td>… <b>so that</b> he could catch the bus.</td><td>目的</td><td>有情态动词</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 while：考试里多半不是"当……时"</span>
+    <p>在考试文章里，while 单纯表时间的情况反而少，更多是表<b>对比</b>和<b>转折</b>。读到 while，先别急着译成"当……时"，看看前后两件事是不是在对照：</p>
+    <div class="ex">
+      <p class="en">I'm fond of English, <b>while</b> he likes math.</p>
+      <p class="zh">我喜欢英语，而他喜欢数学。</p>
+    </div>
+    <div class="ex">
+      <p class="en">The sun is shining in the east, <b>while</b> rain is falling in the west.</p>
+      <p class="zh">东边日出西边雨。（刘禹锡《竹枝词》）</p>
+    </div>
+    <div class="ex">
+      <p class="en">By the mid-1990s, America had enjoyed years of steady growth, <b>while</b> Japan was still struggling.</p>
+      <p class="zh">到 90 年代中期，美国已经享受了好几年稳健增长，而日本还在苦苦挣扎。</p>
+      <p class="note">字面上是两件事同时发生，但作者真正想说的是对比：一边增长，一边挣扎。</p>
+    </div>
+  </div>
+
+  <h3 id="s9b">二、倒装：否定词、only、so / such 提到句首</h3>
+
+  <div class="box rote">
+    <span class="tag">🧷 这些成分一提前，主句就倒装</span>
+    <table class="tbl">
+      <tr><th>提前的成分</th><th>例</th></tr>
+      <tr><td>no sooner / hardly / scarcely</td><td>No sooner <b>had he</b> arrived than it began to rain.</td></tr>
+      <tr><td>not until</td><td>Not until his mother came home <b>did he</b> go to bed.</td></tr>
+      <tr><td>only + 状语从句</td><td>Only when he had gone <b>did I</b> realize how much he meant to me.</td></tr>
+      <tr><td>so + 形容词 / 副词</td><td>So strong <b>was the wind</b> that we could hardly stand.</td></tr>
+      <tr><td>such</td><td>Such <b>was the tension</b> that no one said a word.</td></tr>
+    </table>
+    <p><b>倒装发生在主句，不在从句。</b>Not until his mother came home did he go to bed —— came home 是从句，照常写；倒装的是主句 did he go。</p>
+    <p class="note">另一种是从句内部把表语提到 as / though 前面（Tired as he was, …），不加助动词。倒装会有专门一课，这里先混个眼熟。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 not … until 的两种强调</span>
+    <p class="formula">He didn't go to bed until his mother came home.</p>
+    <p class="formula">→ It was <b>not until</b> his mother came home <b>that</b> he went to bed.</p>
+    <p class="formula">→ <b>Not until</b> his mother came home <b>did he go</b> to bed.</p>
+    <p>强调句里 not 被提到了前面，所以后半句恢复成肯定的 went；倒装句里助动词 did 提到主语前。</p>
+  </div>
+
+  <h3 id="s9c">三、省略：主语一致 + be，可以一起省</h3>
+
+  <p>当从句的主语和主句一致，并且从句里有 be 时，可以把"主语 + be"一起省掉。常见于 when / while / if / unless / though / once / as if：</p>
+
+  <div class="ex">
+    <p class="en"><b>When</b> <span class="dimtext">(I was)</span> young, I lived in the countryside.</p>
+    <p class="zh">小时候，我住在乡下。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>While</b> <span class="dimtext">(he was)</span> walking in the park, he met an old friend.</p>
+    <p class="zh">在公园散步时，他遇到了一个老朋友。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Though</b> <span class="dimtext">(he was)</span> tired, he kept working.</p>
+    <p class="zh">虽然累了，他还是继续干。</p>
+  </div>
+  <div class="ex">
+    <p class="en"><b>Once</b> <span class="dimtext">(it is)</span> published, the book will sell well.</p>
+    <p class="zh">这本书一出版就会畅销。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 主语不一致，就不能省</span>
+    <p>省掉的主语要由主句来"认领"。如果主句主语和从句不是同一个人，读者就会认错：</p>
+    <div class="pair">
+      <div>
+        <p class="en"><s>When young, my father took me fishing.</s></p>
+        <p class="verdict">✗ 读起来像"我父亲年轻的时候"—— young 被主句主语 my father 认领了。</p>
+      </div>
+      <div>
+        <p class="en">When <b>I was</b> young, my father took me fishing.</p>
+        <p class="verdict">✓ 主语不一致，就老老实实写全。</p>
+      </div>
+    </div>
+    <p>省掉"主语 + be"之后，剩下的是 doing、done 或形容词 —— 这正是下一章<b>非谓语动词作状语</b>的来源。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 固定说法：省的是 it + be</span>
+    <p class="formula">if necessary ／ if possible ／ when necessary ／ where possible</p>
+    <p>这几个省掉的是指代"情况"的 it + be（if it is necessary），不受"主语一致"的限制，直接当固定短语用：Call me <b>if necessary</b>.</p>
+  </div>
+
+  <h3 id="s9d">四、介词还是连词：看后面接什么</h3>
+
+  <div class="box rote">
+    <span class="tag">🧷 同一个逻辑，一边接句子，一边接名词</span>
+    <table class="tbl">
+      <tr><th>接句子（连词）</th><th>接名词 / doing（介词）</th><th>逻辑</th></tr>
+      <tr><td>because</td><td>because of ／ owing to ／ due to</td><td>原因</td></tr>
+      <tr><td>although ／ though</td><td>despite ／ in spite of</td><td>让步</td></tr>
+      <tr><td>while ／ when</td><td>during ／ in doing</td><td>时间</td></tr>
+      <tr><td>as soon as</td><td>on doing</td><td>一……就</td></tr>
+      <tr><td>in case</td><td>in case of</td><td>以防 ／ 万一</td></tr>
+      <tr><td>so that ／ in order that</td><td>so as to ／ in order to（不定式）</td><td>目的</td></tr>
+      <tr><td>before ／ after ／ since ／ until</td><td>同形：before ／ after ／ since ／ until</td><td>时间</td></tr>
+    </table>
+    <div class="pair">
+      <div>
+        <p class="en"><s>Despite it rained, …</s>　<s>During he was in Paris, …</s></p>
+        <p class="verdict">✗ 介词后面接了句子。</p>
+      </div>
+      <div>
+        <p class="en">Despite <b>the rain</b>, … ／ <b>While</b> he was in Paris, … ／ During <b>his stay</b> in Paris, …</p>
+        <p class="verdict">✓ 介词接名词，连词接句子。</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="sum"><b>小结：</b>这一阶推不出来，只能记。最影响阅读的是<b>一（一词多义）</b>，尤其是 while 和 as；最影响写作的是<b>三（省略时主语必须一致）</b>和<b>四（介词后面不能接句子）</b>。</p>
+</section>
+
+<!-- ══ 阶段十 ══ -->
+<section class="stage" id="s10">
+  <span class="stage-no">阶段十</span>
+  <h2>本质：英语把逻辑写在明处</h2>
+
+  <div class="bridge">
+    <p class="after">到这里，可以把九个名字暂时放下了。</p>
+  </div>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">下雨了，比赛取消了。</p><p class="step-why">中文：两句话挨着放，因果关系留给读者自己体会。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en"><s>It rained, the match was cancelled.</s></p><p class="step-why">英文照搬：两个句子之间只有一个逗号，没有连词，句子接不上。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div><p class="en">The match was cancelled <b>because</b> it rained.</p><p class="step-why">英文必须把"因果"写成一个连词，逻辑随之被写死。</p></div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>中文（意合）</th><th>英文（形合）</th><th>补出的逻辑</th></tr>
+    <tr><td>你不来，我不走。</td><td>I won't leave <b>unless</b> you come.</td><td>条件</td></tr>
+    <tr><td>他一到，会就开了。</td><td>The meeting began <b>as soon as</b> he arrived.</td><td>时间</td></tr>
+    <tr><td>天都黑了，他还没回来。</td><td><b>Although</b> it's already dark, he hasn't come back.</td><td>让步</td></tr>
+    <tr><td>东西太贵，我没买。</td><td>It was <b>so</b> expensive <b>that</b> I didn't buy it.</td><td>结果</td></tr>
+    <tr><td>有志者，事竟成。</td><td><b>Where</b> there is a will, there is a way.</td><td>地点（带条件意味）</td></tr>
+  </table>
+
+  <div class="box derive">
+    <span class="tag">📖 这就是状语从句存在的理由</span>
+    <p>中文常常<b>意合</b>：两句话挨着放，逻辑藏在语序和语境里。英文是<b>形合</b>：两个句子要合成一句，中间必须有一个连词 —— 而这个连词一出现，逻辑就被写在了明处。</p>
+    <p><b>英译中：</b>可以把连词"化掉"，译成更自然的流水句（Because it rained, the match was cancelled. → 下雨了，比赛取消了）。</p>
+    <p><b>中译英：</b>先问自己两句话之间是九种关系里的哪一种，再挑连词。挑不出来，往往说明逻辑还没想清楚。</p>
+  </div>
+
+  <p>三类从句合起来，就是英语把句子嵌进句子的全部方式：名词性从句是"一句话当一个成分"，定语从句是"一句话修饰一个名词"，状语从句是"一句话修饰一个动作" —— 并且把两件事之间的逻辑写在明处。</p>
+
+  <p class="sum"><b>小结：</b>九种状语从句 ＝ 九种逻辑关系，逻辑全在连词上。读的时候靠连词定逻辑，写的时候先想清逻辑，再选连词。</p>
+</section>
+
+<!-- ══ 总览 ══ -->
+<section class="stage" id="s11">
+  <span class="stage-no">总览</span>
+  <h2>使用总览与自检</h2>
+
+  <h3 id="s11a">速查一：九种逻辑 × 连词</h3>
+
+  <table class="tbl quick">
+    <tr><th>逻辑</th><th>连词（接句子）</th><th>介词 / 短语（不接句子）</th><th>必记点</th></tr>
+    <tr><td>时间</td><td>when / while / as / before / after / since / until / as soon as / the moment / every time / once / by the time</td><td>during / in doing / on doing</td><td>while 只接延续动作；主将从现</td></tr>
+    <tr><td>地点</td><td>where / wherever / everywhere</td><td>——</td><td>前面没有地点名词</td></tr>
+    <tr><td>原因</td><td>because / since / as / for / now that / seeing that / given that / in that</td><td>because of / owing to / due to / thanks to</td><td>for 只放句后；回答 why 只用 because</td></tr>
+    <tr><td>结果</td><td>so … that / such … that / such that</td><td>——</td><td>so 管形容词副词，such 管名词</td></tr>
+    <tr><td>目的</td><td>so that / in order that / for fear that / lest / in case</td><td>in order to / so as to / for fear of</td><td>从句里有情态动词</td></tr>
+    <tr><td>条件</td><td>if / unless / as long as / provided that / on condition that / supposing / in case / only if</td><td>in case of / with / without</td><td>主将从现；unless ＝ if … not</td></tr>
+    <tr><td>方式</td><td>as / as if / as though / the way / just as</td><td>like + 名词</td><td>as if 可接虚拟</td></tr>
+    <tr><td>比较</td><td>than / as … as / not so … as / the + 比较级</td><td>——</td><td>还原省略，比较对象要对等</td></tr>
+    <tr><td>让步</td><td>although / though / even though / even if / while / as / no matter + wh- / wh-ever / whether … or</td><td>despite / in spite of / for all</td><td>不和 but 同用；as 表让步要倒装</td></tr>
+  </table>
+
+  <h3 id="s11b">速查二：时态配合</h3>
+
+  <table class="tbl">
+    <tr><th>组合</th><th>用途</th><th>例</th></tr>
+    <tr><td>was doing + did</td><td>长动作里插进短动作</td><td>I was cooking when she arrived.</td></tr>
+    <tr><td>had done + did</td><td>两个过去动作的先后</td><td>They had left before I arrived.</td></tr>
+    <tr><td>since + did，主句 have done</td><td>从过去某一点持续到现在</td><td>I haven't seen him since he left.</td></tr>
+    <tr><td>从句一般现在时，主句将来 / 祈使 / 情态</td><td>时间、条件从句说将来</td><td>I'll call you when I arrive.</td></tr>
+  </table>
+  <p class="note">前三个是"常见"，不是"必须"；第四个是硬规则。</p>
+
+  <h3 id="s11c">使用流程：五步</h3>
+
+  <ol class="flow">
+    <li>
+      <p class="q">先找主句骨架。</p>
+      <p class="a">哪个主谓结构前面没有连词，它就是主句。</p>
+    </li>
+    <li>
+      <p class="q">圈出所有从属连词，一块一块断开。</p>
+      <p class="a">包括 before、after 这类"太简单"的词，和 the moment、every time、no sooner … than 这类短语。拿不准时用删除测试：删掉后主句还站得住的，就是状语。</p>
+    </li>
+    <li>
+      <p class="q">由连词定逻辑。</p>
+      <p class="a">九种里的哪一种？遇到 as、while、since、so that 这类多义连词，先看结构线索（倒装、情态动词、主句时态、前面有没有名词），再看上下文。</p>
+    </li>
+    <li>
+      <p class="q">确认修饰范围。</p>
+      <p class="a">在句首或句尾的，修饰整句；夹在中间的，紧贴它修饰的那个动作。</p>
+    </li>
+    <li>
+      <p class="q">写作时检查四件事。</p>
+      <p class="a">两个句子是不是只用了一个连词？时间、条件从句说将来时有没有误用 will？so 和 such 选对了吗？省略主语时，主从句的主语是否一致？</p>
+    </li>
+  </ol>
+
+  <h3 id="s11d">费曼自检</h3>
+
+  <p>能从"连词 → 逻辑 → 时态 → 位置"一步步推出下面这些，才算掌握了状语从句，而不是记住了九个名字。答不上来的，右边标了回哪一阶。</p>
+
+  <ol class="asks checks">
+    <li><span>为什么判断状语从句的类型只看连词，而判断名词性从句要看它前面那个词？</span><span class="where">阶段一</span></li>
+    <li><span>删掉 because it rained，主句还完整吗？删掉 that we have no money 呢？这说明了什么？</span><span class="where">阶段一</span></li>
+    <li><span>为什么 Although he is old, but he works hard. 是错的？Although he is old, he still works hard. 为什么又对？</span><span class="where">阶段二</span></li>
+    <li><span>I don't know where he lives. ／ This is the town where he lives. ／ Stay where you are. 三个 where 各是什么从句？</span><span class="where">阶段二</span></li>
+    <li><span>为什么 before they get to college 是从句，before getting to college 不是？</span><span class="where">阶段二</span></li>
+    <li><span>为什么 while 后面不能接 arrive、enter 这样的动作？</span><span class="where">阶段三</span></li>
+    <li><span>为什么不能说 He left until she came.？该怎么改？</span><span class="where">阶段三</span></li>
+    <li><span>In crossing the river 和 On arriving at the station 分别相当于哪个连词引导的从句？</span><span class="where">阶段三</span></li>
+    <li><span>为什么 Put it back where you found it. 前面不需要 the place？</span><span class="where">阶段三</span></li>
+    <li><span>作为故事的开头，I was taking a test … 和 I took a test. 让读者期待的东西有什么不同？</span><span class="where">阶段四</span></li>
+    <li><span>When I got to the station, the train left. 和 … the train had left. 意思有什么不同？</span><span class="where">阶段四</span></li>
+    <li><span>为什么 no sooner 配 than，而 hardly 配 when？</span><span class="where">阶段四</span></li>
+    <li><span>为什么时间、条件从句说将来的事不用 will？I don't know when he will come. 里的 will 为什么又能用？</span><span class="where">阶段四</span></li>
+    <li><span>If you will wait a moment, … 为什么不违反"主将从现"？</span><span class="where">阶段四</span></li>
+    <li><span>为什么 for 引导的原因只能放在主句后面？</span><span class="where">阶段五</span></li>
+    <li><span>now that、seeing that、in that 分别怎么译？</span><span class="where">阶段五</span></li>
+    <li><span>because 后面能直接接 they lack funds，为什么 owing to 后面要先加 the fact？</span><span class="where">阶段五</span></li>
+    <li><span>It was ___ horrible weather that … 为什么填 such？such little children 和 so little money 为什么不一样？</span><span class="where">阶段五</span></li>
+    <li><span>The pain was such that he couldn't sleep. 比 The pain was so bad that … 强在哪？</span><span class="where">阶段五</span></li>
+    <li><span>Such is the paradox of living … 是怎么倒装出来的？that 去哪了？</span><span class="where">阶段五</span></li>
+    <li><span>He got up early so that he could catch the bus. 和 He got up early, so that he caught the bus. 有什么不同？</span><span class="where">阶段六</span></li>
+    <li><span>为什么目的状语从句里几乎总有情态动词？</span><span class="where">阶段六</span></li>
+    <li><span>only if 和 if only 有什么不同？</span><span class="where">阶段六</span></li>
+    <li><span>She dances as gracefully as her sister. 省略了什么？The population of Shanghai is larger than Beijing. 错在哪？</span><span class="where">阶段七</span></li>
+    <li><span>even though 和 even if 怎么选？</span><span class="where">阶段七</span></li>
+    <li><span>为什么能说 Take whatever you need.，却不能说 Take no matter what you need.？</span><span class="where">阶段七</span></li>
+    <li><span>Child as he was, … 里的 child 为什么没有冠词？</span><span class="where">阶段七</span></li>
+    <li><span>为什么说 so … that、such that 和 as 能帮你把 very 写具体？</span><span class="where">阶段八</span></li>
+    <li><span>读到 while，为什么不要急着译成"当……时"？</span><span class="where">阶段九</span></li>
+    <li><span>When young, my father took me fishing. 错在哪？</span><span class="where">阶段九</span></li>
+    <li><span>"你不来，我不走"译成英文，为什么必须补一个连词？补哪个？</span><span class="where">阶段十</span></li>
+  </ol>
+</section>
+
+<footer>下一步：非谓语动词。阶段九讲过，状语从句省掉"主语 + be"之后，剩下的 doing、done 就是非谓语动词作状语 —— 句子被继续压缩，连词和主语都可以不要。那时候逻辑不再写在明处，要从上下文里自己读出来，而判断依据，正是这一章的九种逻辑关系。</footer>
+
+</div><!-- /wrap -->
+
+<nav class="toc" id="toc">
+  <p class="toc-h">目录</p>
+  <ol>
+    <li class="item" data-sec="s1">
+      <a href="#s1"><span class="num">一</span>坐在状语的位置上</a>
+      <div class="subs">
+        <a href="#s1a">状语修饰谁</a>
+        <a href="#s1b">从一个词到一整句</a>
+        <a href="#s1c">连词决定逻辑</a>
+        <a href="#s1d">判断类型看连词</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s2">
+      <a href="#s2"><span class="num">二</span>和别的从句划界</a>
+      <div class="subs">
+        <a href="#s2a">只连句子</a>
+        <a href="#s2b">两句只要一个连词</a>
+        <a href="#s2c">where / when 三种身份</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s3">
+      <a href="#s3"><span class="num">三</span>时间与地点</a>
+      <div class="subs">
+        <a href="#s3a">时间连词四组</a>
+        <a href="#s3b">when / while / as</a>
+        <a href="#s3c">until 与 not … until</a>
+        <a href="#s3d">in doing / on doing</a>
+        <a href="#s3e">地点：where</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s4">
+      <a href="#s4"><span class="num">四</span>时态配合</a>
+      <div class="subs">
+        <a href="#s4a">was doing + did</a>
+        <a href="#s4b">had done + did</a>
+        <a href="#s4c">since + did</a>
+        <a href="#s4d">主将从现</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s5">
+      <a href="#s5"><span class="num">五</span>原因与结果</a>
+      <div class="subs">
+        <a href="#s5a">四个核心原因连词</a>
+        <a href="#s5b">不像原因的原因</a>
+        <a href="#s5c">从句还是介词短语</a>
+        <a href="#s5d">修饰谁放谁旁边</a>
+        <a href="#s5e">结果：so / such</a>
+        <a href="#s5f">such that</a>
+        <a href="#s5g">重心在主句</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s6">
+      <a href="#s6"><span class="num">六</span>目的与条件</a>
+      <div class="subs">
+        <a href="#s6a">so that + 情态动词</a>
+        <a href="#s6b">目的还是结果</a>
+        <a href="#s6c">以免、以防</a>
+        <a href="#s6d">条件连词</a>
+        <a href="#s6e">一句挂多个从句</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s7">
+      <a href="#s7"><span class="num">七</span>方式·比较·让步</a>
+      <div class="subs">
+        <a href="#s7a">方式：as / as if</a>
+        <a href="#s7b">比较：than / as … as</a>
+        <a href="#s7c">让步：although 等</a>
+        <a href="#s7c1">｜even though / even if</a>
+        <a href="#s7c2">｜whatever / no matter</a>
+        <a href="#s7c3">｜as 倒装</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s8">
+      <a href="#s8"><span class="num">八</span>放在哪·怎么写</a>
+      <div class="subs">
+        <a href="#s8a">句首还是句尾</a>
+        <a href="#s8b">用从句替掉 very</a>
+        <a href="#s8c">连词断句</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s9">
+      <a href="#s9"><span class="num">九</span>边界</a>
+      <div class="subs">
+        <a href="#s9a">一、多义连词</a>
+        <a href="#s9b">二、倒装</a>
+        <a href="#s9c">三、省略</a>
+        <a href="#s9d">四、介词还是连词</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s10">
+      <a href="#s10"><span class="num">十</span>本质：形合与意合</a>
+      <div class="subs">
+        <a href="#s10">把逻辑写出来</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s11">
+      <a href="#s11"><span class="num">总</span>总览与自检</a>
+      <div class="subs">
+        <a href="#s11a">速查一：九种逻辑</a>
+        <a href="#s11b">速查二：时态配合</a>
+        <a href="#s11c">五步流程</a>
+        <a href="#s11d">费曼自检</a>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+</div><!-- /page -->
+
+<button class="toc-btn" id="tocBtn" aria-label="打开目录">目录</button>
+
+<script>
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.toc .item'));
+  var subLinks = [].slice.call(document.querySelectorAll('.toc .subs a'));
+  var secs = items.map(function(it){ return document.getElementById(it.dataset.sec); });
+  var subs = subLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var ticking = false;
+
+  function activeIndex(list, offset){
+    var idx = 0;
+    for (var i = 0; i < list.length; i++){
+      if (list[i] && list[i].getBoundingClientRect().top <= offset) idx = i;
+    }
+    return idx;
+  }
+
+  function update(){
+    ticking = false;
+    var i = activeIndex(secs, 120);
+    items.forEach(function(it, n){ it.classList.toggle('active', n === i); });
+
+    var j = activeIndex(subs, 140);
+    subLinks.forEach(function(a, n){ a.classList.toggle('on', n === j); });
+
+    // 把当前项滚进目录可视区(仅宽屏侧栏)
+    var cur = items[i];
+    if (cur && window.innerWidth > 1080){
+      var toc = document.getElementById('toc');
+      var t = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+      if (t < 0 || t > toc.clientHeight - 60) toc.scrollTop += t - toc.clientHeight / 2;
+    }
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+
+  // 窄屏抽屉
+  var btn = document.getElementById('tocBtn');
+  var scrim = document.getElementById('scrim');
+  function close(){ document.body.classList.remove('nav-open'); }
+  btn.addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
+  scrim.addEventListener('click', close);
+  document.getElementById('toc').addEventListener('click', function(e){
+    if (e.target.tagName === 'A') close();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>
