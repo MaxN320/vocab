@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>说服、辩护、解释 · 对照检查</title><style>
+:root{--bg:#11131a;--card:#191c26;--card-2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--ink-soft:#aeb4c5;--ink-mute:#6f7689;
+  --accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;--red:#ff8a80;--violet:#c29bff;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;padding:0 16px 56px}
+.wrap{max-width:720px;margin:0 auto}
+.wrap.wide{max-width:1100px}
+.bar{position:sticky;top:0;z-index:10;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px}
+.back{font-size:13px;color:var(--accent);text-decoration:none;white-space:nowrap}
+.grow{flex:1}
+.hint{font-size:12px;color:var(--ink-mute)}
+header{padding:22px 0 8px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--ink-mute)}
+h1{font-size:24px;margin:4px 0 12px;line-height:1.35}
+.how{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px;
+  padding:10px 14px;font-size:13.5px;color:var(--ink-soft)}
+.how b{color:var(--ink)}
+.sec{margin:28px 0 12px;font-size:13.5px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:8px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+footer{text-align:center;margin-top:26px;font-size:12.5px;color:var(--ink-mute)}
+
+.bar .meter{flex:1;height:6px;border-radius:3px;background:var(--card-2);overflow:hidden;display:flex}
+.bar .meter i{display:block;height:100%}
+.count{font-size:12.5px;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+.verdict{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 15px;color:var(--ink-soft)}
+.verdict b{color:var(--ink)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px}
+.filters button{appearance:none;padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink-soft);font:600 13px var(--sans);cursor:pointer}
+.filters button .n{font-weight:500;margin-left:4px;color:var(--ink-mute)}
+.filters button.on{border-color:var(--accent);color:var(--ink);background:var(--card-2)}
+.filters button.miss.on{border-color:var(--red)}.filters button.half.on{border-color:var(--amber)}
+.filters button.off.on{border-color:var(--violet)}.filters button.ok.on{border-color:var(--green)}
+.pt{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:12px}
+.pt.miss{border-left-color:var(--red)}.pt.half{border-left-color:var(--amber)}.pt.off{border-left-color:var(--violet)}.pt.ok{border-left-color:var(--green)}
+.pt .hd{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.pt .hd b{font-size:16px}
+.pt .no{margin-left:auto;font-size:12px;color:var(--ink-mute);font-variant-numeric:tabular-nums}
+.badge{font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap}
+.badge.miss{background:rgba(255,138,128,.13);color:var(--red)}.badge.half{background:rgba(226,178,60,.14);color:var(--amber)}
+.badge.off{background:rgba(194,155,255,.14);color:var(--violet)}.badge.ok{background:rgba(94,197,154,.14);color:var(--green)}
+.row{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:7px 0;border-top:1px dashed var(--line);font-size:14.5px}
+.row .lab{font-size:12px;color:var(--ink-mute);padding-top:3px}
+.row.src div{color:var(--ink)}
+.row.mine div{color:var(--ink-soft)}
+.row.mine .none{color:var(--ink-mute);font-style:italic}
+.row.note div{color:var(--ink)}
+.row b{color:#fff}
+.quote{display:block;margin-top:6px;padding:6px 10px;border-radius:8px;background:rgba(226,178,60,.08);color:#e8d9b0;font-size:13.5px}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:12px}
+.ex b.t{display:block;font-size:15.5px;margin-bottom:4px}
+.ex div{color:var(--ink-soft);font-size:14.5px}
+.ex div b{color:var(--ink)}
+details.full{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+details.full summary{cursor:pointer;color:var(--ink-soft);font-size:14px}
+details.full pre{white-space:pre-wrap;font:14px/1.75 var(--sans);color:var(--ink-soft);margin-top:10px}
+</style></head><body>
+<div class="wrap">
+<div class="bar"><a class="back" href="./">← 对照检查</a><div class="meter"><i style="width:50.00%;background:var(--green)"></i><i style="width:25.00%;background:var(--amber)"></i><i style="width:25.00%;background:var(--red)"></i></div><span class="count">抓到 8 / 16</span></div>
+<header><div class="kicker">Think Again · 04–06 · 2026-09-30</div><h1>说服、辩护、解释</h1></header>
+<div class="verdict">04 讲几乎全抓到了。06 讲的定义、四种类型和目标都记了，但<b>例子几乎没记</b>，而「四种解释能一起用」「解释不等于预测」这几条结论正是靠例子撑起来的。<b>漏得最多的是 05 讲后半段</b>：Judith 说的「让对方理解你」，以及「降低目标」。</div>
+<div class="filters"><button class=" on" data-f="all">全部<span class="n">16</span></button><button class="miss" data-f="miss">漏了<span class="n">4</span></button><button class="half" data-f="half">抓到一半<span class="n">4</span></button><button class="ok" data-f="ok">抓到了<span class="n">8</span></button></div>
+<div class="sec">原文要点 · 按讲课顺序</div>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>先问目的：目的决定论证是什么</b><span class="no">#1</span></div><div class="row src"><span class="lab">原文</span><div>开头先问：人为什么要费劲给论证，不直接说结论？课上拿考古打比方：挖出一件东西，分不清是大螺丝刀还是小锅铲，得看用它的人是想拧螺丝还是翻菜。<b>论证也一样，先知道目的，才知道它是什么、该怎么评。</b><span class="quote">原文：「目的决定了事物的性质，论证亦然。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>这是整段「论证的用途」的出发点。后面「说服看效果、辩护看理由」，就是从「目的决定评价标准」推出来的。记住这个比方，04 到 06 讲的思路就串起来了。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>说服：改变对方</b><span class="no">#2</span></div><div class="row src"><span class="lab">原文</span><div>销售员光说「你该买那辆 Mustang」打动不了你，补上「看着酷、跑得快、可能还省油」才可能说动你。说服就是<b>改变对方的心理状态</b>：让人相信原本不信的事，或去做原本不会做的事。它追求的是在世界上产生效果，不在乎理由本身好不好。<span class="quote">原文：「只要论证能有效地改变对方的信念或行为，销售员并不真正关心论证的好坏。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>说服：为了改变他人的想法或者行动。通过论证来说服他人……</div></div><div class="row note"><span class="lab">判断</span><div>抓到了。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>辩护：只给理由，不强求</b><span class="no">#3</span></div><div class="row src"><span class="lab">原文</span><div>你陪朋友选车，说的理由可以和销售员一模一样，心态却不同：<b>对方选了别的车，你也没意见；对方给出有力的反对理由，你还乐意接受。</b>这种只给理由、不强求对方改变的做法，叫辩护（正当化）。<span class="quote">原文：「你给出的理由可能与销售员完全相同，论证结构也毫无二致——区别只在于目的。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>仅仅为相信某个结论提供一个理由，而不试图改变对方的信念或行为。……区别只在于目的。</div></div><div class="row note"><span class="lab">判断</span><div>抓到了。原文还给了两个认出辩护的信号，你没记：<b>对方不接受也无所谓</b>，<b>对方反驳也欢迎</b>。销售员这两条都做不到，正好拿来区分两者。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>目的不同，评价标准就不同</b><span class="no">#4</span></div><div class="row src"><span class="lab">原文</span><div>说服只看管不管用，理由再烂也无所谓；辩护看论证本身好不好：理由是否充分、可靠、经得起推敲。<span class="quote">原文：「说服与正当化的区别带来一个深远影响：评价论证的标准完全不同。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>销售员只关心论证是否有效……你关心的是论证本身的好坏：理由是否充分、是否可靠、是否经得起推敲。</div></div><div class="row note"><span class="lab">判断</span><div>抓到了。这里的「有效」是「管不管用」，和逻辑里的「有效」不是一个意思，见下面补充第一条。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>两种目的会混在一起，看意图不看内容</b><span class="no">#5</span></div><div class="row src"><span class="lab">原文</span><div>现实里人们常常一边说服一边辩护。碰到论证先问：对方想改变我吗？对方在给我理由吗？<b>同一段话，换个人、换个场合，目的就可能不同，所以要看说话人的意图，不能只看内容。</b><span class="quote">原文：「不要只看论证的内容来判断其目的……关键在于说话者的意图。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>这并不意味着两种目的互斥……沿着这条问题链追问下去，你就能识别出对方给出论证的目的。</div></div><div class="row note"><span class="lab">判断</span><div>抓到了。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>好论证不一定说得动人</b><span class="no">#6</span></div><div class="row src"><span class="lab">原文</span><div>学生 Jessica 提出：论证就算有力、有效、合理，也可能谁都说服不了。要分清两件事：<b>合理</b>是给出了充分的理由，属于逻辑问题；<b>说服力</b>是对方心里接受了，属于心理问题。两者脱节，是因为人并不总是理性的：会误解，会有偏见，宗教和文化信仰也可能根深蒂固。<span class="quote">原文：「论证的合理性是“给出理由”，说服力是“让人相信”。前者是逻辑问题，后者是心理问题。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>即使论证完美无瑕，也不一定能够说服他人。因为人总会因为自己没有理解论证，或者错误的看法来否定这个论证。也叫：人类并不总是理性的。</div></div><div class="row note"><span class="lab">判断</span><div>抓到了，原因也记对了。可以补上原文这句归纳：合理是逻辑问题，说服是心理问题。</div></div></article>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>说服失败 ≠ 论证失败</b><span class="no">#7</span></div><div class="row src"><span class="lab">原文</span><div>好论证到底怎么算，看你的目的。目的是说服，对方没被说动就算失败；目的只是给出相信的理由，那么<b>对方拒绝了，你的论证照样达成了目标</b>。<span class="quote">原文：「不要混淆“论证失败”和“说服失败”。对方不接受你的结论，不代表你的论证没有价值。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>说服与正当化的区别带来一个深远影响：评价论证的标准完全不同。</div></div><div class="row note"><span class="lab">判断</span><div>抓到一半。你记了「标准不同」这条原则，没记它在 05 讲推出的结论：说服失败不等于论证失败。这一条最实用：争完没说服对方，先想清楚自己本来是想说服，还是只想把理由摆出来。</div></div></article>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>另一个目标：让对方理解你</b><span class="no">#8</span></div><div class="row src"><span class="lab">原文</span><div>学生 Judith 补充：有时论证不是为了让人接受，只是<b>让人明白你为什么这么想</b>，哪怕你知道对方不会接受这些理由。彼此明白对方的理由，就会多一些尊重和体谅。什么都盲目反驳，不是理智上诚实的交流；论证做得周全，别人就算不同意，也会更尊重你说的话。Judith 说自己练了这些技巧，也更能专心听别人的观点。反面例子是政治辩论：政客只冲自己的支持者喊口号，不听对方。要是双方都讲清立场背后的理由，就能找到兼顾双方最看重的价值的妥协。<span class="quote">原文：「当人们理解彼此立场背后的理由时，他们往往会产生更多的尊重和体谅。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>漏了，这是 05 讲后半段的重点。注意它和 06 讲的「解释」不是一回事，见下面补充第二条。</div></div></article>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>降低目标，反而收获更多</b><span class="no">#9</span></div><div class="row src"><span class="lab">原文</span><div>把目标定成「说服所有人」，注定受挫。降下来，照样能做成三件事：<b>让别人理解你的立场和理由；慢慢理解对方的立场和理由；给对方相信你结论的充分理由。</b>要是你确信自己的论证站得住，对方还是不接受，就有理由认为问题出在对方身上，只是你没法让对方承认。<span class="quote">原文：「降低目标不等于降低标准。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>漏了。这是整个 05 讲落脚的实用建议：目标放低，标准不放低。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>解释：回答「为什么」，前提是事情真发生了</b><span class="no">#10</span></div><div class="row src"><span class="lab">原文</span><div>解释就是给出一件事发生的原因。问「杜克为什么 2010 年夺冠」有意义，答案是球员好、教练好，也有运气；问「杜克为什么 2011 年夺冠」没意义，因为那年没赢。<b>解释时双方都认定事情已经发生，目标是增进理解，不是让人相信结论。</b><span class="quote">原文：「解释只能针对已经发生的事实提出，这是它与说服、辩护之间最根本的区别之一。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>我们无时无刻不在解释事物。为什么系列的问题？……为什么xxxx就是已经发生的结论。因为xxx就是一系列的前提。帮助我们去理解为什么。</div></div><div class="row note"><span class="lab">判断</span><div>抓到了。「已经发生」正是它和说服、辩护的分界线：说服和辩护时，听的人事先可能不信结论；解释时，大家都知道事情发生了。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>亚里士多德的四种解释</b><span class="no">#11</span></div><div class="row src"><span class="lab">原文</span><div><b>因果</b>（动力因）：桥塌了，因为地震。<b>目的</b>：乔去杂货店，为了买牛奶。<b>形式</b>：钉子插不进孔，因为钉子是方的、孔是圆的。<b>质料</b>：这根高尔夫球杆很轻，因为是石墨做的，换成钢就重多了。<span class="quote">原文：「这四种类型从不同角度回答“为什么”。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>1. 因果解释 2. 目的解释 3. 形式解释 4. 质料解释 …… 如 MacBook为什么轻便？因为它是铝制品。</div></div><div class="row note"><span class="lab">判断</span><div>抓到了。原文质料解释用的例子是石墨球杆，你记的 MacBook 道理一样。</div></div></article>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>四种解释能同时用在同一件事上</b><span class="no">#12</span></div><div class="row src"><span class="lab">原文</span><div>四种解释不互斥，可以一起解释同一件事。火车鸣笛：<b>因果</b>是列车员拉了拉杆；<b>目的</b>是提醒路口的汽车火车来了；<b>形式</b>是汽笛的形状让空气按特定方式振动；<b>质料</b>是空气的密度产生了那种声音。乔跳出飞机往下掉，也能四种一起讲：重力、为了寻求刺激、流线型的身形、身体密度比空气大得多。<span class="quote">原文：「四种解释类型不是互斥的，它们从不同维度回答“为什么”，组合使用能提供更全面的理解。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>漏了。你记了四种的名字，没记它们的关系：不是四选一，同一件事可以四种一起讲，讲得越全，理解越完整。</div></div></article>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>叙事式和论证式</b><span class="no">#13</span></div><div class="row src"><span class="lab">原文</span><div>解释可以讲故事，比如讲你为什么搬来杜克。但<b>叙事推不出普遍原则</b>：处境相似的人，不一定都会这么做。所以课上只关心论证形式的解释。<span class="quote">原文：「叙事性解释无法推导出普遍原则——并非所有处于类似情况的人都会做出完全相同的举动。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>叙事解释&lt;类似小说什么的，可以没有明确的论证&gt;；开头还写了：解释某事时，就已经是一个论证了。</div></div><div class="row note"><span class="lab">判断</span><div>抓到一半。两种形式记了，但没记叙事式差在哪：它缺的正是普遍原则。另外，开头那句「解释某事时，就已经是一个论证了」说得太满：叙事式的解释就不是论证形式，改成「用论证形式给出的解释，才是论证」更准。</div></div></article>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>论证式解释的结构</b><span class="no">#14</span></div><div class="row src"><span class="lab">原文</span><div>前提一是普遍原则，适用于很多情况；前提二是<b>眼前这件事，指出原则里说的那个特征在这里出现了</b>；结论就解释了它为什么会这样。例子：物体悬在气体或液体里，比周围轻就上升，比周围重就下落（原则）；氦气球比空气轻（这件事）；所以氦气球会上升。同一条原则也能解释书为什么往下掉。<span class="quote">原文：「前提二：当前的具体情况，指出原则所提到的特征在此案例中得到体现。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>a. 普遍原理 b. 普遍原理的应用举例 c. 所以,xxxx</div></div><div class="row note"><span class="lab">判断</span><div>抓到一半。三段结构是对的，第二条可以再准一点：它不是另举一个例子，而是说<b>眼前这件事正好具备原则里的那个条件</b>，比如「氦气球比空气轻」。换成别的例子，就解释不了眼前这件事。课上特意挑氦气球，是想说明原则要能同时管住上升和下落两种情况。</div></div></article>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>解释不等于概括、预测、理由</b><span class="no">#15</span></div><div class="row src"><span class="lab">原文</span><div>课上用了两个例子。<b>波德定律</b>：一个公式能算出行星离太阳多远，还真预测出了小行星带和天王星，可没人认为它解释了行星为什么在那个位置：它没把太阳系放进更大的模式，后来发现别的恒星的行星也不守这条。<b>有概括、有预测，没有解释。</b><br><b>艾滋病母婴传播</b>：母亲有艾滋病，能解释孩子为什么一出生就有；可这种传染不到一半，事先预测不了；让人有理由相信孩子有病的是验血，不是母亲的病。<b>有解释，没有预测，也没有理由。</b><span class="quote">原文：「概括、预测、理由和解释是四个不同的概念。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>不是理由，概括，预测。</div></div><div class="row note"><span class="lab">判断</span><div>抓到一半。结论记了，两个例子没记，可这句话正是靠它们撑起来的。记住这两个例子，就明白这四样可以各自单独出现。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>解释的目标：纳入普遍模式</b><span class="no">#16</span></div><div class="row src"><span class="lab">原文</span><div>四种解释做的都是同一件事：<b>把特定现象纳入一个普遍模式</b>，让人明白它为什么发生。要解释的多半是奇怪、意外、让人困惑的事，纳入模式后，它看起来就像以前发生过的事，也就不那么让人困惑、意外了。波德定律不算解释，正是因为它只描述了一个巧合的模式，没揭示背后的机制。<span class="quote">原文：「纳入模式会让它不那么令人困惑、不那么令人惊讶，因为它表明它有点像以前发生过的其他事情。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>解释是试图将特定现象纳入普遍模式，以增进我们对其发生原因的理解，并消除困惑或者惊讶。</div></div><div class="row note"><span class="lab">判断</span><div>抓到了。你写的「将事物纳入已知情况」就是关键：让它看起来像以前见过的事。</div></div></article>
+<div class="sec">补充</div>
+<article class="ex"><b class="t">原文里的「有效」有三种意思</b><div>这份文稿用同一个词「有效」指了三件事，容易看混：<br>① 04 讲「说服只看论证是否<b>有效</b>」：指<b>管不管用</b>，能不能把人说动。<br>② 05 讲「有力、<b>有效</b>且合理」「推理形式<b>有效</b>」：这是逻辑学术语（valid），指<b>前提都为真时，结论不可能为假</b>。第②部分「演绎」专讲这个。<br>③ 05 讲流程图里「失败时：论证仍<b>有效</b>」：指论证<b>仍然算数</b>，达到了你的目的。<br>学到第②部分以后，「有效」就只用第二种意思。</div></article>
+<article class="ex"><b class="t">05 讲的「理解」和 06 讲的「解释」不是一回事</b><div>两者都不要求对方相信结论，但讲的对象不同：<br>· 05 讲 Judith 说的<b>理解</b>：让对方明白<b>你为什么这么想</b>，给的是你的理由，形式上接近辩护。<br>· 06 讲的<b>解释</b>：让人明白<b>一件事为什么会发生</b>，给的是它的原因。<br>另外，04 讲末尾说「第三个目的是解释」，05 讲 Judith 又说「第三个目标是理解」，别被两个「第三」绕晕：课程正式列的三种用途是说服、辩护、解释，「理解」是学生讨论时补充的。</div></article>
+<article class="ex"><b class="t">三种用途放一起比</b><div>· <b>说服</b>：听的人原本不信 → 想让对方相信，或者去做。说动了才算成功。<br>· <b>辩护</b>：听的人信不信都行 → 给出相信的理由。理由站得住就算成功，对方不接受也算。<br>· <b>解释</b>：双方都知道事情发生了 → 讲清它为什么会发生。让人不再困惑就算成功。</div></article>
+<details class="full"><summary>你当时写的理解（全文）</summary><pre>04&amp;&amp;05&amp;&amp;06
+
+
+
+说服：  为了改变他人的想法或者行动。 通过论证来说服他人，但是即使论证完美无瑕，也不一定能够说服他人。因为人总会因为自己没有理解论证，或者 错误的看法来来否定这个论证。也叫： 人类并不总是理性的。
+
+辩护：   仅仅为相信某个结论提供一个理由，而不试图改变对方的信念或行为。你是在帮助朋友理解买车的理由，以便她做出自己的决定。关键在于，你给出的理由可能与销售员完全相同，论证结构也毫无二致——区别只在于目的。销售员要说服，你要讨论理由。
+
+说服与正当化的区别带来一个深远影响：评价论证的标准完全不同。销售员只关心论证是否有效——能否在世界上产生预期的改变，即使理由很糟糕也无所谓。而当你试图为朋友的信念或行动提供正当理由时，你关心的是论证本身的好坏：理由是否充分、是否可靠、是否经得起推敲。
+
+这并不意味着两种目的互斥。现实中，人们常常同时尝试做这些事情，或以各种方式混合它们，情况可能变得复杂。因此，当有人向你给出一个论证时，你需要追问一系列问题：
+
+	这个人是在试图改变我的想法或行为吗？如果是，目标就是说服。
+	他是在为我已相信的事情提供理由，还是为改变我的想法提供理由？如果是，目标就是正当化。
+
+沿着这条问题链追问下去，你就能识别出对方给出论证的目的。
+
+
+解释：	我们无时无刻不在解释事物。为什么系列的问题？解释某事时，就已经是一个论证了。为什么xxxx就是已经发生的结论。因为xxx就是一系列的前提。帮助我们去理解为什么。
+	1. 因果解释
+	2. 目的解释
+	3. 形式解释
+	4. 质料解释
+解释的形式：
+	1. 叙事解释&lt;类似小说什么的，可以没有明确的论证&gt;
+	2. 论证解释
+		a. 普遍原理
+		b. 普遍原理的应用举例
+		c. 所以,xxxx
+解释的目的：  将一个特定事物纳入一个普遍现象当中。理解事物，将事物纳入已知情况。
+解释是试图将特定现象纳入普遍模式，以增进我们对其发生原因的理解，并消除困惑或者惊讶。不是理由，概括，预测。
+
+有一种解释方式叫做质料解释。 如 MacBook为什么轻便？因为它是铝制品。
+同样，为了更好的理解论证，我们可以通过仔细考察构成论证的材料来获得理解。	
+暂时到此为止</pre></details>
+<footer>有哪条看不懂，直接在聊天里问我</footer></div><script>
+var btns = document.querySelectorAll('.filters button');
+btns.forEach(function(b) {
+  b.addEventListener('click', function() {
+    btns.forEach(function(x) { x.classList.toggle('on', x === b); });
+    document.querySelectorAll('.pt').forEach(function(p) { p.hidden = b.dataset.f !== 'all' && p.dataset.s !== b.dataset.f; });
+  });
+});
+</script></body></html>
