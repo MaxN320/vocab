@@ -10,98 +10,105 @@
   --ink:#e9ecf4;--ink-soft:#aeb4c5;--ink-mute:#6f7689;
   --accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --maxw:580px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh}
-body{display:flex;flex-direction:column;align-items:center;padding:34px 16px 90px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;padding:30px 16px 90px}
+.wrap{max-width:var(--maxw);margin:0 auto}
+[hidden]{display:none!important}
 
-.title{font-size:26px;font-weight:700;margin-bottom:6px}
-.sub{font-size:13.5px;color:var(--ink-mute);margin-bottom:16px}
+/* ---- 顶部 ---- */
+.brand{font-size:26px;font-weight:700}
+.sub{font-size:13px;color:var(--ink-mute);margin:6px 0 18px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.tab{appearance:none;border:0;background:transparent;color:var(--ink-soft);font:600 14.5px var(--sans);padding:9px 0;border-radius:9px;cursor:pointer}
+.tab .n{font-weight:500;font-size:12px;color:var(--ink-mute);margin-left:5px}
+.tab.on{background:var(--card-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.tab.on .n{color:var(--accent)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* ---- 目录 ---- */
-.toc{
-  position:sticky;top:0;z-index:10;
-  width:100%;max-width:var(--maxw);
-  display:flex;gap:8px;flex-wrap:wrap;
-  background:var(--bg);padding:10px 0 12px;
-  border-bottom:1px solid var(--line);
-}
-.toc a{
-  flex:1 1 0;min-width:96px;text-align:center;text-decoration:none;
-  border:1px solid var(--line);border-radius:10px;background:var(--card);
-  color:var(--ink-soft);font-size:13px;padding:8px 6px;transition:.15s;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-}
+/* ---- 章节目录 ---- */
+.toc{position:sticky;top:0;z-index:10;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  background:var(--bg);padding:14px 0 12px;border-bottom:1px solid var(--line)}
+.toc a{text-decoration:none;text-align:center;border:1px solid var(--line);border-radius:10px;background:var(--card);
+  color:var(--ink-soft);font-size:13px;padding:8px 4px;transition:.15s}
+.toc a .n{font-size:11.5px;color:var(--ink-mute);margin-left:4px}
 .toc a:hover{border-color:var(--accent);color:var(--ink)}
 .toc a.active{border-color:var(--accent);color:var(--accent);background:var(--card-2)}
-.toc a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.toc .n{font-size:11.5px;color:var(--ink-mute)}
 .toc a.active .n{color:var(--accent)}
 
-/* ---- 模块 ---- */
-.mod{width:100%;max-width:var(--maxw);margin-top:30px;scroll-margin-top:66px}
-.mod-name{font-size:18.5px;font-weight:700}
-.mod-intro{font-size:12.5px;color:var(--ink-mute);line-height:1.7;margin:5px 0 14px}
-.sub-label{
-  font-size:11.5px;letter-spacing:.08em;color:var(--ink-mute);
-  margin:18px 0 9px;display:flex;align-items:center;gap:9px;
-}
-.items{display:flex;flex-direction:column;gap:11px}
-
-/* ---- 条目 ---- */
-.item{
-  display:flex;align-items:center;justify-content:space-between;
-  background:var(--card);border:1px solid var(--line);border-radius:14px;
-  padding:15px 18px;text-decoration:none;color:var(--ink);transition:.15s;
-}
+/* ---- 章节 ---- */
+.mod{margin-top:28px;scroll-margin-top:72px}
+.mod-head{display:flex;align-items:baseline;gap:10px}
+.mod-name{font-size:19px;font-weight:700}
+.mod-count{font-size:12px;color:var(--ink-mute)}
+.mod-intro{font-size:12.5px;color:var(--ink-mute);line-height:1.7;margin:5px 0 12px}
+.sub-label{font-size:11.5px;letter-spacing:.08em;color:var(--ink-mute);margin:16px 0 8px}
+.items{display:flex;flex-direction:column;gap:9px}
+.item{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:12px 14px;text-decoration:none;color:var(--ink);transition:.15s}
 .item:hover{border-color:var(--accent);background:var(--card-2)}
 .item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .item.todo{border-style:dashed;background:transparent;opacity:.5;pointer-events:none}
-.it-left{display:flex;flex-direction:column;gap:4px;min-width:0}
-.it-label{font-size:15.5px;font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:7px}
-.it-desc{font-size:12.5px;color:var(--ink-mute);line-height:1.65}
-.it-arrow{font-size:18px;color:var(--ink-mute);flex-shrink:0;margin-left:14px}
-.badge{font-size:10.5px;padding:2px 7px;border-radius:6px;font-weight:700;
-  background:rgba(226,178,60,.15);color:var(--amber)}
+.num{flex:0 0 34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:rgba(124,156,255,.12);color:var(--accent);font:700 13px var(--mono)}
+.num.none{background:rgba(111,118,137,.14);color:var(--ink-mute)}
+.it-main{flex:1;min-width:0}
+.it-title{font-size:15px;font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.it-desc{font-size:12.5px;color:var(--ink-mute);line-height:1.6;margin-top:3px}
+.it-arrow{flex-shrink:0;font-size:18px;color:var(--ink-mute)}
+.badge{font-size:10.5px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(226,178,60,.15);color:var(--amber)}
 
-.empty{
-  border:1px dashed var(--line);border-radius:14px;
-  padding:22px 18px;text-align:center;color:var(--ink-mute);font-size:13px;line-height:1.7;
-}
+/* ---- 测验 ---- */
+.quiz-intro{margin:18px 0 14px;padding:10px 12px;font-size:13px;line-height:1.7;color:var(--ink-soft);
+  background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px}
+.quiz{display:block;margin-bottom:10px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  text-decoration:none;color:var(--ink);transition:.15s}
+.quiz:hover{border-color:var(--accent);background:var(--card-2)}
+.q-top{display:flex;align-items:center;gap:8px}
+.q-title{font-size:16px;font-weight:700}
+.new{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(94,197,154,.15);color:var(--green)}
+.q-desc{font-size:12.5px;color:var(--ink-mute);line-height:1.65;margin:5px 0 10px}
+.q-meta{display:flex;gap:8px;font-size:12px;color:var(--ink-soft)}
+.q-meta span{background:var(--card-2);border:1px solid var(--line);border-radius:6px;padding:1px 8px}
+.empty{border:1px dashed var(--line);border-radius:14px;padding:22px 18px;text-align:center;color:var(--ink-mute);font-size:13px}
 </style>
 </head>
 <body>
+<div class="wrap">
+<header>
+  <div class="brand">📖 英语语法</div>
+  <div class="sub" id="sub"></div>
+  <div class="tabs" role="tablist">
+    <button class="tab" data-tab="notes" role="tab">语法笔记<span class="n" id="n-notes"></span></button>
+    <button class="tab" data-tab="quiz" role="tab">测验<span class="n" id="n-quiz"></span></button>
+  </div>
+</header>
 
-<div class="title">📖 英语语法</div>
-<div class="sub" id="sub"></div>
+<main id="view-notes">
+  <nav class="toc" id="toc"></nav>
+  <div id="body"></div>
+</main>
 
-<nav class="toc" id="toc"></nav>
-<div id="body" style="width:100%;max-width:var(--maxw)"></div>
+<main id="view-quiz" hidden>
+  <div class="quiz-intro">最新的一套在最上面。每套题做完，结果会自动发给我；回微信说一声「做完了」，就能收到批改。</div>
+  <div id="quizlist"></div>
+</main>
+</div>
 
 <script>
 /* ================= 配置区：改这里就行 =================
-   模块： { id, name, intro, sections:[ { label, items:[] } ] }
-   条目： { label, href, desc }        → 正常链接
-          { label, desc, todo:true }   → 还没写的，虚线灰显，不可点
-   label 为空的 section 不显示子标题。
+   语法笔记 MODULES：模块 { id, name, intro, sections:[ { label, items:[] } ] }
+     条目 { label:'00 · 标题', href, desc } → 正常链接（label 开头的编号会显示成左边的方块）
+          { label, desc, todo:true }        → 还没写的，虚线灰显，不可点
+     label 为空的 section 不显示子标题。
+   测验 QUIZZES：{ label, n:题数, href, date:'YYYY-MM-DD', desc }，最新的放最上面
+     （scripts/quiz_page.py 会自动插在 QUIZ-ITEMS 标记下面）
 ====================================================== */
 const MODULES = [
-  {
-    id: 'quiz',
-    name: '测验篇',
-    intro: '每次出的新题都放在这里，最新的在最上面。做完回微信说「做完了」，结果我这边直接看。',
-    sections: [
-      { label: '', items: [
-        /* QUIZ-ITEMS：新测验由 scripts/quiz_page.py 自动插在这一行下面 */
-        { label:'疑问句测试 · 13 题', href:'quiz/questions-1.html',
-          desc:'一般疑问、特殊疑问、疑问词，外加三个坑：问主语不用助动词、回答用回助动词、否定疑问的 Yes / No 看事实。' }
-      ]}
-    ]
-  },
-
   {
     id: 'basic',
     name: '基础篇',
@@ -244,55 +251,49 @@ const MODULES = [
     ]
   }
 ];
+
+const QUIZZES = [
+  /* QUIZ-ITEMS：新测验由 scripts/quiz_page.py 自动插在这一行下面 */
+  { label:'疑问句测试', n:13, href:'quiz/questions-1.html', date:'2026-09-30',
+    desc:'一般疑问、特殊疑问、疑问词，外加三个坑：问主语不用助动词、回答用回助动词、否定疑问的 Yes / No 看事实。' }
+];
 /* ====================================================== */
 
-const $body = document.getElementById('body');
-const $toc  = document.getElementById('toc');
-let total = 0, quizzes = 0;
+const $toc = document.getElementById('toc'), $body = document.getElementById('body');
+let notes = 0;
 
 MODULES.forEach(mod => {
-  const done = mod.sections.reduce(
-    (n, s) => n + s.items.filter(i => !i.todo).length, 0);
-  if (mod.id === 'quiz') quizzes += done; else total += done;
+  const n = mod.sections.reduce((a, s) => a + s.items.filter(i => !i.todo).length, 0);
+  notes += n;
 
-  /* 目录 */
   const chip = document.createElement('a');
   chip.href = '#' + mod.id;
   chip.dataset.id = mod.id;
-  chip.innerHTML = `${mod.name}<span class="n">${done}</span>`;
+  chip.innerHTML = `${mod.name}<span class="n">${n}</span>`;
   $toc.appendChild(chip);
 
-  /* 模块正文 */
   const sec = document.createElement('section');
   sec.className = 'mod';
   sec.id = mod.id;
   sec.innerHTML =
-    `<div class="mod-name">${mod.name}</div>
+    `<div class="mod-head"><div class="mod-name">${mod.name}</div><div class="mod-count">${n} 篇</div></div>
      <div class="mod-intro">${mod.intro}</div>`;
-
-  const hasAny = mod.sections.some(s => s.items.length);
-  if (!hasAny) {
-    sec.insertAdjacentHTML('beforeend',
-      '<div class="empty">这一篇还没有笔记</div>');
-  }
+  if (!n) sec.insertAdjacentHTML('beforeend', '<div class="empty">这一篇还没有笔记</div>');
 
   mod.sections.forEach(s => {
     if (!s.items.length) return;
-    if (s.label) {
-      const h = document.createElement('div');
-      h.className = 'sub-label';
-      h.textContent = s.label;
-      sec.appendChild(h);
-    }
+    if (s.label) sec.insertAdjacentHTML('beforeend', `<div class="sub-label">${s.label}</div>`);
     const box = document.createElement('div');
     box.className = 'items';
     s.items.forEach(it => {
+      const m = it.label.match(/^(\d+)\s*·\s*(.+)$/);
       const el = document.createElement(it.todo ? 'div' : 'a');
       el.className = 'item' + (it.todo ? ' todo' : '');
       if (!it.todo) el.href = it.href;
       el.innerHTML =
-        `<div class="it-left">
-           <div class="it-label">${it.label}${it.todo ? '<span class="badge">待写</span>' : ''}</div>
+        `<div class="num${m ? '' : ' none'}">${m ? m[1] : '•'}</div>
+         <div class="it-main">
+           <div class="it-title">${m ? m[2] : it.label}${it.todo ? '<span class="badge">待写</span>' : ''}</div>
            ${it.desc ? `<div class="it-desc">${it.desc}</div>` : ''}
          </div>
          <div class="it-arrow">${it.todo ? '' : '›'}</div>`;
@@ -300,20 +301,47 @@ MODULES.forEach(mod => {
     });
     sec.appendChild(box);
   });
-
   $body.appendChild(sec);
 });
 
-document.getElementById('sub').textContent = `${MODULES.length - 1} 个模块 · 共 ${total} 篇笔记 · ${quizzes} 套测验`;
+const $quiz = document.getElementById('quizlist');
+if (!QUIZZES.length) $quiz.innerHTML = '<div class="empty">还没有测验</div>';
+QUIZZES.forEach((q, i) => {
+  const [, mm, dd] = (q.date || '').split('-');
+  const a = document.createElement('a');
+  a.className = 'quiz';
+  a.href = q.href;
+  a.innerHTML =
+    `<div class="q-top"><span class="q-title">${q.label}</span>${i === 0 ? '<span class="new">最新</span>' : ''}</div>
+     ${q.desc ? `<div class="q-desc">${q.desc}</div>` : ''}
+     <div class="q-meta"><span>${q.n} 题</span>${mm ? `<span>${+mm} 月 ${+dd} 日</span>` : ''}</div>`;
+  $quiz.appendChild(a);
+});
 
-/* 滚动时高亮当前模块 */
+document.getElementById('sub').textContent = `${notes} 篇笔记 · ${QUIZZES.length} 套测验`;
+document.getElementById('n-notes').textContent = notes;
+document.getElementById('n-quiz').textContent = QUIZZES.length;
+
+/* 两个标签页：地址带 #quiz 时直接打开测验 */
+const tabs = [...document.querySelectorAll('.tab')];
+function show(name) {
+  document.getElementById('view-notes').hidden = name !== 'notes';
+  document.getElementById('view-quiz').hidden = name !== 'quiz';
+  tabs.forEach(t => { t.classList.toggle('on', t.dataset.tab === name); t.setAttribute('aria-selected', t.dataset.tab === name); });
+}
+tabs.forEach(t => t.addEventListener('click', () => {
+  show(t.dataset.tab);
+  history.replaceState(null, '', t.dataset.tab === 'quiz' ? '#quiz' : location.pathname);
+}));
+show(location.hash === '#quiz' ? 'quiz' : 'notes');
+
+/* 滚动时高亮当前章节 */
 const chips = [...$toc.querySelectorAll('a')];
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    chips.forEach(c => c.classList.toggle('active', c.dataset.id === e.target.id));
+    if (e.isIntersecting) chips.forEach(c => c.classList.toggle('active', c.dataset.id === e.target.id));
   });
-}, { rootMargin: '-70px 0px -70% 0px' });
+}, { rootMargin: '-80px 0px -70% 0px' });
 document.querySelectorAll('.mod').forEach(m => io.observe(m));
 </script>
 </body>

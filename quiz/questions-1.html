@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>疑问句测试</title><style>
-  :root { --bg:#f4f1ea; --card:#fffdf8; --ink:#2b2a27; --sub:#7a756b; --line:#e6e0d4;
-          --a:#2f6fb3; --b:#c8641d; --tip:#5b7f3a; --tip-bg:#eef4e6; }
+  :root { --bg:#11131a; --card:#191c26; --card-2:#1f2330; --line:#2a2f3d;
+          --ink:#e9ecf4; --ink-soft:#aeb4c5; --ink-mute:#6f7689;
+          --accent:#7c9cff; --green:#5ec59a; --amber:#e2b23c; --red:#ff8a80;
+          --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--ink); font-family:"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;
-         font-size:15px; line-height:1.6; padding:22px 16px 28px; }
-  header { margin-bottom:18px; }
-  .back { display:inline-block; margin-bottom:10px; font-size:13px; color:var(--a); text-decoration:none; }
-  .kicker { font-size:12px; letter-spacing:.12em; color:var(--sub); }
-  h1 { font-size:24px; margin:4px 0 10px; }
-  .how { background:var(--tip-bg); color:var(--tip); border-radius:10px; padding:10px 12px; font-size:14px; margin-bottom:16px; }
-  .sec { margin:22px 0 10px; font-size:14px; font-weight:700; color:var(--a); display:flex; align-items:center; gap:8px; }
+  body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.6; padding:0 16px 40px; }
+  .wrap { max-width:580px; margin:0 auto; }
+  .bar { position:sticky; top:0; z-index:10; background:var(--bg); padding:12px 0 10px; border-bottom:1px solid var(--line);
+         display:flex; align-items:center; gap:12px; }
+  .back { font-size:13px; color:var(--accent); text-decoration:none; white-space:nowrap; }
+  .meter { flex:1; height:6px; border-radius:3px; background:var(--card-2); overflow:hidden; }
+  .meter i { display:block; height:100%; width:0; background:var(--green); transition:width .2s; }
+  .count { font-size:12.5px; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  header { padding:22px 0 6px; }
+  .kicker { font-size:12px; letter-spacing:.1em; color:var(--ink-mute); }
+  h1 { font-size:24px; margin:4px 0 12px; }
+  .how { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--green); border-radius:10px;
+         padding:10px 12px; font-size:13.5px; color:var(--ink-soft); }
+  .how b { color:var(--ink); }
+  .sec { margin:26px 0 10px; font-size:13.5px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:8px; }
   .sec::after { content:""; flex:1; height:1px; background:var(--line); }
-  .q { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; }
-  .q .qn { font-size:13px; color:var(--sub); font-family:monospace; }
+  .q { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 16px; margin-bottom:12px; }
+  .q .qn { font-size:12.5px; color:var(--ink-mute); }
   .q .stem { font-size:17px; margin:6px 0 12px; line-height:1.7; }
-  .q .blank { display:inline-block; min-width:64px; border-bottom:2px solid var(--b); text-align:center; color:var(--b); font-weight:700; }
+  .q .stem b { color:#fff; }
+  .q .blank { display:inline-block; min-width:60px; border-bottom:2px solid var(--amber); text-align:center; color:var(--amber); font-weight:700; }
   .q input { display:none; }
   .opts { display:flex; gap:8px; flex-wrap:wrap; }
   .opts.col { flex-direction:column; }
-  .opts label { padding:7px 16px; border-radius:999px; font-size:15px; font-weight:700; background:#efeae0; color:var(--ink);
-                border:2px solid transparent; cursor:pointer; }
-  .opts.col label { border-radius:10px; font-weight:600; }
-  .fb { display:none; margin-top:12px; border-radius:10px; padding:9px 12px; font-size:14px; }
-  .fb.ok { background:#e6f2dd; color:#3d6b22; } .fb.no { background:#fbe4e1; color:#a33a2c; }
-  .q input:checked + label.right { background:#e6f2dd; color:#3d6b22; border-color:#7aa65a; }
-  .q input:checked + label.wrong { background:#fbe4e1; color:#a33a2c; border-color:#d98277; }
+  .opts label { padding:8px 16px; border-radius:999px; font-size:15px; font-weight:600; background:var(--card-2); color:var(--ink);
+                border:1px solid var(--line); cursor:pointer; transition:.15s; }
+  .opts.col label { border-radius:10px; }
+  .fb { display:none; margin-top:12px; border-radius:10px; padding:9px 12px; font-size:14px; line-height:1.7; }
+  .fb.ok { background:rgba(94,197,154,.12); color:#a8e6c9; } .fb.no { background:rgba(255,138,128,.1); color:#ffc2bb; }
+  .fb b { color:#fff; }
+  .q input:checked + label.right { background:rgba(94,197,154,.16); color:var(--green); border-color:var(--green); }
+  .q input:checked + label.wrong { background:rgba(255,138,128,.12); color:var(--red); border-color:var(--red); }
+  .q input:disabled + label { opacity:.55; cursor:default; }
   .q:has(input.right:checked) .fb.ok { display:block; }
   .q:has(input.wrong:checked) .fb.no { display:block; }
-  details { margin-top:10px; font-size:13px; color:var(--sub); }
+  details { margin-top:10px; font-size:12.5px; color:var(--ink-mute); }
   details summary { cursor:pointer; }
-  details p { margin-top:6px; color:var(--ink); }
-  footer { text-align:center; margin-top:20px; padding:14px; border-radius:12px; background:var(--ink); color:#f4f1ea; font-size:15px; }
-  footer small { display:block; color:#b9b3a6; font-size:12px; margin-top:4px; }
-  #score { font-weight:700; }
-  #submit { margin-top:10px; padding:6px 18px; border-radius:999px; border:1px solid #b9b3a6; background:transparent; color:#f4f1ea; font-size:14px; }
-  #copy { display:none; margin-top:10px; width:100%; min-height:70px; font-size:13px; border-radius:8px; padding:6px; }
-</style></head><body>
-<header><a class="back" href="../index.html#quiz">← 回到目录</a><div class="kicker">总语法 · 01 疑问句</div><h1>疑问句测试 · 13 题</h1></header>
+  details p { margin-top:6px; color:var(--ink-soft); }
+  footer { text-align:center; margin-top:22px; padding:16px; border-radius:14px; background:var(--card); border:1px solid var(--line); }
+  #score { font-weight:700; font-size:15px; }
+  footer small { display:block; color:var(--ink-mute); font-size:12.5px; margin-top:4px; }
+  #submit { margin-top:12px; padding:7px 18px; border-radius:999px; border:1px solid var(--line); background:var(--card-2); color:var(--ink-soft); font-size:13.5px; }
+  #copy { display:none; margin-top:10px; width:100%; min-height:70px; font-size:13px; border-radius:8px; padding:8px;
+          background:var(--card-2); color:var(--ink); border:1px solid var(--line); }
+</style></head><body><div class="wrap">
+<div class="bar"><a class="back" href="../index.html#quiz">← 测验列表</a><div class="meter"><i id="meter"></i></div><span class="count" id="count">0 / 13</span></div>
+<header><div class="kicker">总语法 · 01 疑问句</div><h1>疑问句测试 · 13 题</h1></header>
 <div class="how">按笔记的台阶出题：一般疑问 → 特殊疑问 → 疑问词 → 三个坑。点选项就能对答案：<b>绿色</b>是对，<b>红色</b>是错，下面会出解析。每题只算第一次点的选项。全部做完，结果会自动发给我。</div>
 <div class="sec">② 一般疑问句 · 助动词提到主语前</div>
 <section class="q" data-answer="Does she like coffee?"><div class="qn">第 1 题</div>
@@ -136,7 +150,7 @@
 <details><summary>点不动？点这里看答案</summary><p>答案：<b>No, she isn&#x27;t.</b>。坑③：事实是「不在」，就用 <b>No, she isn't.</b> 中文会说「对，她不在」，英文却要说 No。</p></details>
 </section>
 <footer><span id="score">已答 0 / 13</span><small id="status">全部做完会自动把结果发给我</small><button id="submit">还没做完，先交卷</button><textarea id="copy" readonly></textarea></footer>
-<script>
+</div><script>
 var TOPIC = 'vocab-quiz-b40560dafcdf39f9', QUIZ = "questions-1", TITLE = "疑问句测试", sent = false;
 var TEST = /[?&]test=1/.test(location.search);
 function summary() {
@@ -175,6 +189,8 @@ document.querySelectorAll('.q input').forEach(function(inp) {
     q.querySelectorAll('input').forEach(function(x) { if (x !== inp) x.disabled = true; });
     var s = summary();
     document.getElementById('score').textContent = '已答 ' + s.answered + ' / ' + s.total + '，答对 ' + s.score + ' 题';
+    document.getElementById('count').textContent = s.answered + ' / ' + s.total;
+    document.getElementById('meter').style.width = (100 * s.answered / s.total) + '%';
     if (s.answered === s.total) submit();
   });
 });
