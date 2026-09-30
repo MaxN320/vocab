@@ -90,6 +90,19 @@ body{display:flex;flex-direction:column;align-items:center;padding:34px 16px 90p
 ====================================================== */
 const MODULES = [
   {
+    id: 'quiz',
+    name: '测验篇',
+    intro: '每次出的新题都放在这里，最新的在最上面。做完回微信说「做完了」，结果我这边直接看。',
+    sections: [
+      { label: '', items: [
+        /* QUIZ-ITEMS：新测验由 scripts/quiz_page.py 自动插在这一行下面 */
+        { label:'疑问句测试 · 13 题', href:'quiz/questions-1.html',
+          desc:'一般疑问、特殊疑问、疑问词，外加三个坑：问主语不用助动词、回答用回助动词、否定疑问的 Yes / No 看事实。' }
+      ]}
+    ]
+  },
+
+  {
     id: 'basic',
     name: '基础篇',
     intro: '先把句子的骨架和最基本的时间表达立起来，后面几篇都挂在这上面。',
@@ -235,12 +248,12 @@ const MODULES = [
 
 const $body = document.getElementById('body');
 const $toc  = document.getElementById('toc');
-let total = 0;
+let total = 0, quizzes = 0;
 
 MODULES.forEach(mod => {
   const done = mod.sections.reduce(
     (n, s) => n + s.items.filter(i => !i.todo).length, 0);
-  total += done;
+  if (mod.id === 'quiz') quizzes += done; else total += done;
 
   /* 目录 */
   const chip = document.createElement('a');
@@ -291,7 +304,7 @@ MODULES.forEach(mod => {
   $body.appendChild(sec);
 });
 
-document.getElementById('sub').textContent = `${MODULES.length} 个模块 · 共 ${total} 篇笔记`;
+document.getElementById('sub').textContent = `${MODULES.length - 1} 个模块 · 共 ${total} 篇笔记 · ${quizzes} 套测验`;
 
 /* 滚动时高亮当前模块 */
 const chips = [...$toc.querySelectorAll('a')];
