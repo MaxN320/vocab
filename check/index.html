@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>对照检查</title><style>
+:root{--bg:#11131a;--card:#191c26;--card-2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--ink-soft:#aeb4c5;--ink-mute:#6f7689;
+  --accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;--red:#ff8a80;--violet:#c29bff;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;padding:0 16px 56px}
+.wrap{max-width:720px;margin:0 auto}
+.wrap.wide{max-width:1100px}
+.bar{position:sticky;top:0;z-index:10;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px}
+.back{font-size:13px;color:var(--accent);text-decoration:none;white-space:nowrap}
+.grow{flex:1}
+.hint{font-size:12px;color:var(--ink-mute)}
+header{padding:22px 0 8px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--ink-mute)}
+h1{font-size:24px;margin:4px 0 12px;line-height:1.35}
+.how{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px;
+  padding:10px 14px;font-size:13.5px;color:var(--ink-soft)}
+.how b{color:var(--ink)}
+.sec{margin:28px 0 12px;font-size:13.5px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:8px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+footer{text-align:center;margin-top:26px;font-size:12.5px;color:var(--ink-mute)}
+
+.title{display:block;width:100%;margin:16px 0 12px;padding:11px 14px;border-radius:10px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);font:600 16px var(--sans)}
+.title:focus,textarea:focus{outline:none;border-color:var(--accent)}
+.panes{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:860px){.panes{grid-template-columns:1fr 1fr}}
+.pane{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 10px 12px;display:flex;flex-direction:column}
+.ph{display:flex;align-items:center;gap:10px;padding:2px 4px 8px;font-size:13px;color:var(--ink-soft)}
+.ph b{font-size:15px;color:var(--ink)}
+.ph .tag{font-size:11.5px;padding:1px 8px;border-radius:999px}
+.pane.mine .tag{background:rgba(124,156,255,.14);color:var(--accent)}
+.pane.src .tag{background:rgba(226,178,60,.14);color:var(--amber)}
+.cnt{font-variant-numeric:tabular-nums;color:var(--ink-mute)}
+.lnk{appearance:none;border:0;background:none;color:var(--ink-mute);font:13px var(--sans);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.lnk:hover{color:var(--ink)}
+textarea{width:100%;min-height:42vh;resize:vertical;padding:12px 13px;border-radius:10px;border:1px solid var(--line);
+  background:var(--card-2);color:var(--ink);font:15px/1.75 var(--sans)}
+@media (min-width:860px){textarea{min-height:60vh}}
+.send{margin:16px 0 4px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#submit{padding:10px 26px;border-radius:999px;border:0;background:var(--accent);color:#0d1020;font:700 15px var(--sans);cursor:pointer}
+#submit:disabled{opacity:.5;cursor:default}
+.status{font-size:13.5px;color:var(--ink-soft)}
+.status b{color:var(--ink)}
+.list{display:flex;flex-direction:column;gap:9px}
+.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.item:hover{border-color:var(--accent);background:var(--card-2)}
+.item .t{font-size:15px;font-weight:600}
+.item .m{font-size:12.5px;color:var(--ink-mute);margin-top:2px}
+.item .c{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{font-size:12px;padding:1px 9px;border-radius:999px;background:var(--card-2);color:var(--ink-soft)}
+.chip.miss{color:var(--red)}.chip.half{color:var(--amber)}.chip.off{color:var(--violet)}.chip.ok{color:var(--green)}
+.empty{font-size:13px;color:var(--ink-mute);padding:6px 2px}
+</style></head><body>
+<div class="wrap wide">
+<div class="bar"><a class="back" href="../index.html">← 首页</a><span class="grow"></span><span class="hint" id="saved"></span></div>
+<header><div class="kicker">课程笔记</div><h1>对照检查</h1></header>
+<div class="how"><b>① 写标题</b>：课程和讲次。<b>② 贴两栏</b>：「我的理解」写你自己理解的，「原文文稿」贴课程原文（字幕文件可以直接导入）。<b>③ 点「提交给我」</b>，再回聊天说「<b>检查</b>」。我会按原文顺序逐条对照，标出你漏掉的、理解偏的，再做补充。<br>填的内容自动存在这个浏览器里，刷新不会丢。原文只发给我，不会放到网上。</div>
+<input id="title" class="title" placeholder="标题，比如：Think Again 04–06" maxlength="80">
+<div class="panes">
+<section class="pane mine"><div class="ph"><b>我的理解</b><span class="tag">自己写的</span><span class="cnt" id="n-mine">0 字</span><span class="grow"></span><label class="lnk">导入文件<input type="file" accept=".txt,.md,.srt,.vtt,text/plain" data-for="mine" hidden></label><button class="lnk" data-clear="mine">清空</button></div><textarea id="mine" placeholder="用自己的话写下你理解了什么，整理好的笔记直接贴过来也行"></textarea></section>
+<section class="pane src"><div class="ph"><b>原文文稿</b><span class="tag">课程原文</span><span class="cnt" id="n-source">0 字</span><span class="grow"></span><label class="lnk">导入文件<input type="file" accept=".txt,.md,.srt,.vtt,text/plain" data-for="source" hidden></label><button class="lnk" data-clear="source">清空</button></div><textarea id="source" placeholder="课程的原文文稿贴在这里"></textarea></section>
+</div>
+<div class="send"><button id="submit">提交给我</button><div class="status" id="status"></div></div>
+<div class="sec">检查记录</div>
+<div class="list" id="list"><div class="empty">还没有检查记录</div></div>
+</div><script>
+var TOPIC = 'notes-check-aefe7bd873f18169', KEY = 'check-draft-v1', TEST = /[?&]test=1/.test(location.search), F = ['title', 'mine', 'source'];
+function $(id) { return document.getElementById(id); }
+function count(s) { return (s.match(/\S/g) || []).length; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function(c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
+function refresh() { $('n-mine').textContent = count($('mine').value) + ' 字'; $('n-source').textContent = count($('source').value) + ' 字'; }
+var timer;
+function save() {
+  clearTimeout(timer);
+  timer = setTimeout(function() {
+    try { var d = {}; F.forEach(function(k) { d[k] = $(k).value; }); localStorage.setItem(KEY, JSON.stringify(d)); $('saved').textContent = '已自动保存'; }
+    catch (e) { $('saved').textContent = '这个浏览器存不了，别刷新页面'; }
+  }, 400);
+}
+try { var d = JSON.parse(localStorage.getItem(KEY) || '{}'); F.forEach(function(k) { if (d[k]) $(k).value = d[k]; }); } catch (e) {}
+F.forEach(function(k) { $(k).addEventListener('input', function() { refresh(); save(); }); });
+refresh();
+document.querySelectorAll('[data-clear]').forEach(function(b) {
+  b.addEventListener('click', function() { var t = $(b.dataset.clear); if (!t.value || confirm('清空这一栏？')) { t.value = ''; refresh(); save(); } });
+});
+function clean(s) {                                   // 字幕文件去掉序号和时间轴
+  s = s.replace(/^﻿/, '').replace(/\r\n?/g, '\n');
+  if (/-->/.test(s)) s = s.split('\n').filter(function(l) { l = l.trim(); return l && l !== 'WEBVTT' && !/^\d+$/.test(l) && l.indexOf('-->') < 0; }).join('\n');
+  return s;
+}
+document.querySelectorAll('input[type=file]').forEach(function(inp) {
+  inp.addEventListener('change', function() {
+    var f = inp.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function() { var t = $(inp.dataset.for); if (!t.value.trim() || confirm('用文件内容替换这一栏？')) { t.value = clean(String(r.result)); refresh(); save(); } inp.value = ''; };
+    r.readAsText(f, 'utf-8');
+  });
+});
+function pieces(s, max) {                             // 按 UTF-8 字节切段
+  var out = [], cur = '', n = 0;
+  for (var ch of s) {
+    var c = ch.codePointAt(0), b = c < 0x80 ? 1 : c < 0x800 ? 2 : c < 0x10000 ? 3 : 4;
+    if (n + b > max) { out.push(cur); cur = ''; n = 0; }
+    cur += ch; n += b;
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+function post(body, tries) {
+  return fetch('https://ntfy.sh/' + TOPIC, {method: 'POST', body: body})
+    .then(function(r) { if (!r.ok) throw new Error(r.status); })
+    .catch(function(e) {
+      if (tries > 1) return new Promise(function(ok) { setTimeout(ok, 2500); }).then(function() { return post(body, tries - 1); });
+      throw e;
+    });
+}
+var busy = false;
+$('submit').addEventListener('click', function() {
+  if (busy) return;
+  var st = $('status'), title = $('title').value.trim(), mine = $('mine').value.trim(), source = $('source').value.trim();
+  if (!mine && !source) { st.textContent = '两栏都还是空的'; return; }
+  var payload = {v: 1, title: title || '未命名', mine: mine, source: source, at: new Date().toISOString(), test: TEST};
+  var parts = pieces(JSON.stringify(payload), 3600);
+  if (parts.length > 50) { st.textContent = '⚠️ 太长了（要分 ' + parts.length + ' 段），分成两次提交吧'; return; }
+  var sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 6), i = 0;
+  busy = true; $('submit').disabled = true;
+  (function next() {
+    if (i === parts.length) {
+      busy = false; $('submit').disabled = false; $('submit').textContent = '改完重新提交';
+      st.innerHTML = '✅ 已经发给我了（我的理解 ' + count(mine) + ' 字，原文 ' + count(source) + ' 字）。回聊天说「<b>检查</b>」就行。';
+      return;
+    }
+    st.textContent = '正在发送… ' + (i + 1) + ' / ' + parts.length;
+    post('chk1|' + sid + '|' + i + '|' + parts.length + '|' + parts[i] + '|~', 3)
+      .then(function() { i++; next(); })
+      .catch(function() { busy = false; $('submit').disabled = false; st.textContent = '⚠️ 第 ' + (i + 1) + ' 段没发出去，可能是网络不稳，过一会儿再点一次'; });
+  })();
+});
+fetch('checks.json?' + Date.now()).then(function(r) { return r.ok ? r.json() : []; }).then(function(list) {
+  if (!list.length) return;
+  var names = {"miss": "漏了", "half": "抓到一半", "off": "理解有偏差", "ok": "抓到了"};
+  $('list').innerHTML = list.map(function(c) {
+    var chips = Object.keys(names).filter(function(k) { return c.counts && c.counts[k]; })
+      .map(function(k) { return '<span class="chip ' + k + '">' + names[k] + ' ' + c.counts[k] + '</span>'; }).join('');
+    return '<a class="item" href="' + encodeURIComponent(c.id) + '.html"><div class="t">' + esc(c.title) + '</div>' +
+           '<div class="m">' + esc(c.kicker || '') + ' · ' + esc(c.date) + '</div><div class="c">' + chips + '</div></a>';
+  }).join('');
+}).catch(function() {});
+</script></body></html>
