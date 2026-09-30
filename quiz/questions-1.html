@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>疑问句测试</title><style>
+  :root { --bg:#f4f1ea; --card:#fffdf8; --ink:#2b2a27; --sub:#7a756b; --line:#e6e0d4;
+          --a:#2f6fb3; --b:#c8641d; --tip:#5b7f3a; --tip-bg:#eef4e6; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font-family:"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;
+         font-size:15px; line-height:1.6; padding:22px 16px 28px; }
+  header { margin-bottom:18px; }
+  .kicker { font-size:12px; letter-spacing:.12em; color:var(--sub); }
+  h1 { font-size:24px; margin:4px 0 10px; }
+  .how { background:var(--tip-bg); color:var(--tip); border-radius:10px; padding:10px 12px; font-size:14px; margin-bottom:16px; }
+  .sec { margin:22px 0 10px; font-size:14px; font-weight:700; color:var(--a); display:flex; align-items:center; gap:8px; }
+  .sec::after { content:""; flex:1; height:1px; background:var(--line); }
+  .q { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; }
+  .q .qn { font-size:13px; color:var(--sub); font-family:monospace; }
+  .q .stem { font-size:17px; margin:6px 0 12px; line-height:1.7; }
+  .q .blank { display:inline-block; min-width:64px; border-bottom:2px solid var(--b); text-align:center; color:var(--b); font-weight:700; }
+  .q input { display:none; }
+  .opts { display:flex; gap:8px; flex-wrap:wrap; }
+  .opts.col { flex-direction:column; }
+  .opts label { padding:7px 16px; border-radius:999px; font-size:15px; font-weight:700; background:#efeae0; color:var(--ink);
+                border:2px solid transparent; cursor:pointer; }
+  .opts.col label { border-radius:10px; font-weight:600; }
+  .fb { display:none; margin-top:12px; border-radius:10px; padding:9px 12px; font-size:14px; }
+  .fb.ok { background:#e6f2dd; color:#3d6b22; } .fb.no { background:#fbe4e1; color:#a33a2c; }
+  .q input:checked + label.right { background:#e6f2dd; color:#3d6b22; border-color:#7aa65a; }
+  .q input:checked + label.wrong { background:#fbe4e1; color:#a33a2c; border-color:#d98277; }
+  .q:has(input.right:checked) .fb.ok { display:block; }
+  .q:has(input.wrong:checked) .fb.no { display:block; }
+  details { margin-top:10px; font-size:13px; color:var(--sub); }
+  details summary { cursor:pointer; }
+  details p { margin-top:6px; color:var(--ink); }
+  footer { text-align:center; margin-top:20px; padding:14px; border-radius:12px; background:var(--ink); color:#f4f1ea; font-size:15px; }
+  footer small { display:block; color:#b9b3a6; font-size:12px; margin-top:4px; }
+  #score { font-weight:700; }
+  #submit { margin-top:10px; padding:6px 18px; border-radius:999px; border:1px solid #b9b3a6; background:transparent; color:#f4f1ea; font-size:14px; }
+  #copy { display:none; margin-top:10px; width:100%; min-height:70px; font-size:13px; border-radius:8px; padding:6px; }
+</style></head><body>
+<header><div class="kicker">总语法 · 01 疑问句</div><h1>疑问句测试 · 13 题</h1></header>
+<div class="how">按笔记的台阶出题：一般疑问 → 特殊疑问 → 疑问词 → 三个坑。点选项就能对答案：<b>绿色</b>是对，<b>红色</b>是错，下面会出解析。每题只算第一次点的选项。全部做完，结果会自动发给我。</div>
+<div class="sec">② 一般疑问句 · 助动词提到主语前</div>
+<section class="q" data-answer="Does she like coffee?"><div class="qn">第 1 题</div>
+<div class="stem">把 <b>She likes coffee.</b> 变成一般疑问句：</div>
+<div class="opts col"><input type="radio" name="q1" id="q1o0" class="right"><label for="q1o0" class="right">Does she like coffee?</label><input type="radio" name="q1" id="q1o1" class="wrong"><label for="q1o1" class="wrong">Does she likes coffee?</label><input type="radio" name="q1" id="q1o2" class="wrong"><label for="q1o2" class="wrong">Likes she coffee?</label></div>
+<div class="fb ok">✅ 对了！句子里只有实义动词 like，要请 <b>does</b> 出场提到主语前；does 已经管了三单，后面的 like 回到原形。</div>
+<div class="fb no">❌ 答案是 <b>Does she like coffee?</b>。句子里只有实义动词 like，要请 <b>does</b> 出场提到主语前；does 已经管了三单，后面的 like 回到原形。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Does she like coffee?</b>。句子里只有实义动词 like，要请 <b>does</b> 出场提到主语前；does 已经管了三单，后面的 like 回到原形。</p></details>
+</section>
+<section class="q" data-answer="Have they finished?"><div class="qn">第 2 题</div>
+<div class="stem">把 <b>They have finished.</b> 变成一般疑问句：</div>
+<div class="opts col"><input type="radio" name="q2" id="q2o0" class="wrong"><label for="q2o0" class="wrong">Do they have finished?</label><input type="radio" name="q2" id="q2o1" class="right"><label for="q2o1" class="right">Have they finished?</label><input type="radio" name="q2" id="q2o2" class="wrong"><label for="q2o2" class="wrong">Did they finish have?</label></div>
+<div class="fb ok">✅ 对了！句子里已经有助动词 <b>have</b>，直接把它提到主语前就行，不用再请 do。</div>
+<div class="fb no">❌ 答案是 <b>Have they finished?</b>。句子里已经有助动词 <b>have</b>，直接把它提到主语前就行，不用再请 do。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Have they finished?</b>。句子里已经有助动词 <b>have</b>，直接把它提到主语前就行，不用再请 do。</p></details>
+</section>
+<section class="q" data-answer="Did he go home?"><div class="qn">第 3 题</div>
+<div class="stem">把 <b>He went home.</b> 变成一般疑问句：</div>
+<div class="opts col"><input type="radio" name="q3" id="q3o0" class="right"><label for="q3o0" class="right">Did he go home?</label><input type="radio" name="q3" id="q3o1" class="wrong"><label for="q3o1" class="wrong">Did he went home?</label><input type="radio" name="q3" id="q3o2" class="wrong"><label for="q3o2" class="wrong">Does he went home?</label></div>
+<div class="fb ok">✅ 对了！过去时请 <b>did</b> 出场；did 已经管了「过去」，went 要回到原形 <b>go</b>。</div>
+<div class="fb no">❌ 答案是 <b>Did he go home?</b>。过去时请 <b>did</b> 出场；did 已经管了「过去」，went 要回到原形 <b>go</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Did he go home?</b>。过去时请 <b>did</b> 出场；did 已经管了「过去」，went 要回到原形 <b>go</b>。</p></details>
+</section>
+<div class="sec">③ 特殊疑问句 · 疑问词 + 一般疑问句</div>
+<section class="q" data-answer="Where do you work?"><div class="qn">第 4 题</div>
+<div class="stem">想问「你在哪儿工作？」</div>
+<div class="opts col"><input type="radio" name="q4" id="q4o0" class="wrong"><label for="q4o0" class="wrong">Where you work?</label><input type="radio" name="q4" id="q4o1" class="right"><label for="q4o1" class="right">Where do you work?</label><input type="radio" name="q4" id="q4o2" class="wrong"><label for="q4o2" class="wrong">Do where you work?</label></div>
+<div class="fb ok">✅ 对了！特殊疑问句 = 疑问词 + 一般疑问句：先有 Do you work here?，再把 here 换成 <b>where</b> 放最前。<b>do 还在</b>，不会消失。</div>
+<div class="fb no">❌ 答案是 <b>Where do you work?</b>。特殊疑问句 = 疑问词 + 一般疑问句：先有 Do you work here?，再把 here 换成 <b>where</b> 放最前。<b>do 还在</b>，不会消失。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Where do you work?</b>。特殊疑问句 = 疑问词 + 一般疑问句：先有 Do you work here?，再把 here 换成 <b>where</b> 放最前。<b>do 还在</b>，不会消失。</p></details>
+</section>
+<section class="q" data-answer="When did she come?"><div class="qn">第 5 题</div>
+<div class="stem">想问「她什么时候来的？」</div>
+<div class="opts col"><input type="radio" name="q5" id="q5o0" class="right"><label for="q5o0" class="right">When did she come?</label><input type="radio" name="q5" id="q5o1" class="wrong"><label for="q5o1" class="wrong">When she came?</label><input type="radio" name="q5" id="q5o2" class="wrong"><label for="q5o2" class="wrong">When did she came?</label></div>
+<div class="fb ok">✅ 对了！先变一般疑问 Did she come?，再把时间换成 <b>when</b> 放最前。did 管过去，come 用原形。</div>
+<div class="fb no">❌ 答案是 <b>When did she come?</b>。先变一般疑问 Did she come?，再把时间换成 <b>when</b> 放最前。did 管过去，come 用原形。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>When did she come?</b>。先变一般疑问 Did she come?，再把时间换成 <b>when</b> 放最前。did 管过去，come 用原形。</p></details>
+</section>
+<div class="sec">④ 疑问词 · 各顶替一种成分</div>
+<section class="q" data-answer="Whose"><div class="qn">第 6 题</div>
+<div class="stem"><span class="blank">?</span> book is this? —— It's mine.</div>
+<div class="opts"><input type="radio" name="q6" id="q6o0" class="wrong"><label for="q6o0" class="wrong">Who</label><input type="radio" name="q6" id="q6o1" class="right"><label for="q6o1" class="right">Whose</label><input type="radio" name="q6" id="q6o2" class="wrong"><label for="q6o2" class="wrong">Which</label></div>
+<div class="fb ok">✅ 对了！回答是 mine（我的），问「谁的」用 <b>whose</b>。</div>
+<div class="fb no">❌ 答案是 <b>Whose</b>。回答是 mine（我的），问「谁的」用 <b>whose</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Whose</b>。回答是 mine（我的），问「谁的」用 <b>whose</b>。</p></details>
+</section>
+<section class="q" data-answer="Why"><div class="qn">第 7 题</div>
+<div class="stem"><span class="blank">?</span> are you late? —— Because I missed the bus.</div>
+<div class="opts"><input type="radio" name="q7" id="q7o0" class="right"><label for="q7o0" class="right">Why</label><input type="radio" name="q7" id="q7o1" class="wrong"><label for="q7o1" class="wrong">How</label><input type="radio" name="q7" id="q7o2" class="wrong"><label for="q7o2" class="wrong">When</label></div>
+<div class="fb ok">✅ 对了！回答用 because（因为），问原因用 <b>why</b>。</div>
+<div class="fb no">❌ 答案是 <b>Why</b>。回答用 because（因为），问原因用 <b>why</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Why</b>。回答用 because（因为），问原因用 <b>why</b>。</p></details>
+</section>
+<section class="q" data-answer="much"><div class="qn">第 8 题</div>
+<div class="stem">How <span class="blank">?</span> is it? —— It's 20 yuan.</div>
+<div class="opts"><input type="radio" name="q8" id="q8o0" class="wrong"><label for="q8o0" class="wrong">many</label><input type="radio" name="q8" id="q8o1" class="right"><label for="q8o1" class="right">much</label><input type="radio" name="q8" id="q8o2" class="wrong"><label for="q8o2" class="wrong">long</label></div>
+<div class="fb ok">✅ 对了！问价钱用 <b>How much</b>；How many 问能数的东西有几个，How long 问多长、多久。</div>
+<div class="fb no">❌ 答案是 <b>much</b>。问价钱用 <b>How much</b>；How many 问能数的东西有几个，How long 问多长、多久。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>much</b>。问价钱用 <b>How much</b>；How many 问能数的东西有几个，How long 问多长、多久。</p></details>
+</section>
+<div class="sec">⑤ 三个坑 · 不知道就一直错</div>
+<section class="q" data-answer="Who broke the window?"><div class="qn">第 9 题</div>
+<div class="stem">想问「谁打破了窗户？」</div>
+<div class="opts col"><input type="radio" name="q9" id="q9o0" class="wrong"><label for="q9o0" class="wrong">Who did break the window?</label><input type="radio" name="q9" id="q9o1" class="right"><label for="q9o1" class="right">Who broke the window?</label><input type="radio" name="q9" id="q9o2" class="wrong"><label for="q9o2" class="wrong">Who did broke the window?</label></div>
+<div class="fb ok">✅ 对了！坑①：<b>who 就是主语</b>，本来就站在主语的位置上，没有东西需要提前，所以不用 did，直接说 <b>broke</b>。</div>
+<div class="fb no">❌ 答案是 <b>Who broke the window?</b>。坑①：<b>who 就是主语</b>，本来就站在主语的位置上，没有东西需要提前，所以不用 did，直接说 <b>broke</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Who broke the window?</b>。坑①：<b>who 就是主语</b>，本来就站在主语的位置上，没有东西需要提前，所以不用 did，直接说 <b>broke</b>。</p></details>
+</section>
+<section class="q" data-answer="What did you break?"><div class="qn">第 10 题</div>
+<div class="stem">想问「你打破了什么？」</div>
+<div class="opts col"><input type="radio" name="q10" id="q10o0" class="wrong"><label for="q10o0" class="wrong">What you broke?</label><input type="radio" name="q10" id="q10o1" class="right"><label for="q10o1" class="right">What did you break?</label><input type="radio" name="q10" id="q10o2" class="wrong"><label for="q10o2" class="wrong">What did you broke?</label></div>
+<div class="fb ok">✅ 对了！这回 what 问的是<b>宾语</b>，就要照常用助动词：<b>did</b> 提前，break 用原形。对比上一题：问主语不用 did，问宾语要用。</div>
+<div class="fb no">❌ 答案是 <b>What did you break?</b>。这回 what 问的是<b>宾语</b>，就要照常用助动词：<b>did</b> 提前，break 用原形。对比上一题：问主语不用 did，问宾语要用。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>What did you break?</b>。这回 what 问的是<b>宾语</b>，就要照常用助动词：<b>did</b> 提前，break 用原形。对比上一题：问主语不用 did，问宾语要用。</p></details>
+</section>
+<section class="q" data-answer="Yes, I am."><div class="qn">第 11 题</div>
+<div class="stem">—— Are you a student? —— <span class="blank">?</span></div>
+<div class="opts col"><input type="radio" name="q11" id="q11o0" class="wrong"><label for="q11o0" class="wrong">Yes, I do.</label><input type="radio" name="q11" id="q11o1" class="right"><label for="q11o1" class="right">Yes, I am.</label><input type="radio" name="q11" id="q11o2" class="wrong"><label for="q11o2" class="wrong">Yes, I are.</label></div>
+<div class="fb ok">✅ 对了！坑②：问句用什么，答句就用回什么。问句是 <b>Are</b>，就答 <b>Yes, I am.</b></div>
+<div class="fb no">❌ 答案是 <b>Yes, I am.</b>。坑②：问句用什么，答句就用回什么。问句是 <b>Are</b>，就答 <b>Yes, I am.</b></div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Yes, I am.</b>。坑②：问句用什么，答句就用回什么。问句是 <b>Are</b>，就答 <b>Yes, I am.</b></p></details>
+</section>
+<section class="q" data-answer="Yes, I do."><div class="qn">第 12 题</div>
+<div class="stem">—— Don't you like coffee? <br>你其实<b>很喜欢</b>咖啡，应该回答：</div>
+<div class="opts col"><input type="radio" name="q12" id="q12o0" class="right"><label for="q12o0" class="right">Yes, I do.</label><input type="radio" name="q12" id="q12o1" class="wrong"><label for="q12o1" class="wrong">No, I do.</label><input type="radio" name="q12" id="q12o2" class="wrong"><label for="q12o2" class="wrong">No, I don&#x27;t.</label></div>
+<div class="fb ok">✅ 对了！坑③：英文的 Yes / No 只跟<b>事实</b>走。喜欢就是 Yes，不管问句是肯定还是否定。中文会说「不，我喜欢」，英文是 <b>Yes, I do.</b></div>
+<div class="fb no">❌ 答案是 <b>Yes, I do.</b>。坑③：英文的 Yes / No 只跟<b>事实</b>走。喜欢就是 Yes，不管问句是肯定还是否定。中文会说「不，我喜欢」，英文是 <b>Yes, I do.</b></div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Yes, I do.</b>。坑③：英文的 Yes / No 只跟<b>事实</b>走。喜欢就是 Yes，不管问句是肯定还是否定。中文会说「不，我喜欢」，英文是 <b>Yes, I do.</b></p></details>
+</section>
+<section class="q" data-answer="No, she isn&#x27;t."><div class="qn">第 13 题</div>
+<div class="stem">—— Isn't she at home? <br>她确实<b>不在家</b>，应该回答：</div>
+<div class="opts col"><input type="radio" name="q13" id="q13o0" class="wrong"><label for="q13o0" class="wrong">Yes, she isn&#x27;t.</label><input type="radio" name="q13" id="q13o1" class="right"><label for="q13o1" class="right">No, she isn&#x27;t.</label><input type="radio" name="q13" id="q13o2" class="wrong"><label for="q13o2" class="wrong">Yes, she is.</label></div>
+<div class="fb ok">✅ 对了！坑③：事实是「不在」，就用 <b>No, she isn't.</b> 中文会说「对，她不在」，英文却要说 No。</div>
+<div class="fb no">❌ 答案是 <b>No, she isn&#x27;t.</b>。坑③：事实是「不在」，就用 <b>No, she isn't.</b> 中文会说「对，她不在」，英文却要说 No。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>No, she isn&#x27;t.</b>。坑③：事实是「不在」，就用 <b>No, she isn't.</b> 中文会说「对，她不在」，英文却要说 No。</p></details>
+</section>
+<footer><span id="score">已答 0 / 13</span><small id="status">全部做完会自动把结果发给我</small><button id="submit">还没做完，先交卷</button><textarea id="copy" readonly></textarea></footer>
+<script>
+var TOPIC = 'vocab-quiz-b40560dafcdf39f9', QUIZ = "questions-1", TITLE = "疑问句测试", sent = false;
+var TEST = /[?&]test=1/.test(location.search);
+function summary() {
+  var all = document.querySelectorAll('.q'), done = 0, ok = 0, wrong = [], skipped = [];
+  all.forEach(function(q, i) {
+    if (!q.dataset.done) { skipped.push(i + 1); return; }
+    done++;
+    if (q.dataset.done === '1') ok++;
+    else wrong.push({n: i + 1, chose: q.dataset.chose, answer: q.dataset.answer});
+  });
+  return {quiz: QUIZ, title: TITLE, score: ok, answered: done, total: all.length, wrong: wrong, skipped: skipped, test: TEST};
+}
+function text(s) {
+  var t = s.title + '：答对 ' + s.score + ' / ' + s.total;
+  if (s.wrong.length) t += '，错题 ' + s.wrong.map(function(w) { return '第' + w.n + '题（选了 ' + w.chose + '）'; }).join('、');
+  if (s.skipped.length) t += '，没做 ' + s.skipped.join('、');
+  return t;
+}
+function submit() {
+  if (sent) return;
+  var s = summary(), st = document.getElementById('status');
+  st.textContent = '正在把结果发给我……';
+  fetch('https://ntfy.sh/' + TOPIC, {method: 'POST', body: JSON.stringify(s)})
+    .then(function(r) { if (!r.ok) throw new Error(r.status); sent = true;
+      st.textContent = '✅ 结果已经发给我了，回微信说一声「做完了」就行'; document.getElementById('submit').style.display = 'none'; })
+    .catch(function() {
+      st.textContent = '⚠️ 结果没发出去，把下面这段复制发给我：';
+      var c = document.getElementById('copy'); c.style.display = 'block'; c.value = text(s); });
+}
+document.querySelectorAll('.q input').forEach(function(inp) {
+  inp.addEventListener('change', function() {
+    var q = inp.closest('.q');
+    if (q.dataset.done) return;
+    q.dataset.done = inp.classList.contains('right') ? '1' : '0';
+    q.dataset.chose = inp.nextElementSibling.textContent;
+    q.querySelectorAll('input').forEach(function(x) { if (x !== inp) x.disabled = true; });
+    var s = summary();
+    document.getElementById('score').textContent = '已答 ' + s.answered + ' / ' + s.total + '，答对 ' + s.score + ' 题';
+    if (s.answered === s.total) submit();
+  });
+});
+document.getElementById('submit').addEventListener('click', submit);
+</script></body></html>
