@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>空间关系介词：at / in / on / to</title>
+<style>
+:root{
+  --ink:#141821;
+  --panel:#1a202a;
+  --rule:#2b3543;
+  --text:#d6dbe3;
+  --dim:#8b95a5;
+  --faint:#5f6a7a;
+  --blue:#6fa8e6;
+  --blue-bg:rgba(111,168,230,.09);
+  --orange:#e5a15e;
+  --orange-bg:rgba(229,161,94,.09);
+  --green:#75c9a7;
+  --green-bg:rgba(117,201,167,.09);
+  --paper:#e8e3d9;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.01em;
+}
+a{color:inherit}
+.page{
+  display:grid;grid-template-columns:minmax(0,760px) 212px;gap:60px;
+  max-width:1032px;margin:0 auto;padding:0 28px;
+}
+.wrap{min-width:0;padding-bottom:120px}
+header{padding:88px 0 0}
+h1{font-size:34px;line-height:1.3;margin:0 0 20px;font-weight:600;letter-spacing:.06em}
+.thesis{font-size:17px;color:var(--dim);margin:0;line-height:1.9}
+.thesis b{color:var(--text);font-weight:600}
+.legend{margin-top:24px;font-size:13.5px;color:var(--faint)}
+.legend span{margin-right:20px}
+.asks{margin:28px 0 0;padding:0}
+.asks li{
+  list-style:none;display:grid;grid-template-columns:1fr auto;gap:16px;
+  padding:10px 0;font-size:15px;align-items:baseline;
+  border-top:1px solid rgba(43,53,67,.55);
+}
+.asks li:first-child{border-top:none}
+.asks .where{font-size:13px;color:var(--faint);white-space:nowrap}
+.map{
+  margin:36px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:6px 0;
+}
+.map-row{
+  display:grid;grid-template-columns:76px 1fr;gap:14px;
+  padding:11px 2px;font-size:14.5px;align-items:baseline;text-decoration:none;
+}
+.map-row + .map-row{border-top:1px solid rgba(43,53,67,.55)}
+.map-row .n{font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.1em}
+.map-row .t{color:var(--text)}
+.map-row .t em{font-style:normal;color:var(--dim)}
+.map-row:hover .t{color:#fff}
+.stage{margin-top:78px;scroll-margin-top:28px}
+.stage-no{display:block;font-family:var(--serif);font-size:14px;color:var(--faint);margin-bottom:10px;letter-spacing:.12em}
+.stage > h2{font-size:22px;font-weight:600;margin:0;letter-spacing:.04em;color:#eef1f5}
+.bridge{margin:20px 0 0;padding-left:16px;border-left:2px solid var(--rule)}
+.bridge .before{margin:0;font-size:14.5px;color:var(--faint);line-height:1.8}
+.bridge .after{margin:4px 0 0;font-size:15px;color:var(--text);line-height:1.8}
+h3{font-size:16.5px;font-weight:600;margin:38px 0 12px;color:#e3e8ef;letter-spacing:.03em;scroll-margin-top:28px}
+p{margin:14px 0}
+b{color:#f0f3f7;font-weight:600}
+.cite{font-size:11px;color:var(--blue);vertical-align:super;margin-left:2px}
+.cite a{text-decoration:none}
+.ex{margin:18px 0;padding:2px 0 2px 18px;border-left:1px solid var(--rule)}
+.en{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--paper);margin:0}
+.en u{text-decoration:none;border-bottom:1px solid rgba(232,227,217,.45);padding-bottom:1px}
+.zh{margin:3px 0 0;font-size:14.5px;color:var(--dim);line-height:1.75}
+.note{font-size:13.5px;color:var(--faint);margin:5px 0 0}
+.ex + .ex{margin-top:14px}
+.box{margin:26px 0;padding:16px 20px;border-radius:3px;font-size:14.5px;line-height:1.8}
+.box p{margin:8px 0}
+.box p:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+.box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
+.derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
+.rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
+.confirm{background:var(--green-bg);border-left:2px solid var(--green)}
+.tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
+.derive .tag{color:var(--blue)}
+.rote .tag{color:var(--orange)}
+.confirm .tag{color:var(--green)}
+.dimtext{color:var(--dim)}
+.sum{margin:36px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:14.5px;color:var(--dim)}
+.sum b{color:var(--text)}
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px;border-bottom-color:#3a4655}
+.tbl td:first-child{font-family:var(--serif);color:var(--paper);white-space:nowrap}
+.tbl tr:last-child td{border-bottom:none}
+.pair{margin:22px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.pair > div{padding:16px 20px}
+.pair > div + div{border-top:1px solid var(--rule);background:var(--panel)}
+.pair .verdict{font-size:13.5px;color:var(--blue);margin:7px 0 0}
+.pair > div + div .verdict{color:var(--orange)}
+.chain{margin:26px 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:8px 0}
+.step{display:grid;grid-template-columns:26px 1fr;gap:16px;padding:16px 24px}
+.step + .step{border-top:1px solid rgba(43,53,67,.6)}
+.step-n{font-family:var(--serif);font-size:14px;color:var(--faint);padding-top:3px}
+.step:last-child .step-n{color:var(--blue)}
+.step .en{font-size:16.5px}
+.step-why{font-size:13.5px;color:var(--dim);margin:6px 0 0}
+.flow{margin:24px 0;padding:0;counter-reset:f}
+.flow li{
+  list-style:none;position:relative;padding:0 0 22px 34px;
+  border-left:1px solid var(--rule);margin-left:8px;
+}
+.flow li:last-child{border-left-color:transparent;padding-bottom:0}
+.flow li::before{
+  counter-increment:f;content:counter(f);
+  position:absolute;left:-9px;top:2px;width:18px;height:18px;
+  background:var(--ink);border:1px solid var(--rule);border-radius:50%;
+  font-size:11px;line-height:16px;text-align:center;color:var(--dim);font-family:var(--serif);
+}
+.flow .q{font-weight:600;color:#eef1f5;font-size:15px;margin:0}
+.flow .a{font-size:14.5px;color:var(--dim);margin:5px 0 0}
+
+/* 空间关系图 */
+.spatial-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:26px 0}
+.spatial-card{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:14px 12px 13px;min-width:0}
+.spatial-word{font-family:var(--serif);font-size:21px;color:#eef1f5;margin-bottom:9px}
+.spatial-name{font-size:13px;color:var(--dim);margin-top:8px}
+.scene{height:92px;position:relative;background:#11161e;border:1px solid #27313e;overflow:hidden}
+.scene .thing{position:absolute;width:13px;height:13px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(111,168,230,.12);z-index:3}
+.scene .label{position:absolute;font:11px var(--sans);color:var(--faint)}
+.scene.at .landmark{position:absolute;width:6px;height:6px;border:1px solid var(--orange);border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+.scene.at .landmark::before,.scene.at .landmark::after{content:"";position:absolute;background:rgba(229,161,94,.5)}
+.scene.at .landmark::before{width:34px;height:1px;left:-15px;top:2px}
+.scene.at .landmark::after{width:1px;height:34px;left:2px;top:-15px}
+.scene.at .thing{left:calc(50% + 8px);top:calc(50% - 7px)}
+.scene.at .label{left:9px;bottom:7px}
+.scene.in .container{position:absolute;left:18px;right:18px;top:15px;bottom:15px;border:2px solid var(--green);background:rgba(117,201,167,.04)}
+.scene.in .thing{left:50%;top:50%;transform:translate(-50%,-50%)}
+.scene.in .label{left:26px;bottom:19px}
+.scene.on .surface{position:absolute;left:15px;right:15px;height:3px;background:var(--orange);top:58px}
+.scene.on .thing{left:50%;top:44px;transform:translateX(-50%)}
+.scene.on .label{left:16px;bottom:8px}
+.scene.to .target{position:absolute;right:20px;top:35px;width:20px;height:20px;border:2px solid var(--green);border-radius:50%}
+.scene.to .thing{left:18px;top:39px}
+.scene.to .arrow{position:absolute;left:40px;right:43px;top:45px;height:2px;background:var(--blue)}
+.scene.to .arrow::after{content:"";position:absolute;right:-1px;top:-4px;border-left:8px solid var(--blue);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.scene.to .label{left:10px;bottom:7px}
+.lens{display:grid;grid-template-columns:118px 1fr;gap:16px;margin:18px 0;padding:16px 18px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;align-items:start}
+.lens .place{font-family:var(--serif);font-size:18px;color:var(--paper)}
+.lens .views{font-size:14.5px;color:var(--dim)}
+.lens .views p{margin:0 0 8px}
+.lens .views p:last-child{margin-bottom:0}
+.key{color:var(--blue);font-weight:600}
+.sources{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
+.sources h2{font-size:15px;color:var(--dim);margin:0 0 12px}
+.sources ol{margin:0;padding-left:22px}
+.sources li{margin:7px 0}
+.sources a{text-decoration:none;color:var(--dim);border-bottom:1px solid var(--rule)}
+footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
+.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:88px 0 60px;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc-h{font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin:0 0 14px;padding-left:13px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc .item{margin:0}
+.toc a{display:block;text-decoration:none;color:var(--dim);font-size:13.5px;line-height:1.55;padding:6px 0 6px 13px;border-left:1px solid var(--rule);transition:color .15s,border-color .15s}
+.toc a:hover{color:var(--text)}
+.toc .item > a .num{font-family:var(--serif);color:var(--faint);margin-right:7px;font-size:12.5px}
+.toc .item.active > a{color:#eef1f5;border-left-color:var(--blue)}
+.toc .item.active > a .num{color:var(--blue)}
+.toc .subs{display:none;padding:2px 0 6px}
+.toc .item.active .subs{display:block}
+.toc .subs a{font-size:12.5px;color:var(--faint);padding:4px 0 4px 26px;line-height:1.5}
+.toc .subs a:hover{color:var(--dim)}
+.toc .subs a.on{color:var(--text);border-left-color:#3f4b5c}
+.toc-btn{display:none;position:fixed;right:18px;bottom:18px;z-index:30;width:46px;height:46px;border-radius:50%;cursor:pointer;background:var(--panel);border:1px solid #3a4655;color:var(--text);font-size:13px;font-family:var(--sans);line-height:1}
+.scrim{display:none;position:fixed;inset:0;background:rgba(10,13,18,.6);z-index:20}
+body.nav-open .scrim{display:block}
+@media (max-width:1080px){
+  .page{grid-template-columns:minmax(0,1fr);max-width:816px;gap:0}
+  .toc-btn{display:block}
+  .toc{position:fixed;top:0;right:0;bottom:0;width:250px;z-index:25;background:#171d26;border-left:1px solid var(--rule);padding:28px 18px 40px;max-height:none;transform:translateX(100%);transition:transform .2s ease}
+  body.nav-open .toc{transform:translateX(0)}
+}
+@media (max-width:720px){
+  .spatial-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toc{transition:none}}
+@media (max-width:600px){
+  .page{padding:0 20px}.wrap{padding-bottom:80px}header{padding-top:56px}h1{font-size:27px}
+  .step{grid-template-columns:20px 1fr;gap:12px;padding:14px 16px}.map-row{grid-template-columns:56px 1fr;gap:10px}.en{font-size:16px}.stage{margin-top:58px}
+  .asks li{grid-template-columns:1fr}.asks .where{white-space:normal}.lens{grid-template-columns:1fr;gap:5px}
+  .legend span{display:block;margin:5px 0}
+}
+</style>
+</head>
+<body>
+<div class="scrim" id="scrim"></div>
+<div class="page">
+<div class="wrap">
+<header>
+  <h1>空间关系介词：at / in / on / to</h1>
+  <p class="thesis">不要先问它们分别翻译成哪个“在”。先看一幅空间图：<b>一个东西，和一个参照物，形成了什么关系</b>。其中最关键的修正是：<b>at / in / on 描写“在哪里”，to 描写“朝哪里去”</b>——四个词并不在同一条静态位置线上。</p>
+
+  <ol class="asks">
+    <li><span>一、怎样把介词看成空间关系，而不是中文释义</span><span class="where">阶段一</span></li>
+    <li><span>二、at / in / on 到底在观察什么</span><span class="where">阶段二至四</span></li>
+    <li><span>三、to 为什么和前三个不完全同类</span><span class="where">阶段五、六</span></li>
+    <li><span>四、阅读时怎样快速还原空间图</span><span class="where">阶段七、总览</span></li>
+  </ol>
+
+  <p class="legend"><span>📖 蓝色 = 能帮助你判断新句子的机制</span><span>🧷 橙色 = 搭配限制 / 不能硬推的边界</span></p>
+
+  <div class="map">
+    <a class="map-row" href="#s1"><span class="n">一</span><span class="t">先看四幅图 <em>—— 点、内部、接触面、终点箭头</em></span></a>
+    <a class="map-row" href="#s2"><span class="n">二</span><span class="t">at <em>—— 把参照物压缩成一个点</em></span></a>
+    <a class="map-row" href="#s3"><span class="n">三</span><span class="t">in <em>—— 边界把东西包在里面</em></span></a>
+    <a class="map-row" href="#s4"><span class="n">四</span><span class="t">on <em>—— 接触 / 依附在表面、线或边上</em></span></a>
+    <a class="map-row" href="#s5"><span class="n">五</span><span class="t">to <em>—— 一支指向终点的箭头</em></span></a>
+    <a class="map-row" href="#s6"><span class="n">六</span><span class="t">同一个地点，不同看法 <em>—— station / table / door</em></span></a>
+    <a class="map-row" href="#s7"><span class="n">七</span><span class="t">静态和移动配对 <em>—— at/to、in/into、on/onto</em></span></a>
+    <a class="map-row" href="#s8"><span class="n">总</span><span class="t">阅读流程 <em>—— 先还原关系，最后翻译</em></span></a>
+  </div>
+</header>
+
+<section class="stage" id="s1">
+  <span class="stage-no">阶段一</span>
+  <h2>先看四幅图，不先背四个中文</h2>
+
+  <div class="bridge">
+    <p class="after">介词做的不是“替换一个中文词”，而是告诉你：<b>被定位的东西</b>和<b>参照物</b>之间是哪一种关系。</p>
+  </div>
+
+  <div class="spatial-grid" aria-label="at in on to 空间关系图">
+    <div class="spatial-card">
+      <div class="spatial-word">at</div>
+      <div class="scene at"><span class="landmark"></span><span class="thing"></span><span class="label">参照物被看成点</span></div>
+      <div class="spatial-name">点位关系</div>
+    </div>
+    <div class="spatial-card">
+      <div class="spatial-word">in</div>
+      <div class="scene in"><span class="container"></span><span class="thing"></span><span class="label">边界内部</span></div>
+      <div class="spatial-name">容器 / 区域关系</div>
+    </div>
+    <div class="spatial-card">
+      <div class="spatial-word">on</div>
+      <div class="scene on"><span class="surface"></span><span class="thing"></span><span class="label">接触或依附</span></div>
+      <div class="spatial-name">表面 / 线关系</div>
+    </div>
+    <div class="spatial-card">
+      <div class="spatial-word">to</div>
+      <div class="scene to"><span class="thing"></span><span class="arrow"></span><span class="target"></span><span class="label">路径指向终点</span></div>
+      <div class="spatial-name">目标 / 终点关系</div>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 先改正一个关键分类</span>
+    <p><b>at / in / on</b> 通常回答 <b>Where is it?（它在哪里？）</b>。</p>
+    <p><b>to</b> 通常回答 <b>Where is it going?（它正朝哪里去？）</b>。Cambridge 也把 to 的空间核心概括为 destination or direction。<sup class="cite"><a href="#ref2">[2]</a></sup><sup class="cite"><a href="#ref5">[5]</a></sup></p>
+    <p>所以，to 不是“另一个静态方位格子”。它先画出一条<b>朝向终点的路径</b>。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>先分两类：at / in / on 是<b>位置图</b>；to 是<b>路径图</b>。这一步分对，后面就不会把四个词混成四种“在”。</p>
+</section>
+
+<section class="stage" id="s2">
+  <span class="stage-no">阶段二</span>
+  <h2>at：把参照物压缩成一个“点”</h2>
+
+  <div class="bridge">
+    <p class="before">“点”不是说那个地方真的没有面积。</p>
+    <p class="after">它表示说话人暂时<b>不关心里面的结构</b>，只把整个地方当成地图上的一个位置、会面点或活动点。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">Meet me <u>at the station</u>.</p>
+    <p class="zh">在车站和我见面。—— 车站被当成会面点。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Someone is waiting <u>at the door</u>.</p>
+    <p class="zh">有人在门口等着。—— 门被当成一个位置点。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The children are <u>at school</u>.</p>
+    <p class="zh">孩子们在学校。—— 重点是学校这个地点 / 活动，不是建筑内部。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 “点”取决于观察尺度</span>
+    <p>一座车站、一所学校甚至一家公司都可以被看成“点”。Cambridge 对 at 的说明也是：把位置看作一个 point，或把工作场所、活动地点作为一个整体。<sup class="cite"><a href="#ref1">[1]</a></sup></p>
+    <p class="formula">at = “我只标记它在哪一站，不展开它里面有什么”</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 不要把 at 硬理解成“紧贴某一点”</span>
+    <p><b>at the table</b> 通常是“坐在桌边 / 位于桌旁”，不是在桌面上；桌面接触要用 <b>on the table</b>。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>at 的关键不是“地方很小”，而是<b>说话人把内部细节忽略，把它当作一个位置点</b>。</p>
+</section>
+
+<section class="stage" id="s3">
+  <span class="stage-no">阶段三</span>
+  <h2>in：边界把东西包在内部</h2>
+
+  <div class="bridge">
+    <p class="before">at 把地点压成点；in 恰好相反。</p>
+    <p class="after">说 in 时，你开始看参照物的<b>内部区域</b>：东西落在它的边界里面。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">The keys are <u>in the box</u>.</p>
+    <p class="zh">钥匙在盒子里。—— 物理容器。</p>
+  </div>
+  <div class="ex">
+    <p class="en">She is waiting <u>in the station</u>.</p>
+    <p class="zh">她正在车站里面等。—— 强调建筑内部。</p>
+  </div>
+  <div class="ex">
+    <p class="en">They live <u>in China</u>.</p>
+    <p class="zh">他们住在中国。—— 国界形成概念上的区域。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 in 不是“大地方”，而是“有内部”</span>
+    <p>盒子可以很小，国家可以很大；两者都能用 in，因为关键是<b>边界与内部</b>，不是尺寸。Cambridge 的表述是：事物位于周围更大区域之内。<sup class="cite"><a href="#ref1">[1]</a></sup><sup class="cite"><a href="#ref3">[3]</a></sup></p>
+    <p class="formula">in = “参照物形成一个容器 / 区域，目标落在边界里面”</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">She is <b>at</b> the station.</p>
+      <p class="verdict">车站 = 行程中的一个地点；不关心她在站内哪个位置。</p>
+    </div>
+    <div>
+      <p class="en">She is <b>in</b> the station.</p>
+      <p class="verdict">车站 = 有内部的建筑；明确人在里面。</p>
+    </div>
+  </div>
+
+  <p class="sum"><b>小结：</b>看到 in，脑中先画一条边界：<b>目标在边界内部</b>。物理盒子、房间、城市、国家都能形成这种“容器”。</p>
+</section>
+
+<section class="stage" id="s4">
+  <span class="stage-no">阶段四</span>
+  <h2>on：接触 / 依附在表面、线或边上</h2>
+
+  <div class="bridge">
+    <p class="before">in 看内部，on 看接触面。</p>
+    <p class="after">它的核心不是“在上方”，而是目标和参照物之间存在<b>表面接触、依附或沿线关系</b>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">The phone is <u>on the table</u>.</p>
+    <p class="zh">手机在桌面上。—— 表面接触并得到支撑。</p>
+  </div>
+  <div class="ex">
+    <p class="en">There is a picture <u>on the wall</u>.</p>
+    <p class="zh">墙上有一幅画。—— 墙是竖直的，仍然用 on；核心不是“上方”。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The village is <u>on the coast</u>.</p>
+    <p class="zh">村庄在海岸线上。—— coast 被看作一条边界线。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 从“面”自然扩展到“线 / 边”</span>
+    <p>Cambridge 把 on 的空间用法归为表面位置，也包括沿着道路、河流、海岸等线性参照物的位置。<sup class="cite"><a href="#ref1">[1]</a></sup><sup class="cite"><a href="#ref4">[4]</a></sup></p>
+    <p class="formula">on = “目标贴在、依附在，或落在参照物展开的表面 / 线上”</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">He is <b>at</b> the table.</p>
+      <p class="verdict">人位于桌边；桌子是活动点。</p>
+    </div>
+    <div>
+      <p class="en">The book is <b>on</b> the table.</p>
+      <p class="verdict">书与桌面接触；桌子是支撑面。</p>
+    </div>
+  </div>
+
+  <p class="sum"><b>小结：</b>on 先想<b>接触 / 依附</b>，再扩展到表面、道路、海岸、楼层等“面或线”。不要把它只记成“在……上方”。</p>
+</section>
+
+<section class="stage" id="s5">
+  <span class="stage-no">阶段五</span>
+  <h2>to：一支指向目标 / 终点的箭头</h2>
+
+  <div class="bridge">
+    <p class="before">at / in / on 都是在给一张静态图定位。</p>
+    <p class="after">to 则在图上增加了一条路径：<b>从当前位置，朝某个目标或终点延伸</b>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="en">We walked <u>to the station</u>.</p>
+    <p class="zh">我们走向车站 / 走到了车站。—— 车站是路径终点。</p>
+  </div>
+  <div class="ex">
+    <p class="en">The dog ran <u>to me</u>.</p>
+    <p class="zh">狗朝我跑来。—— 我是动作指向的目标。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Turn <u>to the left</u> at the corner.</p>
+    <p class="zh">在拐角处向左转。—— to 给出转动指向的目标方向。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 你的原理解要修正一处</span>
+    <p>“to 表示相对于参照物处在某个方位上”说得太宽。<b>to 的核心是目标 / 终点 / 指向</b>，Cambridge 直接把它归为 destination or direction。<sup class="cite"><a href="#ref2">[2]</a></sup><sup class="cite"><a href="#ref5">[5]</a></sup></p>
+    <p><b>The village is to the north of the river.</b> 确实是静态方位，但“北面”主要由 <b>north of</b> 提供；不要因此把所有 to 都理解成静态方位。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 to 只标目标，不保证一定进入内部</span>
+    <p><b>go to the house</b> = 把房子当目的地；不一定已经进屋。</p>
+    <p>明确“跨过边界进入里面”用 <b>into</b>：go <b>into</b> the house。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>to 的脑内图像不是一个点，而是<b>一支朝目标延伸的箭头</b>。目标是 station、me、the left，都不改变这条核心路径。</p>
+</section>
+
+<section class="stage" id="s6">
+  <span class="stage-no">阶段六</span>
+  <h2>同一个地点，可以被你“看成”不同东西</h2>
+
+  <div class="bridge">
+    <p class="before">现实中的地点没有自带介词。</p>
+    <p class="after">介词反映的是：<b>这句话此刻选择突出参照物的哪一面</b>——点、内部、接触面，还是路径终点。</p>
+  </div>
+
+  <div class="lens">
+    <div class="place">the station</div>
+    <div class="views">
+      <p><span class="key">at</span> the station：把车站当作会面点 / 行程节点。</p>
+      <p><span class="key">in</span> the station：明确位于车站建筑内部。</p>
+      <p>go <span class="key">to</span> the station：把车站当作移动终点。</p>
+    </div>
+  </div>
+
+  <div class="lens">
+    <div class="place">the table</div>
+    <div class="views">
+      <p>sit <span class="key">at</span> the table：人位于桌边，参与桌边活动。</p>
+      <p>the cup <span class="key">on</span> the table：杯子接触并由桌面支撑。</p>
+    </div>
+  </div>
+
+  <div class="lens">
+    <div class="place">the door</div>
+    <div class="views">
+      <p>wait <span class="key">at</span> the door：门是等待的位置点。</p>
+      <p>a sign <span class="key">on</span> the door：牌子贴在门的表面。</p>
+      <p>walk <span class="key">to</span> the door：动作路径以门为终点。</p>
+    </div>
+  </div>
+
+  <div class="box confirm">
+    <span class="tag">✓ 真正要转换的思维</span>
+    <p>不要问：“station 固定搭配哪个介词？”</p>
+    <p>改问：“这句话把 station 当成<b>点、内部，还是终点</b>？”</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>介词不是地点名词的永久标签。同一个 station，可以因为观察角度不同而出现 at / in / to。</p>
+</section>
+
+<section class="stage" id="s7">
+  <span class="stage-no">阶段七</span>
+  <h2>静态位置与移动路径：三组配对</h2>
+
+  <div class="bridge">
+    <p class="before">现在把“在哪里”和“往哪里去”接起来。</p>
+    <p class="after">位置关系不变，但加入移动后，需要把<b>路径与终点状态</b>一起表达出来。</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th>静态：现在在哪里</th><th>动态：移动到哪里</th><th>变化</th></tr>
+    <tr><td>at the station</td><td>go <b>to</b> the station</td><td>朝一个目标点移动</td></tr>
+    <tr><td>in the room</td><td>walk <b>into</b> the room</td><td>跨过边界，进入内部</td></tr>
+    <tr><td>on the roof</td><td>climb <b>onto</b> the roof</td><td>移动到表面并形成接触</td></tr>
+  </table>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div><p class="en">The cat is <b>in</b> the box.</p><p class="step-why">静态结果：猫已经在边界里面。</p></div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div><p class="en">The cat jumped <b>into</b> the box.</p><p class="step-why">动态过程：猫从外面跨过边界进入里面。</p></div>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 into / onto 把“终点形状”说得更明确</span>
+    <p><b>into = 路径 + in 的内部结果</b>；<b>onto = 路径 + on 的表面结果</b>。Cambridge 分别用“移动进入某处”和“移动到表面位置”来说明它们。<sup class="cite"><a href="#ref3">[3]</a></sup><sup class="cite"><a href="#ref4">[4]</a></sup></p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 实际英语不会永远机械分开</span>
+    <p>某些移动动词后，日常英语也可能直接用 in / on，例如 put the milk <b>in</b> the fridge。into / onto 只是更明确地突出移动和边界变化，不要把它们当成每次都必须出现的公式。<sup class="cite"><a href="#ref3">[3]</a></sup><sup class="cite"><a href="#ref4">[4]</a></sup></p>
+  </div>
+
+  <p class="sum"><b>小结：</b>at / in / on 描写结果位置；to / into / onto 描写通往终点的路径。into、onto 还把最终的“内部 / 表面”关系一起说出来。</p>
+</section>
+
+<section class="stage" id="s8">
+  <span class="stage-no">总览</span>
+  <h2>阅读时：先还原空间图，最后再翻译</h2>
+
+  <h3 id="s8a">一张总表</h3>
+  <table class="tbl">
+    <tr><th>介词</th><th>脑内图像</th><th>你要问的问题</th><th>核心例子</th></tr>
+    <tr><td>at</td><td>参照物被压缩成点</td><td>在哪个位置点 / 活动点？</td><td>at the station</td></tr>
+    <tr><td>in</td><td>目标落在边界内部</td><td>在哪个容器 / 区域里面？</td><td>in the room</td></tr>
+    <tr><td>on</td><td>接触、依附于面或线</td><td>贴在哪个表面 / 沿哪条线？</td><td>on the wall</td></tr>
+    <tr><td>to</td><td>箭头指向目标终点</td><td>朝哪个目标去？</td><td>go to the station</td></tr>
+  </table>
+
+  <h3 id="s8b">四步阅读流程</h3>
+  <ol class="flow">
+    <li><p class="q">先找两个东西：谁和谁发生关系？</p><p class="a">例如 the man <b>at the door</b>：man 是被定位的东西，door 是参照物。</p></li>
+    <li><p class="q">句子是静态位置，还是动态路径？</p><p class="a">静态优先想 at / in / on；有移动、朝向、终点时优先想 to / into / onto。</p></li>
+    <li><p class="q">如果是静态：参照物被看成点、内部，还是接触面？</p><p class="a">点 → at；内部 → in；接触面 / 线 → on。</p></li>
+    <li><p class="q">最后才翻译成自然中文。</p><p class="a">不要一看介词就先套“在、到、上”。先把关系图读出来，再决定中文怎样表达。</p></li>
+  </ol>
+
+  <h3 id="s8c">把一句话拆成三幅图</h3>
+  <div class="ex">
+    <p class="en">The man <b>at the door</b> put the bag <b>on the floor</b> and walked <b>into the room</b>.</p>
+    <p class="zh">门口的男人把包放到地板上，然后走进了房间。</p>
+    <p class="note">at the door：人—门 = 点位｜on the floor：包—地板 = 表面接触｜into the room：人沿路径跨过边界进入房间。</p>
+  </div>
+
+  <div class="box confirm">
+    <span class="tag">✓ 最终只保留一句话</span>
+    <p><b>at 看点，in 看里面，on 看接触面，to 看箭头终点。</b></p>
+    <p>它们不是四个中文翻译，而是四种不同的空间构图方式。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>阅读时不再逐字猜介词含义，而是迅速判断：静态还是移动；点、内部、表面还是终点。空间图一旦成立，中文意思通常会自己浮出来。</p>
+</section>
+
+<section class="sources" aria-labelledby="sources-title">
+  <h2 id="sources-title">参考资料</h2>
+  <ol>
+    <li id="ref1"><a href="https://dictionary.cambridge.org/grammar/british-grammar/at-on-and-in-place" target="_blank" rel="noopener">Cambridge Dictionary — At, on and in (place)</a></li>
+    <li id="ref2"><a href="https://dictionary.cambridge.org/grammar/british-grammar/to" target="_blank" rel="noopener">Cambridge Dictionary — To</a></li>
+    <li id="ref3"><a href="https://dictionary.cambridge.org/grammar/british-grammar/in-into" target="_blank" rel="noopener">Cambridge Dictionary — In, into</a></li>
+    <li id="ref4"><a href="https://dictionary.cambridge.org/grammar/british-grammar/on-onto" target="_blank" rel="noopener">Cambridge Dictionary — On, onto</a></li>
+    <li id="ref5"><a href="https://dictionary.cambridge.org/grammar/british-grammar/at-in-and-to-movement" target="_blank" rel="noopener">Cambridge Dictionary — At, in and to (movement)</a></li>
+  </ol>
+</section>
+
+<footer>本页只处理空间核心义。时间、抽象搭配和固定习语另学；不要把空间模型强行套到所有介词用法上。</footer>
+</div>
+
+<nav class="toc" id="toc">
+  <p class="toc-h">目录</p>
+  <ol>
+    <li class="item" data-sec="s1"><a href="#s1"><span class="num">一</span>四幅核心图</a></li>
+    <li class="item" data-sec="s2"><a href="#s2"><span class="num">二</span>at：点</a></li>
+    <li class="item" data-sec="s3"><a href="#s3"><span class="num">三</span>in：内部</a></li>
+    <li class="item" data-sec="s4"><a href="#s4"><span class="num">四</span>on：接触面</a></li>
+    <li class="item" data-sec="s5"><a href="#s5"><span class="num">五</span>to：终点箭头</a></li>
+    <li class="item" data-sec="s6"><a href="#s6"><span class="num">六</span>同地不同视角</a></li>
+    <li class="item" data-sec="s7"><a href="#s7"><span class="num">七</span>静态 / 移动配对</a></li>
+    <li class="item" data-sec="s8">
+      <a href="#s8"><span class="num">总</span>阅读流程</a>
+      <div class="subs"><a href="#s8a">一张总表</a><a href="#s8b">四步流程</a><a href="#s8c">一句话拆图</a></div>
+    </li>
+  </ol>
+</nav>
+</div>
+<button class="toc-btn" id="tocBtn" aria-label="打开目录">目录</button>
+<script>
+(function(){
+  var items=[].slice.call(document.querySelectorAll('.toc .item'));
+  var subLinks=[].slice.call(document.querySelectorAll('.toc .subs a'));
+  var secs=items.map(function(it){return document.getElementById(it.dataset.sec);});
+  var subs=subLinks.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  var ticking=false;
+  function activeIndex(list,offset){var idx=0;for(var i=0;i<list.length;i++){if(list[i]&&list[i].getBoundingClientRect().top<=offset)idx=i;}return idx;}
+  function update(){
+    ticking=false;
+    var i=activeIndex(secs,120);
+    items.forEach(function(it,n){it.classList.toggle('active',n===i);});
+    var j=activeIndex(subs,140);
+    subLinks.forEach(function(a,n){a.classList.toggle('on',n===j);});
+    var cur=items[i];
+    if(cur&&window.innerWidth>1080){var toc=document.getElementById('toc');var t=cur.getBoundingClientRect().top-toc.getBoundingClientRect().top;if(t<0||t>toc.clientHeight-60)toc.scrollTop+=t-toc.clientHeight/2;}
+  }
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(update);}},{passive:true});
+  window.addEventListener('resize',update);update();
+  var btn=document.getElementById('tocBtn');var scrim=document.getElementById('scrim');
+  function close(){document.body.classList.remove('nav-open');}
+  btn.addEventListener('click',function(){document.body.classList.toggle('nav-open');});
+  scrim.addEventListener('click',close);
+  document.getElementById('toc').addEventListener('click',function(e){if(e.target.closest('a'))close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+</body>
+</html>
