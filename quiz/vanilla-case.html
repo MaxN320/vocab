@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>香草失窃案</title><style>
+  :root { --bg:#11131a; --card:#191c26; --card-2:#1f2330; --line:#2a2f3d;
+          --ink:#e9ecf4; --ink-soft:#aeb4c5; --ink-mute:#6f7689;
+          --accent:#7c9cff; --green:#5ec59a; --amber:#e2b23c; --red:#ff8a80;
+          --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.6; padding:0 16px 40px; }
+  .wrap { max-width:580px; margin:0 auto; }
+  .bar { position:sticky; top:0; z-index:10; background:var(--bg); padding:12px 0 10px; border-bottom:1px solid var(--line);
+         display:flex; align-items:center; gap:12px; }
+  .back { font-size:13px; color:var(--accent); text-decoration:none; white-space:nowrap; }
+  .meter { flex:1; height:6px; border-radius:3px; background:var(--card-2); overflow:hidden; }
+  .meter i { display:block; height:100%; width:0; background:var(--green); transition:width .2s; }
+  .count { font-size:12.5px; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  header { padding:22px 0 6px; }
+  .kicker { font-size:12px; letter-spacing:.1em; color:var(--ink-mute); }
+  h1 { font-size:24px; margin:4px 0 12px; }
+  .how { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--green); border-radius:10px;
+         padding:10px 12px; font-size:13.5px; color:var(--ink-soft); }
+  .how b { color:var(--ink); }
+  .sec { margin:26px 0 10px; font-size:13.5px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:8px; }
+  .sec::after { content:""; flex:1; height:1px; background:var(--line); }
+  .q { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 16px; margin-bottom:12px; }
+  .q .qn { font-size:12.5px; color:var(--ink-mute); }
+  .q .stem { font-size:17px; margin:6px 0 12px; line-height:1.7; }
+  .q .stem b { color:#fff; }
+  .q .blank { display:inline-block; min-width:60px; border-bottom:2px solid var(--amber); text-align:center; color:var(--amber); font-weight:700; }
+  .q input { display:none; }
+  .opts { display:flex; gap:8px; flex-wrap:wrap; }
+  .opts.col { flex-direction:column; }
+  .opts label { padding:8px 16px; border-radius:999px; font-size:15px; font-weight:600; background:var(--card-2); color:var(--ink);
+                border:1px solid var(--line); cursor:pointer; transition:.15s; }
+  .opts.col label { border-radius:10px; }
+  .fb { display:none; margin-top:12px; border-radius:10px; padding:9px 12px; font-size:14px; line-height:1.7; }
+  .fb.ok { background:rgba(94,197,154,.12); color:#a8e6c9; } .fb.no { background:rgba(255,138,128,.1); color:#ffc2bb; }
+  .fb b { color:#fff; }
+  .q input:checked + label.right { background:rgba(94,197,154,.16); color:var(--green); border-color:var(--green); }
+  .q input:checked + label.wrong { background:rgba(255,138,128,.12); color:var(--red); border-color:var(--red); }
+  .q input:disabled + label { opacity:.55; cursor:default; }
+  .q:has(input.right:checked) .fb.ok { display:block; }
+  .q:has(input.wrong:checked) .fb.no { display:block; }
+  details { margin-top:10px; font-size:12.5px; color:var(--ink-mute); }
+  details summary { cursor:pointer; }
+  details p { margin-top:6px; color:var(--ink-soft); }
+  footer { text-align:center; margin-top:22px; padding:16px; border-radius:14px; background:var(--card); border:1px solid var(--line); }
+  #score { font-weight:700; font-size:15px; }
+  footer small { display:block; color:var(--ink-mute); font-size:12.5px; margin-top:4px; }
+  #submit { margin-top:12px; padding:7px 18px; border-radius:999px; border:1px solid var(--line); background:var(--card-2); color:var(--ink-soft); font-size:13.5px; }
+  #copy { display:none; margin-top:10px; width:100%; min-height:70px; font-size:13px; border-radius:8px; padding:8px;
+          background:var(--card-2); color:var(--ink); border:1px solid var(--line); }
+</style></head><body><div class="wrap">
+<div class="bar"><a class="back" href="../index.html#quiz">← 测验列表</a><div class="meter"><i id="meter"></i></div><span class="count" id="count">0 / 26</span></div>
+<header><div class="kicker">生词综合 · 10/1–10/5 · 侦探剧情</div><h1>香草失窃案 · 26 题</h1></header>
+<div class="how">🌴 热带山谷里，一年一度的香草节明天就要开幕。可就在昨晚，仓库里 500 克最好的香草荚不翼而飞！村长 Bob 请你来当侦探。<br>一共五幕，每幕练一样：<b>时态 → 骨架 → 相似词 → 词组 → 综合</b>，第五幕揭晓小偷是谁。用到的生词都来自你 10/1–10/5 的生词本。<br>可能不认识的词：storeroom 仓库 ｜ clue 线索 ｜ theft 盗窃 ｜ case 案子 ｜ mud 泥地 ｜ scream 尖叫 ｜ basket 篮子<br>点选项就能对答案：<b>绿色</b>是对，<b>红色</b>是错，下面会出解析。每题只算第一次点的选项。全部做完，结果会自动发给我。</div>
+<div class="sec">第一幕 · 空箱子 🕰️ 时态</div>
+<section class="q" data-answer="hired"><div class="qn">第 1 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📞 半夜，你的电话响了……</div>Last night, Chief Bob <span class="blank">　</span> me as a detective.</div>
+<div class="opts"><input type="radio" name="q1" id="q1o0" class="wrong"><label for="q1o0" class="wrong">hires</label><input type="radio" name="q1" id="q1o1" class="wrong"><label for="q1o1" class="wrong">has hired</label><input type="radio" name="q1" id="q1o2" class="right"><label for="q1o2" class="right">hired</label><input type="radio" name="q1" id="q1o3" class="wrong"><label for="q1o3" class="wrong">is hiring</label></div>
+<div class="fb ok">✅ 对了！<b>Last night</b> 是明确的过去时间 → 一般过去时 <b>hired</b>。has hired（现在完成时）不能和 last night、yesterday 这类明确的过去时间连用。顺手记住：<b>hire sb as + 职位</b> 雇某人当……</div>
+<div class="fb no">❌ 答案是 <b>hired</b>。<b>Last night</b> 是明确的过去时间 → 一般过去时 <b>hired</b>。has hired（现在完成时）不能和 last night、yesterday 这类明确的过去时间连用。顺手记住：<b>hire sb as + 职位</b> 雇某人当……</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>hired</b>。<b>Last night</b> 是明确的过去时间 → 一般过去时 <b>hired</b>。has hired（现在完成时）不能和 last night、yesterday 这类明确的过去时间连用。顺手记住：<b>hire sb as + 职位</b> 雇某人当……</p></details>
+</section>
+<section class="q" data-answer="had disposed of"><div class="qn">第 2 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🏚️ 一早赶到仓库</div>When I got to the storeroom this morning, the thief <span class="blank">　</span> the empty box. It was gone!</div>
+<div class="opts col"><input type="radio" name="q2" id="q2o0" class="wrong"><label for="q2o0" class="wrong">has disposed of</label><input type="radio" name="q2" id="q2o1" class="wrong"><label for="q2o1" class="wrong">disposed</label><input type="radio" name="q2" id="q2o2" class="wrong"><label for="q2o2" class="wrong">was disposing of</label><input type="radio" name="q2" id="q2o3" class="right"><label for="q2o3" class="right">had disposed of</label></div>
+<div class="fb ok">✅ 对了！「我到」已经是过去，扔箱子发生在「我到」<b>之前</b> → 过去的过去，用过去完成时 <b>had + 过去分词</b>。dispose 一定要带 <b>of</b>：dispose of sth 处理掉某物。was disposing of 是「我到的时候他正在扔」，可后面说箱子已经没了，对不上。</div>
+<div class="fb no">❌ 答案是 <b>had disposed of</b>。「我到」已经是过去，扔箱子发生在「我到」<b>之前</b> → 过去的过去，用过去完成时 <b>had + 过去分词</b>。dispose 一定要带 <b>of</b>：dispose of sth 处理掉某物。was disposing of 是「我到的时候他正在扔」，可后面说箱子已经没了，对不上。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>had disposed of</b>。「我到」已经是过去，扔箱子发生在「我到」<b>之前</b> → 过去的过去，用过去完成时 <b>had + 过去分词</b>。dispose 一定要带 <b>of</b>：dispose of sth 处理掉某物。was disposing of 是「我到的时候他正在扔」，可后面说箱子已经没了，对不上。</p></details>
+</section>
+<section class="q" data-answer="have examined"><div class="qn">第 3 题</div>
+<div class="stem">I <span class="blank">　</span> the storeroom three times since this morning, but I still can't find the pods.</div>
+<div class="opts col"><input type="radio" name="q3" id="q3o0" class="right"><label for="q3o0" class="right">have examined</label><input type="radio" name="q3" id="q3o1" class="wrong"><label for="q3o1" class="wrong">examined</label><input type="radio" name="q3" id="q3o2" class="wrong"><label for="q3o2" class="wrong">examine</label><input type="radio" name="q3" id="q3o3" class="wrong"><label for="q3o3" class="wrong">will examine</label></div>
+<div class="fb ok">✅ 对了！<b>since this morning</b> = 从今早到现在 → 现在完成时 <b>have + 过去分词</b>。examine 是「仔细地查」，比 check、look at 查得更细、更正式。</div>
+<div class="fb no">❌ 答案是 <b>have examined</b>。<b>since this morning</b> = 从今早到现在 → 现在完成时 <b>have + 过去分词</b>。examine 是「仔细地查」，比 check、look at 查得更细、更正式。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>have examined</b>。<b>since this morning</b> = 从今早到现在 → 现在完成时 <b>have + 过去分词</b>。examine 是「仔细地查」，比 check、look at 查得更细、更正式。</p></details>
+</section>
+<section class="q" data-answer="is staring"><div class="qn">第 4 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🌴 仓库外的大树上，有什么在动……</div>Look! A monkey <span class="blank">　</span> at us from the tree.</div>
+<div class="opts"><input type="radio" name="q4" id="q4o0" class="wrong"><label for="q4o0" class="wrong">stares</label><input type="radio" name="q4" id="q4o1" class="wrong"><label for="q4o1" class="wrong">stared</label><input type="radio" name="q4" id="q4o2" class="right"><label for="q4o2" class="right">is staring</label><input type="radio" name="q4" id="q4o3" class="wrong"><label for="q4o3" class="wrong">has stared</label></div>
+<div class="fb ok">✅ 对了！<b>Look!</b> 是在说「你看，就是现在」→ 现在进行时 <b>is + doing</b>。stare 要接看的对象得加 <b>at</b>：stare at sb 盯着某人看。这只猴子，先记住它 🐒</div>
+<div class="fb no">❌ 答案是 <b>is staring</b>。<b>Look!</b> 是在说「你看，就是现在」→ 现在进行时 <b>is + doing</b>。stare 要接看的对象得加 <b>at</b>：stare at sb 盯着某人看。这只猴子，先记住它 🐒</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is staring</b>。<b>Look!</b> 是在说「你看，就是现在」→ 现在进行时 <b>is + doing</b>。stare 要接看的对象得加 <b>at</b>：stare at sb 盯着某人看。这只猴子，先记住它 🐒</p></details>
+</section>
+<section class="q" data-answer="was sewing"><div class="qn">第 5 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🧵 你去问裁缝林太太</div>Detective: "What were you doing at ten last night?"<br>Mrs. Lin: "I <span class="blank">　</span> a button onto my coat."</div>
+<div class="opts"><input type="radio" name="q5" id="q5o0" class="wrong"><label for="q5o0" class="wrong">sewed</label><input type="radio" name="q5" id="q5o1" class="right"><label for="q5o1" class="right">was sewing</label><input type="radio" name="q5" id="q5o2" class="wrong"><label for="q5o2" class="wrong">am sewing</label><input type="radio" name="q5" id="q5o3" class="wrong"><label for="q5o3" class="wrong">have sewn</label></div>
+<div class="fb ok">✅ 对了！问的是「昨晚十点<b>那一刻</b>正在干嘛」→ 过去进行时 <b>was / were + doing</b>。sew 读 /səʊ/，和 so 同音；<b>sew A onto B</b> 把 A 缝到 B 上。林太太有不在场证明 ✔</div>
+<div class="fb no">❌ 答案是 <b>was sewing</b>。问的是「昨晚十点<b>那一刻</b>正在干嘛」→ 过去进行时 <b>was / were + doing</b>。sew 读 /səʊ/，和 so 同音；<b>sew A onto B</b> 把 A 缝到 B 上。林太太有不在场证明 ✔</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>was sewing</b>。问的是「昨晚十点<b>那一刻</b>正在干嘛」→ 过去进行时 <b>was / were + doing</b>。sew 读 /səʊ/，和 so 同音；<b>sew A onto B</b> 把 A 缝到 B 上。林太太有不在场证明 ✔</p></details>
+</section>
+<section class="q" data-answer="will seek"><div class="qn">第 6 题</div>
+<div class="stem">If I can't solve the case today, I <span class="blank">　</span> help from the police tomorrow.</div>
+<div class="opts col"><input type="radio" name="q6" id="q6o0" class="wrong"><label for="q6o0" class="wrong">sought</label><input type="radio" name="q6" id="q6o1" class="wrong"><label for="q6o1" class="wrong">have sought</label><input type="radio" name="q6" id="q6o2" class="wrong"><label for="q6o2" class="wrong">seeking</label><input type="radio" name="q6" id="q6o3" class="right"><label for="q6o3" class="right">will seek</label></div>
+<div class="fb ok">✅ 对了！<b>tomorrow</b> → 一般将来时 <b>will + 动词原形</b>（If 那半句用一般现在时 can't solve，另一半用 will）。seek 是不规则动词：seek – sought – sought。<b>seek help</b> 寻求帮助。</div>
+<div class="fb no">❌ 答案是 <b>will seek</b>。<b>tomorrow</b> → 一般将来时 <b>will + 动词原形</b>（If 那半句用一般现在时 can't solve，另一半用 will）。seek 是不规则动词：seek – sought – sought。<b>seek help</b> 寻求帮助。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>will seek</b>。<b>tomorrow</b> → 一般将来时 <b>will + 动词原形</b>（If 那半句用一般现在时 can't solve，另一半用 will）。seek 是不规则动词：seek – sought – sought。<b>seek help</b> 寻求帮助。</p></details>
+</section>
+<div class="sec">第二幕 · 勘查现场 🦴 骨架</div>
+<section class="q" data-answer="There is"><div class="qn">第 7 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">👃 一推开仓库门……</div><span class="blank">　</span> a strange odor in the storeroom. It smells like chilli!</div>
+<div class="opts"><input type="radio" name="q7" id="q7o0" class="wrong"><label for="q7o0" class="wrong">It has</label><input type="radio" name="q7" id="q7o1" class="right"><label for="q7o1" class="right">There is</label><input type="radio" name="q7" id="q7o2" class="wrong"><label for="q7o2" class="wrong">There has</label><input type="radio" name="q7" id="q7o3" class="wrong"><label for="q7o3" class="wrong">There are</label></div>
+<div class="fb ok">✅ 对了！「某地有某物」用 <b>There be</b>，不用 have。a strange odor 是单数 → <b>There is</b>。odor 多指难闻的气味；好闻的淡淡香味用 scent。</div>
+<div class="fb no">❌ 答案是 <b>There is</b>。「某地有某物」用 <b>There be</b>，不用 have。a strange odor 是单数 → <b>There is</b>。odor 多指难闻的气味；好闻的淡淡香味用 scent。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>There is</b>。「某地有某物」用 <b>There be</b>，不用 have。a strange odor 是单数 → <b>There is</b>。odor 多指难闻的气味；好闻的淡淡香味用 scent。</p></details>
+</section>
+<section class="q" data-answer="Examining"><div class="qn">第 8 题</div>
+<div class="stem"><span class="blank">　</span> the evidence carefully is the first step.</div>
+<div class="opts"><input type="radio" name="q8" id="q8o0" class="right"><label for="q8o0" class="right">Examining</label><input type="radio" name="q8" id="q8o1" class="wrong"><label for="q8o1" class="wrong">Examine</label><input type="radio" name="q8" id="q8o2" class="wrong"><label for="q8o2" class="wrong">Examines</label><input type="radio" name="q8" id="q8o3" class="wrong"><label for="q8o3" class="wrong">Examined</label></div>
+<div class="fb ok">✅ 对了！动词不能直接当主语，加 -ing 就变成「这件事」：<b>Examining the evidence carefully</b>（仔细检查证据这件事）当主语，后面用单数 <b>is</b>。</div>
+<div class="fb no">❌ 答案是 <b>Examining</b>。动词不能直接当主语，加 -ing 就变成「这件事」：<b>Examining the evidence carefully</b>（仔细检查证据这件事）当主语，后面用单数 <b>is</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Examining</b>。动词不能直接当主语，加 -ing 就变成「这件事」：<b>Examining the evidence carefully</b>（仔细检查证据这件事）当主语，后面用单数 <b>is</b>。</p></details>
+</section>
+<section class="q" data-answer="is"><div class="qn">第 9 题</div>
+<div class="stem">Everyone in the village <span class="blank">　</span> familiar with that monkey. Its name is Coco.</div>
+<div class="opts"><input type="radio" name="q9" id="q9o0" class="wrong"><label for="q9o0" class="wrong">are</label><input type="radio" name="q9" id="q9o1" class="wrong"><label for="q9o1" class="wrong">be</label><input type="radio" name="q9" id="q9o2" class="wrong"><label for="q9o2" class="wrong">have</label><input type="radio" name="q9" id="q9o3" class="right"><label for="q9o3" class="right">is</label></div>
+<div class="fb ok">✅ 对了！everyone 意思上是很多人，语法上按单数算（重点落在 one）→ <b>is</b>。<b>be familiar with</b> sb / sth 熟悉某人或某事物。</div>
+<div class="fb no">❌ 答案是 <b>is</b>。everyone 意思上是很多人，语法上按单数算（重点落在 one）→ <b>is</b>。<b>be familiar with</b> sb / sth 熟悉某人或某事物。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is</b>。everyone 意思上是很多人，语法上按单数算（重点落在 one）→ <b>is</b>。<b>be familiar with</b> sb / sth 熟悉某人或某事物。</p></details>
+</section>
+<section class="q" data-answer="for … in"><div class="qn">第 10 题</div>
+<div class="stem">I examined the room <span class="blank">　</span> two hours, but I found the first clue <span class="blank">　</span> five minutes.</div>
+<div class="opts"><input type="radio" name="q10" id="q10o0" class="wrong"><label for="q10o0" class="wrong">in … for</label><input type="radio" name="q10" id="q10o1" class="wrong"><label for="q10o1" class="wrong">for … for</label><input type="radio" name="q10" id="q10o2" class="right"><label for="q10o2" class="right">for … in</label><input type="radio" name="q10" id="q10o3" class="wrong"><label for="q10o3" class="wrong">in … in</label></div>
+<div class="fb ok">✅ 对了！<b>for + 时间段</b> = 持续了多久（查了两个小时）；<b>in + 时间段</b> = 用多久完成（五分钟就找到了第一条线索）。</div>
+<div class="fb no">❌ 答案是 <b>for … in</b>。<b>for + 时间段</b> = 持续了多久（查了两个小时）；<b>in + 时间段</b> = 用多久完成（五分钟就找到了第一条线索）。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>for … in</b>。<b>for + 时间段</b> = 持续了多久（查了两个小时）；<b>in + 时间段</b> = 用多久完成（五分钟就找到了第一条线索）。</p></details>
+</section>
+<section class="q" data-answer="across"><div class="qn">第 11 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">👨‍🌾 一个农民说他看见了……</div>A farmer saw the monkey run <span class="blank">　</span> the bridge to the other side of the river.</div>
+<div class="opts"><input type="radio" name="q11" id="q11o0" class="wrong"><label for="q11o0" class="wrong">above</label><input type="radio" name="q11" id="q11o1" class="wrong"><label for="q11o1" class="wrong">at</label><input type="radio" name="q11" id="q11o2" class="wrong"><label for="q11o2" class="wrong">of</label><input type="radio" name="q11" id="q11o3" class="right"><label for="q11o3" class="right">across</label></div>
+<div class="fb ok">✅ 对了！动词要带着方向词跑：<b>run across</b> 从一边跑到另一边。above 只说「在……上方、不接触」这个位置，不说怎么走。</div>
+<div class="fb no">❌ 答案是 <b>across</b>。动词要带着方向词跑：<b>run across</b> 从一边跑到另一边。above 只说「在……上方、不接触」这个位置，不说怎么走。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>across</b>。动词要带着方向词跑：<b>run across</b> 从一边跑到另一边。above 只说「在……上方、不接触」这个位置，不说怎么走。</p></details>
+</section>
+<div class="sec">第三幕 · 蛛丝马迹 🔍 相似词</div>
+<section class="q" data-answer="attributed"><div class="qn">第 12 题</div>
+<div class="stem">Chief Bob <span class="blank">　</span> the theft to bad luck, but I didn't believe him.</div>
+<div class="opts col"><input type="radio" name="q12" id="q12o0" class="right"><label for="q12o0" class="right">attributed</label><input type="radio" name="q12" id="q12o1" class="wrong"><label for="q12o1" class="wrong">contributed</label><input type="radio" name="q12" id="q12o2" class="wrong"><label for="q12o2" class="wrong">distributed</label><input type="radio" name="q12" id="q12o3" class="wrong"><label for="q12o3" class="wrong">attracted</label></div>
+<div class="fb ok">✅ 对了！<b>attribute A to B</b> = 把 A 归因于 B（觉得是 B 造成了 A）。-tribute 三兄弟：<b>attribute</b> 归因 ｜ <b>contribute</b> to 出力、促成 ｜ <b>distribute</b> 分发。attract 是「吸引」。</div>
+<div class="fb no">❌ 答案是 <b>attributed</b>。<b>attribute A to B</b> = 把 A 归因于 B（觉得是 B 造成了 A）。-tribute 三兄弟：<b>attribute</b> 归因 ｜ <b>contribute</b> to 出力、促成 ｜ <b>distribute</b> 分发。attract 是「吸引」。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>attributed</b>。<b>attribute A to B</b> = 把 A 归因于 B（觉得是 B 造成了 A）。-tribute 三兄弟：<b>attribute</b> 归因 ｜ <b>contribute</b> to 出力、促成 ｜ <b>distribute</b> 分发。attract 是「吸引」。</p></details>
+</section>
+<section class="q" data-answer="simulate"><div class="qn">第 13 题</div>
+<div class="stem">The police used a computer to <span class="blank">　</span> the night of the theft.</div>
+<div class="opts"><input type="radio" name="q13" id="q13o0" class="wrong"><label for="q13o0" class="wrong">stimulate</label><input type="radio" name="q13" id="q13o1" class="right"><label for="q13o1" class="right">simulate</label><input type="radio" name="q13" id="q13o2" class="wrong"><label for="q13o2" class="wrong">similar</label><input type="radio" name="q13" id="q13o3" class="wrong"><label for="q13o3" class="wrong">simulation</label></div>
+<div class="fb ok">✅ 对了！<b>simulate</b> 模拟；<b>stimulate</b> 刺激、激发（9/29 学的），只差一个 t！similar 是形容词「相似的」，simulation 是名词，to 后面要放动词原形。</div>
+<div class="fb no">❌ 答案是 <b>simulate</b>。<b>simulate</b> 模拟；<b>stimulate</b> 刺激、激发（9/29 学的），只差一个 t！similar 是形容词「相似的」，simulation 是名词，to 后面要放动词原形。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>simulate</b>。<b>simulate</b> 模拟；<b>stimulate</b> 刺激、激发（9/29 学的），只差一个 t！similar 是形容词「相似的」，simulation 是名词，to 后面要放动词原形。</p></details>
+</section>
+<section class="q" data-answer="preserve"><div class="qn">第 14 题</div>
+<div class="stem">Chief Bob: "We dry vanilla pods in the sun to <span class="blank">　</span> them for a long time."</div>
+<div class="opts"><input type="radio" name="q14" id="q14o0" class="right"><label for="q14o0" class="right">preserve</label><input type="radio" name="q14" id="q14o1" class="wrong"><label for="q14o1" class="wrong">reserve</label><input type="radio" name="q14" id="q14o2" class="wrong"><label for="q14o2" class="wrong">prevent</label><input type="radio" name="q14" id="q14o3" class="wrong"><label for="q14o3" class="wrong">present</label></div>
+<div class="fb ok">✅ 对了！<b>preserve</b> 保存，让它不坏（preserve food 保存食物）；<b>reserve</b> 是「留着以后用」（reserve a table 订座）；prevent 是「阻止」。</div>
+<div class="fb no">❌ 答案是 <b>preserve</b>。<b>preserve</b> 保存，让它不坏（preserve food 保存食物）；<b>reserve</b> 是「留着以后用」（reserve a table 订座）；prevent 是「阻止」。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>preserve</b>。<b>preserve</b> 保存，让它不坏（preserve food 保存食物）；<b>reserve</b> 是「留着以后用」（reserve a table 订座）；prevent 是「阻止」。</p></details>
+</section>
+<section class="q" data-answer="effect"><div class="qn">第 15 题</div>
+<div class="stem">The chilli had a funny <span class="blank">　</span> on the monkey: it jumped and screamed! 🌶️🐒</div>
+<div class="opts"><input type="radio" name="q15" id="q15o0" class="wrong"><label for="q15o0" class="wrong">affect</label><input type="radio" name="q15" id="q15o1" class="wrong"><label for="q15o1" class="wrong">effort</label><input type="radio" name="q15" id="q15o2" class="wrong"><label for="q15o2" class="wrong">offer</label><input type="radio" name="q15" id="q15o3" class="right"><label for="q15o3" class="right">effect</label></div>
+<div class="fb ok">✅ 对了！<b>have an effect on …</b> 对……产生影响，effect 是名词；affect 是动词「影响」；effort 是「努力」（10/1 学的）。猴子吃辣椒了？记下这条线索 📝</div>
+<div class="fb no">❌ 答案是 <b>effect</b>。<b>have an effect on …</b> 对……产生影响，effect 是名词；affect 是动词「影响」；effort 是「努力」（10/1 学的）。猴子吃辣椒了？记下这条线索 📝</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>effect</b>。<b>have an effect on …</b> 对……产生影响，effect 是名词；affect 是动词「影响」；effort 是「努力」（10/1 学的）。猴子吃辣椒了？记下这条线索 📝</p></details>
+</section>
+<section class="q" data-answer="tracks"><div class="qn">第 16 题</div>
+<div class="stem">We followed the monkey's <span class="blank">　</span> in the mud.</div>
+<div class="opts"><input type="radio" name="q16" id="q16o0" class="wrong"><label for="q16o0" class="wrong">trucks</label><input type="radio" name="q16" id="q16o1" class="right"><label for="q16o1" class="right">tracks</label><input type="radio" name="q16" id="q16o2" class="wrong"><label for="q16o2" class="wrong">tricks</label><input type="radio" name="q16" id="q16o3" class="wrong"><label for="q16o3" class="wrong">tracker</label></div>
+<div class="fb ok">✅ 对了！<b>track</b> 作名词可以是「足迹、踪迹」：/træk/ 嘴张大，像 cat；<b>truck</b> /trʌk/ 是卡车，嘴半张，像 cup。猴子可不会开卡车 🚚</div>
+<div class="fb no">❌ 答案是 <b>tracks</b>。<b>track</b> 作名词可以是「足迹、踪迹」：/træk/ 嘴张大，像 cat；<b>truck</b> /trʌk/ 是卡车，嘴半张，像 cup。猴子可不会开卡车 🚚</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>tracks</b>。<b>track</b> 作名词可以是「足迹、踪迹」：/træk/ 嘴张大，像 cat；<b>truck</b> /trʌk/ 是卡车，嘴半张，像 cup。猴子可不会开卡车 🚚</p></details>
+</section>
+<div class="sec">第四幕 · 三个嫌疑人 🎭 词组</div>
+<section class="q" data-answer="to leave"><div class="qn">第 17 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">👨‍🍳 嫌疑人一号：厨师 Joe</div>No vanilla, no ice cream! Chef Joe was angry. He threatened <span class="blank">　</span> the village!</div>
+<div class="opts"><input type="radio" name="q17" id="q17o0" class="wrong"><label for="q17o0" class="wrong">leaving</label><input type="radio" name="q17" id="q17o1" class="wrong"><label for="q17o1" class="wrong">leave</label><input type="radio" name="q17" id="q17o2" class="right"><label for="q17o2" class="right">to leave</label><input type="radio" name="q17" id="q17o3" class="wrong"><label for="q17o3" class="wrong">of leaving</label></div>
+<div class="fb ok">✅ 对了！<b>threaten to do sth</b> 威胁要做某事，后面接 to do，不接 -ing。</div>
+<div class="fb no">❌ 答案是 <b>to leave</b>。<b>threaten to do sth</b> 威胁要做某事，后面接 to do，不接 -ing。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>to leave</b>。<b>threaten to do sth</b> 威胁要做某事，后面接 to do，不接 -ing。</p></details>
+</section>
+<section class="q" data-answer="combine … with"><div class="qn">第 18 题</div>
+<div class="stem">Joe's secret dream: to <span class="blank">　</span> vanilla <span class="blank">　</span> chilli in one ice cream! 🍦🌶️</div>
+<div class="opts col"><input type="radio" name="q18" id="q18o0" class="right"><label for="q18o0" class="right">combine … with</label><input type="radio" name="q18" id="q18o1" class="wrong"><label for="q18o1" class="wrong">combine … to</label><input type="radio" name="q18" id="q18o2" class="wrong"><label for="q18o2" class="wrong">combine … from</label><input type="radio" name="q18" id="q18o3" class="wrong"><label for="q18o3" class="wrong">combine … at</label></div>
+<div class="fb ok">✅ 对了！<b>combine A with B</b> 把 A 和 B 结合起来（也可以说 combine A and B）。香草配辣椒……他是不是有动机？🤔</div>
+<div class="fb no">❌ 答案是 <b>combine … with</b>。<b>combine A with B</b> 把 A 和 B 结合起来（也可以说 combine A and B）。香草配辣椒……他是不是有动机？🤔</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>combine … with</b>。<b>combine A with B</b> 把 A 和 B 结合起来（也可以说 combine A and B）。香草配辣椒……他是不是有动机？🤔</p></details>
+</section>
+<section class="q" data-answer="participated in"><div class="qn">第 19 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🎭 嫌疑人二号：喜剧演员 Tom</div>Tom, the comedy actor, never <span class="blank">　</span> the search. Strange…</div>
+<div class="opts col"><input type="radio" name="q19" id="q19o0" class="wrong"><label for="q19o0" class="wrong">participated</label><input type="radio" name="q19" id="q19o1" class="wrong"><label for="q19o1" class="wrong">participated at</label><input type="radio" name="q19" id="q19o2" class="right"><label for="q19o2" class="right">participated in</label><input type="radio" name="q19" id="q19o3" class="wrong"><label for="q19o3" class="wrong">participated on</label></div>
+<div class="fb ok">✅ 对了！participate 后面要接 <b>in</b>：<b>participate in sth</b> 参加某事。不能直接说 participated the search。</div>
+<div class="fb no">❌ 答案是 <b>participated in</b>。participate 后面要接 <b>in</b>：<b>participate in sth</b> 参加某事。不能直接说 participated the search。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>participated in</b>。participate 后面要接 <b>in</b>：<b>participate in sth</b> 参加某事。不能直接说 participated the search。</p></details>
+</section>
+<section class="q" data-answer="To my dismay"><div class="qn">第 20 题</div>
+<div class="stem"><span class="blank">　</span>, the tracks ended at the river.</div>
+<div class="opts col"><input type="radio" name="q20" id="q20o0" class="wrong"><label for="q20o0" class="wrong">For my dismay</label><input type="radio" name="q20" id="q20o1" class="right"><label for="q20o1" class="right">To my dismay</label><input type="radio" name="q20" id="q20o2" class="wrong"><label for="q20o2" class="wrong">On my dismay</label><input type="radio" name="q20" id="q20o3" class="wrong"><label for="q20o3" class="wrong">At my dismay</label></div>
+<div class="fb ok">✅ 对了！<b>to one's dismay</b> 令某人沮丧（又吃惊）的是，固定用 to，和 to my surprise（令我吃惊的是）一个套路。</div>
+<div class="fb no">❌ 答案是 <b>To my dismay</b>。<b>to one's dismay</b> 令某人沮丧（又吃惊）的是，固定用 to，和 to my surprise（令我吃惊的是）一个套路。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>To my dismay</b>。<b>to one's dismay</b> 令某人沮丧（又吃惊）的是，固定用 to，和 to my surprise（令我吃惊的是）一个套路。</p></details>
+</section>
+<section class="q" data-answer="looking"><div class="qn">第 21 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🐒 嫌疑人三号：猴子 Coco</div>When I asked about the vanilla, the monkey avoided <span class="blank">　</span> at me. 🙈</div>
+<div class="opts"><input type="radio" name="q21" id="q21o0" class="wrong"><label for="q21o0" class="wrong">look</label><input type="radio" name="q21" id="q21o1" class="wrong"><label for="q21o1" class="wrong">to look</label><input type="radio" name="q21" id="q21o2" class="wrong"><label for="q21o2" class="wrong">looked</label><input type="radio" name="q21" id="q21o3" class="right"><label for="q21o3" class="right">looking</label></div>
+<div class="fb ok">✅ 对了！<b>avoid doing sth</b> 避免做某事，avoid 后面接 -ing，不接 to do。不敢看我，心虚了吧？</div>
+<div class="fb no">❌ 答案是 <b>looking</b>。<b>avoid doing sth</b> 避免做某事，avoid 后面接 -ing，不接 to do。不敢看我，心虚了吧？</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>looking</b>。<b>avoid doing sth</b> 避免做某事，avoid 后面接 -ing，不接 to do。不敢看我，心虚了吧？</p></details>
+</section>
+<div class="sec">第五幕 · 真相大白 🏆 综合</div>
+<section class="q" data-answer="actually"><div class="qn">第 22 题</div>
+<div class="stem">I thought Chef Joe was the thief, but <span class="blank">　</span> it was the monkey!</div>
+<div class="opts"><input type="radio" name="q22" id="q22o0" class="wrong"><label for="q22o0" class="wrong">indeed</label><input type="radio" name="q22" id="q22o1" class="wrong"><label for="q22o1" class="wrong">already</label><input type="radio" name="q22" id="q22o2" class="right"><label for="q22o2" class="right">actually</label><input type="radio" name="q22" id="q22o3" class="wrong"><label for="q22o3" class="wrong">ever</label></div>
+<div class="fb ok">✅ 对了！<b>actually</b>「转着说」：纠正原来的想法，说出意外的事实。<b>indeed</b> 是「顺着说」，确认前面的话（It is indeed cold. 确实很冷）。</div>
+<div class="fb no">❌ 答案是 <b>actually</b>。<b>actually</b>「转着说」：纠正原来的想法，说出意外的事实。<b>indeed</b> 是「顺着说」，确认前面的话（It is indeed cold. 确实很冷）。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>actually</b>。<b>actually</b>「转着说」：纠正原来的想法，说出意外的事实。<b>indeed</b> 是「顺着说」，确认前面的话（It is indeed cold. 确实很冷）。</p></details>
+</section>
+<section class="q" data-answer="did"><div class="qn">第 23 题</div>
+<div class="stem">Not only <span class="blank">　</span> the monkey steal the pods, but it also ate Joe's chilli!</div>
+<div class="opts"><input type="radio" name="q23" id="q23o0" class="wrong"><label for="q23o0" class="wrong">does</label><input type="radio" name="q23" id="q23o1" class="wrong"><label for="q23o1" class="wrong">was</label><input type="radio" name="q23" id="q23o2" class="wrong"><label for="q23o2" class="wrong">had</label><input type="radio" name="q23" id="q23o3" class="right"><label for="q23o3" class="right">did</label></div>
+<div class="fb ok">✅ 对了！<b>Not only</b> 放句首要倒装：助动词 + 主语 + 动词原形（<b>did</b> the monkey <b>steal</b>）。后半句 ate 是过去式，所以前面用过去的 did。第 15 题那只又跳又叫的猴子，原来是吃了辣椒 🌶️</div>
+<div class="fb no">❌ 答案是 <b>did</b>。<b>Not only</b> 放句首要倒装：助动词 + 主语 + 动词原形（<b>did</b> the monkey <b>steal</b>）。后半句 ate 是过去式，所以前面用过去的 did。第 15 题那只又跳又叫的猴子，原来是吃了辣椒 🌶️</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>did</b>。<b>Not only</b> 放句首要倒装：助动词 + 主语 + 动词原形（<b>did</b> the monkey <b>steal</b>）。后半句 ate 是过去式，所以前面用过去的 did。第 15 题那只又跳又叫的猴子，原来是吃了辣椒 🌶️</p></details>
+</section>
+<section class="q" data-answer="to have taken"><div class="qn">第 24 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📰 第二天的村报头条</div>A monkey is thought <span class="blank">　</span> 500 grams of vanilla last night.</div>
+<div class="opts col"><input type="radio" name="q24" id="q24o0" class="right"><label for="q24o0" class="right">to have taken</label><input type="radio" name="q24" id="q24o1" class="wrong"><label for="q24o1" class="wrong">to take</label><input type="radio" name="q24" id="q24o2" class="wrong"><label for="q24o2" class="wrong">taking</label><input type="radio" name="q24" id="q24o3" class="wrong"><label for="q24o3" class="wrong">took</label></div>
+<div class="fb ok">✅ 对了！<b>A is thought to have done</b> = 据信 A（更早）做过某事。偷发生在「人们认为」之前 → <b>to have + 过去分词</b>。新闻特别爱用这个结构，不用说出「是谁认为的」。</div>
+<div class="fb no">❌ 答案是 <b>to have taken</b>。<b>A is thought to have done</b> = 据信 A（更早）做过某事。偷发生在「人们认为」之前 → <b>to have + 过去分词</b>。新闻特别爱用这个结构，不用说出「是谁认为的」。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>to have taken</b>。<b>A is thought to have done</b> = 据信 A（更早）做过某事。偷发生在「人们认为」之前 → <b>to have + 过去分词</b>。新闻特别爱用这个结构，不用说出「是谁认为的」。</p></details>
+</section>
+<section class="q" data-answer="reuse"><div class="qn">第 25 题</div>
+<div class="stem">Coco needs a bed, so let's <span class="blank">　</span> this old basket.</div>
+<div class="opts"><input type="radio" name="q25" id="q25o0" class="wrong"><label for="q25o0" class="wrong">refuse</label><input type="radio" name="q25" id="q25o1" class="right"><label for="q25o1" class="right">reuse</label><input type="radio" name="q25" id="q25o2" class="wrong"><label for="q25o2" class="wrong">rescue</label><input type="radio" name="q25" id="q25o3" class="wrong"><label for="q25o3" class="wrong">reduce</label></div>
+<div class="fb ok">✅ 对了！<b>reuse</b> = re（再）+ use（用）→ 再次使用。refuse 是「拒绝」，长得像，意思差得远。</div>
+<div class="fb no">❌ 答案是 <b>reuse</b>。<b>reuse</b> = re（再）+ use（用）→ 再次使用。refuse 是「拒绝」，长得像，意思差得远。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>reuse</b>。<b>reuse</b> = re（再）+ use（用）→ 再次使用。refuse 是「拒绝」，长得像，意思差得远。</p></details>
+</section>
+<section class="q" data-answer="distributed"><div class="qn">第 26 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🎉 香草荚在 Coco 的树屋里找到了！</div>Chief Bob <span class="blank">　</span> free vanilla ice cream to all the children.</div>
+<div class="opts col"><input type="radio" name="q26" id="q26o0" class="wrong"><label for="q26o0" class="wrong">attributed</label><input type="radio" name="q26" id="q26o1" class="wrong"><label for="q26o1" class="wrong">disturbed</label><input type="radio" name="q26" id="q26o2" class="right"><label for="q26o2" class="right">distributed</label><input type="radio" name="q26" id="q26o3" class="wrong"><label for="q26o3" class="wrong">discovered</label></div>
+<div class="fb ok">✅ 对了！<b>distribute sth to sb</b> 把某物分发给某人。-tribute 三兄弟又见面了：attribute 归因 ｜ contribute 出力 ｜ distribute 分发。🎬 全剧终，案子破了！</div>
+<div class="fb no">❌ 答案是 <b>distributed</b>。<b>distribute sth to sb</b> 把某物分发给某人。-tribute 三兄弟又见面了：attribute 归因 ｜ contribute 出力 ｜ distribute 分发。🎬 全剧终，案子破了！</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>distributed</b>。<b>distribute sth to sb</b> 把某物分发给某人。-tribute 三兄弟又见面了：attribute 归因 ｜ contribute 出力 ｜ distribute 分发。🎬 全剧终，案子破了！</p></details>
+</section>
+<footer><span id="score">已答 0 / 26</span><small id="status">全部做完会自动把结果发给我</small><button id="submit">还没做完，先交卷</button><textarea id="copy" readonly></textarea></footer>
+</div><script>
+var TOPIC = 'vocab-quiz-b40560dafcdf39f9', QUIZ = "vanilla-case", TITLE = "香草失窃案", sent = false;
+var TEST = /[?&]test=1/.test(location.search);
+function summary() {
+  var all = document.querySelectorAll('.q'), done = 0, ok = 0, wrong = [], skipped = [];
+  all.forEach(function(q, i) {
+    if (!q.dataset.done) { skipped.push(i + 1); return; }
+    done++;
+    if (q.dataset.done === '1') ok++;
+    else wrong.push({n: i + 1, chose: q.dataset.chose, answer: q.dataset.answer});
+  });
+  return {quiz: QUIZ, title: TITLE, score: ok, answered: done, total: all.length, wrong: wrong, skipped: skipped, test: TEST};
+}
+function text(s) {
+  var t = s.title + '：答对 ' + s.score + ' / ' + s.total;
+  if (s.wrong.length) t += '，错题 ' + s.wrong.map(function(w) { return '第' + w.n + '题（选了 ' + w.chose + '）'; }).join('、');
+  if (s.skipped.length) t += '，没做 ' + s.skipped.join('、');
+  return t;
+}
+function submit() {
+  if (sent) return;
+  var s = summary(), st = document.getElementById('status');
+  st.textContent = '正在把结果发给我……';
+  fetch('https://ntfy.sh/' + TOPIC, {method: 'POST', body: JSON.stringify(s)})
+    .then(function(r) { if (!r.ok) throw new Error(r.status); sent = true;
+      st.textContent = '✅ 结果已经发给我了，回微信说一声「做完了」就行'; document.getElementById('submit').style.display = 'none'; })
+    .catch(function() {
+      st.textContent = '⚠️ 结果没发出去，把下面这段复制发给我：';
+      var c = document.getElementById('copy'); c.style.display = 'block'; c.value = text(s); });
+}
+document.querySelectorAll('.q input').forEach(function(inp) {
+  inp.addEventListener('change', function() {
+    var q = inp.closest('.q');
+    if (q.dataset.done) return;
+    q.dataset.done = inp.classList.contains('right') ? '1' : '0';
+    q.dataset.chose = inp.nextElementSibling.textContent;
+    q.querySelectorAll('input').forEach(function(x) { if (x !== inp) x.disabled = true; });
+    var s = summary();
+    document.getElementById('score').textContent = '已答 ' + s.answered + ' / ' + s.total + '，答对 ' + s.score + ' 题';
+    document.getElementById('count').textContent = s.answered + ' / ' + s.total;
+    document.getElementById('meter').style.width = (100 * s.answered / s.total) + '%';
+    if (s.answered === s.total) submit();
+  });
+});
+document.getElementById('submit').addEventListener('click', submit);
+</script></body></html>
