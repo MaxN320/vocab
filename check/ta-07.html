@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>论证由什么构成？语言 · 对照检查</title><style>
+:root{--bg:#11131a;--card:#191c26;--card-2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--ink-soft:#aeb4c5;--ink-mute:#6f7689;
+  --accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;--red:#ff8a80;--violet:#c29bff;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;padding:0 16px 56px}
+.wrap{max-width:720px;margin:0 auto}
+.wrap.wide{max-width:1100px}
+.bar{position:sticky;top:0;z-index:10;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px}
+.back{font-size:13px;color:var(--accent);text-decoration:none;white-space:nowrap}
+.grow{flex:1}
+.hint{font-size:12px;color:var(--ink-mute)}
+header{padding:22px 0 8px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--ink-mute)}
+h1{font-size:24px;margin:4px 0 12px;line-height:1.35}
+.how{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px;
+  padding:10px 14px;font-size:13.5px;color:var(--ink-soft)}
+.how b{color:var(--ink)}
+.sec{margin:28px 0 12px;font-size:13.5px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:8px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+footer{text-align:center;margin-top:26px;font-size:12.5px;color:var(--ink-mute)}
+
+.bar .meter{flex:1;height:6px;border-radius:3px;background:var(--card-2);overflow:hidden;display:flex}
+.bar .meter i{display:block;height:100%}
+.count{font-size:12.5px;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+.verdict{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 15px;color:var(--ink-soft)}
+.verdict b{color:var(--ink)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px}
+.filters button{appearance:none;padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink-soft);font:600 13px var(--sans);cursor:pointer}
+.filters button .n{font-weight:500;margin-left:4px;color:var(--ink-mute)}
+.filters button.on{border-color:var(--accent);color:var(--ink);background:var(--card-2)}
+.filters button.miss.on{border-color:var(--red)}.filters button.half.on{border-color:var(--amber)}
+.filters button.off.on{border-color:var(--violet)}.filters button.ok.on{border-color:var(--green)}
+.pt{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:12px}
+.pt.miss{border-left-color:var(--red)}.pt.half{border-left-color:var(--amber)}.pt.off{border-left-color:var(--violet)}.pt.ok{border-left-color:var(--green)}
+.pt .hd{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.pt .hd b{font-size:16px}
+.pt .no{margin-left:auto;font-size:12px;color:var(--ink-mute);font-variant-numeric:tabular-nums}
+.badge{font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap}
+.badge.miss{background:rgba(255,138,128,.13);color:var(--red)}.badge.half{background:rgba(226,178,60,.14);color:var(--amber)}
+.badge.off{background:rgba(194,155,255,.14);color:var(--violet)}.badge.ok{background:rgba(94,197,154,.14);color:var(--green)}
+.row{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:7px 0;border-top:1px dashed var(--line);font-size:14.5px}
+.row .lab{font-size:12px;color:var(--ink-mute);padding-top:3px}
+.row.src div{color:var(--ink)}
+.row.mine div{color:var(--ink-soft)}
+.row.mine .none{color:var(--ink-mute);font-style:italic}
+.row.note div{color:var(--ink)}
+.row b{color:#fff}
+.quote{display:block;margin-top:6px;padding:6px 10px;border-radius:8px;background:rgba(226,178,60,.08);color:#e8d9b0;font-size:13.5px}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:12px}
+.ex b.t{display:block;font-size:15.5px;margin-bottom:4px}
+.ex div{color:var(--ink-soft);font-size:14.5px}
+.ex div b{color:var(--ink)}
+details.full{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+details.full summary{cursor:pointer;color:var(--ink-soft);font-size:14px}
+details.full pre{white-space:pre-wrap;font:14px/1.75 var(--sans);color:var(--ink-soft);margin-top:10px}
+</style></head><body>
+<div class="wrap">
+<div class="bar"><a class="back" href="./">← 对照检查</a><div class="meter"><i style="width:11.11%;background:var(--green)"></i><i style="width:44.44%;background:var(--amber)"></i><i style="width:44.44%;background:var(--red)"></i></div><span class="count">抓到 1 / 9</span></div>
+<header><div class="kicker">Think Again · 07 · 2026-10-04</div><h1>论证由什么构成？语言</h1></header>
+<div class="verdict">四个特征的名字全抓到了，但<b>只有标签、没有内容</b>：每个特征背后的例子，以及由表征性、社会性推出的两条「限制」几乎全漏。后半讲两大块——语言运作的四个层面（发声/语义/句法/礼仪）、finger/singer 的隐藏规则——整段没记。开头还把「论证由句子、陈述、命题构成」记成了「前提和结论」。</div>
+<div class="filters"><button class=" on" data-f="all">全部<span class="n">9</span></button><button class="miss" data-f="miss">漏了<span class="n">4</span></button><button class="half" data-f="half">抓到一半<span class="n">4</span></button><button class="ok" data-f="ok">抓到了<span class="n">1</span></button></div>
+<div class="sec">原文要点 · 按讲课顺序</div>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>论证由什么构成：句子、陈述、命题</b><span class="no">#1</span></div><div class="row src"><span class="lab">原文</span><div>上一讲讲用途（说服、辩护、解释），这一讲讲构成材料。解释事物有两种方式：指<b>目的</b>（乔去商店是为了买牛奶），或指<b>构成材料</b>（MacBook 轻是因为铝）。<b>论证是由句子、陈述和命题组成的集合，因此由语言构成</b>，所以接下来要探讨语言的本质。<span class="quote">原文：「论证是由句子、陈述和命题组成的集合，而这意味着它们是由语言构成的。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>论证是由前提和结论构成的。前提，结论又是以语言构成的，所以，理解论证，就不可避免理解语言。</div></div><div class="row note"><span class="lab">判断</span><div>结论抓到了（理解论证→理解语言），但构成材料记偏了：原文说的是「<b>句子、陈述、命题</b>」，不是「前提和结论」。「前提+结论」是论证的通用定义没错，但这一讲落脚点是「语言」这个材料。开头「解释的两种方式（目的 vs 材料）」的区分也没记，它是引入这一讲的引子。</div></div></article>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>语言与论证的关系：人类是唯一会论证的动物</b><span class="no">#2</span></div><div class="row src"><span class="lab">原文</span><div>能提出论证的生物 = 能使用语言的生物。其他动物能用<b>最低限度的语言</b>，但不够复杂到能提出论证。山羊「哔哔」听起来像在说什么，其实是在打斗或御敌，<b>不是论证</b>。因此不能把人简单定义成「会说话的动物」，亚里士多德称之为「<b>理性的动物</b>」「会推理的动物」——人类是唯一会论证和推理的动物。<span class="quote">原文：「人类是唯一会论证和推理的动物。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>整段漏了。这是「为什么理解语言 = 理解论证」的桥：只有人类能用足够复杂的语言去论证，论证是人的专属能力。所以更好理解语言，就更好理解人类和论证。</div></div></article>
+<article class="pt ok" data-s="ok"><div class="hd"><span class="badge ok">抓到了</span><b>语言的四个基本特征</b><span class="no">#3</span></div><div class="row src"><span class="lab">原文</span><div>关于语言能说的太多，得去上语言学课才讲得完。这里只提四个基本观点，帮我们开始理解论证的构成：<b>语言很重要 / 语言是约定俗成的 / 语言具有表征性 / 语言是社会性的</b>。<span class="quote">原文：「这四点能帮助我们开始理解论证是由什么构成的。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>语言很重要 / 语言是约定俗成的 / 语言是表征性的 / 语言是社会性的</div></div><div class="row note"><span class="lab">判断</span><div>四个标签全对、顺序也对。但每个标签下面的内容（例子、以及各自推出的结论）几乎都没记，见下面几条。</div></div></article>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>语言很重要：海伦·凯勒</b><span class="no">#4</span></div><div class="row src"><span class="lab">原文</span><div>没有语言生活极难。海伦·凯勒出生能看能听，不久失去视听，很久后才获得语言——她意识到「水」这个东西有个名字叫「水」。获得语言和沟通后，她<b>并没有恢复视听</b>，却能走遍全国演讲、从 Radcliffe College 毕业，这一切只因为语言加入了生活。语言极其有用 → 街上标志牌文字无处不在。于是引出谜题：没刻意关注语言，为何能熟练运用？答案在第二个特征。<span class="quote">原文：「所有这一切，仅仅因为她的生活中加入了语言和沟通就得以实现。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>标签抓了，例子全漏。海伦·凯勒是「语言很重要」的核心证据：重点是她<b>没恢复视听</b>，仅靠语言就做到演讲和毕业。这个例子还承上启下，把话头引到「约定俗成」。</div></div></article>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>约定俗成：惯例，且不是随便用</b><span class="no">#5</span></div><div class="row src"><span class="lab">原文</span><div>约定俗成 = 惯例。美国靠右行驶：一种普遍行为模式，多数人遵守，还会批评偏离者。语言同理：有特定的用词模式，偏离就被批评「说错了/不合语法」。惯例可变：英国靠左；football 在美国=美式橄榄球、别处=英式足球；你甚至可以用 money 指袜子（英语本可以、只是没这样做）→ 惯例看似随意。<b>易错点：语言远非完全随意</b>，惯例有限制，来自表征性和社会性。<span class="quote">原文：「语言远非完全随意，因为语言的惯例是有限制的。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>语言是约定俗成的</div></div><div class="row note"><span class="lab">判断</span><div>只记了标签。定义（惯例=普遍模式+批评偏离者）、football/money 例子都没记。最关键的是漏了「<b>易错点</b>」：语言不是想怎么用就怎么用，它受两条限制约束——这正是后面「表征性」「社会性」要展开的。这一句是整讲承上启下的枢纽。</div></div></article>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>表征性：语言改不了客观事实</b><span class="no">#6</span></div><div class="row src"><span class="lab">原文</span><div>用语言指称世界上的物体、描述事实，不能靠改语言改事实。林肯故事：问「马有几条腿？」答「四条」；「那把尾巴叫腿呢？」「那就有五条」——<b>绝对错</b>，把尾巴叫腿不会让它变腿。同理，说「我用 money 指袜子」并不能真让你变富。<b>语言无法改变客观事实</b>。<span class="quote">原文：「把尾巴叫做腿，并不会让它真的变成腿。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>语言是表征性的</div></div><div class="row note"><span class="lab">判断</span><div>只记了标签，核心结论没记：<b>表征性限制了随意性——语言指称事实，改不了事实本身</b>。林肯马腿、袜子变钱两个例子，正是这条限制的证明。这条「限制」和下面社会性的「限制」一起，回答了上一节「语言到底多随意」。</div></div></article>
+<article class="pt half" data-s="half"><div class="hd"><span class="badge half">抓到一半</span><b>社会性：遵守共享惯例才有意义</b><span class="no">#7</span></div><div class="row src"><span class="lab">原文</span><div>语言惯例的另一个限制来自它本质是社会现象。有时会自言自语、给自己写便条，但根本上语言是<b>为社会功能演化出来的</b>。遵守共同体共享惯例才有意义：你觉得葡萄柚该叫「巨型柠檬」，点单说「巨型柠檬汁」就得不到想要的。Monty Python「只说变位词的人」短片：嘉宾全用变位词说话，交流几乎无法进行。<b>语言是共享的，遵守惯例才有意义</b>。<span class="quote">原文：「一旦语言被共享，那么即使你不喜欢，遵循社会的惯例也是有道理的。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div>语言是社会性的，即使有时候，语言并不明确有意义 如 and 和自言自语。</div></div><div class="row note"><span class="lab">判断</span><div>标签对了，后半句理解偏了。原文提「自言自语」是想说：<b>虽然有时你会对自己说话，但不改变语言本质是社会性的</b>——不是「语言不明确有意义」。「and」这讲根本没提。葡萄柚、Monty Python 两个例子，和「遵守共享惯例才有意义」的结论也没记。</div></div></article>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>语言运作的四个层面</b><span class="no">#8</span></div><div class="row src"><span class="lab">原文</span><div>只说「语言是惯例」太肤浅，得弄清惯例具体是哪些规则。进披萨店说「给我辣香肠」能点成餐，涉及四层规则：<b>语义</b>（用对听话者有意义的词，如「gimmy」能被理解）；<b>物理发声</b>（足够大声清晰，嘈杂店提高音量）；<b>句法</b>（正确词序，「给我一份辣香肠披萨」而非「披萨一份辣香肠给我」）；<b>礼仪</b>（礼貌，「请给我…」而非命令）。<span class="quote">原文：「语言在多个不同层面上都遵循着规则或惯例。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>整段漏了。这是后半讲第一个重点：语言不是单一规则，而是<b>多层规则叠加</b>，哪一层出问题，沟通就卡在哪。四层各配一个披萨店例子，很好记。</div></div></article>
+<article class="pt miss" data-s="miss"><div class="hd"><span class="badge miss">漏了</span><b>隐藏的规则：finger vs singer</b><span class="no">#9</span></div><div class="row src"><span class="lab">原文</span><div>finger 的 g 发硬音，singer 的 g 发软音——我们都在遵守却说不出规则。规则是：单词以「nger」结尾、且由「ng」结尾动词派生 → g 发软音（singer）；否则发硬音（finger）或中等音（plunger/danger）。<b>我们在不知道规则的情况下遵循规则</b>，这门课就是要探究这些规则（尤其论证时）。<span class="quote">原文：「我们都能在不知道规则是什么的情况下，按照规则来使用语言。」</span></div></div><div class="row mine"><span class="lab">你写的</span><div><span class="none">（没写到）</span></div></div><div class="row note"><span class="lab">判断</span><div>整段漏了。这是收尾点题的一句：<b>语言规则往往隐藏着，我们不自觉就遵守了</b>——这也正是「理解论证」要干的活：挖出我们没意识到、却在用的规则。</div></div></article>
+<div class="sec">补充</div>
+<article class="ex"><b class="t">四个特征是一张关系网，不是并列清单</b><div>别只当四个标签背，它们是递进的：<br>· <b>重要</b>：语言无处不在、极其有用（海伦·凯勒）。<br>· <b>约定俗成</b>：用法是惯例，看似随意（football、money→袜子）。<br>· 但随意有两个<b>限制</b>：<br>&nbsp;&nbsp;— <b>表征性</b>→ 语言指称事实，改不了客观事实（马腿、袜子变钱）。<br>&nbsp;&nbsp;— <b>社会性</b>→ 语言是共享的，得遵守共同体惯例（葡萄柚、Monty Python）。<br>所以「约定俗成」不是「随便怎么用」，而是被表征性和社会性两头管住。</div></article>
+<article class="ex"><b class="t">语言运作的四个层面速查</b><div>说一句「给我辣香肠」要同时满足四层：<br>· <b>物理发声</b>：够大声、清晰（嘈杂店提高音量）。<br>· <b>语义</b>：词对听话者有意义（能听懂「gimmy」）。<br>· <b>句法</b>：词序正确（「给我一份辣香肠披萨」）。<br>· <b>礼仪</b>：符合社交礼貌（说「请给我…」）。<br>四层各自对应一种「惯例」，这就是「约定俗成」落到具体规则上的样子。</div></article>
+<article class="ex"><b class="t">这一讲的速查表</b><div>① 论证由句子、陈述、命题组成，本质是语言构成的；只有能使用复杂语言的生物（人类）才能论证。<br>② 语言四特征：重要、约定俗成、表征、社会；其中表征性和社会性限制了随意性。<br>③ 语言无法改变客观事实（尾巴叫腿≠五条腿，袜子叫钱≠变富）。<br>④ 语言是社会共享的，遵守共同体惯例才能有效沟通。<br>⑤ 语言在多层运作（发声/语义/句法/礼仪），且我们常在不知规则时遵守规则（finger/singer）。</div></article>
+<details class="full"><summary>你当时写的理解（全文）</summary><pre>论证是由 前提 和 结论构成的。前提，结论又是以语言构成的，所以，理解论证，就不可避免理解语言。
+语言很重要
+语言是约定俗成的
+语言是表征性的
+语言是社会性的，即使有时候，语言并不明确有意义 如 and 和自言自语。</pre></details>
+<footer>有哪条看不懂，直接在聊天里问我</footer></div><script>
+var btns = document.querySelectorAll('.filters button');
+btns.forEach(function(b) {
+  b.addEventListener('click', function() {
+    btns.forEach(function(x) { x.classList.toggle('on', x === b); });
+    document.querySelectorAll('.pt').forEach(function(p) { p.hidden = b.dataset.f !== 'all' && p.dataset.s !== b.dataset.f; });
+  });
+});
+</script></body></html>

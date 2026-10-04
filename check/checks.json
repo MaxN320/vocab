@@ -1,5 +1,17 @@
 [
  {
+  "id": "ta-07",
+  "title": "论证由什么构成？语言",
+  "kicker": "Think Again · 07",
+  "date": "2026-10-04",
+  "counts": {
+   "miss": 4,
+   "half": 4,
+   "off": 0,
+   "ok": 1
+  }
+ },
+ {
   "id": "ta-04-06",
   "title": "说服、辩护、解释",
   "kicker": "Think Again · 04–06",
