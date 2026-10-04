@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>猴子 Coco 的一天</title><style>
+  :root { --bg:#11131a; --card:#191c26; --card-2:#1f2330; --line:#2a2f3d;
+          --ink:#e9ecf4; --ink-soft:#aeb4c5; --ink-mute:#6f7689;
+          --accent:#7c9cff; --green:#5ec59a; --amber:#e2b23c; --red:#ff8a80;
+          --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.6; padding:0 16px 40px; }
+  .wrap { max-width:580px; margin:0 auto; }
+  .bar { position:sticky; top:0; z-index:10; background:var(--bg); padding:12px 0 10px; border-bottom:1px solid var(--line);
+         display:flex; align-items:center; gap:12px; }
+  .back { font-size:13px; color:var(--accent); text-decoration:none; white-space:nowrap; }
+  .meter { flex:1; height:6px; border-radius:3px; background:var(--card-2); overflow:hidden; }
+  .meter i { display:block; height:100%; width:0; background:var(--green); transition:width .2s; }
+  .count { font-size:12.5px; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  header { padding:22px 0 6px; }
+  .kicker { font-size:12px; letter-spacing:.1em; color:var(--ink-mute); }
+  h1 { font-size:24px; margin:4px 0 12px; }
+  .how { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--green); border-radius:10px;
+         padding:10px 12px; font-size:13.5px; color:var(--ink-soft); }
+  .how b { color:var(--ink); }
+  .sec { margin:26px 0 10px; font-size:13.5px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:8px; }
+  .sec::after { content:""; flex:1; height:1px; background:var(--line); }
+  .q { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 16px; margin-bottom:12px; }
+  .q .qn { font-size:12.5px; color:var(--ink-mute); }
+  .q .stem { font-size:17px; margin:6px 0 12px; line-height:1.7; }
+  .q .stem b { color:#fff; }
+  .q .blank { display:inline-block; min-width:60px; border-bottom:2px solid var(--amber); text-align:center; color:var(--amber); font-weight:700; }
+  .q input { display:none; }
+  .opts { display:flex; gap:8px; flex-wrap:wrap; }
+  .opts.col { flex-direction:column; }
+  .opts label { padding:8px 16px; border-radius:999px; font-size:15px; font-weight:600; background:var(--card-2); color:var(--ink);
+                border:1px solid var(--line); cursor:pointer; transition:.15s; }
+  .opts.col label { border-radius:10px; }
+  .fb { display:none; margin-top:12px; border-radius:10px; padding:9px 12px; font-size:14px; line-height:1.7; }
+  .fb.ok { background:rgba(94,197,154,.12); color:#a8e6c9; } .fb.no { background:rgba(255,138,128,.1); color:#ffc2bb; }
+  .fb b { color:#fff; }
+  .q input:checked + label.right { background:rgba(94,197,154,.16); color:var(--green); border-color:var(--green); }
+  .q input:checked + label.wrong { background:rgba(255,138,128,.12); color:var(--red); border-color:var(--red); }
+  .q input:disabled + label { opacity:.55; cursor:default; }
+  .q:has(input.right:checked) .fb.ok { display:block; }
+  .q:has(input.wrong:checked) .fb.no { display:block; }
+  details { margin-top:10px; font-size:12.5px; color:var(--ink-mute); }
+  details summary { cursor:pointer; }
+  details p { margin-top:6px; color:var(--ink-soft); }
+  footer { text-align:center; margin-top:22px; padding:16px; border-radius:14px; background:var(--card); border:1px solid var(--line); }
+  #score { font-weight:700; font-size:15px; }
+  footer small { display:block; color:var(--ink-mute); font-size:12.5px; margin-top:4px; }
+  #submit { margin-top:12px; padding:7px 18px; border-radius:999px; border:1px solid var(--line); background:var(--card-2); color:var(--ink-soft); font-size:13.5px; }
+  #copy { display:none; margin-top:10px; width:100%; min-height:70px; font-size:13px; border-radius:8px; padding:8px;
+          background:var(--card-2); color:var(--ink); border:1px solid var(--line); }
+</style></head><body><div class="wrap">
+<div class="bar"><a class="back" href="../index.html#quiz">← 测验列表</a><div class="meter"><i id="meter"></i></div><span class="count" id="count">0 / 21</span></div>
+<header><div class="kicker">时态 01 · 一般现在时</div><h1>猴子 Coco 的一天 · 21 题</h1></header>
+<div class="how">🐒 案子破了，猴子 Coco 留在村里当起了明星。这一套跟着它过一天，<b>只练一般现在时</b>，顺序照你笔记的五阶：地基 → 形式 → 功能 → 表将来 → 判断。单词来自生词本，词组只考 3 个。<br>可能不认识的词：tree house 树屋 ｜ pet 宠物 ｜ tears 眼泪 ｜ not … anymore 不再……<br>点选项就能对答案：<b>绿色</b>是对，<b>红色</b>是错，下面会出解析。每题只算第一次点的选项。全部做完，结果会自动发给我。</div>
+<div class="sec">① 地基 · 常态还是此刻</div>
+<section class="q" data-answer="eats"><div class="qn">第 1 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🍌 案子破了，Coco 留在村里当起了明星猴</div>Coco <span class="blank">　</span> bananas every day.</div>
+<div class="opts"><input type="radio" name="q1" id="q1o0" class="wrong"><label for="q1o0" class="wrong">eat</label><input type="radio" name="q1" id="q1o1" class="right"><label for="q1o1" class="right">eats</label><input type="radio" name="q1" id="q1o2" class="wrong"><label for="q1o2" class="wrong">is eating</label><input type="radio" name="q1" id="q1o3" class="wrong"><label for="q1o3" class="wrong">eating</label></div>
+<div class="fb ok">✅ 对了！<b>every day</b> = 天天如此，是常态 → 一般现在时。Coco 是一只猴（三单）→ 动词加 s：<b>eats</b>。</div>
+<div class="fb no">❌ 答案是 <b>eats</b>。<b>every day</b> = 天天如此，是常态 → 一般现在时。Coco 是一只猴（三单）→ 动词加 s：<b>eats</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>eats</b>. <b>every day</b> = 天天如此，是常态 → 一般现在时。Coco 是一只猴（三单）→ 动词加 s：<b>eats</b>。</p></details>
+</section>
+<section class="q" data-answer="is eating"><div class="qn">第 2 题</div>
+<div class="stem">Look! Coco <span class="blank">　</span> Chef Joe's chilli right now! 😱</div>
+<div class="opts"><input type="radio" name="q2" id="q2o0" class="right"><label for="q2o0" class="right">is eating</label><input type="radio" name="q2" id="q2o1" class="wrong"><label for="q2o1" class="wrong">eats</label><input type="radio" name="q2" id="q2o2" class="wrong"><label for="q2o2" class="wrong">eat</label><input type="radio" name="q2" id="q2o3" class="wrong"><label for="q2o3" class="wrong">ate</label></div>
+<div class="fb ok">✅ 对了！<b>Look! … right now</b> 说的是「此刻正在发生」→ 这不是一般现在时，是现在进行时 <b>is eating</b>。对比第 1 题：eats 讲平时的习惯，is eating 讲眼下这一刻。</div>
+<div class="fb no">❌ 答案是 <b>is eating</b>。<b>Look! … right now</b> 说的是「此刻正在发生」→ 这不是一般现在时，是现在进行时 <b>is eating</b>。对比第 1 题：eats 讲平时的习惯，is eating 讲眼下这一刻。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is eating</b>. <b>Look! … right now</b> 说的是「此刻正在发生」→ 这不是一般现在时，是现在进行时 <b>is eating</b>。对比第 1 题：eats 讲平时的习惯，is eating 讲眼下这一刻。</p></details>
+</section>
+<div class="sec">② 形式 · 三单加不加 s</div>
+<section class="q" data-answer="wakes … stretches"><div class="qn">第 3 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">⏰ Coco 的早晨</div>Every morning, Coco <span class="blank">　</span> at six and <span class="blank">　</span> its arms.</div>
+<div class="opts col"><input type="radio" name="q3" id="q3o0" class="wrong"><label for="q3o0" class="wrong">wake … stretch</label><input type="radio" name="q3" id="q3o1" class="wrong"><label for="q3o1" class="wrong">wakes … stretchs</label><input type="radio" name="q3" id="q3o2" class="wrong"><label for="q3o2" class="wrong">waking … stretching</label><input type="radio" name="q3" id="q3o3" class="right"><label for="q3o3" class="right">wakes … stretches</label></div>
+<div class="fb ok">✅ 对了！主语 Coco 是三单，两个动词都要变：wake → <b>wakes</b>；stretch 以 ch 结尾，加 <b>-es</b> → <b>stretches</b>（读 /ɪz/）。以 s、x、sh、ch、o 结尾的都加 -es：watch → watches，go → goes。</div>
+<div class="fb no">❌ 答案是 <b>wakes … stretches</b>。主语 Coco 是三单，两个动词都要变：wake → <b>wakes</b>；stretch 以 ch 结尾，加 <b>-es</b> → <b>stretches</b>（读 /ɪz/）。以 s、x、sh、ch、o 结尾的都加 -es：watch → watches，go → goes。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>wakes … stretches</b>. 主语 Coco 是三单，两个动词都要变：wake → <b>wakes</b>；stretch 以 ch 结尾，加 <b>-es</b> → <b>stretches</b>（读 /ɪz/）。以 s、x、sh、ch、o 结尾的都加 -es：watch → watches，go → goes。</p></details>
+</section>
+<section class="q" data-answer="knows"><div class="qn">第 4 题</div>
+<div class="stem">Everyone in the village <span class="blank">　</span> Coco.</div>
+<div class="opts col"><input type="radio" name="q4" id="q4o0" class="wrong"><label for="q4o0" class="wrong">know</label><input type="radio" name="q4" id="q4o1" class="right"><label for="q4o1" class="right">knows</label><input type="radio" name="q4" id="q4o2" class="wrong"><label for="q4o2" class="wrong">knowing</label><input type="radio" name="q4" id="q4o3" class="wrong"><label for="q4o3" class="wrong">are knowing</label></div>
+<div class="fb ok">✅ 对了！everyone 意思上是很多人，语法上按单数算 → <b>knows</b>。上一套第 9 题也考过这个点。</div>
+<div class="fb no">❌ 答案是 <b>knows</b>。everyone 意思上是很多人，语法上按单数算 → <b>knows</b>。上一套第 9 题也考过这个点。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>knows</b>. everyone 意思上是很多人，语法上按单数算 → <b>knows</b>。上一套第 9 题也考过这个点。</p></details>
+</section>
+<section class="q" data-answer="live"><div class="qn">第 5 题</div>
+<div class="stem">Coco and the dog <span class="blank">　</span> in the same garden.</div>
+<div class="opts"><input type="radio" name="q5" id="q5o0" class="right"><label for="q5o0" class="right">live</label><input type="radio" name="q5" id="q5o1" class="wrong"><label for="q5o1" class="wrong">lives</label><input type="radio" name="q5" id="q5o2" class="wrong"><label for="q5o2" class="wrong">is living</label><input type="radio" name="q5" id="q5o3" class="wrong"><label for="q5o3" class="wrong">living</label></div>
+<div class="fb ok">✅ 对了！<b>Coco and the dog</b> 是两个，主语是复数 → 动词用原形 <b>live</b>，不加 s。只有一个他 / 她 / 它（三单）才加 s。</div>
+<div class="fb no">❌ 答案是 <b>live</b>。<b>Coco and the dog</b> 是两个，主语是复数 → 动词用原形 <b>live</b>，不加 s。只有一个他 / 她 / 它（三单）才加 s。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>live</b>. <b>Coco and the dog</b> 是两个，主语是复数 → 动词用原形 <b>live</b>，不加 s。只有一个他 / 她 / 它（三单）才加 s。</p></details>
+</section>
+<section class="q" data-answer="relies on"><div class="qn">第 6 题</div>
+<div class="stem">Coco <span class="blank">　</span> Mrs. Lin for food.</div>
+<div class="opts"><input type="radio" name="q6" id="q6o0" class="wrong"><label for="q6o0" class="wrong">relies at</label><input type="radio" name="q6" id="q6o1" class="wrong"><label for="q6o1" class="wrong">relys on</label><input type="radio" name="q6" id="q6o2" class="right"><label for="q6o2" class="right">relies on</label><input type="radio" name="q6" id="q6o3" class="wrong"><label for="q6o3" class="wrong">rely on</label></div>
+<div class="fb ok">✅ 对了！<b>rely on</b> 依靠、指望（9/27 学的）。辅音字母 + y 结尾，要把 y 变成 i 再加 -es：rely → <b>relies</b>（study → studies 也一样）。介词固定用 on。</div>
+<div class="fb no">❌ 答案是 <b>relies on</b>。<b>rely on</b> 依靠、指望（9/27 学的）。辅音字母 + y 结尾，要把 y 变成 i 再加 -es：rely → <b>relies</b>（study → studies 也一样）。介词固定用 on。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>relies on</b>. <b>rely on</b> 依靠、指望（9/27 学的）。辅音字母 + y 结尾，要把 y 变成 i 再加 -es：rely → <b>relies</b>（study → studies 也一样）。介词固定用 on。</p></details>
+</section>
+<div class="sec">③ 形式 · 否定和疑问</div>
+<section class="q" data-answer="doesn&#x27;t"><div class="qn">第 7 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🌶️ 自从上次吃了辣椒……</div>Coco <span class="blank">　</span> like chilli anymore.</div>
+<div class="opts"><input type="radio" name="q7" id="q7o0" class="right"><label for="q7o0" class="right">doesn&#x27;t</label><input type="radio" name="q7" id="q7o1" class="wrong"><label for="q7o1" class="wrong">don&#x27;t</label><input type="radio" name="q7" id="q7o2" class="wrong"><label for="q7o2" class="wrong">isn&#x27;t</label><input type="radio" name="q7" id="q7o3" class="wrong"><label for="q7o3" class="wrong">not</label></div>
+<div class="fb ok">✅ 对了！like 是实义动词，否定要借 do / does；主语三单用 <b>doesn't</b>。isn't 只能用在 be 动词句里。</div>
+<div class="fb no">❌ 答案是 <b>doesn&#x27;t</b>。like 是实义动词，否定要借 do / does；主语三单用 <b>doesn't</b>。isn't 只能用在 be 动词句里。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>doesn&#x27;t</b>. like 是实义动词，否定要借 do / does；主语三单用 <b>doesn't</b>。isn't 只能用在 be 动词句里。</p></details>
+</section>
+<section class="q" data-answer="go"><div class="qn">第 8 题</div>
+<div class="stem">Coco doesn't <span class="blank">　</span> near Chef Joe's cupboard now.</div>
+<div class="opts"><input type="radio" name="q8" id="q8o0" class="wrong"><label for="q8o0" class="wrong">goes</label><input type="radio" name="q8" id="q8o1" class="right"><label for="q8o1" class="right">go</label><input type="radio" name="q8" id="q8o2" class="wrong"><label for="q8o2" class="wrong">going</label><input type="radio" name="q8" id="q8o3" class="wrong"><label for="q8o3" class="wrong">went</label></div>
+<div class="fb ok">✅ 对了！doesn't 已经把三单和否定都扛了，后面的动词回原形：<b>doesn't go</b>。goes 的 -es 被 does 拿走了。</div>
+<div class="fb no">❌ 答案是 <b>go</b>。doesn't 已经把三单和否定都扛了，后面的动词回原形：<b>doesn't go</b>。goes 的 -es 被 does 拿走了。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>go</b>. doesn't 已经把三单和否定都扛了，后面的动词回原形：<b>doesn't go</b>。goes 的 -es 被 does 拿走了。</p></details>
+</section>
+<section class="q" data-answer="Does"><div class="qn">第 9 题</div>
+<div class="stem"><span class="blank">　</span> Coco live in the tree house?</div>
+<div class="opts"><input type="radio" name="q9" id="q9o0" class="wrong"><label for="q9o0" class="wrong">Is</label><input type="radio" name="q9" id="q9o1" class="wrong"><label for="q9o1" class="wrong">Do</label><input type="radio" name="q9" id="q9o2" class="wrong"><label for="q9o2" class="wrong">Has</label><input type="radio" name="q9" id="q9o3" class="right"><label for="q9o3" class="right">Does</label></div>
+<div class="fb ok">✅ 对了！live 是实义动词，问句借 <b>Does</b>，谓语回原形 live。老师说最常见的错就是 Is he live …？——句子里本来没有 is，不能凭空拿它提问。</div>
+<div class="fb no">❌ 答案是 <b>Does</b>。live 是实义动词，问句借 <b>Does</b>，谓语回原形 live。老师说最常见的错就是 Is he live …？——句子里本来没有 is，不能凭空拿它提问。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Does</b>. live 是实义动词，问句借 <b>Does</b>，谓语回原形 live。老师说最常见的错就是 Is he live …？——句子里本来没有 is，不能凭空拿它提问。</p></details>
+</section>
+<section class="q" data-answer="Is"><div class="qn">第 10 题</div>
+<div class="stem"><span class="blank">　</span> Coco Mrs. Lin's pet?</div>
+<div class="opts"><input type="radio" name="q10" id="q10o0" class="wrong"><label for="q10o0" class="wrong">Does</label><input type="radio" name="q10" id="q10o1" class="right"><label for="q10o1" class="right">Is</label><input type="radio" name="q10" id="q10o2" class="wrong"><label for="q10o2" class="wrong">Do</label><input type="radio" name="q10" id="q10o3" class="wrong"><label for="q10o3" class="wrong">Are</label></div>
+<div class="fb ok">✅ 对了！这句没有实义动词，是 be 动词句（Coco <b>is</b> Mrs. Lin's pet.）。be 句提问不借 do，直接把 <b>is</b> 提到前面。和第 9 题对比着记。</div>
+<div class="fb no">❌ 答案是 <b>Is</b>。这句没有实义动词，是 be 动词句（Coco <b>is</b> Mrs. Lin's pet.）。be 句提问不借 do，直接把 <b>is</b> 提到前面。和第 9 题对比着记。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Is</b>. 这句没有实义动词，是 be 动词句（Coco <b>is</b> Mrs. Lin's pet.）。be 句提问不借 do，直接把 <b>is</b> 提到前面。和第 9 题对比着记。</p></details>
+</section>
+<section class="q" data-answer="does"><div class="qn">第 11 题</div>
+<div class="stem">What <span class="blank">　</span> Coco eat for breakfast?</div>
+<div class="opts"><input type="radio" name="q11" id="q11o0" class="wrong"><label for="q11o0" class="wrong">is</label><input type="radio" name="q11" id="q11o1" class="wrong"><label for="q11o1" class="wrong">do</label><input type="radio" name="q11" id="q11o2" class="wrong"><label for="q11o2" class="wrong">eats</label><input type="radio" name="q11" id="q11o3" class="right"><label for="q11o3" class="right">does</label></div>
+<div class="fb ok">✅ 对了！特殊疑问句 = 疑问词 + 一般疑问句的语序：What + <b>does</b> Coco eat …？eat 是实义动词，借 does；主语三单，用 does 不用 do。</div>
+<div class="fb no">❌ 答案是 <b>does</b>。特殊疑问句 = 疑问词 + 一般疑问句的语序：What + <b>does</b> Coco eat …？eat 是实义动词，借 does；主语三单，用 does 不用 do。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>does</b>. 特殊疑问句 = 疑问词 + 一般疑问句的语序：What + <b>does</b> Coco eat …？eat 是实义动词，借 does；主语三单，用 does 不用 do。</p></details>
+</section>
+<div class="sec">④ 功能 · 事实和频率副词</div>
+<section class="q" data-answer="climb"><div class="qn">第 12 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🌍 常识时间</div>Monkeys <span class="blank">　</span> trees, and fish swim.</div>
+<div class="opts col"><input type="radio" name="q12" id="q12o0" class="wrong"><label for="q12o0" class="wrong">climbs</label><input type="radio" name="q12" id="q12o1" class="wrong"><label for="q12o1" class="wrong">are climbing</label><input type="radio" name="q12" id="q12o2" class="wrong"><label for="q12o2" class="wrong">climbed</label><input type="radio" name="q12" id="q12o3" class="right"><label for="q12o3" class="right">climb</label></div>
+<div class="fb ok">✅ 对了！说的是普遍事实（猴子会爬树，鱼会游泳）→ 一般现在时。Monkeys 是复数 → 用原形 <b>climb</b>，不加 s。</div>
+<div class="fb no">❌ 答案是 <b>climb</b>。说的是普遍事实（猴子会爬树，鱼会游泳）→ 一般现在时。Monkeys 是复数 → 用原形 <b>climb</b>，不加 s。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>climb</b>. 说的是普遍事实（猴子会爬树，鱼会游泳）→ 一般现在时。Monkeys 是复数 → 用原形 <b>climb</b>，不加 s。</p></details>
+</section>
+<section class="q" data-answer="seldom eats"><div class="qn">第 13 题</div>
+<div class="stem">These days, Coco <span class="blank">　</span> chilli.</div>
+<div class="opts col"><input type="radio" name="q13" id="q13o0" class="right"><label for="q13o0" class="right">seldom eats</label><input type="radio" name="q13" id="q13o1" class="wrong"><label for="q13o1" class="wrong">eats seldom</label><input type="radio" name="q13" id="q13o2" class="wrong"><label for="q13o2" class="wrong">seldom eat</label><input type="radio" name="q13" id="q13o3" class="wrong"><label for="q13o3" class="wrong">is seldom eat</label></div>
+<div class="fb ok">✅ 对了！seldom（很少，9/25 学的）是频率副词，放在实义动词<b>前面</b>：<b>seldom eats</b>。主语三单，eat 照样加 s。</div>
+<div class="fb no">❌ 答案是 <b>seldom eats</b>。seldom（很少，9/25 学的）是频率副词，放在实义动词<b>前面</b>：<b>seldom eats</b>。主语三单，eat 照样加 s。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>seldom eats</b>. seldom（很少，9/25 学的）是频率副词，放在实义动词<b>前面</b>：<b>seldom eats</b>。主语三单，eat 照样加 s。</p></details>
+</section>
+<section class="q" data-answer="is never"><div class="qn">第 14 题</div>
+<div class="stem">Coco <span class="blank">　</span> late. It loves breakfast!</div>
+<div class="opts"><input type="radio" name="q14" id="q14o0" class="right"><label for="q14o0" class="right">is never</label><input type="radio" name="q14" id="q14o1" class="wrong"><label for="q14o1" class="wrong">never is</label><input type="radio" name="q14" id="q14o2" class="wrong"><label for="q14o2" class="wrong">never be</label><input type="radio" name="q14" id="q14o3" class="wrong"><label for="q14o3" class="wrong">does never</label></div>
+<div class="fb ok">✅ 对了！频率副词放在 <b>be 后面</b>：<b>is never</b> late。和第 13 题对比：实义动词放副词后面（seldom eats），be 动词放副词前面（is never）。</div>
+<div class="fb no">❌ 答案是 <b>is never</b>。频率副词放在 <b>be 后面</b>：<b>is never</b> late。和第 13 题对比：实义动词放副词后面（seldom eats），be 动词放副词前面（is never）。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is never</b>. 频率副词放在 <b>be 后面</b>：<b>is never</b> late。和第 13 题对比：实义动词放副词后面（seldom eats），be 动词放副词前面（is never）。</p></details>
+</section>
+<section class="q" data-answer="results in"><div class="qn">第 15 题</div>
+<div class="stem">Eating too much chilli <span class="blank">　</span> tears. 😭</div>
+<div class="opts col"><input type="radio" name="q15" id="q15o0" class="wrong"><label for="q15o0" class="wrong">result in</label><input type="radio" name="q15" id="q15o1" class="wrong"><label for="q15o1" class="wrong">results to</label><input type="radio" name="q15" id="q15o2" class="right"><label for="q15o2" class="right">results in</label><input type="radio" name="q15" id="q15o3" class="wrong"><label for="q15o3" class="wrong">is result in</label></div>
+<div class="fb ok">✅ 对了！<b>result in</b> 导致（前面是原因，后面是结果）。Eating too much chilli（吃太多辣椒这件事）是动名词作主语，按单数算 → <b>results in</b>。</div>
+<div class="fb no">❌ 答案是 <b>results in</b>。<b>result in</b> 导致（前面是原因，后面是结果）。Eating too much chilli（吃太多辣椒这件事）是动名词作主语，按单数算 → <b>results in</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>results in</b>. <b>result in</b> 导致（前面是原因，后面是结果）。Eating too much chilli（吃太多辣椒这件事）是动名词作主语，按单数算 → <b>results in</b>。</p></details>
+</section>
+<div class="sec">⑤ 表将来 · 主将从现</div>
+<section class="q" data-answer="eats"><div class="qn">第 16 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🎪 香草节又要来了</div>If Coco <span class="blank">　</span> chilli again tomorrow, it will cry.</div>
+<div class="opts"><input type="radio" name="q16" id="q16o0" class="wrong"><label for="q16o0" class="wrong">will eat</label><input type="radio" name="q16" id="q16o1" class="right"><label for="q16o1" class="right">eats</label><input type="radio" name="q16" id="q16o2" class="wrong"><label for="q16o2" class="wrong">eat</label><input type="radio" name="q16" id="q16o3" class="wrong"><label for="q16o3" class="wrong">ate</label></div>
+<div class="fb ok">✅ 对了！虽然是明天的事，但它在 <b>if</b> 引出的条件状语从句里 → 用一般现在时 <b>eats</b>，主句才用 will（主将从现）。用确定的条件，推出可能的结论。</div>
+<div class="fb no">❌ 答案是 <b>eats</b>。虽然是明天的事，但它在 <b>if</b> 引出的条件状语从句里 → 用一般现在时 <b>eats</b>，主句才用 will（主将从现）。用确定的条件，推出可能的结论。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>eats</b>. 虽然是明天的事，但它在 <b>if</b> 引出的条件状语从句里 → 用一般现在时 <b>eats</b>，主句才用 will（主将从现）。用确定的条件，推出可能的结论。</p></details>
+</section>
+<section class="q" data-answer="starts"><div class="qn">第 17 题</div>
+<div class="stem">The festival <span class="blank">　</span> at nine tomorrow morning.</div>
+<div class="opts col"><input type="radio" name="q17" id="q17o0" class="wrong"><label for="q17o0" class="wrong">started</label><input type="radio" name="q17" id="q17o1" class="wrong"><label for="q17o1" class="wrong">has started</label><input type="radio" name="q17" id="q17o2" class="wrong"><label for="q17o2" class="wrong">starting</label><input type="radio" name="q17" id="q17o3" class="right"><label for="q17o3" class="right">starts</label></div>
+<div class="fb ok">✅ 对了！时刻表、定好的安排，可以用一般现在时表将来：<b>starts</b>。句子里的 tomorrow 就是那个「信号」。</div>
+<div class="fb no">❌ 答案是 <b>starts</b>。时刻表、定好的安排，可以用一般现在时表将来：<b>starts</b>。句子里的 tomorrow 就是那个「信号」。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>starts</b>. 时刻表、定好的安排，可以用一般现在时表将来：<b>starts</b>。句子里的 tomorrow 就是那个「信号」。</p></details>
+</section>
+<section class="q" data-answer="will come"><div class="qn">第 18 题</div>
+<div class="stem">I don't know if Coco <span class="blank">　</span> to the festival tomorrow.</div>
+<div class="opts"><input type="radio" name="q18" id="q18o0" class="wrong"><label for="q18o0" class="wrong">comes</label><input type="radio" name="q18" id="q18o1" class="right"><label for="q18o1" class="right">will come</label><input type="radio" name="q18" id="q18o2" class="wrong"><label for="q18o2" class="wrong">come</label><input type="radio" name="q18" id="q18o3" class="wrong"><label for="q18o3" class="wrong">coming</label></div>
+<div class="fb ok">✅ 对了！陷阱题！这里的 if 是「是否」，引出的是宾语从句（不知道<b>什么</b>）。宾语从句里说将来，照样用 <b>will</b>。遮住 if 那一截，I don't know … 缺了宾语，所以不套「主将从现」。</div>
+<div class="fb no">❌ 答案是 <b>will come</b>。陷阱题！这里的 if 是「是否」，引出的是宾语从句（不知道<b>什么</b>）。宾语从句里说将来，照样用 <b>will</b>。遮住 if 那一截，I don't know … 缺了宾语，所以不套「主将从现」。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>will come</b>. 陷阱题！这里的 if 是「是否」，引出的是宾语从句（不知道<b>什么</b>）。宾语从句里说将来，照样用 <b>will</b>。遮住 if 那一截，I don't know … 缺了宾语，所以不套「主将从现」。</p></details>
+</section>
+<section class="q" data-answer="has"><div class="qn">第 19 题</div>
+<div class="stem">Mrs. Lin will sew Coco a hat when she <span class="blank">　</span> time.</div>
+<div class="opts"><input type="radio" name="q19" id="q19o0" class="wrong"><label for="q19o0" class="wrong">will have</label><input type="radio" name="q19" id="q19o1" class="wrong"><label for="q19o1" class="wrong">have</label><input type="radio" name="q19" id="q19o2" class="wrong"><label for="q19o2" class="wrong">is having</label><input type="radio" name="q19" id="q19o3" class="right"><label for="q19o3" class="right">has</label></div>
+<div class="fb ok">✅ 对了！<b>when</b> 引出时间状语从句（遮住它，Mrs. Lin will sew Coco a hat 照样完整）→ 主将从现，从句用一般现在时；she 是三单，have → <b>has</b>。</div>
+<div class="fb no">❌ 答案是 <b>has</b>。<b>when</b> 引出时间状语从句（遮住它，Mrs. Lin will sew Coco a hat 照样完整）→ 主将从现，从句用一般现在时；she 是三单，have → <b>has</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>has</b>. <b>when</b> 引出时间状语从句（遮住它，Mrs. Lin will sew Coco a hat 照样完整）→ 主将从现，从句用一般现在时；she 是三单，have → <b>has</b>。</p></details>
+</section>
+<div class="sec">⑥ 判断 · 收口</div>
+<section class="q" data-answer="combines … with"><div class="qn">第 20 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🍌🍦 Coco 的独家早餐</div>Every morning, Coco <span class="blank">　</span> bananas <span class="blank">　</span> vanilla ice cream.</div>
+<div class="opts col"><input type="radio" name="q20" id="q20o0" class="wrong"><label for="q20o0" class="wrong">combine … with</label><input type="radio" name="q20" id="q20o1" class="wrong"><label for="q20o1" class="wrong">combines … to</label><input type="radio" name="q20" id="q20o2" class="right"><label for="q20o2" class="right">combines … with</label><input type="radio" name="q20" id="q20o3" class="wrong"><label for="q20o3" class="wrong">is combine … with</label></div>
+<div class="fb ok">✅ 对了！<b>combine A with B</b> 把 A 和 B 结合起来（10/4 学的）。every morning 是习惯，Coco 三单 → <b>combines</b>。</div>
+<div class="fb no">❌ 答案是 <b>combines … with</b>。<b>combine A with B</b> 把 A 和 B 结合起来（10/4 学的）。every morning 是习惯，Coco 三单 → <b>combines</b>。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>combines … with</b>. <b>combine A with B</b> 把 A 和 B 结合起来（10/4 学的）。every morning 是习惯，Coco 三单 → <b>combines</b>。</p></details>
+</section>
+<section class="q" data-answer="sleeps … is sleeping"><div class="qn">第 21 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🌙 最后一题</div>Coco usually <span class="blank">　</span> in the tree house, but tonight it <span class="blank">　</span> in Mrs. Lin's basket.</div>
+<div class="opts col"><input type="radio" name="q21" id="q21o0" class="wrong"><label for="q21o0" class="wrong">sleeps … sleeps</label><input type="radio" name="q21" id="q21o1" class="wrong"><label for="q21o1" class="wrong">is sleeping … sleeps</label><input type="radio" name="q21" id="q21o2" class="right"><label for="q21o2" class="right">sleeps … is sleeping</label><input type="radio" name="q21" id="q21o3" class="wrong"><label for="q21o3" class="wrong">sleep … is sleeping</label></div>
+<div class="fb ok">✅ 对了！前半句 <b>usually</b> = 平时的习惯 → <b>sleeps</b>；后半句 <b>tonight</b> 是今晚这一次，和平时不一样 → 进行时 <b>is sleeping</b>。一句话里能把常态和此刻分清，一般现在时就锁住了 🔒</div>
+<div class="fb no">❌ 答案是 <b>sleeps … is sleeping</b>。前半句 <b>usually</b> = 平时的习惯 → <b>sleeps</b>；后半句 <b>tonight</b> 是今晚这一次，和平时不一样 → 进行时 <b>is sleeping</b>。一句话里能把常态和此刻分清，一般现在时就锁住了 🔒</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>sleeps … is sleeping</b>. 前半句 <b>usually</b> = 平时的习惯 → <b>sleeps</b>；后半句 <b>tonight</b> 是今晚这一次，和平时不一样 → 进行时 <b>is sleeping</b>。一句话里能把常态和此刻分清，一般现在时就锁住了 🔒</p></details>
+</section>
+<footer><span id="score">已答 0 / 21</span><small id="status">全部做完会自动把结果发给我</small><button id="submit">还没做完，先交卷</button><textarea id="copy" readonly></textarea></footer>
+</div><script>
+var TOPIC = 'vocab-quiz-b40560dafcdf39f9', QUIZ = "present-simple-1", TITLE = "猴子 Coco 的一天", LANG = "zh", sent = false;
+var TEST = /[?&]test=1/.test(location.search);
+function tr(zh, en) { return LANG === 'en' ? en : zh; }
+function summary() {
+  var all = document.querySelectorAll('.q'), done = 0, ok = 0, wrong = [], skipped = [];
+  all.forEach(function(q, i) {
+    if (!q.dataset.done) { skipped.push(i + 1); return; }
+    done++;
+    if (q.dataset.done === '1') ok++;
+    else wrong.push({n: i + 1, chose: q.dataset.chose, answer: q.dataset.answer});
+  });
+  return {quiz: QUIZ, title: TITLE, score: ok, answered: done, total: all.length, wrong: wrong, skipped: skipped, test: TEST};
+}
+function text(s) {
+  var t = s.title + tr('：答对 ', ': ') + s.score + ' / ' + s.total;
+  if (s.wrong.length) t += tr('，错题 ', ', wrong: ') + s.wrong.map(function(w) { return tr('第' + w.n + '题（选了 ' + w.chose + '）', 'Q' + w.n + ' (chose ' + w.chose + ')'); }).join(tr('、', ', '));
+  if (s.skipped.length) t += tr('，没做 ', ', skipped: ') + s.skipped.join(', ');
+  return t;
+}
+function submit() {
+  if (sent) return;
+  var s = summary(), st = document.getElementById('status');
+  st.textContent = tr('正在把结果发给我……', 'Sending your result…');
+  fetch('https://ntfy.sh/' + TOPIC, {method: 'POST', body: JSON.stringify(s)})
+    .then(function(r) { if (!r.ok) throw new Error(r.status); sent = true;
+      st.textContent = tr('✅ 结果已经发给我了，回微信说一声「做完了」就行', '✅ Your result has been sent.'); document.getElementById('submit').style.display = 'none'; })
+    .catch(function() {
+      st.textContent = tr('⚠️ 结果没发出去，把下面这段复制发给我：', '⚠️ The result could not be sent. Copy the text below:');
+      var c = document.getElementById('copy'); c.style.display = 'block'; c.value = text(s); });
+}
+document.querySelectorAll('.q input').forEach(function(inp) {
+  inp.addEventListener('change', function() {
+    var q = inp.closest('.q');
+    if (q.dataset.done) return;
+    q.dataset.done = inp.classList.contains('right') ? '1' : '0';
+    q.dataset.chose = inp.nextElementSibling.textContent;
+    q.querySelectorAll('input').forEach(function(x) { if (x !== inp) x.disabled = true; });
+    var s = summary();
+    document.getElementById('score').textContent = tr('已答 ' + s.answered + ' / ' + s.total + '，答对 ' + s.score + ' 题', 'Answered ' + s.answered + ' / ' + s.total + ' · Correct ' + s.score);
+    document.getElementById('count').textContent = s.answered + ' / ' + s.total;
+    document.getElementById('meter').style.width = (100 * s.answered / s.total) + '%';
+    if (s.answered === s.total) submit();
+  });
+});
+document.getElementById('submit').addEventListener('click', submit);
+</script></body></html>
