@@ -16,2027 +16,427 @@
   --blue-bg:rgba(111,168,230,.09);
   --orange:#e5a15e;
   --orange-bg:rgba(229,161,94,.09);
+  --green:#7cc694;
+  --red:#e57373;
   --paper:#e8e3d9;
   --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{
-  margin:0;background:var(--ink);color:var(--text);
-  font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.01em;
-}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.85}
+.wrap{max-width:720px;margin:0 auto;padding:56px 20px 90px}
 
-/* 版面:正文 + 右侧目录 */
-.page{
-  display:grid;grid-template-columns:minmax(0,760px) 212px;gap:60px;
-  max-width:1032px;margin:0 auto;padding:0 28px;
-}
-.wrap{min-width:0;padding-bottom:120px}
-
-/* 头部 */
-header{padding:88px 0 0}
-h1{font-size:34px;line-height:1.3;margin:0 0 20px;font-weight:600;letter-spacing:.06em}
-.thesis{font-size:17px;color:var(--dim);margin:0;line-height:1.9}
-.thesis b{color:var(--text);font-weight:600}
-.legend{margin-top:24px;font-size:13.5px;color:var(--faint)}
-.legend span{margin-right:20px}
-
-/* 四问 */
-.asks{margin:28px 0 0;padding:0}
-.asks li{
-  list-style:none;display:grid;grid-template-columns:1fr auto;gap:16px;
-  padding:10px 0;font-size:15px;align-items:baseline;
-  border-top:1px solid rgba(43,53,67,.55);
-}
-.asks li:first-child{border-top:none}
-.asks .where{font-size:13px;color:var(--faint);white-space:nowrap}
-
-/* 路线图 */
-.map{
-  margin:36px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  padding:6px 0;
-}
-.map-row{
-  display:grid;grid-template-columns:76px 1fr;gap:14px;
-  padding:11px 2px;font-size:14.5px;align-items:baseline;
-}
-.map-row + .map-row{border-top:1px solid rgba(43,53,67,.55)}
-.map-row .n{font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.1em}
-.map-row .t{color:var(--text)}
-.map-row .t em{font-style:normal;color:var(--dim)}
-a.map-row{text-decoration:none}
-a.map-row:hover .t{color:#fff}
-
-/* 阶梯 */
-.stage{margin-top:78px;scroll-margin-top:28px}
-.stage-no{display:block;font-family:var(--serif);font-size:14px;color:var(--faint);margin-bottom:10px;letter-spacing:.12em}
-.stage > h2{font-size:22px;font-weight:600;margin:0;letter-spacing:.04em;color:#eef1f5}
-
-/* 承上 */
-.bridge{margin:20px 0 0;padding-left:16px;border-left:2px solid var(--rule)}
-.bridge .before{margin:0;font-size:14.5px;color:var(--faint);line-height:1.8}
-.bridge .after{margin:4px 0 0;font-size:15px;color:var(--text);line-height:1.8}
-
-h3{font-size:16.5px;font-weight:600;margin:38px 0 12px;color:#e3e8ef;letter-spacing:.03em;scroll-margin-top:28px}
-h3.minor{font-size:14.5px;font-weight:600;margin:28px 0 10px;color:var(--dim);letter-spacing:.02em;padding-left:12px;border-left:2px solid var(--rule)}
-p{margin:14px 0}
+h1{font-size:30px;line-height:1.3;margin:0 0 14px;font-weight:600;letter-spacing:.06em}
+.thesis{font-size:16.5px;color:var(--dim);margin:0;line-height:1.9}
+.thesis b{color:var(--text)}
 b{color:#f0f3f7;font-weight:600}
+p{margin:12px 0}
+
+/* 英文：正文里的英文用衬线体，非谓语部分标蓝 */
+.e{font-family:var(--serif);color:var(--paper);font-size:1.04em}
+.hl{color:var(--blue);font-weight:600}
+s.cut{color:var(--faint);text-decoration-color:rgba(229,115,115,.7)}
+
+/* 三秒卡 */
+.card{margin:28px 0 0;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px 18px 6px}
+.card-h{font-size:13px;font-weight:600;color:var(--blue);letter-spacing:.1em;margin:0 0 6px}
+.card p{margin:6px 0 10px;font-size:15px}
+
+/* 行式对照：左边短标签，右边说明 + 例句 */
+.rows{margin:10px 0}
+.rows .row{display:grid;grid-template-columns:5.6em 1fr;gap:12px;padding:10px 0;border-top:1px solid rgba(43,53,67,.7);font-size:15px;line-height:1.75}
+.rows .row:first-child{border-top:none}
+.rows .k{color:var(--blue);font-weight:600}
+.rows .v .e{display:block;margin-top:2px}
+
+/* 目录 */
+.toc{margin:30px 0 0;padding:6px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.toc a{display:block;padding:7px 2px;color:var(--dim);text-decoration:none;font-size:15px}
+.toc a + a{border-top:1px solid rgba(43,53,67,.55)}
+.toc a span{display:inline-block;width:2.2em;color:var(--faint);font-family:var(--serif)}
+
+section{margin-top:64px;scroll-margin-top:16px}
+h2{font-size:21px;font-weight:600;margin:0;color:#eef1f5;letter-spacing:.03em;line-height:1.5}
+h2 .no{display:block;font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.14em;font-weight:400;margin-bottom:6px}
+h3{font-size:16.5px;font-weight:600;margin:34px 0 8px;color:#e3e8ef}
 
 /* 例句 */
-.ex{margin:18px 0;padding:2px 0 2px 18px;border-left:1px solid var(--rule)}
-.en{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--paper);margin:0}
-.en u{text-decoration:none;border-bottom:1px solid rgba(232,227,217,.45);padding-bottom:1px}
-.zh{margin:3px 0 0;font-size:14.5px;color:var(--dim);line-height:1.75}
-.ex + .ex{margin-top:14px}
-.note{font-size:13.5px;color:var(--faint);margin:5px 0 0}
+.ex{margin:14px 0;padding:2px 0 2px 14px;border-left:2px solid var(--rule)}
+.ex .en{font-family:var(--serif);font-size:17px;line-height:1.65;color:var(--paper)}
+.ex .zh{font-size:14.5px;color:var(--dim);line-height:1.75;margin-top:2px}
+.ex.bad{border-left-color:var(--red)}
+.ex.bad .en{color:#e9a6a6;text-decoration:line-through;text-decoration-color:rgba(229,115,115,.6)}
+.ex.bad .en::after{content:" ✗";color:var(--red);text-decoration:none;display:inline-block;font-family:var(--sans)}
+.ex.good{border-left-color:var(--green)}
+.ex.good .en::after{content:" ✓";color:var(--green);font-family:var(--sans)}
+.note{font-size:14px;color:var(--dim)}
 
-/* 还原演示 */
-.restore{
-  margin:20px 0;background:var(--panel);border:1px solid var(--rule);
-  border-radius:3px;padding:16px 20px;
-}
-.restore + .restore{margin-top:12px}
-.restore .en{font-size:16.5px}
-.restore .arrow{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.8}
-.restore .arrow b{color:var(--blue);font-weight:600}
-.restore .arrow .sep{color:var(--faint);margin:0 8px}
-.restore .zh{margin-top:10px}
+/* 两两对比 */
+.pair{display:grid;gap:10px;margin:16px 0}
+.pair > div{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:11px 14px}
+.pair .en{font-family:var(--serif);font-size:16.5px;color:var(--paper);line-height:1.6}
+.pair .zh{font-size:14.5px;color:var(--dim);margin-top:2px}
+.pair .lbl{font-size:13.5px;font-weight:600;color:var(--blue);margin-top:6px}
+.pair > div + div .lbl{color:var(--orange)}
 
-/* 推导链 */
-.chain{margin:26px 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:8px 0}
-.step{display:grid;grid-template-columns:26px 1fr;gap:16px;padding:16px 24px}
-.step + .step{border-top:1px solid rgba(43,53,67,.6)}
-.step-n{font-family:var(--serif);font-size:14px;color:var(--faint);padding-top:3px}
-.step:last-child .step-n{color:var(--blue)}
-.step .en{font-size:16.5px}
-.step:last-child .en{color:#fff}
-.step-why{font-size:13.5px;color:var(--dim);margin:6px 0 0}
-.hl{color:var(--blue)}
-.dimtext{color:var(--dim)}
+/* 提示框 */
+.box{margin:18px 0;padding:12px 15px;border-radius:8px;font-size:15px;line-height:1.8}
+.box p{margin:6px 0}
+.box .t{display:block;font-weight:600;margin-bottom:4px}
+.tip{background:var(--blue-bg);border-left:3px solid var(--blue)}
+.tip .t{color:var(--blue)}
+.warn{background:var(--orange-bg);border-left:3px solid var(--orange)}
+.warn .t{color:var(--orange)}
 
-/* callout */
-.box{margin:26px 0;padding:16px 20px;border-radius:3px;font-size:14.5px;line-height:1.8}
-.box p{margin:8px 0}
-.box p:first-child{margin-top:0}
-.box p:last-child{margin-bottom:0}
-.box .en{font-size:16px}
-.box .zh{font-size:14px}
-.box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
-.derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
-.rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
-.tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
-.derive .tag{color:var(--blue)}
-.rote .tag{color:var(--orange)}
+/* 压缩演示：上一行原句，下一行压完的 */
+.chain{margin:14px 0;background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:11px 14px}
+.chain .from{font-family:var(--serif);font-size:16px;color:var(--dim);line-height:1.6}
+.chain .to{font-family:var(--serif);font-size:16.5px;color:var(--paper);line-height:1.6;margin-top:4px}
+.chain .to::before{content:"→ ";color:var(--blue);font-family:var(--sans)}
+.chain .why{font-size:14px;color:var(--dim);margin-top:6px}
 
-/* 小结 */
-.sum{margin:36px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:14.5px;color:var(--dim)}
-.sum b{color:var(--text)}
+/* 步骤 */
+ol.steps{margin:14px 0;padding:0;list-style:none;counter-reset:st}
+ol.steps li{counter-increment:st;position:relative;padding:8px 0 8px 34px;font-size:15px;line-height:1.75;border-top:1px solid rgba(43,53,67,.6)}
+ol.steps li:first-child{border-top:none}
+ol.steps li::before{content:counter(st);position:absolute;left:0;top:10px;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#10141b;font-size:12.5px;font-weight:700;line-height:22px;text-align:center}
 
-/* 表格 */
-.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
-.tbl th,.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
-.tbl td{overflow-wrap:anywhere}
-.tbl th{color:var(--dim);font-weight:600;font-size:13.5px;border-bottom-color:#3a4655}
-.tbl td:first-child{font-family:var(--serif);color:var(--paper)}
+/* 小表 */
+.tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px;line-height:1.7}
+.tbl th,.tbl td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px}
+.tbl td:first-child,.tbl th:first-child{white-space:nowrap;color:var(--blue);font-weight:600}
 .tbl tr:last-child td{border-bottom:none}
 
-/* 对比 */
-.pair{margin:22px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
-.pair > div{padding:16px 20px}
-.pair > div + div{border-top:1px solid var(--rule);background:var(--panel)}
-.pair .verdict{font-size:13.5px;color:var(--blue);margin:7px 0 0}
-.pair > div + div .verdict{color:var(--orange)}
+/* 练一练 */
+details.q{border-top:1px solid rgba(43,53,67,.7);padding:10px 0}
+details.q:last-of-type{border-bottom:1px solid rgba(43,53,67,.7)}
+details.q summary{cursor:pointer;list-style:none;font-size:15px;line-height:1.75}
+details.q summary::-webkit-details-marker{display:none}
+details.q summary::before{content:"▸ ";color:var(--blue)}
+details.q[open] summary::before{content:"▾ "}
+details.q .ans{margin:6px 0 0 1.1em;font-size:14.5px;color:var(--dim);line-height:1.8}
+details.q .ans b{color:var(--green)}
 
-/* 流程 */
-.flow{margin:24px 0;padding:0;counter-reset:f}
-.flow li{
-  list-style:none;position:relative;padding:0 0 22px 34px;
-  border-left:1px solid var(--rule);margin-left:8px;
+.sum{margin:24px 0 0;padding:12px 15px;border-radius:8px;background:rgba(124,198,148,.08);font-size:15px;line-height:1.8}
+.sum b{color:var(--green)}
+
+footer{margin-top:70px;padding-top:18px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint);line-height:1.8}
+
+@media (max-width:420px){
+  .wrap{padding:44px 16px 80px}
+  h1{font-size:26px}
+  .rows .row{grid-template-columns:4.8em 1fr;gap:10px}
 }
-.flow li:last-child{border-left-color:transparent;padding-bottom:0}
-.flow li::before{
-  counter-increment:f;content:counter(f);
-  position:absolute;left:-9px;top:2px;width:18px;height:18px;
-  background:var(--ink);border:1px solid var(--rule);border-radius:50%;
-  font-size:11px;line-height:16px;text-align:center;color:var(--dim);font-family:var(--serif);
-}
-.flow .q{font-weight:600;color:#eef1f5;font-size:15px;margin:0}
-.flow .a{font-size:14.5px;color:var(--dim);margin:5px 0 0}
-
-footer{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
-
-/* ── 右侧目录 ── */
-.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:88px 0 60px;scrollbar-width:none}
-.toc::-webkit-scrollbar{display:none}
-.toc-h{font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin:0 0 14px;padding-left:13px}
-.toc ol{list-style:none;margin:0;padding:0}
-.toc .item{margin:0}
-.toc a{
-  display:block;text-decoration:none;color:var(--dim);
-  font-size:13.5px;line-height:1.55;padding:6px 0 6px 13px;
-  border-left:1px solid var(--rule);transition:color .15s,border-color .15s;
-}
-.toc a:hover{color:var(--text)}
-.toc .item > a .num{font-family:var(--serif);color:var(--faint);margin-right:7px;font-size:12.5px}
-.toc .item.active > a{color:#eef1f5;border-left-color:var(--blue)}
-.toc .item.active > a .num{color:var(--blue)}
-.toc .subs{display:none;padding:2px 0 6px}
-.toc .item.active .subs{display:block}
-.toc .subs a{font-size:12.5px;color:var(--faint);padding:4px 0 4px 26px;line-height:1.5}
-.toc .subs a:hover{color:var(--dim)}
-.toc .subs a.on{color:var(--text);border-left-color:#3f4b5c}
-
-/* 窄屏:目录收成按钮 */
-.toc-btn{
-  display:none;position:fixed;right:18px;bottom:18px;z-index:30;
-  width:46px;height:46px;border-radius:50%;cursor:pointer;
-  background:var(--panel);border:1px solid #3a4655;color:var(--text);
-  font-size:13px;font-family:var(--sans);line-height:1;
-}
-.scrim{display:none;position:fixed;inset:0;background:rgba(10,13,18,.6);z-index:20}
-body.nav-open .scrim{display:block}
-
-@media (max-width:1080px){
-  .page{grid-template-columns:minmax(0,1fr);max-width:816px;gap:0}
-  .toc-btn{display:block}
-  .toc{
-    position:fixed;top:0;right:0;bottom:0;width:250px;z-index:25;
-    background:#171d26;border-left:1px solid var(--rule);
-    padding:28px 18px 40px;max-height:none;
-    transform:translateX(100%);transition:transform .2s ease;
-  }
-  body.nav-open .toc{transform:translateX(0)}
-}
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .toc{transition:none}
-}
-
-@media (max-width:600px){
-  .page{padding:0 20px}
-  .wrap{padding-bottom:80px}
-  header{padding-top:56px}
-  h1{font-size:27px}
-  .step{grid-template-columns:20px 1fr;gap:12px;padding:14px 16px}
-  .map-row{grid-template-columns:56px 1fr;gap:10px}
-  .en{font-size:16px}
-  .stage{margin-top:58px}
-  .asks li{grid-template-columns:1fr}
-  .asks .where{white-space:normal}
-  .tbl{font-size:13.5px}
-  .tbl th,.tbl td{padding:9px 8px}
-}
-
-/* 错例删除线 */
-s{color:var(--orange);text-decoration-thickness:1px}
-/* 独立公式行(.box 内的规则优先级更高,不受影响) */
-.formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:18px 0;line-height:1.7}
-/* 正文里的交叉引用 */
-.xref{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(111,168,230,.4)}
-.xref:hover{border-bottom-color:var(--blue)}
-
-/* 速查表:首列(逻辑名)不拆行 */
-.quick td:first-child,.quick th:first-child{white-space:nowrap}
-
-/* 自检清单(在 .asks 基础上加序号) */
-.checks{counter-reset:c}
-.checks li{grid-template-columns:26px 1fr auto}
-.checks li::before{
-  counter-increment:c;content:counter(c);
-  font-family:var(--serif);font-size:13px;color:var(--faint);padding-top:2px;
-}
-@media (max-width:600px){ .checks li{grid-template-columns:22px 1fr} }
-
-/* 课外补充标记 */
-.extra{display:inline-block;font-size:11.5px;font-weight:600;line-height:1.5;color:var(--dim);border:1px solid #3a4655;border-radius:3px;padding:0 6px;margin-left:8px;vertical-align:2px;letter-spacing:.06em;font-family:var(--sans)}
-.legend .extra{margin-left:0;margin-right:4px;vertical-align:1px}
-h3.minor .extra{vertical-align:1px}
 </style>
 </head>
 <body>
-
-<div class="scrim" id="scrim"></div>
-
-<div class="page">
-
 <div class="wrap">
+
 <header>
   <h1>非谓语动词</h1>
-  <p class="thesis">整章只解决一个问题：<b>一个句子只能有一个谓语动词，其余的动作放在哪、写成什么样</b>。主要的动作写成谓语，次要的动作降级成 doing、done 或 to do。动名词、分词、不定式不是三套语法，而是动词坐到谓语以外的位置时的三种样子：<b>坐进名词的位置用动名词，坐进修饰的位置用分词，to do 两边都能坐</b>。</p>
-
-  <ol class="asks">
-    <li><span>一、动词不当谓语时，为什么要变、变成什么</span><span class="where">阶段一</span></li>
-    <li><span>二、动名词：动词怎么坐进名词的位置</span><span class="where">阶段二、三</span></li>
-    <li><span>三、分词：动词怎么修饰名词、修饰整句话</span><span class="where">阶段四、五</span></li>
-    <li><span>四、主语不一样怎么办：逻辑主语与独立主格</span><span class="where">阶段三、六、八</span></li>
-    <li><span>五、不定式：哪里都能坐，doing 还是 to do 怎么选</span><span class="where">阶段七、八</span></li>
-    <li><span>六、哪些边界必须单独记</span><span class="where">阶段九</span></li>
-  </ol>
-
-  <p class="legend"><span>📖 蓝色 = 能推导出来的判断机制</span><span>🧷 橙色 = 直接记用法 / 语法约定</span><span><span class="extra">补充</span> = 课上没展开、补上的核心内容</span></p>
-
-  <div class="map">
-    <a class="map-row" href="#s1"><span class="n">一</span><span class="t">一个句子只有一个谓语 <em>—— 非谓语的两份工作，位置决定形态</em></span></a>
-    <a class="map-row" href="#s2"><span class="n">二</span><span class="t">动名词：坐进名词的位置 <em>—— 主 / 宾 / 介宾 / 表，介词 + doing 压缩句子</em></span></a>
-    <a class="map-row" href="#s3"><span class="n">三</span><span class="t">动名词的发出者与时间 <em>—— my opening、Tom's refusing，having done</em></span></a>
-    <a class="map-row" href="#s4"><span class="n">四</span><span class="t">分词作定语 <em>—— doing 主动进行、done 被动完成，放前还是放后</em></span></a>
-    <a class="map-row" href="#s5"><span class="n">五</span><span class="t">分词作状语 <em>—— 观删变，大画面加小细节</em></span></a>
-    <a class="map-row" href="#s6"><span class="n">六</span><span class="t">独立主格 <em>—— 主语不一样，也能压成短语</em></span></a>
-    <a class="map-row" href="#s7"><span class="n">七</span><span class="t">不定式：哪里都能坐 <em>—— 主 / 宾 / 宾补 / 定 / 状，作状语多半是目的</em></span></a>
-    <a class="map-row" href="#s8"><span class="n">八</span><span class="t">不定式的发出者、时间与宾补 <em>—— for sb、to have done、see sb do</em></span></a>
-    <a class="map-row" href="#s9"><span class="n">九</span><span class="t">必须单独处理的边界 <em>—— to 是介词、悬垂分词、改错三板斧</em></span></a>
-    <a class="map-row" href="#s10"><span class="n">十</span><span class="t">本质：主次与压缩 <em>—— 非谓语就是从句被压缩后的样子</em></span></a>
-    <a class="map-row" href="#s11"><span class="n">总</span><span class="t">使用总览与自检 <em>—— 三张速查表、五步流程、36 题</em></span></a>
-  </div>
+  <p class="thesis">一句话只能有一个“真动词”（谓语）。还想说别的动作，就把它<b>变个形状</b>塞进句子——这些变了形状的动词，就叫非谓语动词。</p>
 </header>
 
-<!-- ══ 阶段一 ══ -->
-<section class="stage" id="s1">
-  <span class="stage-no">阶段一</span>
-  <h2>一个句子只有一个谓语</h2>
-
-  <div class="bridge">
-    <p class="after">先不管动名词、分词、不定式这些名字。只看一件事：一句话里出现了第二个动作，它该怎么写。</p>
-  </div>
-
-  <h3 id="s1a">谓语动词与非谓语动词</h3>
-
-  <p>能和主语凑成句子的，只有动词的现在时和过去时形式：原形 do、三单 does、过去式 did（be 动词就是 am、is、are、was、were）。除此之外的三种形式，都叫<b>非谓语动词</b> —— 它们自己当不了谓语：</p>
-
-  <table class="tbl">
-    <tr><th>形式</th><th>名字</th><th>能不能单独当谓语</th></tr>
-    <tr><td>do / does / did</td><td>谓语动词</td><td>能</td></tr>
-    <tr><td>doing</td><td>动名词 / 现在分词</td><td>不能</td></tr>
-    <tr><td>done</td><td>过去分词</td><td>不能</td></tr>
-    <tr><td>to do</td><td>不定式</td><td>不能</td></tr>
-  </table>
-
-  <div class="ex">
-    <p class="en">Food companies <b>are responding</b> to the report with new labels <u>to meet</u> the demand.</p>
-    <p class="zh">食品公司针对这份报告改了标签，以满足（消费者的）需求。（据课上阅读句改写）</p>
-    <p class="note">句子里有两个动作：respond 和 meet。它们用了两种不同的非谓语形式，却干着完全不同的两份工作。</p>
-  </div>
-
-  <h3 id="s1b">非谓语的两份工作</h3>
-
-  <p><b>工作一：和助动词一起拼成谓语。</b>do / does / did 只能表示时间，表达不了"正在""已经""被"这些细节。细节要靠非谓语来带，可它自己又当不了谓语，只好配一个助动词：</p>
-
-  <table class="tbl">
-    <tr><th>想表达</th><th>拼法</th><th>例</th></tr>
-    <tr><td>正在做</td><td>be + doing</td><td>They <b>are responding</b> to the report.</td></tr>
-    <tr><td>已经做了</td><td>have + done</td><td>They <b>have changed</b> the labels.</td></tr>
-    <tr><td>被做</td><td>be + done</td><td>The labels <b>were changed</b>.</td></tr>
-  </table>
-
-  <p><b>工作二：站在谓语以外的位置上。</b>主语、宾语、表语、定语、状语、宾补 —— 只要动作没坐在谓语上，就得换成非谓语。例句里的 to meet the demand 就是这样：它交代 respond 的目的，坐在状语的位置上。</p>
-
-  <div class="box derive">
-    <span class="tag">📖 为什么第二个动作必须降级</span>
-    <p>第一课就立下的规矩：<b>一个简单句，有且只有一个谓语动词</b>。"做出反应"和"满足需求"是两个动作，只能一个当谓语，另一个降级。</p>
-    <p>以前要写成目的状语从句：…so that they can meet the demand。主语都是同一拨人，没必要再写一个句子 —— 一个 to meet 就够了。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 别只记工作二</span>
-    <p>很多人一提非谓语，只想到"作主语、作定语"。其实进行时、完成时、被动语态里的 doing 和 done，本来就是非谓语 —— 只是被助动词"扶"成了谓语。</p>
-  </div>
-
-  <h3 id="s1c">位置决定形态</h3>
-
-  <p>动词离开谓语之后坐到哪，就要长成那个位置需要的样子：</p>
-
-  <table class="tbl">
-    <tr><th>坐到哪</th><th>这个位置原本放</th><th>用什么形态</th><th>例</th></tr>
-    <tr><td>主语 / 宾语 / 表语</td><td>名词</td><td>动名词 doing、不定式 to do</td><td>Swimming is fun. ／ I want to swim.</td></tr>
-    <tr><td>介词后</td><td>名词</td><td>只能用动名词 doing</td><td>He is good at swimming.</td></tr>
-    <tr><td>定语</td><td>形容词</td><td>分词 doing / done、不定式 to do</td><td>a sleeping baby ／ a broken cup ／ a house to rent</td></tr>
-    <tr><td>状语</td><td>副词</td><td>分词 doing / done、不定式 to do</td><td>Hearing the news, she cried. ／ He came to help.</td></tr>
-    <tr><td>宾补</td><td>形容词 / 名词</td><td>to do、do、doing、done</td><td>I asked him to wait. ／ I heard him sing.</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 三种非谓语，三种"词性倾向"</span>
-    <p><b>动名词</b>坐进名词的位置（阶段二、三）；<b>分词</b>坐进形容词、副词的位置，做定语和状语（阶段四到六）；<b>不定式</b>两边都能坐 —— 它"不一定"是什么词性，所以叫不定式（阶段七、八）。</p>
-    <p>这张表就是整章的地图。后面每一阶，都是在其中一格里往下挖。</p>
-  </div>
-
-  <h3 id="s1d">主要信息与次要信息</h3>
-
-  <div class="pair">
-    <div>
-      <p class="en">He went out of the restaurant. He didn't pay the bill.</p>
-      <p class="verdict">两个句子、两个谓语，主语 he 说了两遍。</p>
-    </div>
-    <div>
-      <p class="en">He <b>went</b> out of the restaurant <b>without paying</b> the bill.</p>
-      <p class="verdict">只留一个谓语 went，"没付钱"降级成 without paying。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 形式本身就在告诉你谁重要</span>
-    <p>写成谓语的动作是<b>主要信息</b>，写成非谓语的动作是<b>次要信息</b>。</p>
-    <p><b>读的时候：</b>先抓谓语（主干），doing、done、to do 一律先当修饰成分跳过，读懂主干再回来。</p>
-    <p><b>写的时候：</b>先决定哪个动作最重要，只给它谓语形式，其余的全部降级。</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>谓语只能用现在时、过去时形式（do / does / did），doing、done、to do 都是非谓语。非谓语有两份工作：配助动词拼成谓语，或者坐到谓语以外的位置。坐到哪就长成什么样：名词位用动名词，修饰位用分词，to do 两边都能坐。谓语写主要信息，非谓语写次要信息。</p>
-</section>
-
-<!-- ══ 阶段二 ══ -->
-<section class="stage" id="s2">
-  <span class="stage-no">阶段二</span>
-  <h2>动名词：动词坐进名词的位置</h2>
-
-  <div class="bridge">
-    <p class="before">上一阶的地图里，最好理解的一格是名词的位置。</p>
-    <p class="after">动词加上 -ing，就能当名词用。名词能坐的四个位置，它都能坐：主语、宾语、介词宾语、表语。</p>
-  </div>
-
-  <h3 id="s2a">四个位置</h3>
-
-  <h3 class="minor">① 作主语</h3>
-  <div class="ex">
-    <p class="en"><b>Saying</b> is easier than <b>doing</b>.</p>
-    <p class="zh">说比做容易。</p>
-    <p class="note">than 前后要对称：前面是 saying，后面也用 doing。</p>
-  </div>
-  <div class="ex">
-    <p class="en"><b>Getting up early</b> is considered a good habit.</p>
-    <p class="zh">早起被认为是个好习惯。</p>
-  </div>
-  <div class="pair">
-    <div>
-      <p class="en"><s>Get up early is considered a good habit.</s></p>
-      <p class="verdict">✗ 句子已经有谓语 is considered，get up 再用原形，就成了两个谓语。</p>
-    </div>
-    <div>
-      <p class="en"><b>Getting up</b> early is considered a good habit.</p>
-      <p class="verdict">✓ 起床这个动作坐在主语位上，变成动名词。</p>
-    </div>
-  </div>
-  <div class="ex">
-    <p class="en"><b>Seeing</b> much, <b>suffering</b> much, and <b>studying</b> much are the three pillars of learning.</p>
-    <p class="zh">多见、多历、多学，是学问的三大支柱。（本杰明·迪斯雷利）</p>
-    <p class="note">三个动名词用 and 并列作主语，成分对等。三件事并列，所以谓语用复数 are。</p>
-  </div>
-
-  <h3 class="minor">② 作宾语</h3>
-  <div class="ex">
-    <p class="en">He admitted <b>taking</b> the watch.</p>
-    <p class="zh">他承认拿了那块表。</p>
-    <p class="note">"承认"是谓语，"拿"是承认的内容，坐在宾语位上。</p>
-  </div>
-  <div class="ex">
-    <p class="en">He hates <b>getting up</b> early in the morning.　She imagined <b>finding</b> a wallet on the sidewalk.</p>
-    <p class="zh">他讨厌早起。／ 她想象自己在人行道上捡到了一个钱包。</p>
-  </div>
-  <p class="note">哪些动词后面接 doing、哪些接 to do，见<a class="xref" href="#s7c">阶段七</a>。</p>
-
-  <h3 class="minor">③ 作介词宾语</h3>
-  <div class="ex">
-    <p class="en">I'm looking forward to <b>meeting</b> her.　She left the room without <b>saying</b> a word.</p>
-    <p class="zh">我很期待见到她。／ 她一句话没说就离开了房间。</p>
-    <p class="note">介词后面只能接名词。动作要坐进来，只能变成动名词 —— 这里没有 to do 的份。</p>
-  </div>
-  <div class="ex">
-    <p class="en"><b>Reading</b> a good book is like <b>talking</b> with a wise friend.</p>
-    <p class="zh">读一本好书，就像和一位智者交谈。</p>
-    <p class="note">like 在这里是介词："像"。谓语已经有 is 了，like 不可能再当动词"喜欢"。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 课上的听力：afraid of 后面接什么</span>
-    <p>《摩登家庭》里一家人轮流回答"你最怕什么"。afraid of 的 of 是介词，后面接名词，或者接动名词：</p>
-    <p class="formula">global warming ／ getting a B ／ the phone ringing in the middle of the night ／ job interviews ／ losing Mitchell ／ dying alone</p>
-    <p>注意 the phone ringing in the middle of the night：怕的不是电话，而是"电话半夜响"这件事。phone 是 ringing 的发出者 —— 这就是<a class="xref" href="#s3b">阶段三</a>要讲的"动名词的逻辑主语"。</p>
-  </div>
-
-  <h3 class="minor">④ 作表语</h3>
-  <div class="ex">
-    <p class="en">Her job was <b>keeping</b> the hall as clean as possible.</p>
-    <p class="zh">她的工作是让大厅尽可能保持干净。</p>
-  </div>
-  <div class="ex">
-    <p class="en"><b>Denying</b> this would be <b>shutting</b> your eyes to the facts.</p>
-    <p class="zh">否认这一点，就等于对事实视而不见。</p>
-    <p class="note">主语、表语都是动名词。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 四个位置里，哪两个最重要</span>
-    <p><b>作主语：</b>用来对一件事发表看法 —— "doing something 怎么样"。阅读里特别常见。</p>
-    <p><b>作介词宾语：</b>可以用"介词 + doing"把第二个句子压缩掉（<a class="xref" href="#s2e">本阶段最后一节</a>）。写作里特别好用。</p>
-  </div>
-
-  <h3 id="s2b">形容词也能进来：being + 形容词</h3>
-
-  <div class="ex">
-    <p class="en"><b>Being poor</b> is no disgrace.</p>
-    <p class="zh">穷不可耻。</p>
-  </div>
-  <div class="ex">
-    <p class="en"><b>Being late</b> is unforgivable here.　<b>Being young</b> means unlimited possibilities.</p>
-    <p class="zh">在这里，迟到是不可原谅的。／ 年轻就意味着无限可能。</p>
-  </div>
-  <div class="ex">
-    <p class="en">Dressing well is about <b>being polite</b> in society.　The best policy is <b>being honest</b>.</p>
-    <p class="zh">穿着得体，是社交中的一种礼貌。／ 最好的策略是诚实。</p>
-    <p class="note">介词后、表语位上也一样。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 为什么要先垫一个 be</span>
-    <p>"穷""迟到""年轻"在英语里是形容词，形容词不能直接作主语，也不能直接跟在介词后面。</p>
-    <p>办法是先配上系动词：be poor（是穷的），这就成了一个动作；再把 be 变成动名词 being —— "是穷的这件事"就能当名词用了。</p>
-  </div>
-
-  <h3 id="s2c">名词外壳，动词内核</h3>
-
-  <p>动名词虽然当名词用，骨子里还是动词。动词能带的东西，它都能带：宾语、状语、状语从句、宾语从句，甚至被动语态。</p>
-
-  <div class="ex">
-    <p class="en"><u>Knowing (that) you are safe</u> makes me feel much better.</p>
-    <p class="zh">知道你平安，我就放心多了。</p>
-    <p class="note">knowing 后面带了一个宾语从句（that 省掉了），整块作主语。课上用的是电影《遇见你之前的我》（Me Before You）里男主留给女主那封信中的两句，也都是 knowing + 宾语从句作主语。</p>
-  </div>
-  <div class="ex">
-    <p class="en"><u>Using social media to screen job candidates</u> is not an uncommon practice.</p>
-    <p class="zh">用社交媒体筛选求职者，并不少见。（据课上真题句改写）</p>
-    <p class="note">using 带了宾语 social media，还带了一个目的状语 to screen job candidates。</p>
-  </div>
-  <div class="ex">
-    <p class="en">He insisted on <b>being assigned</b> to the mission.　We get pleasure from <b>loving</b> and <b>being loved</b>.</p>
-    <p class="zh">他坚持要被派去执行这项任务。／ 我们从爱人和被爱中获得快乐。</p>
-    <p class="note">动名词也有被动：being done。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 再长也是一件事，谓语用单数</span>
-    <p class="formula">Knowing you are safe <b>makes</b> me feel better.</p>
-    <p>里面有 you are，有复数名词，都不影响：整块是"知道你平安"这<b>一件事</b>，谓语用单数。和主语从句篇的道理一样。</p>
-    <p><b>读的时候：</b>看到动名词开头，一路读到那个单数谓语（is、makes、has…）为止，中间全是主语。</p>
-    <p><b>例外只有一种：</b>几个动名词用 and 并列，那就是几件事，谓语用复数（上面迪斯雷利那句）。</p>
-  </div>
-
-  <h3 id="s2d">作表语，不是进行时</h3>
-
-  <div class="pair">
-    <div>
-      <p class="en">Her job was <b>keeping</b> the hall clean.</p>
-      <p class="verdict">工作不会自己打扫 → 动名词作表语："她的工作<b>是</b>……"</p>
-    </div>
-    <div>
-      <p class="en">She was <b>keeping</b> the hall clean.</p>
-      <p class="verdict">人能打扫 → 过去进行时："她当时<b>正在</b>……"</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 看主语能不能发出这个动作</span>
-    <p>be + doing 长得一模一样。区别只在主语：主语能发出这个动作，是进行时；主语是"工作""目标""幸福"这类不会动的东西，doing 就是动名词作表语，翻成"是……"。</p>
-  </div>
-
-  <p>课上的造句练习 What is happiness? 就是这个结构。有同学答 Happiness is being rich，完全正确。再看两句：</p>
-
-  <div class="ex">
-    <p class="en">Happiness is <b>hearing</b> from an old friend when you least expect it.</p>
-    <p class="zh">幸福，就是在最想不到的时候收到老朋友的消息。</p>
-    <p class="note">hearing 作表语，后面还带了一个时间状语从句 —— 动词内核又一次露了出来。</p>
-  </div>
-  <div class="ex">
-    <p class="en">Happiness is <b>disagreeing</b> without <b>falling out</b>.</p>
-    <p class="zh">幸福，就是意见不同，却不伤感情。</p>
-    <p class="note">disagreeing 作表语；without falling out 是介词 + 动名词。</p>
-  </div>
-
-  <h3 id="s2e">介词 + doing：把第二个句子压成短语</h3>
-
-  <p>只要两个动作是<b>同一个主语</b>发出的，就不必写两个句子：留一个当谓语，另一个压成"介词 + doing"。</p>
-
-  <div class="restore">
-    <p class="en">He went out of the restaurant, but he didn't pay the bill.<br>→ He went out of the restaurant <b>without paying</b> the bill.</p>
-    <p class="arrow">but + 否定句<span class="sep">→</span>without + doing（没做某事）</p>
-    <p class="zh">他没付钱就走出了餐馆。</p>
-  </div>
-  <div class="restore">
-    <p class="en">She didn't get a pair of shoes; she bought a pair of boots.<br>→ <b>Instead of getting</b> a pair of shoes, she bought a pair of boots.</p>
-    <p class="arrow">没做 A，做了 B<span class="sep">→</span>instead of + doing</p>
-    <p class="zh">她没买普通的鞋，买了一双靴子。</p>
-  </div>
-  <div class="restore">
-    <p class="en">After she heard the news, she fainted. → <b>After hearing</b> the news, she fainted.<br>Before you answer my question, think carefully. → Think carefully <b>before answering</b> my question.</p>
-    <p class="arrow">时间状语从句<span class="sep">→</span>after / before + doing（它们本来就兼做介词）</p>
-    <p class="zh">她听到消息后晕了过去。／ 回答我的问题之前，先想清楚。</p>
-  </div>
-
-  <p>同样是"一……就"，可以一级一级往上写：</p>
-
-  <div class="chain">
-    <div class="step">
-      <span class="step-n">一</span>
-      <div><p class="en"><b>When</b> I saw the plane coming towards me, I dashed for cover.</p><p class="step-why">时间状语从句，只说了"当……时"。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">二</span>
-      <div><p class="en"><b>As soon as</b> I saw the plane coming towards me, I dashed for cover.</p><p class="step-why">换成 as soon as，"一……就"说准了。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">三</span>
-      <div><p class="en"><b>On seeing</b> the plane coming towards me, I dashed for cover.</p><p class="step-why">主语都是 I，删掉重复的主语：on + doing ＝ 一……就。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">四</span>
-      <div><p class="en"><b>At the sight of</b> the plane coming towards me, I dashed for cover.</p><p class="step-why">连动词都换成名词 sight，最凝练。</p></div>
-    </div>
-  </div>
-  <p class="zh">一看到飞机朝我飞来，我就冲过去找掩护。</p>
-
-  <div class="box rote">
-    <span class="tag">🧷 "一……就"的名词版，写作素材</span>
-    <p class="formula">at the sight of 一看到 ／ at the sound of 一听到 ／ at the mention of 一提到 ／ at the thought of 一想到</p>
-    <p class="note">课上给的"一想到"是 at the idea of；at the thought of 更常用，两个都能说。</p>
-  </div>
-
-  <h3 id="s2f">动名词的固定搭配<span class="extra">补充</span></h3>
-
-  <div class="box rote">
-    <span class="tag">🧷 这些结构后面固定接 doing</span>
-    <table class="tbl">
-      <tr><th>结构</th><th>意思</th><th>例</th></tr>
-      <tr><td>be worth doing</td><td>值得做</td><td>The film is worth seeing.</td></tr>
-      <tr><td>need / want / require doing</td><td>需要被……</td><td>The car needs washing.</td></tr>
-      <tr><td>have trouble / difficulty (in) doing</td><td>做……有困难</td><td>I had trouble finding the house.</td></tr>
-      <tr><td>spend time / money (in) doing</td><td>花时间 / 钱做……</td><td>She spent two hours doing her homework.</td></tr>
-      <tr><td>be busy (in) doing</td><td>忙于做……</td><td>He is busy preparing for the exam.</td></tr>
-      <tr><td>It's no use / no good doing</td><td>做……没用</td><td>It's no use crying over spilt milk.</td></tr>
-      <tr><td>There is no doing</td><td>没法……</td><td>There's no telling what will happen.</td></tr>
-      <tr><td>can't help doing</td><td>忍不住做……</td><td>I couldn't help laughing.</td></tr>
-      <tr><td>feel like doing</td><td>想做……</td><td>I don't feel like going out tonight.</td></tr>
-    </table>
-    <p><b>need doing 为什么是被动：</b>车不会自己洗自己，The car needs washing ＝ The car needs to be washed。形式是主动的，意思是被动的，be worth doing 也一样。</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>动名词坐进名词的四个位置：主语、宾语、介词宾语、表语。形容词要进来，先变成 being + 形容词。它还是动词，能带宾语、状语、从句，也有被动 being done；整块作主语时谓语用单数。be + doing 看主语能不能发出动作，分清表语和进行时。主语一致时，"介词 + doing"能把第二个句子压成短语。</p>
-</section>
-
-<!-- ══ 阶段三 ══ -->
-<section class="stage" id="s3">
-  <span class="stage-no">阶段三</span>
-  <h2>动名词的发出者与时间</h2>
-
-  <div class="bridge">
-    <p class="before">上一阶反复说：动名词骨子里还是动词。</p>
-    <p class="after">既然是动词，就逃不开动词才有的两个问题：谁发出的？什么时候发生的？</p>
-  </div>
-
-  <h3 id="s3a">不写发出者的时候</h3>
-
-  <p>动名词一般不写发出者。不写，就是下面两种情况之一：</p>
-
-  <div class="pair">
-    <div>
-      <p class="en"><b>Refusing</b> an invitation from a friend is rude.</p>
-      <p class="verdict">泛指：谁拒绝都一样。</p>
-    </div>
-    <div>
-      <p class="en">Would you mind <b>opening</b> the window?</p>
-      <p class="verdict">和句子主语相同：介意的是 you，开窗的也是 you。</p>
-    </div>
-  </div>
-
-  <p class="note">课上的小陷阱：别人问你 Would you mind opening the window?，意思是请<b>你</b>去开窗，不是问你介不介意<b>他</b>开窗。</p>
-
-  <h3 id="s3b">写出发出者：不能直接放主格</h3>
-
-  <p>"拒绝邀请让我很恼火"没说是谁拒绝。现在想说"<b>汤姆</b>拒绝邀请让我很恼火"：</p>
-
-  <div class="pair">
-    <div>
-      <p class="en"><s>Tom refusing to accept the invitation upset me.</s>　<s>He refusing …</s></p>
-      <p class="verdict">✗ 像写句子一样，把主格直接放在前面。</p>
-    </div>
-    <div>
-      <p class="en"><b>Tom's</b> refusing to accept the invitation upset me.　<b>His</b> refusing …</p>
-      <p class="verdict">✓ 写成所有格 / 物主代词。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 名词不谈"谁发出"，谈"归谁所有"</span>
-    <p>写句子时，动作前面放主语：He refused. 可动词一旦变成名词，名词前面放的就不是主语，而是"谁的"：his bag、Tom's bag。</p>
-    <p>动名词也一样：his refusing、Tom's refusing —— "他的拒绝"。语法上管这个叫<b>动名词的逻辑主语</b>。</p>
-  </div>
-
-  <table class="tbl">
-    <tr><th>动名词坐在</th><th>发出者写成</th><th>例</th></tr>
-    <tr><td>主语位</td><td>所有格 / 物主代词</td><td><b>Your</b> drinking so much is bad for your health.</td></tr>
-    <tr><td>主语位</td><td>所有格 / 物主代词</td><td><b>Jack's</b> disappearing so suddenly made them worried.</td></tr>
-    <tr><td>宾语位</td><td>所有格，或宾格</td><td>Do you mind <b>my / me</b> making a suggestion?</td></tr>
-    <tr><td>介词后</td><td>所有格，或宾格</td><td>I'm annoyed about <b>John's / John</b> forgetting to pay.</td></tr>
-  </table>
-
-  <div class="ex">
-    <p class="en">I don't doubt <b>their</b> wanting to help. ／ <s>I don't doubt they wanting to help.</s></p>
-    <p class="zh">我不怀疑他们想帮忙。</p>
-  </div>
-  <div class="ex">
-    <p class="en">I appreciate <b>her</b> devoting herself to education.</p>
-    <p class="zh">我很欣赏她献身教育事业。（her 既是宾格，也是所有格）</p>
-  </div>
-
-  <p>两两对比，看"谁做"变了没有：</p>
-
-  <div class="pair">
-    <div>
-      <p class="en">Clint insisted on reading the letter.<br>He dislikes working late.</p>
-      <p class="verdict">不写发出者：看信的是 Clint 自己；加班的是 he 自己。</p>
-    </div>
-    <div>
-      <p class="en">Clint insisted on <b>my / me</b> reading the letter.<br>He dislikes <b>his wife's / his wife</b> working late.</p>
-      <p class="verdict">写出发出者：坚持要我看信；不喜欢妻子加班。</p>
-    </div>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 记不住就一律用所有格</span>
-    <p>所有格（my、his、Tom's）主语位、宾语位都能用，永远不会错。宾格（me、him、Tom）只能用在宾语位和介词后，口语里更常见。主格（I、he、they）哪里都不行。</p>
-    <p>表语位按宾语位处理；介词宾语本来就是宾语。所以实际只用分两种：<b>作主语</b>和<b>作宾语</b>。</p>
-  </div>
-
-  <h3 id="s3c">having done：强调"先发生"</h3>
-
-  <div class="ex">
-    <p class="en">He was ashamed of <b>having acted</b> so rashly.</p>
-    <p class="zh">他为自己（之前）如此鲁莽而感到惭愧。</p>
-  </div>
-  <div class="ex">
-    <p class="en">Jack apologized to Kevin for <b>having accused</b> him.</p>
-    <p class="zh">杰克为（之前）指责过凯文向他道歉。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 和 had done 是同一个思路</span>
-    <p>过去完成时 had done 表示"过去的过去"，用来理清两个过去动作的先后。动名词的完成式 having done 表示<b>比谓语动作更早</b>：先鲁莽，后惭愧；先指责，后道歉。</p>
-  </div>
-
-  <div class="restore">
-    <p class="en">After she heard the news, she fainted.<br>→ After <b>hearing</b> the news, she fainted. ／ After <b>having heard</b> the news, she fainted.</p>
-    <p class="arrow">两种都对<span class="sep">→</span>having heard 把"先听到、后晕倒"说得更醒目</p>
-    <p class="note">after 本身已经表明先后，having heard 属于双重强调，写作里用 after hearing 就够了。</p>
-  </div>
-
-  <table class="tbl">
-    <tr><th>动名词</th><th>和谓语同时 / 泛指</th><th>先于谓语</th></tr>
-    <tr><td>主动</td><td>doing</td><td>having done</td></tr>
-    <tr><td>被动</td><td>being done</td><td>having been done</td></tr>
-    <tr><td>否定</td><td>not doing ／ not being done</td><td>not having done ／ not having been done</td></tr>
-  </table>
-
-  <div class="ex">
-    <p class="en">He denied <b>being</b> there. ／ He denied <b>having been</b> there.</p>
-    <p class="zh">他否认在那儿。／ 他否认（之前）去过那儿。</p>
-  </div>
-  <div class="ex">
-    <p class="en">I appreciate <b>having been given</b> the opportunity.</p>
-    <p class="zh">我很感激（之前）得到了这个机会。（被动的完成式）</p>
-  </div>
-  <div class="ex">
-    <p class="en">He regretted <b>not having gone</b> to university.</p>
-    <p class="zh">他后悔（当年）没上大学。（not 放在最前面）</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 having done 只加强调，不改意思</span>
-    <p>admit、deny、forget、recall、regret、remember 这类动词后面的 doing，大多能换成 having done，意思几乎没有区别：</p>
-    <p class="formula">I regret buying that car. ≈ I regret having bought that car.</p>
-    <p>"后悔"本来就是后悔已经做过的事，doing 天然带着先后。换成 having done，只是把"之前"说得更醒目。</p>
-  </div>
-
-  <h3 id="s3d">不是所有 doing 都能换</h3>
-
-  <p>把课上的练习换个场景：一名学生被怀疑考试作弊，她说的六句话，都改写成"动词 + 动名词"。哪几句能换成 having done？</p>
-
-  <table class="tbl">
-    <tr><th>她说的话</th><th>改写</th><th>能换吗</th></tr>
-    <tr><td>"Yes, I was in the classroom at nine."</td><td>She admitted being in the classroom at nine.</td><td>✓ having been：先在教室，后承认</td></tr>
-    <tr><td>"I saw two students whispering to each other."</td><td>She noticed two students whispering to each other.</td><td>✗ 注意到的那一刻，他们正在说话：同时发生</td></tr>
-    <tr><td>"I think I heard someone's phone ring."</td><td>She recalled hearing someone's phone ring.</td><td>✓ having heard：先听到，后回忆</td></tr>
-    <tr><td>"It didn't occur to me to tell the teacher."</td><td>She didn't consider telling the teacher.</td><td>✗ 先考虑，才会去告诉：没有"先发生"的事</td></tr>
-    <tr><td>"I certainly didn't copy anyone's answers."</td><td>She denied copying anyone's answers.</td><td>✓ having copied：否认的是"之前抄过"这件事</td></tr>
-    <tr><td>"I wish I had stayed at home that day."</td><td>She regretted going to school that day.</td><td>✓ having gone：先去了，后后悔</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 判断标准只有一个</span>
-    <p>动名词的动作，是不是发生在谓语动作<b>之前</b>？是，才能换成 having done。同时发生（notice doing）、之后才发生（consider doing），都不能换。</p>
-    <p>第五句最容易想错：她明明说自己没抄。但"否认"针对的仍然是"之前抄过"这件事，所以能换。</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>动名词不写发出者，就是泛指，或者和句子主语相同。要写出发出者，不能放主格：作主语用所有格 / 物主代词，作宾语用所有格或宾格，所有格哪里都能用。having done 强调"比谓语更早"，意思和 doing 几乎一样；只有真的先发生，才能换。</p>
-</section>
-
-<!-- ══ 阶段四 ══ -->
-<section class="stage" id="s4">
-  <span class="stage-no">阶段四</span>
-  <h2>分词作定语：动词坐进形容词的位置</h2>
-
-  <div class="bridge">
-    <p class="before">动名词解决的是名词的位置：主语、宾语、介词宾语、表语。</p>
-    <p class="after">动词要是出现在修饰名词的位置上（定语），就要变成分词。难点在于分词有两种：doing 和 done，到底选哪个？</p>
-  </div>
-
-  <h3 id="s4a">doing 与 done 的分工</h3>
-
-  <div class="box derive">
-    <span class="tag">📖 把名字拆开：分词 ＝ 动词的两种变化</span>
-    <p><b>现在分词 doing：</b>第一次见它是在进行时里，所以它带着"正在进行"的意思。</p>
-    <p><b>过去分词 done：</b>第一次见它是在完成时和被动语态里，所以它带着"完成""被动"的意思。</p>
-    <p>"进行"的反面是"完成"，"被动"的反面是"主动"。两边一对，公式就出来了：</p>
-    <p class="formula">doing ＝ 主动 / 进行　｜　done ＝ 被动 / 完成</p>
-    <p>用到定语上，只问一句：<b>被修饰的名词，是发出这个动作，还是承受这个动作？</b></p>
-  </div>
-
-  <table class="tbl">
-    <tr><th>中文</th><th>名词和动作的关系</th><th>写成</th></tr>
-    <tr><td>会飞的鱼</td><td>鱼发出"飞" → 主动</td><td>flying fish</td></tr>
-    <tr><td>令人惊讶的事</td><td>事情发出"使人惊讶" → 主动</td><td>a surprising thing</td></tr>
-    <tr><td>耕过的地</td><td>地承受"耕" → 被动</td><td>a ploughed field</td></tr>
-    <tr><td>废弃的停车场</td><td>停车场承受"废弃" → 被动</td><td>a deserted car park</td></tr>
-  </table>
-  <p class="note">surprising 最容易选错：事情不是"被惊讶"，而是"让人惊讶"。surprise 的本义就是"使……惊讶"，事情是这个动作的发出者。ploughed 是英式拼法，美式写作 plowed。</p>
-
-  <h3 id="s4b">-ing 形容词与 -ed 形容词<span class="extra">补充</span></h3>
-
-  <p>surprising 这一类词，本义都是"使……产生某种情绪"。套同一个公式：<b>-ing 发出情绪（令人……的），-ed 承受情绪（感到……的）</b>。</p>
-
-  <table class="tbl">
-    <tr><th>-ing：令人……的（多修饰事物）</th><th>-ed：感到……的（多修饰人）</th></tr>
-    <tr><td>an interesting book</td><td>an interested reader</td></tr>
-    <tr><td>a boring lecture</td><td>a bored student</td></tr>
-    <tr><td>surprising news</td><td>a surprised look</td></tr>
-    <tr><td>a tiring journey</td><td>a tired traveller</td></tr>
-    <tr><td>confusing instructions</td><td>a confused user</td></tr>
-  </table>
-
-  <div class="pair">
-    <div>
-      <p class="en">The lecture was boring, so I was bored.</p>
-      <p class="verdict">✓ 讲座让人无聊，我感到无聊。</p>
-    </div>
-    <div>
-      <p class="en"><s>I was boring.</s>（想说"我好无聊"）</p>
-      <p class="verdict">✗ 语法没错，意思错了："我这个人很无趣"。</p>
-    </div>
-  </div>
-
-  <h3 id="s4c">放在名词前，还是名词后</h3>
-
-  <div class="pair">
-    <div>
-      <p class="en">the <b>injured</b> boy ／ a <b>sleeping</b> baby ／ The <b>Wandering</b> Earth</p>
-      <p class="verdict">单个分词：一般放在名词前。《流浪地球》：地球自己在流浪，主动 → wandering。</p>
-    </div>
-    <div>
-      <p class="en">the boy <b>injured in the accident</b> ／ the taxi <b>taking us to the airport</b></p>
-      <p class="verdict">分词带了状语、宾语，变成短语：必须放在名词后。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 英语先亮核心</span>
-    <p>英语的习惯是核心名词先出场。injured 一个词放在前面，不妨碍读者抓住 boy；injured in the accident 要是放在前面，读者会先撞上 accident，注意力就被带跑了。所以<b>短语一律后置</b>。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 单个分词放后面的几种情况</span>
-    <p><b>放前面会有歧义：</b>the money <b>left</b>（剩下的钱）—— 放前面 left 容易读成"左边的"。</p>
-    <p><b>前后意思不同：</b>the people <b>concerned</b>（相关的人）／ <b>concerned</b> people（担心的人）；the people <b>involved</b>（涉及的人）。</p>
-    <p><b>非限定：</b>专有名词或独一无二的东西，后面的分词定语要用逗号隔开，和非限定性定语从句一样：My grandfather, <b>born in 1930</b>, still rides a bike every day.</p>
-  </div>
-
-  <h3 id="s4d">分词定语与定语从句：一个简洁，一个准确</h3>
-
-  <div class="restore">
-    <p class="en">the fish <b>which can fly</b> → a <b>flying</b> fish<br>the boy <b>who was injured in the accident</b> → the boy <b>injured in the accident</b></p>
-    <p class="arrow">分词定语<span class="sep">→</span>就是定语从句压缩掉关系词、助动词之后剩下的部分</p>
-  </div>
-
-  <p>既然能压缩，为什么定语从句还一直存在？</p>
-
-  <div class="pair">
-    <div>
-      <p class="en">the girl <b>standing</b> there</p>
-      <p class="verdict">多半理解成 who is standing there：正站在那儿的女孩。</p>
-    </div>
-    <div>
-      <p class="en">people <b>living</b> near the airport</p>
-      <p class="verdict">理解成 who live near the airport：平时住在机场附近的人。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 压缩掉的是时态</span>
-    <p>定语从句是句子，要处理时态、语态、情态，还要选关系词、分限定非限定 —— <b>难写，但意思准确</b>。分词定语把这些全压掉了 —— <b>简单，但要靠语境</b>。同一个 doing，可能对应进行时，也可能对应一般现在时；没有语境，flying fish 也可能被读成"正在飞的鱼"。</p>
-    <p>所以两者不是谁取代谁：有语境、求简洁，用分词；怕误会、求准确，用从句。</p>
-  </div>
-
-  <p>课上看的视频：美国一档节目介绍中国婚礼上的新玩意儿"飞纱"。主持人先说了分词定语，又马上补了一个定语从句：</p>
-
-  <div class="ex">
-    <p class="en">It's called the <b>flying</b> veil because, well, it's a veil <b>that flies</b>.</p>
-    <p class="zh">它叫"飞纱"，因为……嗯，它就是一块会飞的头纱。</p>
-    <p class="note">先用分词定语，图简洁；怕观众误会，再用定语从句说准确。两者可以一前一后配合着用。</p>
-  </div>
-
-  <div class="ex">
-    <p class="en">KFC is an American fast-food chain <b>headquartered</b> in Louisville, Kentucky, <b>that specializes</b> in fried chicken.</p>
-    <p class="zh">肯德基是一家总部设在肯塔基州路易斯维尔、主营炸鸡的美国快餐连锁店。</p>
-    <p class="note">一个分词定语（总部被设在…… → done），一个定语从句，搭配着写。把从句也改成分词：…, <b>specializing</b> in fried chicken（公司主动经营 → doing）。</p>
-  </div>
-
-  <h3 id="s4e">最常见的场景：菜名</h3>
-
-  <p>菜名一般由"做法 + 原料"组成。做法是动词，要放到原料前面去修饰它，就得变成分词；原料承受做法，所以大多是 -ed。KFC 里的 F，就是 Fried：</p>
-
-  <table class="tbl">
-    <tr><th>英文</th><th>中文</th></tr>
-    <tr><td>Kentucky Fried Chicken</td><td>肯塔基炸鸡</td></tr>
-    <tr><td>fried rice ／ scrambled eggs</td><td>炒饭 ／ 炒鸡蛋</td></tr>
-    <tr><td>steamed fish ／ boiled dumplings</td><td>清蒸鱼 ／ 水饺</td></tr>
-    <tr><td>braised pork ／ smoked salmon</td><td>红烧肉 ／ 烟熏三文鱼</td></tr>
-    <tr><td>mashed potatoes ／ roast duck</td><td>土豆泥 ／ 烤鸭（roast 本身也能当形容词）</td></tr>
-  </table>
-
-  <h3 id="s4f">判断练习：doing 还是 done</h3>
-
-  <table class="tbl">
-    <tr><th>句子</th><th>填</th><th>理由</th></tr>
-    <tr><td>The man ___ (sit) next to me on the plane kept talking.</td><td>sitting</td><td>人发出"坐"</td></tr>
-    <tr><td>Most of the goods ___ (make) in this factory are exported.</td><td>made</td><td>货物被制造</td></tr>
-    <tr><td>Anyone ___ (want) to join the club should sign up by Friday.</td><td>wanting</td><td>人发出"想"</td></tr>
-    <tr><td>The bridge ___ (build) last year is already cracking.</td><td>built</td><td>桥被建造</td></tr>
-    <tr><td>I was woken up by a bell ___ (ring).</td><td>ringing</td><td>铃发出"响"</td></tr>
-    <tr><td>A woman ___ (call) Lily rang while you were out.</td><td>called</td><td>陷阱，见下</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 called Lily：名叫 Lily 的</span>
-    <p>名字是别人叫的，所以是被动：a woman <b>called</b> Lily ＝ 一个名叫 Lily 的女人。句子主干是 A woman rang（有个女人打来电话）。</p>
-    <p>要是填 calling，意思就成了"一个正在给 Lily 打电话的女人，给你打来了电话"，逻辑不通。</p>
-    <p>课上有个同学把这句译成"有人给杰克打了电话，又打了电话"，就是没认出 called 是分词定语。句子里出现两个像谓语的词时，问自己：<b>哪个当谓语才讲得通？</b></p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 读长句：先主干，后修饰</span>
-    <p class="formula">The boy injured in the accident <b>was taken</b> to hospital.</p>
-    <p>主干是"男孩被送进了医院"；"在事故中受伤的"只是修饰。考试时先读主干，读完主干答不出题，再回头读修饰语。</p>
-  </div>
-
-  <h3 id="s4g">swimming pool 与 swimming boy<span class="extra">补充</span></h3>
-
-  <div class="pair">
-    <div>
-      <p class="en">a <b>swimming</b> pool ＝ a pool for swimming<br>a <b>sleeping</b> bag ／ <b>drinking</b> water</p>
-      <p class="verdict">动名词作定语：表示用途 —— 游泳池、睡袋、饮用水。</p>
-    </div>
-    <div>
-      <p class="en">a <b>swimming</b> boy ＝ a boy who is swimming<br>a <b>sleeping</b> baby ／ <b>boiling</b> water</p>
-      <p class="verdict">现在分词作定语：名词自己在做 —— 在游泳的男孩、熟睡的婴儿、沸腾的水。</p>
-    </div>
-  </div>
-  <p class="note">判断方法还是那一问：名词能不能发出这个动作？泳池不会游泳，是"用来游泳的"；男孩会游，是"正在游的"。课上说动名词作定语不必单独研究，读的时候确实不影响理解；写的时候能分清更好。</p>
-
-  <p class="sum"><b>小结：</b>分词作定语只问一句：名词发出动作用 doing，承受动作用 done；-ing 形容词"令人……"，-ed 形容词"感到……"。单个分词放前，短语放后。分词定语是定语从句的压缩：简洁但靠语境，从句麻烦但准确，两者常配合着用。菜名是分词定语最集中的地方。</p>
-</section>
-
-<!-- ══ 阶段五 ══ -->
-<section class="stage" id="s5">
-  <span class="stage-no">阶段五</span>
-  <h2>分词作状语：把状语从句压成短语</h2>
-
-  <div class="bridge">
-    <p class="before">分词作定语，修饰的是一个名词。</p>
-    <p class="after">分词还能修饰整句话的动作，交代时间、原因、伴随……这就是分词作状语。它其实就是状语从句的压缩版。</p>
-  </div>
-
-  <h3 id="s5a">观删变：从状语从句到分词</h3>
-
-  <p>"乔在踢足球的时候弄伤了膝盖"：一个人发出了两个动作，踢和伤。</p>
-
-  <div class="chain">
-    <div class="step">
-      <span class="step-n">一</span>
-      <div><p class="en">Joe hurt his knee <b>while he was playing</b> football.</p><p class="step-why">时间状语从句：was doing + did，长动作里插进一个短动作。主语 Joe / he 说了两遍。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">二</span>
-      <div><p class="en"><s>Joe hurt his knee while was playing football.</s></p><p class="step-why">只删主语不行：was playing 还是谓语，谓语必须有主语。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">三</span>
-      <div><p class="en">Joe hurt his knee <b>(while) playing</b> football.</p><p class="step-why">没有主语，就不再是句子：谓语降级成非谓语。踢球是主动的 → playing。</p></div>
-    </div>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 课上的口诀：观、删、变</span>
-    <p><b>观：</b>观察主句和从句的主语是否一致。一致才能往下走。</p>
-    <p><b>删：</b>删掉<b>从句</b>的主语（主句的留着，它是主要信息）。</p>
-    <p><b>变：</b>从句的谓语变非谓语 —— 主动变 doing，被动变 done。连词可留可删。</p>
-  </div>
-
-  <p>压完以后，位置很自由，下面三种都对：</p>
-  <p class="formula">Joe hurt his knee playing football. ／ Joe hurt his knee, playing football. ／ Playing football, Joe hurt his knee.</p>
-
-  <div class="box derive">
-    <span class="tag">📖 反过来读</span>
-    <p>句首或句尾出现一个 doing / done，前面没有自己的主语 —— 它就是在修饰旁边那个句子的动作。它的主语，就是主句的主语。</p>
-  </div>
-
-  <h3 id="s5b">系动词怎么办</h3>
-
-  <div class="chain">
-    <div class="step">
-      <span class="step-n">一</span>
-      <div><p class="en"><b>Because he was tired of moving</b>, he saved up to buy an apartment of his own.</p><p class="step-why">原因状语从句，主语一致，删掉从句的 he。剩下的谓语是系动词 was。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">二</span>
-      <div><p class="en"><b>Being tired of moving</b>, he saved up to buy an apartment of his own.</p><p class="step-why">系动词只有主动，没有被动 → being。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">三</span>
-      <div><p class="en"><b>Tired of moving</b>, he saved up to buy an apartment of his own.</p><p class="step-why">系动词的作用是连接主语和表语。主语都删了，being 也没事可干，一起删掉。</p></div>
-    </div>
-  </div>
-  <p class="zh">因为厌倦了搬来搬去，他攒钱给自己买了套公寓。</p>
-
-  <div class="ex">
-    <p class="en"><b>Very excited</b>, the puppy dug a hole two feet deep.</p>
-    <p class="zh">小狗兴奋极了，一口气刨了个两英尺深的坑。（＝ Because it was very excited）</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 形容词开头的句子，也可能是压缩来的</span>
-    <p>句子以形容词、介词短语开头，后面一个逗号，再接一个完整的句子 —— 前面那块多半就是"主语 + be"被删掉的状语：</p>
-    <p class="formula">Unsure what to do, she called her mother. ＝ Because she was unsure what to do, …</p>
-  </div>
-
-  <h3 id="s5c">分词状语能表达哪些逻辑</h3>
-
-  <p>课上重点讲了时间、原因、伴随三种，这也是最常见的三种。另外三种补在后面：</p>
-
-  <table class="tbl">
-    <tr><th>例</th><th>逻辑</th><th>还原成从句</th></tr>
-    <tr><td>Be careful <b>crossing</b> the road.</td><td>时间</td><td>when you are crossing the road</td></tr>
-    <tr><td><b>Not knowing</b> what to say, he kept silent.</td><td>原因</td><td>because he didn't know</td></tr>
-    <tr><td>She sat by the window, <b>reading</b> a novel.</td><td>伴随</td><td>and she was reading</td></tr>
-    <tr><td><b>Used</b> carefully, this knife will last for years.</td><td>条件 <span class="extra">补充</span></td><td>if it is used carefully</td></tr>
-    <tr><td>Though <b>living</b> nearby, he rarely visits us.</td><td>让步 <span class="extra">补充</span></td><td>though he lives nearby</td></tr>
-    <tr><td>The earthquake hit at midnight, <b>killing</b> more than 200 people.</td><td>结果 <span class="extra">补充</span></td><td>and it killed…</td></tr>
-  </table>
-
-  <div class="box rote">
-    <span class="tag">🧷 表结果：doing 顺理成章，only to do 出乎意料</span>
-    <div class="pair">
-      <div>
-        <p class="en">The earthquake hit at midnight, <b>killing</b> more than 200 people.</p>
-        <p class="verdict">分词：自然而然的结果（地震 → 死伤）。</p>
-      </div>
-      <div>
-        <p class="en">He hurried to the station, <b>only to find</b> the train had left.</p>
-        <p class="verdict">不定式：意外的、多半不好的结果（<a class="xref" href="#s7h">阶段七</a>）。</p>
-      </div>
-    </div>
-  </div>
-
-  <h3 id="s5d">保留连词、having done、not</h3>
-
-  <div class="pair">
-    <div>
-      <p class="en"><b>After</b> finishing her work, she went home.</p>
-      <p class="verdict">保留 after：先完成，再回家，一清二楚。</p>
-    </div>
-    <div>
-      <p class="en">Finishing her work, she went home.</p>
-      <p class="verdict">删掉 after：也可能被读成"一边做完工作，一边往家走"。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 连词是用来防歧义的</span>
-    <p>分词本身不标明逻辑，逻辑要读者自己从上下文里读出来。怕读错，就把连词留着：when、while、after、before、once、if、unless、though 都可以。</p>
-    <p class="note">after / before 后面接 doing，也可以看成"介词 + 动名词"（<a class="xref" href="#s2e">阶段二</a>）。两种分析都有，读法完全一样。</p>
-  </div>
-
-  <div class="ex">
-    <p class="en"><b>Having read</b> the book twice, she knew the story by heart.</p>
-    <p class="zh">这本书她读过两遍，故事早就烂熟于心。</p>
-    <p class="note">和动名词一样，having done 强调"先于谓语"。Reading the book twice, … 也能说，但先后没那么醒目。</p>
-  </div>
-  <div class="ex">
-    <p class="en"><b>Not having received</b> any reply, she decided to call them.</p>
-    <p class="zh">一直没收到回复，她决定打个电话过去。</p>
-    <p class="note">否定词 not 放在分词最前面。</p>
-  </div>
-
-  <h3 id="s5e">谁主谁次：大画面加小细节</h3>
-
-  <p>一个人发出两个动作，一个写成谓语（主要），一个写成分词（次要）。哪个主要，由你决定 —— 但英语有自己的写作习惯。</p>
-
-  <div class="pair">
-    <div>
-      <p class="en">Carol was <b>drinking</b> in the bar.</p>
-      <p class="verdict">喝酒是主要动作，"在酒吧"降级成地点状语。</p>
-    </div>
-    <div>
-      <p class="en">Carol <b>was in the bar</b>, <b>having</b> a drink.</p>
-      <p class="verdict">大画面：她在酒吧（句子）；小细节：喝着酒（分词）。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 大画面 ＋ 小细节</span>
-    <p>英语描写场景时有一种常见写法：<b>先用句子把场景搭起来，再用分词补上人物的动作</b>。场景是主干，动作是细节。</p>
-    <p class="formula">I'll be at the station, <b>waiting</b> for you.</p>
-    <p>我会在车站等你："在车站"是大画面，"等你"是小细节。课上放的那首老歌，歌名 Right Here Waiting 就是这个结构；right 放在地点前表强调，"就在这儿"：right here、right in the middle、right now。</p>
-  </div>
-
-  <div class="pair">
-    <div>
-      <p class="en">"Let's go," she <b>said</b>, <b>picking up</b> her bag.</p>
-      <p class="verdict">✓ 说话用谓语，动作用分词 —— 小说里的标准写法。</p>
-    </div>
-    <div>
-      <p class="en">She <b>picked up</b> her bag, <b>saying</b>, "Let's go."</p>
-      <p class="verdict">语法没错，但在叙述里读着别扭。</p>
-    </div>
-  </div>
-  <p class="note">"边说边做"，中文直觉是"做"更重要；英语叙述的习惯反而是"说"作谓语，"做"作伴随。课上的例子出自《夏洛的网》（Charlotte's Web）：哥哥 Avery 出场时，说话用谓语，放下玩具枪用分词。作者 E. B. White 也是写作指南《风格的要素》（The Elements of Style）的修订者。这类习惯规则推不出来，只能靠多读。</p>
-
-  <h3 id="s5f">一个主句，挂好几个分词</h3>
-
-  <div class="ex">
-    <p class="en"><b>Dressed</b> as a clown and <b>followed</b> by a crowd of <u>laughing</u> children, the old man <b>walked</b> slowly down the street, <b>carrying</b> a bunch of balloons.</p>
-    <p class="zh">老人打扮成小丑，身后跟着一群笑个不停的孩子，手里拿着一大把气球，慢慢地沿街走去。</p>
-  </div>
-
-  <div class="chain">
-    <div class="step">
-      <span class="step-n">一</span>
-      <div><p class="en">the old man <b>walked</b> slowly down the street</p><p class="step-why">唯一的谓语：主干就这一句。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">二</span>
-      <div><p class="en">dressed as a clown ／ followed by a crowd of children</p><p class="step-why">两个伴随，都是被动：dress sb（给人穿衣打扮），人是被打扮的；被孩子们跟着。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">三</span>
-      <div><p class="en">carrying a bunch of balloons</p><p class="step-why">第三个伴随，主动：他自己拿着气球。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">四</span>
-      <div><p class="en">laughing children</p><p class="step-why">这个不是状语，是分词定语，只修饰 children。</p></div>
-    </div>
-  </div>
-
-  <div class="ex">
-    <p class="en"><b>Armed</b> with metal detectors, the team <b>entered</b> the old mine, <b>hoping</b> to find <u>hidden</u> gold.</p>
-    <p class="zh">队员们带着金属探测器进了那座老矿井，希望能找到藏起来的金子。</p>
-    <p class="note">arm sb with sth 是"用……装备某人"，人是被装备的 → armed。主被动要看动词本身的用法，不看中文的感觉。hidden 是分词定语，修饰 gold。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 长句的骨架</span>
-    <p class="formula">[doing / done …], 主语 + 谓语 …, [doing / done …]</p>
-    <p>谓语只有一个，两边挂多少个分词都行，全是挂在它身上的细节。读的时候先找那个唯一的谓语，其余的一块一块往它身上挂。</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>分词作状语就是状语从句的压缩：观（主语一致）、删（删从句主语）、变（主动 doing，被动 done）。系动词变 being，也可以连 being 一起删。常表时间、原因、伴随，也能表条件、让步、结果。怕歧义就留连词，强调先后用 having done，否定把 not 放最前。英语习惯"大画面加小细节"、"说为主做为次"；一个谓语两边可以挂很多个分词。</p>
-</section>
-
-<!-- ══ 阶段六 ══ -->
-<section class="stage" id="s6">
-  <span class="stage-no">阶段六</span>
-  <h2>独立主格：主语不一样，也能压成短语</h2>
-
-  <div class="bridge">
-    <p class="before">分词作状语有一个硬前提：主句和从句的主语一致，才能删。</p>
-    <p class="after">主语不一致时，能不能也压成短语？能 —— 把主语留下，其余照样压缩。这就是独立主格。</p>
-  </div>
-
-  <h3 id="s6a">三句话变一句</h3>
-
-  <p>"一辆大车冲上了街，车灯亮着，喇叭响着。"冲上街是大画面，灯亮、喇叭响是小细节。可三件事的主语各不相同：</p>
-
-  <div class="chain">
-    <div class="step">
-      <span class="step-n">一</span>
-      <div><p class="en">A large car went down the street. Its lights were on. Its horn was blaring.</p><p class="step-why">三个句子，三个主语：car、lights、horn。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">二</span>
-      <div><p class="en">its lights … ／ its horn …</p><p class="step-why">主语和主句不同，不能删。留下来，但它不再是句子的主语 —— 叫"独立的主语"。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">三</span>
-      <div><p class="en">was blaring → blaring ／ were on → being on → on</p><p class="step-why">谓语照样压缩：主动变 doing；系动词变 being，再连 being 一起删掉。</p></div>
-    </div>
-    <div class="step">
-      <span class="step-n">四</span>
-      <div><p class="en">A large car went down the street, <b>its lights on</b> and <b>its horn blaring</b>.</p><p class="step-why">一个句子，加两个独立主格。</p></div>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 名字要这样读：独立主语的一种格式</span>
-    <p><b>独立主语：</b>它有自己的主语，但那不是句子真正的主语 —— 所以叫"独立"。</p>
-    <p><b>格：</b>说白了就是非谓语动词，或者删掉 be 以后剩下的表语。</p>
-    <p class="formula">独立主格 ＝ 独立的主语 ＋ 非谓语 / 表语</p>
-    <p>它和分词作状语是一回事：主语相同，删掉主语就是分词状语；主语不同，留着主语就是独立主格。</p>
-  </div>
-
-  <p>位置和分词状语一样自由，一般用逗号隔开：</p>
-  <p class="formula">With its lights on and its horn blaring, a large car went down the street.<br>A large car, its lights on and its horn blaring, went down the street.</p>
-  <p class="note">插在句中时就像插入语，只起修饰作用；读主干时可以先跳过。</p>
-
-  <h3 id="s6b">格的七种形式</h3>
-
-  <table class="tbl">
-    <tr><th>例</th><th>格</th><th>从哪来</th></tr>
-    <tr><td>its horn <b>blaring</b></td><td>doing</td><td>主谓，主动：Its horn was blaring.</td></tr>
-    <tr><td>the door <b>closed</b> ／ all things <b>considered</b></td><td>done</td><td>主谓，被动：The door was closed.</td></tr>
-    <tr><td>so much work <b>to do</b></td><td>to do</td><td>将要做的事：There was so much work to do.</td></tr>
-    <tr><td>Bill <b>asleep</b> ／ his face <b>red</b></td><td>形容词</td><td>主系表：Bill was asleep.</td></tr>
-    <tr><td>its lights <b>on</b> ／ the meeting <b>over</b></td><td>副词</td><td>主系表：The meeting was over.</td></tr>
-    <tr><td>Wangcai <b>his only friend</b></td><td>名词</td><td>主系表：Wangcai was his only friend.</td></tr>
-    <tr><td>a coffee <b>in one hand</b>, a phone <b>in the other</b></td><td>介词短语</td><td>主系表：A coffee was in one hand.</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 不用背"七种"，记住来源就行</span>
-    <p>任何句子，不是主谓结构，就是主系表结构。</p>
-    <p><b>主谓</b>压缩后剩 doing / done / to do；<b>主系表</b>删掉 be 后剩表语：形容词、副词、名词、介词短语。三加四，正好七种。</p>
-  </div>
-
-  <p>课上的三个练习，都是"上课"作大画面：</p>
-
-  <div class="ex">
-    <p class="en">We were having a lesson, <b>the door closed</b>.</p>
-    <p class="zh">我们在上课，门关着。</p>
-    <p class="note">closed 可以看成被动的过去分词（门被关上），也可以看成形容词"关着的"。殊途同归，写出来都是 the door closed。</p>
-  </div>
-  <div class="ex">
-    <p class="en">We were having a lesson, <b>Bill sleeping</b> ／ <b>Bill asleep</b> at the back.</p>
-    <p class="zh">我们在上课，比尔在后排睡觉。</p>
-    <p class="note">主谓 Bill was sleeping → Bill sleeping；主系表 Bill was asleep → Bill asleep。一个强调动作，一个强调状态，都对。</p>
-  </div>
-  <div class="ex">
-    <p class="en">Bill lives alone, <b>Wangcai his only friend</b>.</p>
-    <p class="zh">比尔一个人住，旺财（他的狗）是他唯一的朋友。</p>
-    <p class="note">名词也能当格，连 being 都不用加。读着有点怪，但完全正确。</p>
-  </div>
-
-  <h3 id="s6c">with 加不加</h3>
-
-  <div class="pair">
-    <div>
-      <p class="en">He fell asleep <b>with</b> the TV on.<br>She stood there <b>with</b> tears running down her face.</p>
-      <p class="verdict">加 with：最常表伴随，"……着"。也可以用 without：Without anyone noticing, she slipped out.</p>
-    </div>
-    <div>
-      <p class="en">The work done, we went home.<br>There being no bus, we had to walk.<br>Weather permitting, the match will go ahead.</p>
-      <p class="verdict">不加 with：能表的逻辑更多 —— 时间（工作完成后）、原因（没有公交车）、条件（如果天气允许）。</p>
-    </div>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 两个常见的变体</span>
-    <p><b>there be 的独立主格：</b>There was no bus → There being no bus。there 不能删，being 也不能删。</p>
-    <p><b>with 也常带原因：</b>With so much work to do, I can't go out tonight.（有这么多活要干，今晚出不去）。</p>
-  </div>
-
-  <h3 id="s6d">同一件事，三种写法</h3>
-
-  <p>课上那则新闻：一名女子被一条小鲨鱼咬住胳膊，鲨鱼一直挂在上面没松口，她就这样被送进了医院。报道里反复提到"鲨鱼在她胳膊上"，每次写法都不一样：</p>
-
-  <table class="tbl">
-    <tr><th>写法</th><th>格</th><th>从哪来</th></tr>
-    <tr><td>… with the shark still <b>on</b> her arm</td><td>介词</td><td>主系表：The shark was on her arm.</td></tr>
-    <tr><td>… with the shark <b>hanging</b> on her arm</td><td>doing</td><td>主谓，主动：The shark was hanging on her arm.</td></tr>
-    <tr><td>… with a shark <b>attached</b> to her arm</td><td>done</td><td>主谓，被动：attach A to B（把 A 附在 B 上）→ A 是被附上的</td></tr>
-  </table>
-  <p class="note">新闻标题还会更省：Woman taken to hospital with shark attached to her arm —— 连 was 都省了，主句本身也压成了"名词 + 分词定语"。</p>
-
-  <div class="box derive">
-    <span class="tag">📖 这就是阅读题里的"同义替换"</span>
-    <p>阅读题的选项和原文之间，几乎都是同义替换。on、hanging on、attached to 单看不是同义词，放进句子里说的却是同一件事。</p>
-    <p>单靠背单词认不出这种替换，要词汇、语法一起用，在阅读里积累。积累够了，写作时也就有了换着说的本钱。</p>
-  </div>
-
-  <h3 id="s6e">口语里的独立主格</h3>
-
-  <div class="ex">
-    <p class="en">… under my roof … in a bed that I paid for … <b>with your grandfather watching</b>?</p>
-    <p class="zh">……在我的屋檐下，在我花钱买的床上，还当着你爷爷的面？</p>
-    <p class="note">《摩登家庭》里，老爸 Phil 发现儿子 Luke 带女孩回家过夜，床头还摆着爷爷的照片，一口气数落了三个修饰语：两个地点，一个伴随。with your grandfather watching ＝ with + 独立主语 + 格（Your grandfather was watching → watching）。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 日常短语里藏着的独立主格</span>
-    <p class="formula">Apology accepted. ／ Case closed. ／ Mission accomplished.</p>
-    <p>完整的句子是 Your apology is accepted、The case is closed、The mission is accomplished。口语直接省成"名词 + 过去分词"。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 和动名词的逻辑主语是同一个思路</span>
-    <p>非谓语默认不写主语：要么泛指，要么和句子主语相同。主语一旦不同，就得把它找回来：</p>
-    <p><b>动名词：</b>前面加所有格 —— Do you mind <b>my</b> opening the window?</p>
-    <p><b>分词状语：</b>前面直接放名词 —— <b>The work</b> done, we went home.（独立主格）</p>
-    <p><b>不定式：</b>前面加 for sb —— It's important <b>for you</b> to rest.（<a class="xref" href="#s8a">阶段八</a>）</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>主语一致，删掉主语是分词状语；主语不同，留下主语就是独立主格。格就是非谓语（doing、done、to do）或删掉 be 后的表语（形容词、副词、名词、介词短语），共七种。加 with 多表伴随，不加 with 能表时间、原因、条件。新闻里 on / hanging on / attached to 的换写，就是阅读题的同义替换。</p>
-</section>
-
-<!-- ══ 阶段七 ══ -->
-<section class="stage" id="s7">
-  <span class="stage-no">阶段七</span>
-  <h2>不定式：哪里都能坐</h2>
-
-  <div class="bridge">
-    <p class="before">动名词偏名词，分词偏修饰，各有各的地盘。</p>
-    <p class="after">to do 两边都能坐：动名词坐的位置它能坐，分词坐的位置它也能坐。它"不一定"是什么词性，所以叫不定式。</p>
-  </div>
-
-  <h3 id="s7a">不一定是什么词性</h3>
-
-  <table class="tbl">
-    <tr><th>成分</th><th>动名词 / 分词的写法</th><th>不定式的写法</th></tr>
-    <tr><td>主语</td><td>Learning English takes time.</td><td>It takes time to learn English.</td></tr>
-    <tr><td>宾语</td><td>I enjoy swimming.</td><td>I want to swim.</td></tr>
-    <tr><td>宾补</td><td>I saw him crossing the road.</td><td>I asked him to wait.</td></tr>
-    <tr><td>定语</td><td>a sleeping baby</td><td>a house to rent</td></tr>
-    <tr><td>表语</td><td>My hobby is collecting stamps.</td><td>My dream is to become a doctor.</td></tr>
-    <tr><td>状语</td><td>Hearing the news, she cried.</td><td>He came to help.</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 麻烦就出在"都能用"</span>
-    <p>不定式本身不难：前面学过的每个位置，换成 to do 照样成立。难的是两种都能用的时候，<b>到底选哪个</b>。这一阶逐个位置回答这个问题。</p>
-  </div>
-
-  <h3 id="s7b">作主语：it 打头，真主语放后面</h3>
-
-  <div class="ex">
-    <p class="en">It is difficult <b>to answer that question</b>.　It is my duty <b>to help you with your English</b>.</p>
-    <p class="zh">那个问题很难回答。／ 帮你学英语是我的责任。</p>
-  </div>
-  <div class="ex">
-    <p class="en">It takes time and effort <b>to master English</b>.</p>
-    <p class="zh">掌握英语需要时间和精力。</p>
-    <p class="note">真正的主语都是 to do，太长，先用 it 占住主语位，把它挪到句尾。</p>
-  </div>
-
-  <div class="pair">
-    <div>
-      <p class="en"><b>Learning English</b> takes time.</p>
-      <p class="verdict">动名词作主语：一般直接放在句首，再长也不挪（阶段二那些 Knowing…、Using…）。</p>
-    </div>
-    <div>
-      <p class="en">It takes time <b>to learn English</b>.</p>
-      <p class="verdict">不定式作主语：一般放在句尾，前面用 it 占位。</p>
-    </div>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 少见的前置</span>
-    <p class="formula">To err is human.　人非圣贤，孰能无过。（蒲柏）</p>
-    <p>不定式直接放句首的情况很少，多见于格言。现阶段的阅读，看到 it 开头就往后找两个东西：that 从句（名词性从句篇），或者 to do。</p>
-  </div>
-
-  <h3 id="s7c">作宾语：四类动词</h3>
-
-  <table class="tbl">
-    <tr><th>类别</th><th>常见动词</th><th>例</th></tr>
-    <tr><td>两种都行，意思一样</td><td>begin、start、continue；like、love、hate、prefer 大体也是</td><td>It continued raining / to rain.</td></tr>
-    <tr><td>只接 doing</td><td>admit、enjoy、avoid、consider、deny、finish、mind、miss、practise、risk、suggest、imagine、keep、give up、put off</td><td>I enjoy listening to music.</td></tr>
-    <tr><td>只接 to do</td><td>want、hope、plan、expect、promise、decide、agree、refuse、manage、afford、fail、offer、pretend</td><td>I hope to see you soon.</td></tr>
-    <tr><td>两种都行，意思不同</td><td>remember、forget、regret、stop、try、mean、go on</td><td>见下表</td></tr>
-  </table>
-  <p class="note">need 一般接 to do；need doing 表示被动意义（The car needs washing，<a class="xref" href="#s2f">阶段二</a>）。</p>
-
-  <table class="tbl">
-    <tr><th>动词</th><th>+ doing</th><th>+ to do</th></tr>
-    <tr><td>remember</td><td>记得做过：I remember locking the door.</td><td>记得要去做：Remember to lock the door.</td></tr>
-    <tr><td>regret</td><td>后悔做过：I regret telling him.</td><td>遗憾地（告知）：We regret to inform you that …</td></tr>
-    <tr><td>stop</td><td>停止正在做的事：Stop talking.</td><td>停下来，去做另一件事：He stopped to talk to me.</td></tr>
-    <tr><td>forget <span class="extra">补充</span></td><td>忘了做过：I'll never forget meeting her.</td><td>忘了去做：Don't forget to call me.</td></tr>
-    <tr><td>try <span class="extra">补充</span></td><td>试着做一下，看效果：Try restarting the computer.</td><td>努力设法做：I tried to lift the box, but couldn't.</td></tr>
-    <tr><td>mean <span class="extra">补充</span></td><td>意味着：This job means working weekends.</td><td>打算：I meant to call you.</td></tr>
-    <tr><td>go on <span class="extra">补充</span></td><td>继续做同一件事：She went on talking.</td><td>接着做另一件事：She went on to talk about her plans.</td></tr>
-  </table>
-  <p class="note">stop to do 里的 to do 其实是目的状语：停下手头的事，为了去做另一件事。</p>
-
-  <h3 id="s7d">规律靠不住，靠词典</h3>
-
-  <p>网上流传一条"万能规律"：to do 指向将来（I expect to see her），doing 指向现在或过去（I enjoy meeting her）。</p>
-
-  <div class="pair">
-    <div>
-      <p class="en">I expect <b>to see</b> her. ／ I anticipate <b>seeing</b> her.</p>
-      <p class="verdict">expect 和 anticipate 意思相近，说的都是将来，一个接 to do，一个接 doing。</p>
-    </div>
-    <div>
-      <p class="en">I'm sorry <b>to hear</b> that. ／ I look forward to <b>seeing</b> you.</p>
-      <p class="verdict">"听到"已经发生了，却用 to do；"见面"还没发生，却用 doing。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 例外多到一半，就不是规律了</span>
-    <p>课上读的那段语法书原话，大意是：这条规律对的时候是对的，但例外太多，靠不住。avoid making mistakes、consider moving abroad 说的也都是将来，照样接 doing。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 真正可靠的办法</span>
-    <p>背单词时连用法一起背 —— 最早学 want 的时候，你就是这样记住 want to do 的。拿不准就查学习型词典（牛津、朗文、剑桥、柯林斯），它们会在释义和例句旁标出这个词后面接 to do 还是 doing。</p>
-  </div>
-
-  <h3 id="s7e">作宾语补足语</h3>
-
-  <div class="ex">
-    <p class="en">I want her <b>to come</b> to my office.　Tell her <b>to come</b> at once.</p>
-    <p class="zh">我想让她来我办公室一趟。／ 告诉她马上过来。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 宾补：宾语后面话还没说完</span>
-    <p>I want her（我想要她）—— 想让她干什么？to come to my office，补充说明宾语要做的事，所以叫宾语补足语。</p>
-    <p>同一句里有两个 to：to <b>come</b> 后面是动词原形，是不定式符号；to <b>my office</b> 后面是名词，是介词。长得一样，身份不同（<a class="xref" href="#s9a">阶段九</a>）。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 sb + to do 的常见动词</span>
-    <p class="formula">ask ／ tell ／ advise ／ expect ／ persuade ／ teach ／ allow ／ encourage ／ force ／ invite ／ order ／ remind ／ warn　+ sb + to do</p>
-    <p>宾补的位置上还能出现 do、doing、done，见<a class="xref" href="#s8d">阶段八</a>。</p>
-  </div>
-
-  <h3 id="s7f">作定语</h3>
-
-  <div class="ex">
-    <p class="en">They still have a long way <b>to go</b>.　I have a lot of homework <b>to do</b>.　He never has anything <b>to do</b>.</p>
-    <p class="zh">他们还有很长的路要走。／ 我有一大堆作业要做。／ 他从来都无事可做。</p>
-    <p class="note">不定式作定语，常常带着"要做的、待做的"意味。way 后面只说 a way to go，从来不说 a way going。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 这些名词后面固定接 to do</span>
-    <p class="formula">the order to abandon the ship 弃船的命令 ／ the ability to learn 学习的能力 ／ a decision to leave ／ a chance to win ／ an attempt to escape ／ the right to vote</p>
-    <p>为什么是 to do，同样只能靠积累：学 order、ability 这些词的时候，连后面的搭配一起记。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 介词不能丢<span class="extra">补充</span></span>
-    <p class="formula">a house to live <b>in</b> ／ a pen to write <b>with</b> ／ a chair to sit <b>on</b> ／ nothing to worry <b>about</b></p>
-    <p>还原成句子就明白了：live <b>in</b> a house，write <b>with</b> a pen。名词被提到前面，介词还得留在原处。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 the first / last / only + 名词 + to do<span class="extra">补充</span></span>
-    <p class="formula">She was the first woman <b>to fly</b> across the Atlantic alone.</p>
-    <p>＝ the first woman who flew … 序数词、last、only 修饰的名词，后面常用 to do 作定语。</p>
-  </div>
-
-  <h3 id="s7g">作表语<span class="extra">补充</span></h3>
-
-  <div class="ex">
-    <p class="en">My dream is <b>to become</b> a doctor.　The plan is <b>to leave</b> at dawn.</p>
-    <p class="zh">我的梦想是当医生。／ 计划是天一亮就出发。</p>
-  </div>
-  <div class="ex">
-    <p class="en">All you have to do is (to) <b>press</b> this button.</p>
-    <p class="zh">你只需要按一下这个按钮。（主语里有 do，表语的 to 可以省）</p>
-  </div>
-  <p class="note">表语位上 doing 和 to do 都常见。主语是 aim、goal、plan、dream、purpose 这类"目标"时，表语多用 to do。</p>
-
-  <h3 id="s7h">作状语：多半是目的</h3>
-
-  <div class="ex">
-    <p class="en">We'd better start early <b>so as to</b> catch the train.　I went to the post office <b>in order to</b> mail a letter.</p>
-    <p class="zh">我们最好早点出发，好赶上火车。／ 我去邮局是为了寄一封信。</p>
-    <p class="note">so as to、in order to 就是 to do 的加强版。课上那句名言把"恨一个人"比作"为了赶走一只老鼠，烧掉自己的房子"，里面的 to get rid of a rat 也是目的状语。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 读到 to do 状语，先译成"为了"</span>
-    <p>to do 作状语，九成是目的。以前要写 so that + 情态动词（状语从句篇阶段六），主语一致时，一个 to do 就够了。</p>
-    <p>分词状语和不定式状语正好各占一块地盘：<b>分词多表伴随、时间、原因；不定式多表目的、结果</b>。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 否定：not 放在 to 前面</span>
-    <p class="formula">He left early <b>so as not to</b> miss the bus. ／ … <b>in order not to</b> miss the bus.</p>
-    <p>不定式的否定一律是 not to do。考试和写作里，not 紧挨在 to 前面，不要拆开。</p>
-  </div>
-
-  <p>剩下的一成，要靠上下文判断：</p>
-
-  <table class="tbl">
-    <tr><th>例</th><th>逻辑</th><th>怎么看出来</th></tr>
-    <tr><td>What have I done <b>to offend</b> you?</td><td>结果</td><td>have done 是已经做过的事，后面不可能是"为了冒犯你"</td></tr>
-    <tr><td>He left his hometown ten years ago, <b>never to return</b>.</td><td>结果</td><td>离开已成事实；"再也没回来"是结果</td></tr>
-    <tr><td>He hurried to the station, <b>only to find</b> the train had left.</td><td>结果</td><td>only to：意外的、令人失望的结果</td></tr>
-    <tr><td>I'm glad <b>to see</b> you.</td><td>原因 <span class="extra">补充</span></td><td>情绪形容词 + to do：为什么高兴</td></tr>
-    <tr><td>He is too young <b>to drive</b>. ／ She is old enough <b>to travel</b> alone.</td><td>程度 <span class="extra">补充</span></td><td>too … to（太……而不能）／ enough to（足够……可以）</td></tr>
-    <tr><td><b>To hear</b> him talk, you'd think he owned the company.</td><td>条件 <span class="extra">补充</span></td><td>＝ If you heard him talk</td></tr>
-  </table>
-
-  <div class="box rote">
-    <span class="tag">🧷 不定式表结果，多半是坏结果</span>
-    <p>冒犯了你、再也没回来、白跑一趟 —— 课上的例句全是不好的结果。还有一句：女性抱怨上学时被当作平等的人来教育，only to 一走上工作岗位，却被当作低人一等的人对待。only to 引出的，正是令人失望的结局。</p>
-  </div>
-
-  <div class="ex">
-    <p class="en">You live <b>to work</b>. We work <b>to live</b>.</p>
-    <p class="zh">你们（美国人）活着是为了工作，我们（法国人）工作是为了生活。</p>
-    <p class="note">美剧《艾米丽在巴黎》（Emily in Paris）里，法国同事对美国人艾米丽说的。两个 to do 都是目的状语，一换位置，就是两种人生观。</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>不定式哪个位置都能坐。作主语一般用 it 放句尾，动名词作主语一般在句首。作宾语分四类动词，规律靠不住，靠背用法、查词典。宾补、定语、表语上的 to do 常带"要做的"意味，哪些名词接 to do 也靠积累。作状语九成是目的；表结果多为坏结果，only to、never to 最典型。</p>
-</section>
-
-<!-- ══ 阶段八 ══ -->
-<section class="stage" id="s8">
-  <span class="stage-no">阶段八</span>
-  <h2>不定式的发出者、时间与宾补<span class="extra">补充</span></h2>
-
-  <div class="bridge">
-    <p class="before">动名词有逻辑主语和 having done，分词状语有独立主格和 having done。</p>
-    <p class="after">不定式也逃不开同样的问题：谁来做？什么时候做？另外，宾补位上除了 to do，还有三种形态。这一阶课上没有展开，按核心语法补上。</p>
-  </div>
-
-  <h3 id="s8a">谁来做：for sb / of sb</h3>
-
-  <div class="ex">
-    <p class="en">It's important <b>for you</b> to rest.　There's no need <b>for you</b> to worry.　The plan is <b>for us</b> to meet at six.</p>
-    <p class="zh">你好好休息很重要。／ 你不必担心。／ 计划是我们六点碰头。</p>
-    <p class="note">不写 for sb，就是泛指，或者和句子主语相同 —— 和动名词一样。</p>
-  </div>
-
-  <div class="pair">
-    <div>
-      <p class="en">It's kind <b>of you</b> to help me.</p>
-      <p class="verdict">of：形容词在评价人的品质 —— 你真好。</p>
-    </div>
-    <div>
-      <p class="en">It's hard <b>for me</b> to believe his story.</p>
-      <p class="verdict">for：形容词在说这件事 —— 这件事对我来说很难。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 for 还是 of：改写一下就知道</span>
-    <p>把人提出来改成"sb is + 形容词"：You are kind. 讲得通 → 用 of you。I am hard? 讲不通 → 用 for me。</p>
-    <p>of 类形容词多是评价人的：kind、nice、clever、wise、foolish、silly、careless、rude、polite、brave、generous。</p>
-  </div>
-
-  <h3 id="s8b">什么时候做：不定式的时态与语态</h3>
-
-  <table class="tbl">
-    <tr><th>不定式</th><th>同时或之后</th><th>正在进行</th><th>先于谓语</th></tr>
-    <tr><td>主动</td><td>to do</td><td>to be doing</td><td>to have done</td></tr>
-    <tr><td>被动</td><td>to be done</td><td>——</td><td>to have been done</td></tr>
-  </table>
-
-  <div class="ex">
-    <p class="en">He seems <b>to be sleeping</b>.　She seems <b>to have left</b>.</p>
-    <p class="zh">他好像正在睡觉。／ 她好像已经走了。</p>
-  </div>
-  <div class="ex">
-    <p class="en">The bridge is said <b>to have been built</b> in 1900.　I'm sorry <b>to have kept</b> you waiting.</p>
-    <p class="zh">据说这座桥建于 1900 年。／ 抱歉让你久等了。</p>
-    <p class="note">和动名词的 having done 同一个道理：to have done 表示比谓语更早 —— 先让你等了，现在道歉。否定照样把 not 放在最前：He pretended <b>not to have heard</b>.</p>
-  </div>
-
-  <h3 id="s8c">疑问词 + to do</h3>
-
-  <div class="ex">
-    <p class="en">I don't know <b>what to do</b>.　Can you tell me <b>how to get</b> to the station?</p>
-    <p class="zh">我不知道该怎么办。／ 你能告诉我怎么去车站吗？</p>
-  </div>
-  <div class="ex">
-    <p class="en">She couldn't decide <b>whether to accept</b> the offer.</p>
-    <p class="zh">她拿不定主意要不要接受这份工作。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 名词性从句的压缩</span>
-    <p class="formula">I don't know what I should do. → I don't know what to do.</p>
-    <p>宾语从句的主语和主句一致，删掉主语，连情态动词 should、can 也一起压进 to do 里。</p>
-    <p>名词性从句篇讲过 whether 和 if 的区别，这里又碰上一条：<b>whether to do 可以，if to do 不行</b>。</p>
-  </div>
-
-  <h3 id="s8d">宾补位上的四种形态</h3>
-
-  <table class="tbl">
-    <tr><th>动词</th><th>宾补</th><th>例</th></tr>
-    <tr><td>ask、tell、want、advise …</td><td>to do</td><td>I asked him <b>to wait</b>.</td></tr>
-    <tr><td>make、let、have（使、让、叫）</td><td>do（不带 to）</td><td>She made me <b>laugh</b>. ／ I'll have him <b>call</b> you back.</td></tr>
-    <tr><td>see、hear、watch、notice、feel</td><td>do：看到 / 听到全过程</td><td>I heard her <b>sing</b> that song.</td></tr>
-    <tr><td>see、hear、watch、notice、feel</td><td>doing：正在进行的片段</td><td>I heard her <b>singing</b> in the next room.</td></tr>
-    <tr><td>keep、leave、find、catch</td><td>doing：宾语在做</td><td>Sorry to keep you <b>waiting</b>.</td></tr>
-    <tr><td>have、get、make、find、keep</td><td>done：宾语承受</td><td>I had my hair <b>cut</b>. ／ She found the door <b>locked</b>.</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 宾语和宾补之间藏着一个主谓关系</span>
-    <p class="formula">I heard her sing. ＝ She sang.　｜　I had my hair cut. ＝ My hair was cut.</p>
-    <p>所以判断方法和分词定语一样：宾语发出这个动作 → do / doing / to do；宾语承受这个动作 → done。I had my hair cut 是理发师剪的，头发被剪，所以用 cut（过去分词）。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 变被动时，to 要还原</span>
-    <p class="formula">They made him wait. → He was made <b>to</b> wait.<br>I heard her sing. → She was heard <b>to</b> sing.</p>
-    <p>主动句里省掉的 to，一变成被动就得加回来。另外 help sb (to) do 的 to 可带可不带：Help me (to) carry the box.</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>不定式的发出者用 for sb 引出，评价人的品质时用 of sb。时间上 to have done 表示先于谓语，to be doing 表示正在进行，被动是 to be done / to have been done。疑问词 + to do 是宾语从句的压缩，只能用 whether 不能用 if。宾补有四种形态：to do、do、doing、done；make、let、see、hear 这类动词后面不带 to，变被动时 to 要还原。</p>
-</section>
-
-<!-- ══ 阶段九 ══ -->
-<section class="stage" id="s9">
-  <span class="stage-no">阶段九</span>
-  <h2>必须单独处理的边界</h2>
-
-  <div class="bridge">
-    <p class="before">前八阶的主干，大多能推出来。</p>
-    <p class="after">剩下三块最容易出错：to 是介词的时候、分词的主语对不上的时候、改错题里的非谓语。</p>
-  </div>
-
-  <h3 id="s9a">一、to 是介词的时候</h3>
-
-  <p>to 有两个身份：不定式符号（后面接动词原形），和介词（后面接名词）。to 是介词时，后面的动作只能用 doing：</p>
-
-  <table class="tbl">
-    <tr><th>短语</th><th>意思</th><th>例</th></tr>
-    <tr><td>look forward to doing</td><td>期待</td><td>We're looking forward to seeing you.</td></tr>
-    <tr><td>devote oneself to doing</td><td>致力于</td><td>After he retires, he will devote himself to helping the poor.</td></tr>
-    <tr><td>object to doing</td><td>反对</td><td>I object to having to rewrite the article.</td></tr>
-    <tr><td>be used to doing</td><td>习惯于</td><td>I'm used to working late.</td></tr>
-    <tr><td>when it comes to doing <span class="extra">补充</span></td><td>说到……</td><td>When it comes to cooking, he's an expert.</td></tr>
-    <tr><td>be committed to doing <span class="extra">补充</span></td><td>致力于</td><td>We are committed to reducing waste.</td></tr>
-    <tr><td>in addition to doing <span class="extra">补充</span></td><td>除……之外</td><td>In addition to teaching, she writes novels.</td></tr>
-    <tr><td>the key to doing <span class="extra">补充</span></td><td>……的关键</td><td>The key to learning a language is practice.</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 判断方法：往 to 后面放个名词试试</span>
-    <p>look forward to <b>the holiday</b> 讲得通 → to 是介词，动作要写成 looking forward to <b>seeing</b>。want to <b>the holiday</b> 讲不通 → to 是不定式符号，后面接动词原形。</p>
-  </div>
-
-  <p>老师讲过自己高中时错的一道题，最能说明问题：</p>
-
-  <div class="ex">
-    <p class="en">The letter I was looking forward to ___ at last.　A. come　B. coming　C. came</p>
-    <p class="zh">答案是 C：我一直盼着的那封信终于来了。</p>
-    <p class="note">一看到 looking forward to，就条件反射选了 coming —— 错了。句首 The letter 和 I 两个名词挨着，不可能都是主语：I was looking forward to 是省略了关系词的定语从句，修饰 letter，to 的宾语就是前面的 letter。主干是 The letter came。<b>做题前先找主谓</b>，这道题就不会错。</p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 used to 三兄弟<span class="extra">补充</span></span>
-    <table class="tbl">
-      <tr><th>结构</th><th>意思</th><th>例</th></tr>
-      <tr><td>used to do</td><td>过去常常（现在不了）</td><td>I used to smoke.</td></tr>
-      <tr><td>be used to doing</td><td>习惯于（to 是介词）</td><td>I'm used to working late.</td></tr>
-      <tr><td>be used to do</td><td>被用来做（被动 + 目的状语）</td><td>Wood is used to make paper.</td></tr>
-    </table>
-  </div>
-
-  <h3 id="s9b">二、悬垂分词：分词的主语必须是主句主语<span class="extra">补充</span></h3>
-
-  <div class="pair">
-    <div>
-      <p class="en"><s>Walking along the street, a flowerpot fell on his head.</s></p>
-      <p class="verdict">✗ 读起来像"花盆在街上走"。</p>
-    </div>
-    <div>
-      <p class="en">Walking along the street, <b>he</b> was hit by a falling flowerpot.<br>While <b>he</b> was walking along the street, a flowerpot fell on his head.</p>
-      <p class="verdict">✓ 要么把主句主语换成 he，要么把状语从句写全。</p>
-    </div>
-  </div>
-
-  <div class="pair">
-    <div>
-      <p class="en"><s>Having finished her homework, the TV was turned on.</s></p>
-      <p class="verdict">✗ 电视机做完了作业？</p>
-    </div>
-    <div>
-      <p class="en">Having finished her homework, <b>she</b> turned on the TV.</p>
-      <p class="verdict">✓ 做作业的和开电视的，是同一个人。</p>
-    </div>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 读者会自动把主句的主语安上去</span>
-    <p>分词状语没有自己的主语，读者一定会拿主句的主语去认领它。所以"观删变"的第一步"观"不能省：主语不一致就不能删。实在不一致，就改用独立主格（<a class="xref" href="#s6">阶段六</a>）。</p>
-    <p>状语从句篇讲省略时说过同一个道理：<s>When young, my father took me fishing.</s></p>
-  </div>
-
-  <div class="box rote">
-    <span class="tag">🧷 约定俗成的例外</span>
-    <p class="formula">generally speaking ／ strictly speaking ／ judging from ／ considering ／ talking of ／ given</p>
-    <p>Generally speaking, women live longer than men. 这些分词的主语是泛指的"人"，早就当成固定短语用了，不算错。</p>
-  </div>
-
-  <h3 id="s9c">三、改错题的三板斧</h3>
-
-  <p>课上做的几道专八改错题，考点全是非谓语。下面换了措辞，考点不变：</p>
-
-  <table class="tbl">
-    <tr><th>句子</th><th>错在哪</th><th>改法</th></tr>
-    <tr><td>Everyone, young and old alike, change the way they talk when switch to another language.</td><td>两处：Everyone 作主语要用单数；when 后面没有主语，switch 不能当谓语</td><td>changes ／ when switching</td></tr>
-    <tr><td>Crystallized intelligence roughly equals a person's store of accumulating knowledge.</td><td>知识是被积累的，不是自己在积累</td><td>accumulated</td></tr>
-    <tr><td>The theory, though is not widely tested, has become popular among teachers.</td><td>though 后面没有主语，is tested 却是完整的谓语</td><td>though not widely tested（删 is）</td></tr>
-    <tr><td>Learning a grammar theory, especially one based on how the mind works, is not easy.</td><td>没错：动名词作主语，中间插了一长串，谓语仍用单数</td><td>✓</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 三板斧，都从"找主谓"开始</span>
-    <p><b>① 主谓一致：</b>动名词、不定代词（everyone、nobody）作主语，谓语用单数。中间插的修饰语越长，越要回头核对 —— 出题人就是靠插入语把两者隔开的。</p>
-    <p><b>② 连词后面缺主语：</b>看到 when、though、if 后面没有主语，就不能跟谓语。要么补上主语，要么把谓语改成非谓语：主动 doing，被动 done（"观删变"反着用）。</p>
-    <p><b>③ 分词和名词的关系：</b>名词发出动作用 doing，承受动作用 done。</p>
-    <p class="note">真正难的改错点是介词搭配（比如 distinguish between A and B），只能一个个积累；非谓语这三类，靠语法就能稳拿。</p>
-  </div>
-
-  <p class="sum"><b>小结：</b>to 是介词时后面接 doing，往 to 后面放个名词就能试出来；做题前先找主谓，别被 look forward to 带跑。分词状语的主语必须是主句主语，否则就是悬垂分词；generally speaking 这类是固定例外。改错三板斧：主谓一致、连词后缺主语、分词的主被动。</p>
-</section>
-
-<!-- ══ 阶段十 ══ -->
-<section class="stage" id="s10">
-  <span class="stage-no">阶段十</span>
-  <h2>本质：主次与压缩</h2>
-
-  <div class="bridge">
-    <p class="after">到这里，可以把动名词、分词、不定式这些名字暂时放下了。</p>
-  </div>
-
-  <p>从句那几章，一直在做加法：把句子嵌进句子，越写越长。非谓语这一章，做的是减法：把次要的句子压成短语。三类从句，各有对应的压缩方式：</p>
-
-  <table class="tbl">
-    <tr><th>从句</th><th>压缩后</th><th>用的是</th></tr>
-    <tr><td>I suggest that we leave early.</td><td>I suggest leaving early.</td><td>动名词</td></tr>
-    <tr><td>I don't know what I should do.</td><td>I don't know what to do.</td><td>不定式</td></tr>
-    <tr><td>the boy who was injured in the accident</td><td>the boy injured in the accident</td><td>分词定语</td></tr>
-    <tr><td>the first man who landed on the moon</td><td>the first man to land on the moon</td><td>不定式定语</td></tr>
-    <tr><td>While he was playing football, Joe hurt his knee.</td><td>Playing football, Joe hurt his knee.</td><td>分词状语</td></tr>
-    <tr><td>… so that they could catch the train</td><td>… to catch the train</td><td>不定式状语</td></tr>
-    <tr><td>As soon as I saw the plane, …</td><td>On seeing the plane, …</td><td>介词 + 动名词</td></tr>
-    <tr><td>When the work was done, we went home.</td><td>The work done, we went home.</td><td>独立主格</td></tr>
-  </table>
-
-  <div class="box derive">
-    <span class="tag">📖 压掉了什么，又怎么找回来</span>
-    <p><b>压掉了主语：</b>默认泛指，或者和句子主语相同。不同时找回来 —— 动名词加所有格，不定式加 for / of sb，分词状语改成独立主格。</p>
-    <p><b>压掉了时态：</b>默认和谓语同时。要强调先后，找回来 —— having done、to have done。</p>
-    <p><b>语态压不掉：</b>它就写在形态里 —— doing 和 done，being done，to be done。</p>
-    <p><b>压掉了连词：</b>逻辑要读者自己读出来。怕读错，就把 when、while、after、though、if 留下。</p>
-  </div>
-
-  <div class="box derive">
-    <span class="tag">📖 形式告诉读者谁重要</span>
-    <p>写成谓语的，是主要信息；写成非谓语的，是次要信息。一个句子只有一个谓语，所以<b>读长句先找谓语</b>：找到它，就找到了主干，其余的 doing、done、to do 一块一块往上挂。</p>
-    <p>写作时反过来：先决定哪件事最重要，只给它谓语；其余的，能压就压。</p>
-  </div>
-
-  <p>从句让你能把话说全，非谓语让你能把话说短。两样都会，才写得出又准确又简洁的句子。</p>
-
-  <p class="sum"><b>小结：</b>非谓语动词就是从句被压缩后的样子：压掉主语、时态、连词，只留下动作。需要时再把主语（逻辑主语、独立主格）和时间（having done、to have done）找回来。谓语写主要信息，非谓语写次要信息。</p>
-</section>
-
-<!-- ══ 总览 ══ -->
-<section class="stage" id="s11">
-  <span class="stage-no">总览</span>
-  <h2>使用总览与自检</h2>
-
-  <h3 id="s11a">速查一：三种非谓语 × 位置</h3>
-
-  <table class="tbl quick">
-    <tr><th>位置</th><th>动名词 doing</th><th>分词 doing / done</th><th>不定式 to do</th><th>要点</th></tr>
-    <tr><td>主语</td><td>✓ 放句首</td><td>——</td><td>✓ 多用 it 放句尾</td><td>整块作主语，谓语用单数</td></tr>
-    <tr><td>宾语</td><td>✓</td><td>——</td><td>✓</td><td>看动词，分四类；查词典</td></tr>
-    <tr><td>介词后</td><td>✓</td><td>——</td><td>✗</td><td>介词后只能接 doing</td></tr>
-    <tr><td>表语</td><td>✓</td><td>✓ -ing / -ed 形容词</td><td>✓</td><td>be + doing：看主语能否发出动作</td></tr>
-    <tr><td>定语</td><td>表用途：swimming pool</td><td>✓ 主动 doing，被动 done</td><td>✓ 要做的：homework to do</td><td>单个放前，短语放后</td></tr>
-    <tr><td>宾补</td><td>——</td><td>✓ doing / done</td><td>✓ to do；make、let、see 后用 do</td><td>宾语发出还是承受</td></tr>
-    <tr><td>状语</td><td>介词 + doing</td><td>✓ 伴随、时间、原因等</td><td>✓ 多为目的，也表结果</td><td>主语须一致，否则用独立主格</td></tr>
-  </table>
-
-  <h3 id="s11b">速查二：形式 × 时间 × 语态 × 发出者</h3>
-
-  <table class="tbl quick">
-    <tr><th>形式</th><th>同时 / 泛指</th><th>先于谓语</th><th>被动</th><th>发出者不同时</th></tr>
-    <tr><td>动名词</td><td>doing</td><td>having done</td><td>being done ／ having been done</td><td>my、Tom's（作宾语也可用 me、Tom）</td></tr>
-    <tr><td>分词状语</td><td>doing</td><td>having done</td><td>done ／ having been done</td><td>改成独立主格：the work done</td></tr>
-    <tr><td>不定式</td><td>to do（正在：to be doing）</td><td>to have done</td><td>to be done ／ to have been done</td><td>for sb ／ of sb</td></tr>
-  </table>
-  <p class="note">否定一律把 not 放在最前：not doing、not having done、not to do。</p>
-
-  <h3 id="s11c">速查三：动词后接 doing 还是 to do</h3>
-
-  <table class="tbl quick">
-    <tr><th>类别</th><th>常见词</th></tr>
-    <tr><td>只接 doing</td><td>admit、enjoy、avoid、consider、deny、finish、mind、miss、practise、risk、suggest、imagine、keep、give up、put off；look forward to、can't help、feel like、be worth</td></tr>
-    <tr><td>只接 to do</td><td>want、hope、plan、expect、promise、decide、agree、refuse、manage、afford、fail、offer、pretend、would like</td></tr>
-    <tr><td>都行，意思一样</td><td>begin、start、continue；like、love、hate、prefer 大体相同</td></tr>
-    <tr><td>都行，意思不同</td><td>remember、forget、regret、stop、try、mean、go on</td></tr>
-    <tr><td>宾补不带 to</td><td>make、let、have；see、hear、watch、notice、feel（变被动时 to 要还原）</td></tr>
-  </table>
-  <p class="note">这张表只列最常见的。表外的词，查学习型词典。</p>
-
-  <h3 id="s11d">使用流程：五步</h3>
-
-  <ol class="flow">
-    <li>
-      <p class="q">先定谓语。</p>
-      <p class="a">句子里哪个动作最重要？只有它用谓语形式，其余全部降级。读长句时反过来：先找那个唯一的谓语。</p>
-    </li>
-    <li>
-      <p class="q">看位置。</p>
-      <p class="a">剩下的动作坐在哪？名词位用 doing 或 to do（介词后只能 doing）；修饰名词用分词或 to do；修饰整句用分词（伴随、时间、原因）或 to do（目的、结果）。</p>
-    </li>
-    <li>
-      <p class="q">找发出者。</p>
-      <p class="a">和句子主语相同，直接用；不同，动名词加所有格，不定式加 for / of sb，分词状语改成独立主格。</p>
-    </li>
-    <li>
-      <p class="q">判主被动。</p>
-      <p class="a">发出动作用 doing / to do，承受动作用 done / being done / to be done。系动词只有主动（being），也可以直接删掉。</p>
-    </li>
-    <li>
-      <p class="q">看时间，查搭配。</p>
-      <p class="a">先于谓语且要强调，用 having done / to have done。动词、名词后面接 doing 还是 to do，拿不准就查学习型词典。</p>
-    </li>
-  </ol>
-
-  <h3 id="s11e">费曼自检</h3>
-
-  <p>能从"位置 → 发出者 → 主被动 → 时间"一步步推出下面这些，才算掌握了非谓语动词，而不是记住了三个名字。答不上来的，右边标了回哪一阶。</p>
-
-  <ol class="asks checks">
-    <li><span>为什么 Get up early is considered a good habit. 是错的？</span><span class="where">阶段一</span></li>
-    <li><span>非谓语动词有哪两份工作？进行时里的 doing 算哪一份？</span><span class="where">阶段一</span></li>
-    <li><span>为什么说"位置决定形态"？名词位和修饰位各用什么？</span><span class="where">阶段一</span></li>
-    <li><span>Being poor is no disgrace. 为什么要加 being？</span><span class="where">阶段二</span></li>
-    <li><span>Knowing you are safe makes me feel better. 为什么用 makes？Seeing much, suffering much, and studying much 为什么又用 are？</span><span class="where">阶段二</span></li>
-    <li><span>Her job was keeping the hall clean. 和 She was keeping the hall clean. 有什么不同？怎么判断？</span><span class="where">阶段二</span></li>
-    <li><span>He went out without paying the bill. 是怎么从两个句子压出来的？前提是什么？</span><span class="where">阶段二</span></li>
-    <li><span>"一看到飞机我就去找掩护"，从 when 到 at the sight of，四种写法各是什么？</span><span class="where">阶段二</span></li>
-    <li><span>The car needs washing. 为什么表示被动？</span><span class="where">阶段二</span></li>
-    <li><span>为什么不能说 Tom refusing the invitation upset me.？该怎么改？</span><span class="where">阶段三</span></li>
-    <li><span>Do you mind me making a suggestion? 和 Do you mind my making …? 哪个对？动名词作主语时呢？</span><span class="where">阶段三</span></li>
-    <li><span>He denied having been there. 和 He denied being there. 意思有什么不同？</span><span class="where">阶段三</span></li>
-    <li><span>为什么 She noticed two students whispering. 不能换成 having whispered？</span><span class="where">阶段三</span></li>
-    <li><span>为什么是 a surprising thing，却是 a ploughed field？</span><span class="where">阶段四</span></li>
-    <li><span>I was boring. 和 I was bored. 意思有什么不同？</span><span class="where">阶段四</span></li>
-    <li><span>为什么 the injured boy 可以放前面，the boy injured in the accident 必须放后面？</span><span class="where">阶段四</span></li>
-    <li><span>分词定语和定语从句各有什么优势？节目里为什么先说 flying veil，又补一句 a veil that flies？</span><span class="where">阶段四</span></li>
-    <li><span>A woman called Lily rang while you were out. 为什么是 called 不是 calling？主干是什么？</span><span class="where">阶段四</span></li>
-    <li><span>a swimming pool 和 a swimming boy 里的 swimming 有什么不同？</span><span class="where">阶段四</span></li>
-    <li><span>"观删变"是哪三步？为什么删的是从句的主语？</span><span class="where">阶段五</span></li>
-    <li><span>Tired of moving, he bought a flat. 里的 tired 是怎么来的？</span><span class="where">阶段五</span></li>
-    <li><span>After finishing her work, she went home. 里的 after 为什么最好留着？</span><span class="where">阶段五</span></li>
-    <li><span>"边说边做"，英语叙述里通常把哪个写成谓语？</span><span class="where">阶段五</span></li>
-    <li><span>A large car went down the street, its lights on and its horn blaring. 里有几个独立主格？各是从什么句子压缩来的？</span><span class="where">阶段六</span></li>
-    <li><span>独立主格的"格"有哪七种形式？为什么正好是七种？</span><span class="where">阶段六</span></li>
-    <li><span>with the shark on / hanging on / attached to her arm，三种写法各用了什么格？</span><span class="where">阶段六</span></li>
-    <li><span>不定式为什么叫"不定"式？作主语时，它和动名词的位置有什么不同？</span><span class="where">阶段七</span></li>
-    <li><span>remember doing 和 remember to do、stop doing 和 stop to do 有什么不同？</span><span class="where">阶段七</span></li>
-    <li><span>为什么"to do 表将来、doing 表过去"这条规律靠不住？举一个反例。</span><span class="where">阶段七</span></li>
-    <li><span>What have I done to offend you? 里的 to offend 是目的还是结果？怎么看出来的？</span><span class="where">阶段七</span></li>
-    <li><span>It's kind of you to help me. 为什么用 of 不用 for？</span><span class="where">阶段八</span></li>
-    <li><span>They made him wait. 变成被动语态怎么写？为什么？</span><span class="where">阶段八</span></li>
-    <li><span>The letter I was looking forward to ___ at last. 为什么选 came 不选 coming？</span><span class="where">阶段九</span></li>
-    <li><span>Walking along the street, a flowerpot fell on his head. 错在哪？怎么改？</span><span class="where">阶段九</span></li>
-    <li><span>The theory, though is not widely tested, has become popular. 怎么改？用到了哪条规则？</span><span class="where">阶段九</span></li>
-    <li><span>非谓语压缩掉了从句的哪些东西？需要时各用什么找回来？</span><span class="where">阶段十</span></li>
-  </ol>
-</section>
-
-<footer>下一步：虚拟语气。这一章讲的是"主次"：主要信息写成谓语，次要信息降级成非谓语。下一章讲的是"真假"：同样靠动词的形式 —— 时态往后退一格，读者就知道这件事与事实相反。两章其实是同一个道理：英语的形式本身就在传递信息。</footer>
-
-</div><!-- /wrap -->
-
-<nav class="toc" id="toc">
-  <p class="toc-h">目录</p>
-  <ol>
-    <li class="item" data-sec="s1">
-      <a href="#s1"><span class="num">一</span>只有一个谓语</a>
-      <div class="subs">
-        <a href="#s1a">谓语与非谓语</a>
-        <a href="#s1b">非谓语的两份工作</a>
-        <a href="#s1c">位置决定形态</a>
-        <a href="#s1d">主要与次要</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s2">
-      <a href="#s2"><span class="num">二</span>动名词</a>
-      <div class="subs">
-        <a href="#s2a">四个位置</a>
-        <a href="#s2b">being + 形容词</a>
-        <a href="#s2c">名词外壳，动词内核</a>
-        <a href="#s2d">作表语不是进行时</a>
-        <a href="#s2e">介词 + doing</a>
-        <a href="#s2f">固定搭配</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s3">
-      <a href="#s3"><span class="num">三</span>动名词的发出者与时间</a>
-      <div class="subs">
-        <a href="#s3a">不写发出者</a>
-        <a href="#s3b">写出发出者</a>
-        <a href="#s3c">having done</a>
-        <a href="#s3d">哪些能换</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s4">
-      <a href="#s4"><span class="num">四</span>分词作定语</a>
-      <div class="subs">
-        <a href="#s4a">doing 与 done</a>
-        <a href="#s4b">-ing 与 -ed 形容词</a>
-        <a href="#s4c">放前还是放后</a>
-        <a href="#s4d">分词定语与定语从句</a>
-        <a href="#s4e">菜名</a>
-        <a href="#s4f">判断练习</a>
-        <a href="#s4g">swimming pool</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s5">
-      <a href="#s5"><span class="num">五</span>分词作状语</a>
-      <div class="subs">
-        <a href="#s5a">观删变</a>
-        <a href="#s5b">系动词怎么办</a>
-        <a href="#s5c">表达哪些逻辑</a>
-        <a href="#s5d">连词、having done、not</a>
-        <a href="#s5e">大画面加小细节</a>
-        <a href="#s5f">一个主句挂多个分词</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s6">
-      <a href="#s6"><span class="num">六</span>独立主格</a>
-      <div class="subs">
-        <a href="#s6a">三句变一句</a>
-        <a href="#s6b">格的七种形式</a>
-        <a href="#s6c">with 加不加</a>
-        <a href="#s6d">一件事三种写法</a>
-        <a href="#s6e">口语里的独立主格</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s7">
-      <a href="#s7"><span class="num">七</span>不定式</a>
-      <div class="subs">
-        <a href="#s7a">不一定是什么词性</a>
-        <a href="#s7b">作主语</a>
-        <a href="#s7c">作宾语</a>
-        <a href="#s7d">规律靠不住</a>
-        <a href="#s7e">作宾补</a>
-        <a href="#s7f">作定语</a>
-        <a href="#s7g">作表语</a>
-        <a href="#s7h">作状语</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s8">
-      <a href="#s8"><span class="num">八</span>不定式的发出者与时间</a>
-      <div class="subs">
-        <a href="#s8a">for sb / of sb</a>
-        <a href="#s8b">时态与语态</a>
-        <a href="#s8c">疑问词 + to do</a>
-        <a href="#s8d">宾补的四种形态</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s9">
-      <a href="#s9"><span class="num">九</span>边界</a>
-      <div class="subs">
-        <a href="#s9a">一、to 是介词</a>
-        <a href="#s9b">二、悬垂分词</a>
-        <a href="#s9c">三、改错三板斧</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s10">
-      <a href="#s10"><span class="num">十</span>本质：主次与压缩</a>
-      <div class="subs">
-        <a href="#s10">从句怎么压成非谓语</a>
-      </div>
-    </li>
-    <li class="item" data-sec="s11">
-      <a href="#s11"><span class="num">总</span>总览与自检</a>
-      <div class="subs">
-        <a href="#s11a">速查一：位置</a>
-        <a href="#s11b">速查二：形式</a>
-        <a href="#s11c">速查三：动词表</a>
-        <a href="#s11d">五步流程</a>
-        <a href="#s11e">费曼自检</a>
-      </div>
-    </li>
-  </ol>
+<div class="card">
+  <div class="card-h">三秒看懂</div>
+  <p>形状只有三种：<b>doing</b>、<b>done</b>、<b>to do</b>。选哪个，只问两件事：① 它在句子里<b>干什么活</b>；② 是<b>自己做</b>（doing）还是<b>被做</b>（done）。</p>
+  <div class="rows">
+    <div class="row"><div class="k">当名词</div><div class="v">doing 或 to do；介词后面只能 doing<span class="e">I like <span class="hl">swimming</span>. ／ I want <span class="hl">to swim</span>.</span></div></div>
+    <div class="row"><div class="k">修饰名词</div><div class="v">自己做 doing，被做 done，要做的 to do<span class="e">a <span class="hl">sleeping</span> baby ／ a <span class="hl">broken</span> cup ／ homework <span class="hl">to do</span></span></div></div>
+    <div class="row"><div class="k">修饰整句</div><div class="v">doing / done 说时间、原因、一边……；to do 说“为了”<span class="e"><span class="hl">Hearing</span> the news, she cried. ／ He came <span class="hl">to help</span>.</span></div></div>
+    <div class="row"><div class="k">补充宾语</div><div class="v">宾语后面再补一个动作<span class="e">I asked him <span class="hl">to wait</span>. ／ I had my hair <span class="hl">cut</span>.</span></div></div>
+  </div>
+</div>
+
+<nav class="toc">
+  <a href="#s1"><span>一</span>先懂这一条：一句话只有一个谓语</a>
+  <a href="#s2"><span>二</span>当名词用：doing 和 to do</a>
+  <a href="#s3"><span>三</span>修饰名词：doing 还是 done</a>
+  <a href="#s4"><span>四</span>修饰整句：把句子压成短语</a>
+  <a href="#s5"><span>五</span>宾语后面补一个动作</a>
+  <a href="#s6"><span>六</span>单独记的几条</a>
+  <a href="#s7"><span>七</span>自己写句子：五步</a>
+  <a href="#s8"><span>八</span>练一练</a>
 </nav>
 
-</div><!-- /page -->
+<!-- 一 -->
+<section id="s1">
+  <h2><span class="no">第一节</span>先懂这一条：一句话只有一个谓语</h2>
+  <p>“谓语”就是句子里那个真正的动词：直接跟在主语后面，还带着时间（现在 / 过去），比如 <span class="e">He <b>went</b></span>、<span class="e">She <b>works</b></span>。一句话只能有一个。想再说一个动作，就得把它变个形状：</p>
+  <div class="pair">
+    <div>
+      <div class="en">He went out of the restaurant. He didn't pay.</div>
+      <div class="zh">他走出了餐馆。他没付钱。</div>
+      <div class="lbl">两个句子，两个谓语</div>
+    </div>
+    <div>
+      <div class="en">He went out of the restaurant without <span class="hl">paying</span>.</div>
+      <div class="zh">他没付钱就走出了餐馆。</div>
+      <div class="lbl">一个句子：went 当谓语，“没付钱”变成 without paying</div>
+    </div>
+  </div>
+  <p>变出来的形状只有三种，名字不用背，认得形状就行：</p>
+  <div class="rows">
+    <div class="row"><div class="k">doing</div><div class="v">当名词用时叫“动名词”，修饰别的词时叫“现在分词”——同一个样子，两个名字</div></div>
+    <div class="row"><div class="k">done</div><div class="v">过去分词</div></div>
+    <div class="row"><div class="k">to do</div><div class="v">不定式</div></div>
+  </div>
 
-<button class="toc-btn" id="tocBtn" aria-label="打开目录">目录</button>
+  <div class="ex bad"><div class="en">Get up early is a good habit.</div><div class="zh">已经有谓语 is 了，get up 再用原形，就成了两个谓语。</div></div>
+  <div class="ex good"><div class="en"><span class="hl">Getting up</span> early is a good habit.</div><div class="zh">早起是个好习惯。“早起”变成 getting up，当主语。</div></div>
 
-<script>
-(function(){
-  var items = [].slice.call(document.querySelectorAll('.toc .item'));
-  var subLinks = [].slice.call(document.querySelectorAll('.toc .subs a'));
-  var secs = items.map(function(it){ return document.getElementById(it.dataset.sec); });
-  var subs = subLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
-  var ticking = false;
+  <div class="box warn">
+    <span class="t">两个容易混的地方</span>
+    <p>① <span class="e">is doing</span>、<span class="e">has done</span>、<span class="e">was done</span> 里的 doing、done，是配着助动词一起当谓语（时态篇、语态篇讲过）。这一页只讲它们<b>不当谓语</b>的时候。</p>
+    <p>② 动词原形也有两种身份：自己当谓语（<span class="e">I swim every day.</span>），或跟在 will、can 后面一起当谓语（<span class="e">I can swim.</span>）；可要是跟在 make、let、see 这类动词的宾语后面（<span class="e">Let me <span class="hl">swim</span>.</span>），它就是不带 to 的不定式，属于非谓语（第五节）。</p>
+  </div>
 
-  function activeIndex(list, offset){
-    var idx = 0;
-    for (var i = 0; i < list.length; i++){
-      if (list[i] && list[i].getBoundingClientRect().top <= offset) idx = i;
-    }
-    return idx;
-  }
+  <div class="box tip">
+    <span class="t">换个角度：非谓语就是把句子压短</span>
+    <p>两件事的主语一样，就删掉一个主语，把动词变个形状，两句并成一句：</p>
+    <p><span class="e">the boy <s class="cut">who was</s> hurt in the accident</span><br>在事故中受伤的男孩</p>
+    <p><span class="e"><s class="cut">While he was</s> playing football, Joe hurt his knee.</span><br>踢球的时候，乔伤了膝盖。</p>
+    <p><span class="e">I don't know what I should do.</span> → <span class="e">I don't know what <span class="hl">to do</span>.</span><br>我不知道该怎么办。</p>
+  </div>
+  <p>读长句时反过来用：<b>先找那个唯一的谓语</b>，抓住主干；doing、done、to do 先当修饰跳过，读懂主干再回来看。</p>
+</section>
 
-  function update(){
-    ticking = false;
-    var i = activeIndex(secs, 120);
-    items.forEach(function(it, n){ it.classList.toggle('active', n === i); });
+<!-- 二 -->
+<section id="s2">
+  <h2><span class="no">第二节</span>当名词用：doing 和 to do</h2>
+  <p>名词能放的地方——主语、宾语、介词后面——动作也能放进去，只要变成 doing 或 to do。</p>
 
-    var j = activeIndex(subs, 140);
-    subLinks.forEach(function(a, n){ a.classList.toggle('on', n === j); });
+  <h3>① 当主语</h3>
+  <div class="ex"><div class="en"><span class="hl">Swimming</span> is fun.</div><div class="zh">游泳很好玩。</div></div>
+  <div class="ex"><div class="en">It is fun <span class="hl">to swim</span>.</div><div class="zh">意思一样。to do 当主语，一般先用 It 占住开头，把 to do 挪到后面。</div></div>
+  <p class="note">doing 后面带得再长，整块也只是“一件事”，谓语用单数：<span class="e">Reading English books <b>makes</b> me happy.</span></p>
 
-    // 把当前项滚进目录可视区(仅宽屏侧栏)
-    var cur = items[i];
-    if (cur && window.innerWidth > 1080){
-      var toc = document.getElementById('toc');
-      var t = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
-      if (t < 0 || t > toc.clientHeight - 60) toc.scrollTop += t - toc.clientHeight / 2;
-    }
-  }
+  <h3>② 放在介词后面：只能用 doing</h3>
+  <div class="ex"><div class="en">I'm good at <span class="hl">swimming</span>.</div><div class="zh">我擅长游泳。</div></div>
+  <div class="ex"><div class="en">She left without <span class="hl">saying</span> a word.</div><div class="zh">她一句话没说就走了。</div></div>
+  <div class="ex"><div class="en">Thank you for <span class="hl">helping</span> me.</div><div class="zh">谢谢你帮我。</div></div>
+  <div class="box tip">
+    <span class="t">to 也可能是介词</span>
+    <p>往 to 后面放个名词试试。<span class="e">look forward to the holiday</span> 说得通，to 是介词，所以 <span class="e">I'm looking forward to <span class="hl">seeing</span> you.</span>；<span class="e">want to the holiday</span> 说不通，to 不是介词，所以 <span class="e">I want <span class="hl">to see</span> you.</span></p>
+  </div>
+  <p class="note">形容词想放进这些位置，先加 being：<span class="e"><span class="hl">Being</span> late is rude.</span>（迟到很没礼貌）late 是形容词，不能直接当主语。</p>
 
-  window.addEventListener('scroll', function(){
-    if (!ticking){ ticking = true; requestAnimationFrame(update); }
-  }, {passive:true});
-  window.addEventListener('resize', update);
-  update();
+  <h3>③ 当宾语：看前面那个动词</h3>
+  <table class="tbl">
+    <thead><tr><th>类别</th><th>常见动词 · 例子</th></tr></thead>
+    <tbody>
+      <tr><td>只接 doing</td><td>enjoy、finish、mind、avoid、practise、keep、give up<br><span class="e">I enjoy <span class="hl">swimming</span>.</span></td></tr>
+      <tr><td>只接 to do</td><td>want、hope、decide、plan、agree、refuse<br><span class="e">I want <span class="hl">to swim</span>.</span></td></tr>
+      <tr><td>都行，意思一样</td><td>begin、start、like、love<br><span class="e">It began <span class="hl">to rain</span>. = It began <span class="hl">raining</span>.</span></td></tr>
+      <tr><td>都行，意思不同</td><td>remember、forget、stop、try（见下）</td></tr>
+    </tbody>
+  </table>
+  <div class="rows">
+    <div class="row"><div class="k">remember</div><div class="v">doing = 记得做过，to do = 记得要去做（forget 同理）<span class="e">I remember <span class="hl">locking</span> the door. 我记得锁过门。</span><span class="e">Remember <span class="hl">to lock</span> the door. 记得锁门。</span></div></div>
+    <div class="row"><div class="k">stop</div><div class="v">doing = 停下正在做的事，to do = 停下来，去做另一件事<span class="e">Stop <span class="hl">talking</span>. 别说话了。</span><span class="e">He stopped <span class="hl">to talk</span> to me. 他停下来跟我说话。</span></div></div>
+    <div class="row"><div class="k">try</div><div class="v">doing = 试着做做看，to do = 使劲想做到<span class="e">Try <span class="hl">restarting</span> it. 重启一下试试。</span><span class="e">I tried <span class="hl">to lift</span> the box. 我使劲想把箱子抬起来。</span></div></div>
+  </div>
+  <p class="note">这些搭配没有万能规律。学单词时连用法一起记——你学 want 的时候，就记住了 want to do。拿不准就查词典。</p>
 
-  // 窄屏抽屉
-  var btn = document.getElementById('tocBtn');
-  var scrim = document.getElementById('scrim');
-  function close(){ document.body.classList.remove('nav-open'); }
-  btn.addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
-  scrim.addEventListener('click', close);
-  document.getElementById('toc').addEventListener('click', function(e){
-    if (e.target.tagName === 'A') close();
-  });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
-})();
-</script>
+  <h3>④ 别和进行时混</h3>
+  <div class="pair">
+    <div>
+      <div class="en">Her job is <span class="hl">cleaning</span> the hall.</div>
+      <div class="zh">她的工作是打扫大厅。</div>
+      <div class="lbl">工作不会打扫 → cleaning 当名词，“是……”</div>
+    </div>
+    <div>
+      <div class="en">She is cleaning the hall.</div>
+      <div class="zh">她正在打扫大厅。</div>
+      <div class="lbl">人会打扫 → 进行时</div>
+    </div>
+  </div>
+  <p class="note">样子一模一样，就看主语自己能不能做这个动作。</p>
+
+  <h3>⑤ 是谁做的</h3>
+  <p>默认就是句子的主语做的。要说是别人做，在 doing 前面加 my、his、Tom's：</p>
+  <div class="pair">
+    <div>
+      <div class="en">Do you mind <span class="hl">opening</span> the window?</div>
+      <div class="zh">你能开一下窗吗？</div>
+      <div class="lbl">开窗的是你</div>
+    </div>
+    <div>
+      <div class="en">Do you mind <b>my</b> <span class="hl">opening</span> the window?</div>
+      <div class="zh">你介意我开窗吗？</div>
+      <div class="lbl">开窗的是我</div>
+    </div>
+  </div>
+</section>
+
+<!-- 三 -->
+<section id="s3">
+  <h2><span class="no">第三节</span>修饰名词：doing 还是 done</h2>
+  <p>动作拿来修饰一个名词（像形容词那样用），只问一句：<b>这个名词是自己在做，还是被做？</b></p>
+  <div class="pair">
+    <div>
+      <div class="en">a <span class="hl">sleeping</span> baby ／ the man <span class="hl">sitting</span> next to me</div>
+      <div class="zh">正在睡觉的宝宝 ／ 坐在我旁边的那个人</div>
+      <div class="lbl">自己做 → doing</div>
+    </div>
+    <div>
+      <div class="en">a <span class="hl">broken</span> cup ／ the bridge <span class="hl">built</span> last year</div>
+      <div class="zh">被打碎的杯子 ／ 去年建的那座桥</div>
+      <div class="lbl">被做 → done</div>
+    </div>
+  </div>
+  <div class="box tip">
+    <span class="t">菜名最好记</span>
+    <p><span class="e">fried rice</span> 炒饭、<span class="e">steamed fish</span> 清蒸鱼、<span class="e">boiled eggs</span> 煮鸡蛋。米饭不会自己炒，是被炒的，所以用 done。</p>
+  </div>
+
+  <h3>表情绪的词：-ing 和 -ed</h3>
+  <div class="rows">
+    <div class="row"><div class="k">-ing</div><div class="v">让人……的<span class="e">a <span class="hl">boring</span> lecture 让人无聊的讲座 ／ <span class="hl">exciting</span> news 让人兴奋的消息</span></div></div>
+    <div class="row"><div class="k">-ed</div><div class="v">（人）感到……的<span class="e">a <span class="hl">bored</span> student 觉得无聊的学生 ／ I'm <span class="hl">excited</span>. 我很兴奋。</span></div></div>
+  </div>
+  <div class="pair">
+    <div>
+      <div class="en">I'm bored.</div>
+      <div class="zh">我好无聊。</div>
+      <div class="lbl">我感到无聊</div>
+    </div>
+    <div>
+      <div class="en">I'm boring.</div>
+      <div class="zh">我这个人很无趣。</div>
+      <div class="lbl">我让别人无聊——一字之差，意思全变</div>
+    </div>
+  </div>
+
+  <h3>放在名词前面，还是后面</h3>
+  <p>只有一个词，放前面：<span class="e">a <span class="hl">broken</span> cup</span>。后面还带了一串，放后面：<span class="e">the cup <span class="hl">broken</span> by the cat</span>（被猫打碎的那个杯子）。</p>
+
+  <h3>to do：要做的</h3>
+  <div class="ex"><div class="en">I have a lot of homework <span class="hl">to do</span>.</div><div class="zh">我有好多作业要做。</div></div>
+  <div class="ex"><div class="en">He needs a house <span class="hl">to live in</span>.</div><div class="zh">他需要一个住的地方。介词 in 不能丢：本来就是 live in a house。</div></div>
+
+  <div class="box warn">
+    <span class="t">读句子的一个坑</span>
+    <p><span class="e">A woman <span class="hl">called</span> Lily rang you this morning.</span></p>
+    <p>两个词都像动词：called 和 rang。called 是“名叫”（名字是别人叫的，所以用 done），修饰 woman；真正的谓语是 rang。意思是：今天早上，一个叫 Lily 的女人给你打过电话。拿不准时问自己：哪个当谓语才讲得通？</p>
+  </div>
+</section>
+
+<!-- 四 -->
+<section id="s4">
+  <h2><span class="no">第四节</span>修饰整句：把句子压成短语</h2>
+  <p>两件事是同一个人做的，可以把次要的那句压成短语，挂在主句旁边。三步（课上叫“观、删、变”）：</p>
+  <ol class="steps">
+    <li><b>看</b>：两句的主语一样吗？一样才能压。</li>
+    <li><b>删</b>：删掉次要那句的主语（主句的留着）。</li>
+    <li><b>变</b>：动词主动变 doing，被动变 done。</li>
+  </ol>
+  <div class="chain">
+    <div class="from"><s class="cut">While he was</s> playing football, Joe hurt his knee.</div>
+    <div class="to"><span class="hl">Playing</span> football, Joe hurt his knee.</div>
+    <div class="why">踢球是 Joe 自己踢的 → playing。while 留着也行：While playing football, …</div>
+  </div>
+  <div class="chain">
+    <div class="from"><s class="cut">If it is</s> used carefully, this knife will last for years.</div>
+    <div class="to"><span class="hl">Used</span> carefully, this knife will last for years.</div>
+    <div class="why">刀是被人用的 → used。意思：好好用的话，这把刀能用好多年。</div>
+  </div>
+  <div class="chain">
+    <div class="from"><s class="cut">Because he was</s> tired, he went to bed early.</div>
+    <div class="to"><span class="hl">Tired</span>, he went to bed early.</div>
+    <div class="why">be 句：was 本来要变 being，being 没什么意思，直接删掉。</div>
+  </div>
+  <p>压出来的短语，常说“什么时候”“为什么”“一边……一边……”：</p>
+  <div class="ex"><div class="en">She sat by the window, <span class="hl">reading</span> a book.</div><div class="zh">她坐在窗边看书。</div></div>
+
+  <h3>to do：为了</h3>
+  <div class="ex"><div class="en">He came <span class="hl">to help</span>.</div><div class="zh">他是来帮忙的。</div></div>
+  <div class="ex"><div class="en">I got up early <span class="hl">to catch</span> the bus.</div><div class="zh">我早起是为了赶公交。</div></div>
+  <p class="note">想说得更明白，用 in order to、so as to；否定是 so as not to：<span class="e">I left early so as not to miss the bus.</span></p>
+
+  <h3>一个坑：主语要对得上</h3>
+  <div class="ex bad"><div class="en">Walking along the street, a flowerpot fell on his head.</div><div class="zh">前半句没写主语，读者会拿主句的主语来配：花盆在街上走？</div></div>
+  <div class="ex good"><div class="en">Walking along the street, he was hit by a flowerpot.</div><div class="zh">走路的是 he，主句的主语也是 he。</div></div>
+
+  <h3>想强调“先做完”：having done</h3>
+  <div class="ex"><div class="en"><span class="hl">Having finished</span> her homework, she watched TV.</div><div class="zh">她先做完作业，才去看电视。</div></div>
+
+  <h3>主语不一样：把主语留下（独立主格）</h3>
+  <p>两件事的主语不同，主语就不能删——留着它，其余照样压：</p>
+  <div class="chain">
+    <div class="from">When the work was done, we went home.</div>
+    <div class="to">The work <span class="hl">done</span>, we went home.</div>
+    <div class="why">工作做完了，我们就回家了。主语一个是 the work，一个是 we，不一样，所以 the work 留着。</div>
+  </div>
+  <div class="ex"><div class="en">He fell asleep with the TV <span class="hl">on</span>.</div><div class="zh">他开着电视睡着了。with + 名词 + 状态，这是最常见的说法。</div></div>
+  <div class="ex"><div class="en">She stood there, tears <span class="hl">running</span> down her face.</div><div class="zh">她站在那儿，眼泪顺着脸往下流。</div></div>
+  <div class="box tip">
+    <span class="t">这个名字是什么意思</span>
+    <p>留下来的那个名词，是后面那个动作的主语，却不是整个句子的主语，所以叫“独立”。“主格”是说：留下来的如果是代词，要用主格——<span class="e"><b>He</b> being ill, we stayed at home.</span>（用 He，不用 Him）。后面那一截可以是 doing、done，也可以是形容词、副词、介词短语。</p>
+  </div>
+</section>
+
+<!-- 五 -->
+<section id="s5">
+  <h2><span class="no">第五节</span>宾语后面补一个动作</h2>
+  <p>有些动词跟了宾语，话还没说完：<span class="e">I asked him …</span> 让他干什么？<span class="e">to wait</span>。补上的这个动作，就是宾语在做（或被做）的事。</p>
+  <div class="rows">
+    <div class="row"><div class="k">to do</div><div class="v">ask、tell、want + 人 + to do<span class="e">I asked him <span class="hl">to wait</span>. 我让他等一下。</span></div></div>
+    <div class="row"><div class="k">do</div><div class="v">make、let、have + 人 + 原形（不带 to）<span class="e">She made me <span class="hl">laugh</span>. 她把我逗笑了。</span></div></div>
+    <div class="row"><div class="k">do / doing</div><div class="v">see、hear、watch + 人 + 原形（看到 / 听到全过程）或 doing（正在做的那一刻）<span class="e">I heard her <span class="hl">sing</span>. 我听她唱了。</span><span class="e">I heard her <span class="hl">singing</span>. 我听到她正在唱。</span></div></div>
+    <div class="row"><div class="k">done</div><div class="v">have、get、find + 东西 + done（东西是被做的）<span class="e">I had my hair <span class="hl">cut</span>. 我理了发。（头发是被剪的）</span></div></div>
+  </div>
+  <p class="note">判断方法和第三节一样：宾语自己做，用 to do / do / doing；宾语被做，用 done。</p>
+  <div class="box warn">
+    <span class="t">变被动时，to 要加回来</span>
+    <p>make、let、see、hear 后面省掉了 to，一变成被动，to 就得补上：<span class="e">They made him wait.</span> → <span class="e">He was made <b>to</b> wait.</span>（他被迫等着）</p>
+  </div>
+</section>
+
+<!-- 六 -->
+<section id="s6">
+  <h2><span class="no">第六节</span>单独记的几条</h2>
+  <div class="rows">
+    <div class="row"><div class="k">to 是介词</div><div class="v">后面接 doing：look forward to doing 期待，be used to doing 习惯于，when it comes to doing 说到……<span class="e">I'm used to <span class="hl">getting up</span> early. 我习惯早起了。</span>别跟 used to do（以前常常）混：<span class="e">I used to <span class="hl">get up</span> late. 我以前老是起得晚。</span></div></div>
+    <div class="row"><div class="k">not 放最前</div><div class="v"><span class="e"><b>Not</b> knowing what to say, he kept quiet. 不知道说什么，他就没吭声。</span><span class="e">Try <b>not</b> to be late. 尽量别迟到。</span></div></div>
+    <div class="row"><div class="k">疑问词 + to do</div><div class="v">what to do、how to get there、whether to go<span class="e">I don't know <span class="hl">what to do</span>. 我不知道该怎么办。</span>（就是 what I should do 压短的）</div></div>
+    <div class="row"><div class="k">for 还是 of</div><div class="v">说这件事怎么样，用 for；夸人或说人，用 of<span class="e">It's hard <b>for</b> me to believe it. 这事我很难相信。</span><span class="e">It's kind <b>of</b> you to help me. 你真好，还来帮我。</span>（试试改成 You are kind，说得通就用 of）</div></div>
+    <div class="row"><div class="k">固定接 doing</div><div class="v">be worth doing 值得做、have trouble doing 做……有困难、spend time doing 花时间做、can't help doing 忍不住、feel like doing 想做、be busy doing 忙着做<span class="e">The film is worth <span class="hl">seeing</span>. 这部电影值得看。</span>need doing 表示“需要被做”：<span class="e">The car needs <span class="hl">washing</span>. 车该洗了。</span></div></div>
+  </div>
+</section>
+
+<!-- 七 -->
+<section id="s7">
+  <h2><span class="no">第七节</span>自己写句子：五步</h2>
+  <ol class="steps">
+    <li><b>哪个动作最重要？</b>它当谓语，别的动作都要变形状。</li>
+    <li><b>剩下的动作干什么活？</b>当名词 → doing / to do（介词后只能 doing）；修饰名词 → doing / done / to do；修饰整句 → doing / done，表“为了” → to do。</li>
+    <li><b>自己做还是被做？</b>自己做 → doing / to do；被做 → done。</li>
+    <li><b>是谁做的？</b>和句子的主语一样，就不用写；不一样：my + doing、for sb to do，或者把主语留下（独立主格）。</li>
+    <li><b>接 doing 还是 to do 拿不准？</b>查词典。</li>
+  </ol>
+  <div class="sum"><b>一句话总结：</b>一句话只有一个谓语，别的动作变个形状塞进去；变成什么形状，看它干什么活、自己做还是被做。</div>
+</section>
+
+<!-- 八 -->
+<section id="s8">
+  <h2><span class="no">第八节</span>练一练（点开看答案）</h2>
+  <details class="q"><summary><span class="e">Get up early is a good habit.</span> 错在哪？</summary><div class="ans">一句话里有两个谓语（get up 和 is）。改成 <b>Getting up early</b> is a good habit.</div></details>
+  <details class="q"><summary><span class="e">I'm looking forward to ___ (see) you.</span></summary><div class="ans"><b>seeing</b>。to 是介词：look forward to the holiday 说得通。</div></details>
+  <details class="q"><summary><span class="e">Look at the ___ (break) window.</span></summary><div class="ans"><b>broken</b>。窗户是被打破的。</div></details>
+  <details class="q"><summary><span class="e">The man ___ (sit) next to me kept talking.</span></summary><div class="ans"><b>sitting</b>。人是自己坐着的。句子的谓语是 kept。</div></details>
+  <details class="q"><summary><span class="e">The film was ___, so I was ___.</span>（bore）</summary><div class="ans"><b>boring / bored</b>。电影让人无聊，我感到无聊。</div></details>
+  <details class="q"><summary><span class="e">___ (hear) the news, she cried.</span></summary><div class="ans"><b>Hearing</b>。听到消息的是她自己，主动。</div></details>
+  <details class="q"><summary><span class="e">He went to the shop ___ (buy) some milk.</span></summary><div class="ans"><b>to buy</b>。去商店是为了买牛奶。</div></details>
+  <details class="q"><summary><span class="e">I had my car ___ (wash).</span></summary><div class="ans"><b>washed</b>。车是被洗的。</div></details>
+  <details class="q"><summary><span class="e">Walking along the street, a flowerpot fell on his head.</span> 错在哪？</summary><div class="ans">在街上走的不是花盆。改成：Walking along the street, <b>he was hit</b> by a flowerpot.</div></details>
+  <details class="q"><summary><span class="e">The letter I was looking forward to ___ (come) at last.</span>（难题）</summary><div class="ans"><b>came</b>。I was looking forward to 修饰的是 letter（我一直盼着的那封信），整句话的谓语还空着，所以填 came：那封信终于来了。先找主谓，就不会被 to 骗去填 coming。</div></details>
+</section>
+
+<footer>非谓语动词 · 一句话一个谓语，其余变形状。下一步：虚拟语气——同样靠动词的形状传递意思。</footer>
+
+</div>
 </body>
 </html>
