@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>非谓语动词（重做版）：三种形状的性格</title>
+<style>
+:root{
+  --ink:#141821;
+  --panel:#1a202a;
+  --panel-2:#20262f;
+  --rule:#2b3543;
+  --text:#d6dbe3;
+  --dim:#8b95a5;
+  --faint:#5f6a7a;
+  --paper:#e8e3d9;
+  --ing:#7cc694;           /* doing：动作本身 */
+  --ing-bg:rgba(124,198,148,.10);
+  --to:#6fa8e6;            /* to do：指向目标 */
+  --to-bg:rgba(111,168,230,.10);
+  --ed:#e5a15e;            /* done：结果 / 被做 */
+  --ed-bg:rgba(229,161,94,.10);
+  --deep:#b39ddb;          /* 深一层 */
+  --deep-bg:rgba(179,157,219,.09);
+  --red:#e57373;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.85}
+.wrap{max-width:720px;margin:0 auto;padding:52px 20px 90px}
+b{color:#f0f3f7;font-weight:600}
+p{margin:12px 0}
+a{color:var(--to)}
+
+h1{font-size:28px;line-height:1.35;margin:0 0 12px;font-weight:600;letter-spacing:.04em}
+.sub{font-size:16px;color:var(--dim);margin:0}
+
+/* 英文与三种性格的颜色 */
+.e{font-family:var(--serif);color:var(--paper);font-size:1.04em}
+.ing{color:var(--ing);font-weight:600}
+.to{color:var(--to);font-weight:600}
+.ed{color:var(--ed);font-weight:600}
+.fin{color:#fff;font-weight:700;border-bottom:2px solid #fff}
+.bare{color:var(--paper);font-weight:700;border-bottom:1px dashed var(--dim)}
+.badge{display:inline-block;font-size:12.5px;font-weight:700;line-height:1.6;border-radius:5px;padding:0 7px;margin:0 2px;font-family:var(--sans);white-space:nowrap}
+.badge.ing{background:var(--ing-bg);color:var(--ing)}
+.badge.to{background:var(--to-bg);color:var(--to)}
+.badge.ed{background:var(--ed-bg);color:var(--ed)}
+.badge.hard{background:rgba(229,115,115,.12);color:var(--red)}
+.badge.fin{background:rgba(255,255,255,.10);color:#fff}
+
+/* 读法说明 */
+.guide{margin:22px 0 0;padding:12px 15px;border-left:3px solid var(--rule);color:var(--dim);font-size:14.5px;line-height:1.8}
+.guide p{margin:4px 0}
+
+/* 三种性格卡 */
+.hero{display:grid;gap:10px;margin:22px 0 0}
+.persona{border-radius:10px;padding:13px 15px;border:1px solid var(--rule);background:var(--panel)}
+.persona .name{font-size:17px;font-weight:700;letter-spacing:.02em}
+.persona .name .icon{display:inline-block;width:1.4em}
+.persona .what{font-size:15px;margin:4px 0 6px}
+.persona .e{display:block;font-size:15.5px;line-height:1.6}
+.persona.ing{border-left:4px solid var(--ing)} .persona.ing .name{color:var(--ing)}
+.persona.to{border-left:4px solid var(--to)} .persona.to .name{color:var(--to)}
+.persona.ed{border-left:4px solid var(--ed)} .persona.ed .name{color:var(--ed)}
+.persona .what, .persona .e{font-weight:400}
+.order{margin:14px 0 0;padding:12px 15px;background:var(--panel-2);border-radius:10px;font-size:15px;line-height:1.8}
+.order ol{margin:6px 0 0;padding-left:1.4em}
+
+/* 目录 */
+.toc{margin:28px 0 0;padding:6px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.toc a{display:block;padding:7px 2px;color:var(--dim);text-decoration:none;font-size:15px}
+.toc a + a{border-top:1px solid rgba(43,53,67,.55)}
+.toc a span{display:inline-block;width:2.2em;color:var(--faint);font-family:var(--serif)}
+
+section{margin-top:64px;scroll-margin-top:14px}
+h2{font-size:21px;font-weight:600;margin:0;color:#eef1f5;letter-spacing:.03em;line-height:1.5}
+h2 .no{display:block;font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.14em;font-weight:400;margin-bottom:6px}
+h3{font-size:16.5px;font-weight:600;margin:34px 0 8px;color:#e3e8ef}
+
+/* 例句 */
+.ex{margin:12px 0;padding:2px 0 2px 14px;border-left:2px solid var(--rule)}
+.ex .en{font-family:var(--serif);font-size:17px;line-height:1.6;color:var(--paper)}
+.ex .zh{font-size:14.5px;color:var(--dim);line-height:1.75;margin-top:2px}
+.ex.bad{border-left-color:var(--red)}
+.ex.bad .en{color:#e9a6a6;text-decoration:line-through;text-decoration-color:rgba(229,115,115,.6)}
+.ex.bad .en::after{content:" ✗";color:var(--red);display:inline-block;text-decoration:none;font-family:var(--sans)}
+.ex.good{border-left-color:var(--ing)}
+.ex.good .en::after{content:" ✓";color:var(--ing);font-family:var(--sans)}
+.note{font-size:14px;color:var(--dim)}
+
+/* 对比：同一个动词两种形状 */
+.verb{margin:14px 0;padding:10px 14px 4px;background:var(--panel);border:1px solid var(--rule);border-radius:9px}
+.verb .vh{font-weight:600;color:#eef1f5;font-size:15.5px}
+.verb .ex{margin:8px 0 10px}
+
+/* 深一层 / 记住这句 / 提示 */
+.deep{margin:18px 0;padding:12px 15px;border-radius:9px;background:var(--deep-bg);border-left:3px solid var(--deep);font-size:15px;line-height:1.85}
+.deep .t{display:block;color:var(--deep);font-weight:700;margin-bottom:4px}
+.deep p{margin:6px 0}
+.deep .src{font-size:13px;color:var(--dim)}
+.rule{margin:22px 0 0;padding:11px 15px;border-radius:9px;background:var(--panel-2);border:1px solid var(--rule);font-size:15px;line-height:1.8}
+.rule::before{content:"记住这句";display:block;font-size:12.5px;font-weight:700;color:var(--faint);letter-spacing:.12em;margin-bottom:2px}
+.tip{margin:18px 0;padding:12px 15px;border-radius:9px;background:rgba(111,168,230,.07);border-left:3px solid var(--to);font-size:15px;line-height:1.8}
+.tip .t{display:block;color:var(--to);font-weight:700;margin-bottom:4px}
+.tip p{margin:6px 0}
+
+/* 压缩演示 */
+.chain{margin:12px 0;background:var(--panel);border:1px solid var(--rule);border-radius:9px;padding:10px 14px}
+.chain .from{font-family:var(--serif);font-size:15.5px;color:var(--dim);line-height:1.6}
+.chain .to-line{font-family:var(--serif);font-size:16.5px;color:var(--paper);line-height:1.6;margin-top:4px}
+.chain .to-line::before{content:"→ ";color:var(--faint);font-family:var(--sans)}
+.chain .why{font-size:14px;color:var(--dim);margin-top:5px}
+s.cut{color:var(--faint);text-decoration-color:rgba(229,115,115,.7)}
+
+/* 长句拆解 */
+.parse{margin:16px 0;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px 15px}
+.parse .whole{font-family:var(--serif);font-size:17.5px;line-height:1.75;color:var(--paper)}
+.parts{margin:12px 0 0;padding:0;list-style:none}
+.parts li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;padding:8px 0;border-top:1px solid rgba(43,53,67,.7);font-size:15px;line-height:1.7}
+.parts li .e{display:block}
+
+/* 小表 */
+.tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px;line-height:1.7}
+.tbl th,.tbl td{text-align:left;padding:8px 7px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px}
+.tbl td:first-child,.tbl th:first-child{white-space:nowrap;color:var(--dim);font-weight:600}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .e{font-size:1em}
+
+/* 练习 */
+details.q{border-top:1px solid rgba(43,53,67,.7);padding:10px 0}
+details.q:last-of-type{border-bottom:1px solid rgba(43,53,67,.7)}
+details.q summary{cursor:pointer;list-style:none;font-size:15px;line-height:1.75}
+details.q summary::-webkit-details-marker{display:none}
+details.q summary::before{content:"▸ ";color:var(--to)}
+details.q[open] summary::before{content:"▾ "}
+details.q .ans{margin:6px 0 0 1.1em;font-size:14.5px;color:var(--dim);line-height:1.8}
+
+.refs{font-size:13.5px;color:var(--dim);line-height:1.8}
+.refs li{margin:3px 0}
+.refs a{color:var(--dim)}
+footer{margin-top:60px;padding-top:16px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint);line-height:1.8}
+footer a{color:var(--dim)}
+
+@media (min-width:640px){ .hero{grid-template-columns:1fr 1fr 1fr} }
+@media (max-width:420px){
+  .wrap{padding:42px 16px 80px}
+  h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>非谓语动词（重做版）<br>三种形状的“性格”</h1>
+  <p class="sub">一个故事：Lily 在学开车。从“为什么”讲到“怎么用”。</p>
+</header>
+
+<div class="guide">
+  <p>这一版不按“作主语、作宾语、作定语……”一格一格背，而是先认识 doing、to do、done 三个形状各自的<b>性格</b>，大部分用法都能从性格推出来。</p>
+  <p>例句尽量用同一个故事。紫色的「深一层」框讲为什么，第一遍可以先跳过。每条规则都对照过 Cambridge 词典语法、维基百科等资料，出处在页尾。</p>
+</div>
+
+<!-- 三种性格 -->
+<div class="hero">
+  <div class="persona to">
+    <div class="name"><span class="icon">→</span>to do</div>
+    <div class="what">指向一个<b>目标</b>：还没发生、要去做、为了做</div>
+    <span class="e">Lily wants <span class="to">to drive</span>.</span>
+    <span class="e">She went out <span class="to">to buy</span> coffee.</span>
+  </div>
+  <div class="persona ing">
+    <div class="name"><span class="icon">▶</span>doing</div>
+    <div class="what">盯着<b>动作本身</b>：这件事、这个过程、正在发生</div>
+    <span class="e">Lily enjoys <span class="ing">driving</span>.</span>
+    <span class="e">the girl <span class="ing">driving</span> the red car</span>
+  </div>
+  <div class="persona ed">
+    <div class="name"><span class="icon">✓</span>done</div>
+    <div class="what">摆着一个<b>结果</b>：做完了，或者是被做的</div>
+    <span class="e">a <span class="ed">parked</span> car</span>
+    <span class="e">Lily had her car <span class="ed">washed</span>.</span>
+  </div>
+</div>
+
+<div class="order">
+  <b>遇到第二个动作，按这个顺序想：</b>
+  <ol>
+    <li>位置有没有<span class="badge hard">硬规定</span>？（介词后面、make / let 后面、某些动词后面）有就照办。</li>
+    <li>没有硬规定，就按<b>性格</b>选：要说目标用 <span class="to">to do</span>，说动作本身用 <span class="ing">doing</span>，说结果或被做用 <span class="ed">done</span>。</li>
+    <li>最后看：是谁做的？比谓语早吗？主动还是被动？</li>
+  </ol>
+</div>
+
+<nav class="toc">
+  <a href="#s1"><span>一</span>谓语和非谓语，差在“会不会变”</a>
+  <a href="#s2"><span>二</span>三种性格（核心）</a>
+  <a href="#s3"><span>三</span>先看硬规定</a>
+  <a href="#s4"><span>四</span>修饰别人：多半是从句压短的</a>
+  <a href="#s5"><span>五</span>谁做的？什么时候？主动还是被动？</a>
+  <a href="#s6"><span>六</span>实战：拆一个长句子</a>
+  <a href="#s7"><span>七</span>练一练</a>
+  <a href="#refs"><span>※</span>资料出处</a>
+</nav>
+
+<!-- 一 -->
+<section id="s1">
+  <h2><span class="no">第一节</span>谓语和非谓语，差在“会不会变”</h2>
+  <p>谓语动词会跟着主语和时间<b>变形</b>：</p>
+  <div class="ex"><div class="en">Lily <span class="fin">drives</span> to school. ／ Lily <span class="fin">drove</span> yesterday. ／ They <span class="fin">drive</span>.</div><div class="zh">主语换成 they，drives 变 drive；时间换成昨天，变 drove。</div></div>
+  <p>非谓语动词<b>不变</b>，主语、时间怎么换都是这个样子：</p>
+  <div class="ex"><div class="en">Lily likes <span class="ing">driving</span>. ／ Lily liked <span class="ing">driving</span>. ／ They like <span class="ing">driving</span>.</div><div class="zh">变的是 likes / liked / like，driving 一直不动。</div></div>
+  <div class="ex"><div class="en">Her dad <span class="fin">made</span> her <span class="bare">practise</span> every day.</div><div class="zh">爸爸让她每天练。made 是过去式（会变）；practise 没加 -s，也没变过去式（不变）。</div></div>
+  <div class="tip">
+    <span class="t">一个测试</span>
+    <p>换主语、换时间，<b>跟着变的是谓语，不变的是非谓语</b>。一个句子（一套“主语 + 谓语”）只能有一个会变的动词，所以 <span class="e">Lily wants drives.</span> 不行，必须写成 <span class="e">Lily wants <span class="to">to drive</span>.</span></p>
+  </div>
+  <div class="deep">
+    <span class="t">深一层：“非谓语”到底“非”在哪</span>
+    <p>语法书管会变的叫<b>限定动词</b>（finite），管不变的叫<b>非限定动词</b>（non-finite）。“限定”就是被主语和时间“定住”：它要显示时态、人称、单复数。非谓语不显示这些，所以撑不起一个句子，只能挂在谓语身上。</p>
+    <p>它连自己的时间都没有：<span class="e"><span class="ing">Driving</span> home, Lily <span class="fin">saw</span> an accident.</span> driving 本身看不出是过去还是现在，是谓语 saw 告诉你这是过去的事。</p>
+    <p class="src">出处：Cambridge “Finite and non-finite verbs”：限定动词显示时态、人称和数，非限定动词不显示。</p>
+  </div>
+  <p class="note">is driving、has driven、was driven 里的 driving、driven，是配着助动词一起当谓语（时态篇、语态篇讲过），会变的是 is / has / was。这一页只讲它们<b>不当谓语</b>的时候。</p>
+  <div class="rule">会变的动词只有一个，就是谓语；其余的动作都换成不会变的形状：doing、to do、done（还有不带 to 的原形）。</div>
+</section>
+
+<!-- 二 -->
+<section id="s2">
+  <h2><span class="no">第二节</span>三种性格（核心）</h2>
+
+  <h3><span class="badge to">→ to do</span> 指向一个目标</h3>
+  <div class="ex"><div class="en">Lily wants <span class="to">to drive</span>.</div><div class="zh">她想开车。想要的是一个还没实现的目标。</div></div>
+  <div class="ex"><div class="en">Lily is learning <span class="to">to drive</span>.</div><div class="zh">她在学开车。学的目标是“会开”。</div></div>
+  <div class="ex"><div class="en">She went out <span class="to">to buy</span> coffee.</div><div class="zh">她出门是为了买咖啡。目的，也是一个目标。</div></div>
+  <div class="ex"><div class="en">I have a lot of work <span class="to">to do</span>.</div><div class="zh">我有好多活要干。要做的，还没做。</div></div>
+  <div class="deep">
+    <span class="t">深一层：to do 为什么天生“朝前看”</span>
+    <p>to 本来就是介词“朝向”：<span class="e">go to school</span> 朝学校去。在古英语里，to do 是“介词 to + 动词的一种名词形式”，最早只是一个<b>指向将来</b>的介词短语，后来才扩展到各种动词后面。所以它至今带着“朝着某个还没到的东西”的味道：目标、计划、目的、要做的事。</p>
+    <p>Cambridge 也这么描述：to do 关注的是“动作这个想法，或者动作的结果”，而不是动作本身。</p>
+    <p class="src">出处：维基百科 “Gerund”（to 不定式最初是“指向将来的介词短语”）；Cambridge “Infinitives”。</p>
+  </div>
+
+  <h3><span class="badge ing">▶ doing</span> 盯着动作本身</h3>
+  <div class="ex"><div class="en">Lily enjoys <span class="ing">driving</span>.</div><div class="zh">她喜欢开车。享受的是开车这个过程。</div></div>
+  <div class="ex"><div class="en"><span class="ing">Driving</span> at night is dangerous.</div><div class="zh">夜里开车很危险。说的是“夜里开车这件事”。</div></div>
+  <div class="ex"><div class="en">The girl <span class="ing">driving</span> the red car is Lily.</div><div class="zh">开红车的那个女孩就是 Lily。她此刻正在开。</div></div>
+  <div class="deep">
+    <span class="t">深一层：doing 为什么盯着“动作本身”</span>
+    <p>-ing 原本是把动词变成<b>抽象名词</b>的词尾，相当于中文的“……这件事”，最早用在 like 这类动词后面，后来扩展到所有动词。所以 doing 天生指“这个动作、这个过程”，或者“正在发生”。</p>
+    <p>Cambridge 拿 like 举例：<span class="e">I love <span class="ing">cooking</span> Indian food.</span> -ing 强调做菜的过程本身；<span class="e">I like <span class="to">to drink</span> juice in the morning.</span> to do 强调的是一种偏好、一个习惯。</p>
+    <p class="src">出处：维基百科 “Gerund”；Cambridge “Verb patterns: verb + infinitive or verb + -ing?”。</p>
+  </div>
+
+  <h3><span class="badge ed">✓ done</span> 摆着一个结果：做完了，或被做了</h3>
+  <div class="ex"><div class="en">a <span class="ed">parked</span> car</div><div class="zh">一辆停着的车。车是被人停在那儿的。</div></div>
+  <div class="ex"><div class="en">Lily had her car <span class="ed">washed</span>.</div><div class="zh">Lily 找人把车洗了。车是被洗的。</div></div>
+  <div class="ex"><div class="en"><span class="ed">fallen</span> leaves ／ a <span class="ed">retired</span> teacher</div><div class="zh">落叶 ／ 退休的老师。叶子不是“被落”，是自己落完了；这里的 done 表“已经完成”。</div></div>
+  <div class="ex"><div class="en"><span class="ed">Tired</span>, Lily went to bed early.</div><div class="zh">Lily 累了，早早上床。tired 是一种结果状态。</div></div>
+  <div class="deep">
+    <span class="t">深一层：done 为什么有两种味道</span>
+    <p>done 最早是在完成时（have done）和被动（be done）里见到的，所以它带着“<b>完成</b>”和“<b>被做</b>”两种味道。怎么分？看动词能不能被别人做：wash、park、break 能被别人做 → 多半是“被做”；fall、retire、arrive 不能被别人做 → 是“已经完成”。</p>
+  </div>
+
+  <h3>证据：同一个动词，换个形状，意思就变</h3>
+  <p>这些动词两种形状都能接，意思却不一样。用性格一看就懂：</p>
+  <div class="verb">
+    <div class="vh">remember 记得</div>
+    <div class="ex"><div class="en">Lily remembered <span class="ing">locking</span> the car.</div><div class="zh"><span class="badge ing">▶</span> 锁车这件事真发生过：她记得自己锁过。</div></div>
+    <div class="ex"><div class="en">Lily remembered <span class="to">to lock</span> the car.</div><div class="zh"><span class="badge to">→</span> 锁车是要去做的事：她没忘，去锁了。</div></div>
+  </div>
+  <div class="verb">
+    <div class="vh">forget 忘记</div>
+    <div class="ex"><div class="en">Lily will never forget <span class="ing">driving</span> alone for the first time.</div><div class="zh"><span class="badge ing">▶</span> 第一次独自开车，这件事发生过，忘不了。</div></div>
+    <div class="ex"><div class="en">Lily forgot <span class="to">to lock</span> the car.</div><div class="zh"><span class="badge to">→</span> 本该去锁，忘了，所以没锁。</div></div>
+  </div>
+  <div class="verb">
+    <div class="vh">stop 停下</div>
+    <div class="ex"><div class="en">Lily stopped <span class="ing">talking</span>.</div><div class="zh"><span class="badge ing">▶</span> 她正在说话，停下了这个动作。</div></div>
+    <div class="ex"><div class="en">Lily stopped <span class="to">to buy</span> coffee.</div><div class="zh"><span class="badge to">→</span> 她停（车），是为了去买咖啡。to buy 是目的。</div></div>
+  </div>
+  <div class="verb">
+    <div class="vh">try 试</div>
+    <div class="ex"><div class="en">Lily tried <span class="ing">pressing</span> the red button.</div><div class="zh"><span class="badge ing">▶</span> 她真按了一下，看看会怎样。</div></div>
+    <div class="ex"><div class="en">Lily tried <span class="to">to start</span> the car, but it wouldn't start.</div><div class="zh"><span class="badge to">→</span> 发动车是目标，她想做到，没做成。</div></div>
+  </div>
+  <div class="verb">
+    <div class="vh">see / hear 看见、听见</div>
+    <div class="ex"><div class="en">Lily saw a boy <span class="ing">crossing</span> the road.</div><div class="zh"><span class="badge ing">▶</span> 看到他正在过马路的那一段。</div></div>
+    <div class="ex"><div class="en">Lily saw a boy <span class="bare">cross</span> the road.</div><div class="zh">不带 to 的原形：看到他从头到尾过完了马路，整件事。</div></div>
+  </div>
+  <div class="verb">
+    <div class="vh">like 喜欢</div>
+    <div class="ex"><div class="en">I like <span class="ing">driving</span>.</div><div class="zh"><span class="badge ing">▶</span> 我喜欢开车（这件事、这个过程）。</div></div>
+    <div class="ex"><div class="en">I'd like <span class="to">to drive</span>.</div><div class="zh"><span class="badge to">→</span> 我想开（一个愿望）。would like 后面只能接 to do。</div></div>
+  </div>
+  <p class="note">这几组的解释和 Cambridge 词典语法给的一致：stop to do 是“停下来，为了做另一件事”；try doing 是“做一下，看看效果”，try to do 是“设法做到，可能没成功”；see sb do 强调整件事，see sb doing 强调正在进行。</p>
+  <div class="rule"><span class="ing">▶ doing</span> 盯着动作本身，<span class="to">→ to do</span> 指向一个目标，<span class="ed">✓ done</span> 摆着一个结果（做完了或被做了）。</div>
+</section>
+
+<!-- 三 -->
+<section id="s3">
+  <h2><span class="no">第三节</span>先看硬规定：位置定死了，就不用想性格</h2>
+
+  <h3><span class="badge hard">规定 1</span> 介词后面只能用 doing</h3>
+  <p>介词后面只能放名词，doing 正是动词的“名词版”。</p>
+  <div class="ex"><div class="en">Lily is good at <span class="ing">driving</span>.</div><div class="zh">Lily 很会开车。</div></div>
+  <div class="ex"><div class="en">She drove off without <span class="ing">paying</span>.</div><div class="zh">她没付钱就把车开走了。</div></div>
+  <div class="ex"><div class="en">Thank you for <span class="ing">teaching</span> me.</div><div class="zh">谢谢你教我。</div></div>
+  <div class="tip">
+    <span class="t">小心：to 有时也是介词</span>
+    <p>to 有两种身份。介词 to 后面接名词，意思是“到、向、给”（<span class="e">go to school</span>）；不定式的 to 后面接原形，它自己没意思（<span class="e">want to drive</span>）。</p>
+    <p><span class="e">look forward to</span>（盼着）里的 to 是介词，所以接动作要用 doing：<span class="e">I'm looking forward to <span class="ing">driving</span> to the beach.</span>（我盼着开车去海边）</p>
+    <p><b>判断法：</b>往 to 后面放个名词。<span class="e">I'm looking forward to the holiday.</span>（盼着放假）说得通 → 介词 → doing。<span class="e">I want to the holiday.</span> 说不通 → 不定式 → 原形。</p>
+    <p>常见的介词 to：look forward to 盼着、be used to 习惯于、when it comes to 说到、object to 反对。<span class="e">Lily is used to <span class="ing">driving</span> at night.</span>（她习惯夜里开车了）别跟 <span class="e">She used <span class="to">to take</span> the bus.</span>（她以前常坐公交）混。</p>
+  </div>
+
+  <h3><span class="badge hard">规定 2</span> make / let / have + 人 + 原形（不带 to）</h3>
+  <div class="ex"><div class="en">Her dad made her <span class="bare">practise</span> every day.</div><div class="zh">爸爸逼她每天练。</div></div>
+  <div class="ex"><div class="en">He let her <span class="bare">drive</span> his car.</div><div class="zh">他让她开他的车。</div></div>
+  <div class="ex"><div class="en">I'll have Tom <span class="bare">check</span> the car.</div><div class="zh">我叫 Tom 检查一下车。</div></div>
+  <p class="note">help 后面带不带 to 都行：<span class="e">Her dad helped her (to) park.</span>　see、hear、watch 后面用原形或 doing，见第二节。</p>
+  <div class="deep">
+    <span class="t">深一层：变被动时，make 的 to 会冒出来，let 却不能变被动</span>
+    <p><span class="e">They made her wait.</span> → <span class="e">She was made <b>to</b> wait.</span> 主动句省掉的 to，被动句里必须补上——这说明那个原形本来就是不定式。</p>
+    <p>let 表“允许”时一般不用被动，要换成 be allowed to：<span class="e">She was allowed to drive his car.</span>（不说 She was let drive。）</p>
+    <p class="src">出处：Cambridge “Make”、“Let, let's”。</p>
+  </div>
+
+  <h3><span class="badge hard">规定 3</span> 有些动词只接一种——但能看出性格</h3>
+  <table class="tbl">
+    <thead><tr><th>只接</th><th>常见动词 · 共同点</th></tr></thead>
+    <tbody>
+      <tr><td><span class="to">→ to do</span></td><td>want、hope、plan、decide、promise、agree、refuse、learn、manage、afford、offer<br>多是“想要、打算、决定、答应”——都在说一个<b>还没实现的目标</b>。<br><span class="e">Lily decided <span class="to">to buy</span> a car.</span></td></tr>
+      <tr><td><span class="ing">▶ doing</span></td><td>enjoy、mind、finish、keep、practise、give up、imagine、miss<br>多是“享受、介意、做完、坚持、练习”——都在跟<b>动作本身</b>打交道。<br><span class="e">Lily keeps <span class="ing">practising</span>.</span></td></tr>
+    </tbody>
+  </table>
+  <p>但也有一批<b>违反性格</b>、只能死记的：avoid、consider、suggest、risk、put off、feel like 说的都是还没做的事，后面却接 doing：<span class="e">Lily avoids <span class="ing">driving</span> in the rain.</span>（她尽量不在雨天开车）</p>
+  <div class="deep">
+    <span class="t">深一层：为什么会有“违反性格”的词</span>
+    <p>doing 进入动词后面，是一类一类“传染”开的：先是 like 这类表喜恶的动词，再扩展到意思相近的一组组动词。所以今天接 doing 的动词大致按意思成群（喜恶类、考虑类、回忆类、建议类、推迟类、避免类……），而不是严格按“将来 / 过去”。性格能解释大多数，解释不了的，就按词去记。</p>
+    <p class="src">出处：维基百科 “Gerund”（引 COBUILD 语料库对常用动词的分组）。</p>
+  </div>
+  <p class="note">拿不准就查词典：Cambridge、牛津等学习词典会在词条里标出这个词后面接 to do 还是 -ing。</p>
+  <div class="rule">先看硬规定：介词后用 doing；make / let / have 后用原形；有的动词只认一种。没有硬规定，再按性格选。</div>
+</section>
+
+<!-- 四 -->
+<section id="s4">
+  <h2><span class="no">第四节</span>修饰别人：多半是从句压短来的</h2>
+  <p>非谓语用来修饰一个名词或整句话时，基本都能还原成从句：删掉从句里的主语和 be（或 should 这类词），剩下的动作按性格变形。</p>
+
+  <h3>修饰名词（定语从句压短）</h3>
+  <div class="chain">
+    <div class="from">the girl <s class="cut">who is</s> driving the red car</div>
+    <div class="to-line">the girl <span class="ing">driving</span> the red car</div>
+    <div class="why"><span class="badge ing">▶</span> 她自己在开。开红车的那个女孩。</div>
+  </div>
+  <div class="chain">
+    <div class="from">the car <s class="cut">which was</s> parked outside</div>
+    <div class="to-line">the car <span class="ed">parked</span> outside</div>
+    <div class="why"><span class="badge ed">✓</span> 车是被停的。停在外面的那辆车。</div>
+  </div>
+  <div class="chain">
+    <div class="from">the first person in her class who passed the test</div>
+    <div class="to-line">the first person in her class <span class="to">to pass</span> the test</div>
+    <div class="why"><span class="badge to">→</span> the first / last / only 后面常用 to do。班上第一个通过考试的人。</div>
+  </div>
+
+  <h3>修饰整句（状语从句压短）</h3>
+  <div class="chain">
+    <div class="from"><s class="cut">While she was</s> driving home, Lily saw an accident.</div>
+    <div class="to-line"><span class="ing">Driving</span> home, Lily saw an accident.</div>
+    <div class="why"><span class="badge ing">▶</span> 时间：开车回家的路上，她看到一起车祸。</div>
+  </div>
+  <div class="chain">
+    <div class="from"><s class="cut">Because she</s> felt tired, Lily stopped the car.</div>
+    <div class="to-line"><span class="ing">Feeling</span> tired, Lily stopped the car.</div>
+    <div class="why"><span class="badge ing">▶</span> 原因：她觉得累，就把车停了。</div>
+  </div>
+  <div class="chain">
+    <div class="from"><s class="cut">If it is</s> washed every week, the car will look new.</div>
+    <div class="to-line"><span class="ed">Washed</span> every week, the car will look new.</div>
+    <div class="why"><span class="badge ed">✓</span> 条件：车是被洗的。每周洗一次，车看起来就跟新的一样。</div>
+  </div>
+  <div class="chain">
+    <div class="from">She went out so that she could buy coffee.</div>
+    <div class="to-line">She went out <span class="to">to buy</span> coffee.</div>
+    <div class="why"><span class="badge to">→</span> 目的。</div>
+  </div>
+
+  <h3>主语一定要对得上</h3>
+  <p>压短时删掉的主语，读者会自动拿主句的主语来补。两个主语不是同一个人，就闹笑话：</p>
+  <div class="ex bad"><div class="en">Driving home, a dog ran in front of the car.</div><div class="zh">读起来是：狗在开车回家？</div></div>
+  <div class="ex good"><div class="en">Driving home, Lily saw a dog run in front of the car.</div><div class="zh">开车回家的是 Lily，主句的主语也是 Lily。</div></div>
+  <p class="note">这种错误叫“悬垂修饰语”。少数说法用久了成了固定短语，不算错：generally speaking 一般来说、judging from 从……看、considering 考虑到。</p>
+
+  <h3>主语对不上：把主语留下（独立主格）</h3>
+  <div class="chain">
+    <div class="from">When the car was washed, Lily drove to school.</div>
+    <div class="to-line">The car <span class="ed">washed</span>, Lily drove to school.</div>
+    <div class="why">车洗好了，Lily 就开车去学校。主语一个是 the car，一个是 Lily，所以 the car 留着。</div>
+  </div>
+  <div class="ex"><div class="en">Lily drove with the radio <b>on</b>.</div><div class="zh">Lily 开着收音机开车。with + 名词 + 状态，口语里最常见。</div></div>
+  <div class="ex"><div class="en">Weather <span class="ing">permitting</span>, we'll drive to the beach tomorrow.</div><div class="zh">天气允许的话，我们明天开车去海边。这是个固定说法。</div></div>
+  <div class="deep">
+    <span class="t">深一层：名字是什么意思</span>
+    <p>“独立”译自 absolute，来自拉丁语，原意是“松开的、分开的”：这个短语不挂在句子里任何一个词身上，单独交代整句的背景。“主格”是说里面的代词用主格：<span class="e"><b>He</b> being ill, we stayed at home.</span>（用 He，不用 Him）。</p>
+    <p>它在现代英语里不算常见，多出现在书面语里，口语里主要是 weather permitting、all things considered 这类固定说法。</p>
+    <p class="src">出处：维基百科 “Absolute construction”、“Dangling modifier”。</p>
+  </div>
+  <div class="rule">修饰别人的非谓语，把删掉的部分补回去，就是从句。删主语之前先看：两个主语对得上吗？</div>
+</section>
+
+<!-- 五 -->
+<section id="s5">
+  <h2><span class="no">第五节</span>谁做的？什么时候？主动还是被动？</h2>
+  <p>非谓语自己不带主语、不带时间。需要的时候，靠下面几种办法补上。</p>
+
+  <h3>谁做的：默认是句子的主语</h3>
+  <div class="ex"><div class="en">Do you mind <span class="ing">driving</span>?</div><div class="zh">你介意开车吗？（你来开）</div></div>
+  <div class="ex"><div class="en">Do you mind <b>me</b> <span class="ing">driving</span> your car?</div><div class="zh">你介意我开你的车吗？doing 前面加 me / my / Lily's，换成别人做。</div></div>
+  <div class="ex"><div class="en">It's hard <b>for Lily</b> <span class="to">to park</span>.</div><div class="zh">停车对 Lily 来说很难。to do 前面用 for 人。</div></div>
+  <div class="ex"><div class="en">I want <b>her</b> <span class="to">to drive</span>.</div><div class="zh">我想让她开。</div></div>
+
+  <h3>什么时候：默认和谓语同时；更早就加 having / to have</h3>
+  <div class="ex"><div class="en"><span class="ing">Having passed</span> the test, Lily bought a car.</div><div class="zh">先通过了考试，Lily 才买了车。</div></div>
+  <div class="ex"><div class="en">She seems <span class="to">to have forgotten</span> her keys.</div><div class="zh">她好像（之前就）忘了带钥匙。</div></div>
+
+  <h3>主动还是被动：被动就在形状里加 be + done</h3>
+  <div class="ex"><div class="en">Lily hates <span class="ing">being told</span> what to do.</div><div class="zh">Lily 讨厌被人指挥。</div></div>
+  <div class="ex"><div class="en">The car needs <span class="to">to be washed</span>. = The car needs <span class="ing">washing</span>.</div><div class="zh">车该洗了。need doing 形式是主动的，意思却是被动的。</div></div>
+  <table class="tbl">
+    <thead><tr><th></th><th>主动</th><th>被动</th><th>比谓语更早</th></tr></thead>
+    <tbody>
+      <tr><td>doing</td><td class="e">driving</td><td class="e">being driven</td><td class="e">having driven</td></tr>
+      <tr><td>to do</td><td class="e">to drive</td><td class="e">to be driven</td><td class="e">to have driven</td></tr>
+    </tbody>
+  </table>
+  <p class="note">表里的 having、being、be 都是老熟人：have + done 表完成，be + done 表被动，搬到非谓语里照样用。</p>
+  <div class="rule">非谓语自己不带人和时间：用 my / for 人补“谁做的”，用 having / to have 补“更早”，用 being / to be + done 补“被做”。</div>
+</section>
+
+<!-- 六 -->
+<section id="s6">
+  <h2><span class="no">第六节</span>实战：拆一个长句子</h2>
+  <div class="parse">
+    <div class="whole"><span class="ing">Feeling</span> tired after <span class="ing">driving</span> for three hours, Lily <span class="fin">stopped</span> at a café <span class="to">to buy</span> coffee, <span class="ing">leaving</span> her car <span class="ed">parked</span> outside.</div>
+    <ul class="parts">
+      <li><span class="badge fin">谓语</span><div><b>stopped</b> 是唯一会变的动词。主干：<span class="e">Lily stopped at a café.</span>（Lily 在一家咖啡馆停下）</div></li>
+      <li><span class="badge ing">▶</span><div><span class="e">Feeling tired</span> 原因：她觉得累。</div></li>
+      <li><span class="badge hard">介词后</span><div><span class="e">after driving for three hours</span> after 是介词，只能接 doing：开了三个小时车以后。</div></li>
+      <li><span class="badge to">→</span><div><span class="e">to buy coffee</span> 目的：为了买咖啡。</div></li>
+      <li><span class="badge ing">▶</span><div><span class="e">leaving her car</span> 伴随：她把车留在了外面。</div></li>
+      <li><span class="badge ed">✓</span><div><span class="e">parked outside</span> 车是被停放的，补充说明 car 的状态。</div></li>
+    </ul>
+  </div>
+  <p>合起来：开了三个小时车，Lily 觉得累了，就在一家咖啡馆停下来买咖啡，把车停在了外面。</p>
+  <div class="rule">读长句：先找唯一会变的动词，抓住主干；再给每个挂件贴上 ▶、→、✓，看它是动作本身、目标，还是结果。</div>
+</section>
+
+<!-- 七 -->
+<section id="s7">
+  <h2><span class="no">第七节</span>练一练（点开看答案）</h2>
+  <details class="q"><summary><span class="e">Lily wants ___ (drive) to school.</span></summary><div class="ans"><span class="to">to drive</span>。→ 想要的是目标；want 只接 to do。</div></details>
+  <details class="q"><summary><span class="e">Lily enjoys ___ (drive) at night.</span></summary><div class="ans"><span class="ing">driving</span>。▶ 享受的是动作本身；enjoy 只接 doing。</div></details>
+  <details class="q"><summary><span class="e">Lily is good at ___ (park).</span></summary><div class="ans"><span class="ing">parking</span>。硬规定：介词 at 后面用 doing。</div></details>
+  <details class="q"><summary><span class="e">Her dad made her ___ (practise) every day.</span></summary><div class="ans"><span class="bare">practise</span>。硬规定：make + 人 + 原形（不带 to）。</div></details>
+  <details class="q"><summary><span class="e">She was made ___ (practise) every day.</span></summary><div class="ans"><span class="to">to practise</span>。变被动，to 要补回来。</div></details>
+  <details class="q"><summary><span class="e">Don't forget ___ (lock) the car.</span></summary><div class="ans"><span class="to">to lock</span>。→ 锁车还没做，是要去做的事。</div></details>
+  <details class="q"><summary><span class="e">I remember ___ (lock) the car. I'm sure it's locked.</span></summary><div class="ans"><span class="ing">locking</span>。▶ 锁车这件事已经发生过。</div></details>
+  <details class="q"><summary><span class="e">On the way home, Lily stopped ___ (buy) some coffee.</span></summary><div class="ans"><span class="to">to buy</span>。→ 停下来是为了买咖啡。</div></details>
+  <details class="q"><summary><span class="e">The car ___ (park) outside is Lily's.</span></summary><div class="ans"><span class="ed">parked</span>。✓ 车是被停的。</div></details>
+  <details class="q"><summary><span class="e">___ (feel) tired, Lily went to bed early.</span></summary><div class="ans"><span class="ing">Feeling</span>。▶ 原因；觉得累的是 Lily 自己。也可以直接说 Tired, Lily went to bed early.</div></details>
+  <details class="q"><summary><span class="e">I'm looking forward to ___ (see) you.</span></summary><div class="ans"><span class="ing">seeing</span>。to 是介词：I'm looking forward to the holiday 说得通。</div></details>
+  <details class="q"><summary><span class="e">Driving home, a dog ran in front of the car.</span> 错在哪？</summary><div class="ans">主语对不上：读起来是狗在开车。改成 Driving home, <b>Lily saw</b> a dog run in front of the car.</div></details>
+</section>
+
+<!-- 出处 -->
+<section id="refs">
+  <h2><span class="no">资料出处</span>这一页核对过的资料</h2>
+  <ul class="refs">
+    <li>Cambridge Dictionary · English Grammar Today：<a href="https://dictionary.cambridge.org/grammar/british-grammar/finite-and-non-finite-verbs">Finite and non-finite verbs</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/clauses-finite-and-non-finite">Clauses: finite and non-finite</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/verb-patterns-verb-infinitive-or-verb-ing">Verb patterns: verb + infinitive or verb + -ing?</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/infinitives-with-and-without-to">Infinitives</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/hear-see-etc-object-infinitive-or-ing">Hear, see, etc. + object + infinitive or -ing</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/stop-ing-form-or-to-infinitive">Stop + -ing form or to-infinitive</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/look-forward-to">Look forward to</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/make">Make</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/let-let-s">Let, let's</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/have-something-done">Have something done</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/need">Need</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/infinitive-active-or-passive">Infinitive: active or passive</a>、<a href="https://dictionary.cambridge.org/grammar/british-grammar/perfect-infinitive-with-to-to-have-worked">Perfect infinitive</a></li>
+    <li>维基百科：<a href="https://en.wikipedia.org/wiki/Gerund">Gerund</a>（-ing 与 to 不定式的来历、常用动词按意思分组，引 COBUILD）、<a href="https://en.wikipedia.org/wiki/Absolute_construction">Absolute construction</a>、<a href="https://en.wikipedia.org/wiki/Dangling_modifier">Dangling modifier</a></li>
+  </ul>
+</section>
+
+<footer>非谓语动词（重做版）· 主线：▶ doing 动作本身，→ to do 指向目标，✓ done 结果或被做。<br>另一版（精简版）：<a href="05-非谓语动词.html">05-非谓语动词.html</a></footer>
+
+</div>
+</body>
+</html>
