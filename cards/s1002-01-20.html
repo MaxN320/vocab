@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三个故事记 20 个词</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;--red:#ff8a80;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:24px;margin:4px 0 10px}
+.how{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft)}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.story,.recall{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:18px}
+.st-head{font-size:17px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:600;color:var(--amber);border:1px solid rgba(226,178,60,.45);border-radius:999px;padding:1px 9px}
+.st-text p{font-size:16.5px;line-height:1.95;margin-top:10px}
+.w{color:var(--amber);font-weight:800;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.sub{margin:16px 0 4px;font-size:13px;color:var(--mute);letter-spacing:.05em}
+.line{border-top:1px solid var(--line);padding:10px 0 8px;display:flex;gap:10px;align-items:flex-start}
+.line .txt{flex:1}
+.line .en{font-size:16.5px;line-height:1.7}
+.hl{color:var(--green);font-weight:800}
+.line .cn{font-size:14px;color:var(--soft);margin-top:2px}
+body.hide-cn .line:not(.show) .cn{display:none}
+body.hide-cn .line .en{cursor:pointer}
+.snd{flex:0 0 auto;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.rc{border-top:1px solid var(--line);padding:12px 0}
+.rc .n{font-size:12px;color:var(--mute)}
+.rc .cue{font-size:15.5px;margin:4px 0 6px}
+.rc .en{font-size:16.5px;line-height:1.7}
+.gap{color:var(--amber);font-weight:800;letter-spacing:2px;border-bottom:2px solid var(--amber)}
+.rc .ans{display:none;margin-top:6px;font-size:14.5px;color:var(--soft)}
+.rc .ans b{color:var(--green);font-size:17px}
+.rc.open .ans{display:block}
+.btns{display:flex;gap:8px;margin-top:8px}
+.btns button{flex:1;padding:9px 6px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:14.5px;font-weight:700}
+.btns .reveal{border-color:var(--accent);color:var(--accent)}
+.btns .no{border-color:rgba(255,138,128,.5);color:var(--red)}
+.btns .yes{border-color:rgba(94,197,154,.5);color:var(--green)}
+.rc.open .reveal,.rc:not(.open) .no,.rc:not(.open) .yes,.rc.done .btns{display:none}
+.rc.done.ok .n::after{content:"  ✅";}
+.rc.done.bad .n::after{content:"  ❌";}
+.sum{position:sticky;bottom:0;margin-top:14px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;color:var(--soft)}
+.sum b{color:var(--ink)}
+.sum .miss{color:var(--amber);font-weight:700}
+</style></head><body><div class="wrap">
+<header><div class="kicker">复习 · 10/2 前 20 个词</div><h1>三个故事记 20 个词</h1>
+<div class="how"><b>① 读故事</b>：靠剧情记住黄色英文的意思，点它能听发音。<br><b>② 读关键句</b>：学这个词在英文里怎么用，点 🔊 跟读。<br><b>③ 回忆</b>：最下面 20 题打乱了顺序，看中文想出英文词，再点「看答案」对一下。</div>
+<div class="toggle">关键句的中文：<button data-cn="show" class="on">显示</button><button data-cn="hide">隐藏（点英文才出来）</button></div>
+</header>
+<section class="story"><div class="st-head">🗡️ 故事 1：荆轲刺秦 <span class="tag">历史 · 紧张、悲壮</span></div><div class="st-text"><p>秦国一路吞并六国，眼看就要把它们 <span class="w">integrate into one empire</span>，下一个就轮到燕国。太子丹找到荆轲：请你去秦国，<span class="w">represent</span> 燕国，假装献上地图。</p><p>易水边寒风刺骨。高渐离击筑，荆轲高歌：风萧萧兮易水寒，壮士一去兮不复还。<span class="w">Beyond the river</span>，是秦国，也是死路。</p><p>秦王的大殿上，副手秦舞阳脸色煞白，浑身发抖；荆轲却 <span class="w">steady</span> 得像块石头，笑着走上台阶。</p><p>地图一寸寸展开——图穷匕见！谁也没 <span class="w">expected</span> 地图里藏着一把刀。荆轲一把抓住秦王的袖子，匕首 <span class="w">straight</span> 刺了过去——袖子断了！秦王绕着柱子 <span class="w">back and forth</span> 地逃，满殿大臣手无寸铁，只能干看着……</p></div><div class="sub">关键句 · 点 🔊 听，自己跟着说一遍</div><div class="line"><div class="txt"><div class="en">Qin was about to <span class="hl">integrate</span> all the states into one empire.</div><div class="cn">秦国眼看就要把各国并成一个帝国。</div></div><button class="snd" data-a="audio/s1002-01-20-01.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Jing Ke went to Qin to <span class="hl">represent</span> the State of Yan.</div><div class="cn">荆轲去秦国，代表燕国。</div></div><button class="snd" data-a="audio/s1002-01-20-02.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en"><span class="hl">Beyond</span> the river was Qin, and death.</div><div class="cn">河的那边，是秦国，也是死亡。</div></div><button class="snd" data-a="audio/s1002-01-20-03.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Qin Wuyang&#x27;s hands shook, but Jing Ke stayed <span class="hl">steady</span>.</div><div class="cn">秦舞阳双手发抖，荆轲却稳如磐石。</div></div><button class="snd" data-a="audio/s1002-01-20-04.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Nobody <span class="hl">expected</span> a knife inside the map.</div><div class="cn">谁也没想到地图里藏着一把刀。</div></div><button class="snd" data-a="audio/s1002-01-20-05.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Jing Ke ran <span class="hl">straight</span> at the king.</div><div class="cn">荆轲径直朝秦王冲了过去。</div></div><button class="snd" data-a="audio/s1002-01-20-06.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">The king ran back and <span class="hl">forth</span> around a pillar.</div><div class="cn">秦王绕着柱子来回逃。</div></div><button class="snd" data-a="audio/s1002-01-20-07.mp3">🔊</button></div></section><section class="story"><div class="st-head">🔥 故事 2：卧薪尝胆 <span class="tag">历史 · 屈辱、复仇</span></div><div class="st-text"><p>越王勾践兵败投降，被押到吴国当奴隶。他住在马棚边的石屋里，<span class="w">living conditions</span> 糟透了；天天喂马扫粪，<span class="w">physically</span> 累到快撑不住。最屈辱的一次，吴王夫差生病，勾践跪在地上，亲口尝了夫差的粪便，笑着说：大王的病快好了。</p><p>三年后他被放回越国。他睡在柴草上，屋里挂着一颗苦胆，每顿饭前都舔一口，问自己：你忘了会稽之耻吗？他发誓要 <span class="w">seek revenge</span>。</p><p>二十年，天天如此，一天没断——<span class="w">consistent</span> 得吓人。越国的强大是 <span class="w">gradual</span> 的：十年生养人口，十年训练军队。</p><p>等到兵力终于 <span class="w">sufficient</span>，勾践一举灭吴。夫差拔剑自刎。</p></div><div class="sub">关键句 · 点 🔊 听，自己跟着说一遍</div><div class="line"><div class="txt"><div class="en">His living <span class="hl">conditions</span> were terrible: he slept next to the horses.</div><div class="cn">他的生活条件糟透了：睡在马旁边。</div></div><button class="snd" data-a="audio/s1002-01-20-08.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">He was <span class="hl">physically</span> exhausted, but he never gave up.</div><div class="cn">他身体累垮了，却从没放弃。</div></div><button class="snd" data-a="audio/s1002-01-20-09.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">He swore to <span class="hl">seek</span> revenge.</div><div class="cn">他发誓要报仇。</div></div><button class="snd" data-a="audio/s1002-01-20-10.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">For twenty years he was <span class="hl">consistent</span>: every day, the same bitter taste.</div><div class="cn">二十年里他始终如一：每天都尝同样的苦味。</div></div><button class="snd" data-a="audio/s1002-01-20-11.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Yue&#x27;s rise was <span class="hl">gradual</span>: ten years to grow, ten years to train.</div><div class="cn">越国是一点点强大起来的：十年生养，十年训练。</div></div><button class="snd" data-a="audio/s1002-01-20-12.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">When his army was finally <span class="hl">sufficient</span>, he attacked Wu.</div><div class="cn">等兵力终于足够了，他向吴国发起了进攻。</div></div><button class="snd" data-a="audio/s1002-01-20-13.mp3">🔊</button></div></section><section class="story"><div class="st-head">🚢 故事 3：泰坦尼克号 <span class="tag">电影 · 爱情、心碎</span></div><div class="st-text"><p>Rose 是头等舱的大小姐，被婚约压得喘不过气，深夜跑到船尾想跳海。是穷画家 Jack 把她拉了回来。和 Jack 在一起，她整个人都被 <span class="w">energized</span> 了。</p><p>Jack 要去参加头等舱的晚宴，Molly 太太给他找来一套 <span class="w">best-fitting</span> 的礼服，穿上活像个绅士。</p><p>黄昏的船头，Rose 闭上眼睛，<span class="w">stretched out her arms</span>，Jack 从身后扶住她。她说：I&#x27;m flying!</p><p>可船开得太快了，超速 <span class="w">contributed to</span> 这场灾难：泰坦尼克号撞上了冰山。</p><p>一个冰冷的 <span class="w">statistic</span>：船上两千多人，救生艇只够一半。军官大声 <span class="w">stated</span>：只让妇女和儿童上船！</p><p>最后，冰冷的海面上只剩一块木板，上面只有一个位置是 <span class="w">available</span> 的。Jack 把它留给了 Rose……</p></div><div class="sub">关键句 · 点 🔊 听，自己跟着说一遍</div><div class="line"><div class="txt"><div class="en">With Jack, Rose felt <span class="hl">energized</span> and alive again.</div><div class="cn">和 Jack 在一起，Rose 浑身充满活力，又活过来了。</div></div><button class="snd" data-a="audio/s1002-01-20-14.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Molly found the <span class="hl">best-fitting</span> suit for Jack.</div><div class="cn">Molly 给 Jack 找了一套最合身的礼服。</div></div><button class="snd" data-a="audio/s1002-01-20-15.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">At the front of the ship, Rose <span class="hl">stretched</span> out her arms.</div><div class="cn">在船头，Rose 张开了双臂。</div></div><button class="snd" data-a="audio/s1002-01-20-16.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">The high speed <span class="hl">contributed</span> to the disaster.</div><div class="cn">船速太快，是酿成这场灾难的原因之一。</div></div><button class="snd" data-a="audio/s1002-01-20-17.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">One terrible <span class="hl">statistic</span>: there were lifeboats for only half of the people.</div><div class="cn">一个可怕的数字：救生艇只够一半的人用。</div></div><button class="snd" data-a="audio/s1002-01-20-18.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">The officer <span class="hl">stated</span> clearly, &quot;Women and children only!&quot;</div><div class="cn">军官明确宣布：「只让妇女和儿童上船！」</div></div><button class="snd" data-a="audio/s1002-01-20-19.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">On the piece of wood, only one place was <span class="hl">available</span>.</div><div class="cn">那块木板上只有一个位置。</div></div><button class="snd" data-a="audio/s1002-01-20-20.mp3">🔊</button></div></section>
+<section class="recall"><div class="st-head">🧠 回忆 · 20 个词打乱顺序</div><div id="rcs"></div><div class="sum" id="sum"></div></section>
+</div><script>
+var D = {"id": "s1002-01-20", "stories": [{"lines": [{"word": "integrate", "en": "Qin was about to [[integrate]] all the states into one empire.", "cn": "秦国眼看就要把各国并成一个帝国。"}, {"word": "represent", "en": "Jing Ke went to Qin to [[represent]] the State of Yan.", "cn": "荆轲去秦国，代表燕国。"}, {"word": "beyond", "en": "[[Beyond]] the river was Qin, and death.", "cn": "河的那边，是秦国，也是死亡。"}, {"word": "steady", "en": "Qin Wuyang's hands shook, but Jing Ke stayed [[steady]].", "cn": "秦舞阳双手发抖，荆轲却稳如磐石。"}, {"word": "expect", "en": "Nobody [[expected]] a knife inside the map.", "cn": "谁也没想到地图里藏着一把刀。"}, {"word": "straight", "en": "Jing Ke ran [[straight]] at the king.", "cn": "荆轲径直朝秦王冲了过去。"}, {"word": "forth", "en": "The king ran back and [[forth]] around a pillar.", "cn": "秦王绕着柱子来回逃。"}]}, {"lines": [{"word": "condition", "en": "His living [[conditions]] were terrible: he slept next to the horses.", "cn": "他的生活条件糟透了：睡在马旁边。"}, {"word": "physically", "en": "He was [[physically]] exhausted, but he never gave up.", "cn": "他身体累垮了，却从没放弃。"}, {"word": "seek", "en": "He swore to [[seek]] revenge.", "cn": "他发誓要报仇。"}, {"word": "consistent", "en": "For twenty years he was [[consistent]]: every day, the same bitter taste.", "cn": "二十年里他始终如一：每天都尝同样的苦味。"}, {"word": "gradual", "en": "Yue's rise was [[gradual]]: ten years to grow, ten years to train.", "cn": "越国是一点点强大起来的：十年生养，十年训练。"}, {"word": "sufficient", "en": "When his army was finally [[sufficient]], he attacked Wu.", "cn": "等兵力终于足够了，他向吴国发起了进攻。"}]}, {"lines": [{"word": "energize", "en": "With Jack, Rose felt [[energized]] and alive again.", "cn": "和 Jack 在一起，Rose 浑身充满活力，又活过来了。"}, {"word": "best-fitting", "en": "Molly found the [[best-fitting]] suit for Jack.", "cn": "Molly 给 Jack 找了一套最合身的礼服。"}, {"word": "stretch", "en": "At the front of the ship, Rose [[stretched]] out her arms.", "cn": "在船头，Rose 张开了双臂。"}, {"word": "contribute", "en": "The high speed [[contributed]] to the disaster.", "cn": "船速太快，是酿成这场灾难的原因之一。"}, {"word": "statistic", "en": "One terrible [[statistic]]: there were lifeboats for only half of the people.", "cn": "一个可怕的数字：救生艇只够一半的人用。"}, {"word": "state", "en": "The officer [[stated]] clearly, \"Women and children only!\"", "cn": "军官明确宣布：「只让妇女和儿童上船！」"}, {"word": "available", "en": "On the piece of wood, only one place was [[available]].", "cn": "那块木板上只有一个位置。"}]}]}, audio = null;
+function play(url) { if (audio) audio.pause(); audio = new Audio(url); audio.play().catch(function () {}); }
+function say(t) { play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(t) + "&type=1"); }
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function () { say(e.textContent); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function () { play(b.dataset.a); }; });
+document.querySelectorAll(".line .en").forEach(function (e) { e.onclick = function () { e.closest(".line").classList.toggle("show"); }; });
+var tg = document.querySelectorAll(".toggle button");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("hide-cn", b.dataset.cn === "hide");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+// 回忆：所有关键句打乱顺序，看中文想英文
+var all = [], k = 0;
+D.stories.forEach(function (s) { s.lines.forEach(function (l) { k++; all.push({w: l.word, en: l.en, cn: l.cn, a: "audio/" + D.id + "-" + ("0" + k).slice(-2) + ".mp3"}); }); });
+for (var i = all.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = all[i]; all[i] = all[j]; all[j] = t; }
+function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); }
+var box = document.getElementById("rcs"), res = {};
+all.forEach(function (c, i) {
+  var gap = esc(c.en).replace(/\[\[(.+?)\]\]/g, function (_, w) { return '<span class="gap">' + w[0] + "_".repeat(Math.max(2, w.length - 1)) + "</span>"; });
+  var full = esc(c.en).replace(/\[\[(.+?)\]\]/g, '<span class="hl">$1</span>');
+  var d = document.createElement("div"); d.className = "rc";
+  d.innerHTML = '<div class="n">' + (i + 1) + " / " + all.length + '</div><div class="cue">' + esc(c.cn) + '</div><div class="en">' + gap + "</div>" +
+    '<div class="ans"><b>' + esc(c.w) + "</b>　" + full + ' <button class="snd">🔊</button></div>' +
+    '<div class="btns"><button class="reveal">看答案</button><button class="no">❌ 没想起来</button><button class="yes">✅ 想起来了</button></div>';
+  d.querySelector(".reveal").onclick = function () { d.classList.add("open"); };
+  d.querySelector(".snd").onclick = function () { play(c.a); };
+  d.querySelector(".no").onclick = function () { res[c.w] = 0; d.classList.add("done", "bad"); sum(); };
+  d.querySelector(".yes").onclick = function () { res[c.w] = 1; d.classList.add("done", "ok"); sum(); };
+  box.appendChild(d);
+});
+function sum() {
+  var ks = Object.keys(res), ok = ks.filter(function (w) { return res[w]; }).length;
+  var miss = ks.filter(function (w) { return !res[w]; });
+  document.getElementById("sum").innerHTML = "已做 <b>" + ks.length + " / " + all.length + "</b>，想起来 <b>" + ok + "</b> 个" +
+    (miss.length ? "<br>没想起来：<span class=\"miss\">" + miss.join("、") + "</span>" : "") +
+    (ks.length === all.length ? "<br>做完了。没想起来的词，回微信告诉我就行。" : "");
+}
+sum();
+</script></body></html>
