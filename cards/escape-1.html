@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>最后一班船 · 记忆卡</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;--red:#ff8a80;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 40px}
+.wrap{max-width:580px;margin:0 auto}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.back{font-size:13px;color:var(--accent);text-decoration:none;white-space:nowrap}
+.meter{flex:1;height:8px;border-radius:4px;background:var(--card2);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e2b23c,#5ec59a);transition:width .3s}
+.count{font-size:12.5px;color:var(--soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+header{padding:18px 0 4px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:24px;margin:4px 0 10px}
+.how{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.modes{display:flex;gap:8px;margin:14px 0 4px;flex-wrap:wrap}
+.modes button{flex:1;min-width:96px;padding:8px 6px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13.5px;font-weight:600}
+.modes button.on{border-color:var(--amber);color:var(--amber)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
+.scene{font-size:12.5px;color:var(--mute);display:flex;justify-content:space-between}
+.en{font-size:19px;line-height:1.75;margin:10px 0 6px}
+.cn{font-size:16px;line-height:1.75;color:var(--soft);margin:6px 0}
+.cn.big{font-size:18px;color:var(--ink)}
+.hl{color:var(--amber);font-weight:800}
+.gap{color:var(--amber);font-weight:800;letter-spacing:2px;border-bottom:2px solid var(--amber)}
+.ask{font-size:14px;color:var(--soft);margin-top:10px}
+.ask b{color:var(--ink)}
+.hint{font-size:13.5px;color:var(--mute);margin-top:4px}
+.ans{display:none;margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+.card.open .ans{display:block}
+.word{font-size:22px;font-weight:800;color:var(--green)}
+.ipa{font-family:monospace;color:var(--soft);margin-left:6px}
+.mean{margin:4px 0 6px;font-size:15px}
+.snd{display:inline-block;margin:6px 8px 0 0;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.go{display:flex;gap:10px;margin-top:16px}
+.go button{flex:1;padding:12px 6px;border-radius:12px;border:1px solid var(--line);font-size:16px;font-weight:700;background:var(--card2);color:var(--ink)}
+.go .reveal{border-color:var(--accent);color:var(--accent)}
+.go .no{border-color:rgba(255,138,128,.5);color:var(--red)}
+.go .yes{border-color:rgba(94,197,154,.5);color:var(--green)}
+.card.open .go .reveal{display:none}
+.card:not(.open) .go .no,.card:not(.open) .go .yes{display:none}
+.end{text-align:center}
+.end h2{font-size:22px;margin:6px 0 10px}
+.end p{color:var(--soft);margin:6px 0}
+.end .list{color:var(--amber);font-weight:700}
+.end .go button{font-size:14.5px}
+.small{font-size:12px;color:var(--mute);text-align:center;margin-top:18px}
+</style></head><body><div class="wrap">
+<div class="bar"><a class="back" href="../index.html">← 首页</a><div class="meter"><i id="meter"></i></div><span class="count" id="count"></span></div>
+<header><div class="kicker">记忆卡 · 10/4–10/5 · 14 个词</div><h1>🌋 最后一班船</h1>
+<div class="how">火山快要爆发了，最后一班船六点开。你和朋友 Mia 必须赶到港口……<br>每张卡<b>先自己想</b>，想好了再点「看答案」，然后老实点「记住了」或「没记住」。没记住的隔几张会再出现；记住的过几天再来考你（记录存在这个浏览器里）。</div>
+<div class="modes"><button data-m="en">看英文想中文</button><button data-m="cn">看中文想英文</button><button data-m="both">中英对照</button></div>
+</header>
+<main id="stage"></main>
+<div class="small">用手机自带浏览器打开，复习记录才留得住</div>
+</div><script>
+var D = {"id": "escape-1", "cards": [{"word": "threaten", "ipa": "/ˈθretn/", "mean": "vt. 威胁；扬言要；危及", "form": "threatens", "en": "The volcano [[threatens]] to explode at any minute.", "cn": "火山随时可能爆发。", "scene": "🌋"}, {"word": "depart", "ipa": "/dɪˈpɑːt/", "mean": "vi. 离开；出发；启程", "form": "departs", "en": "The last boat [[departs]] at six. If we miss it, nobody can save us.", "cn": "最后一班船六点开。错过它，就没人能救我们了。", "scene": "⛴️"}, {"word": "hire", "ipa": "/ˈhaɪə(r)/", "mean": "vt. 雇用；租用", "form": "hire", "en": "We have no car, so we [[hire]] a farmer to drive us to the port.", "cn": "我们没有车，只好雇一个农民开车送我们去港口。", "scene": "🚙"}, {"word": "avoid", "ipa": "/əˈvɔɪd/", "mean": "vt. 避免；避开", "form": "Avoid", "en": "Turn left! [[Avoid]] the burning rocks on the road!", "cn": "往左拐！避开路上那些燃烧的石头！", "scene": "🔥"}, {"word": "dot", "ipa": "/dɒt/", "mean": "n. 小圆点　vt. 点缀；使散布（be dotted with 到处散布着）", "form": "dotted", "en": "The road is [[dotted]] with fallen trees.", "cn": "路上到处横着倒下的树。", "scene": "🌲"}, {"word": "familiar", "ipa": "/fəˈmɪliə(r)/", "mean": "adj. 熟悉的；似曾相识的", "form": "familiar", "en": "This road looks [[familiar]]… Oh no! We are going in circles!", "cn": "这条路看着好眼熟……糟了！我们在原地绕圈！", "scene": "🌀"}, {"word": "combine", "ipa": "/kəmˈbaɪn/", "mean": "vt. （使）结合，合并", "form": "combine", "en": "We [[combine]] two old maps and finally find the right way.", "cn": "我们把两张旧地图拼起来看，终于找到了正确的路。", "scene": "🗺️"}, {"word": "sew", "ipa": "/səʊ/", "mean": "vt. 缝；缝合（sew up 缝合伤口、破洞）", "form": "sews", "en": "My leg is bleeding badly. Mia [[sews]] up the wound with a needle from her bag.", "cn": "我的腿血流不止。Mia 用包里的一根针把伤口缝上了。", "scene": "🩸"}, {"word": "reuse", "ipa": "/ˌriːˈjuːz/", "mean": "vt. 再次使用，重复利用", "form": "reuse", "en": "We have only one water bottle, so we [[reuse]] it again and again.", "cn": "我们只有一个水瓶，只能一遍又一遍地重复用。", "scene": "💧"}, {"word": "distribute", "ipa": "/dɪˈstrɪbjuːt/", "mean": "vt. 分发，分配", "form": "distributes", "en": "At the port, a soldier [[distributes]] the last tickets to the children first.", "cn": "到了港口，一个士兵把最后几张船票先分给了孩子们。", "scene": "🎫"}, {"word": "violence", "ipa": "/ˈvaɪələns/", "mean": "n. 暴力，暴力行为", "form": "violence", "en": "People push and shout. The soldier cries, \"Stop! No [[violence]]!\"", "cn": "人们推搡、叫喊。士兵大喊：「住手！不许动手！」", "scene": "📢"}, {"word": "dismay", "ipa": "/dɪsˈmeɪ/", "mean": "n. 沮丧；惊愕（to one's dismay 令人沮丧的是）", "form": "dismay", "en": "To our [[dismay]], the boat is already full.", "cn": "让我们绝望的是，船已经满了。", "scene": "😱"}, {"word": "trait", "ipa": "/treɪt/", "mean": "n. 特征，特点；（性格的）特质", "form": "trait", "en": "The captain sees Mia helping an old man. \"Kindness is a rare [[trait]],\" he says. \"You two can come.\"", "cn": "船长看到 Mia 在扶一位老人。「善良是很少见的品质，」他说，「你们俩上来吧。」", "scene": "🧓"}, {"word": "attribute", "ipa": "/əˈtrɪbjuːt/", "mean": "vt. 把……归因于（attribute A to B）　n. 特征", "form": "attribute", "en": "Safe on the boat, we [[attribute]] our escape to Mia's kindness, not to luck.", "cn": "平安上了船，我们都说这次能逃出来，靠的是 Mia 的善良，不是运气。", "scene": "🚢"}]};
+var KEY = "vk-cards-" + D.id, GAP = [0, 1, 2, 4, 7, 15];      // 盒子 1–5 隔几天再复习
+var mode = "en", st = {}, queue = [], total = 0, done = 0, missed = {}, first = {};
+try { st = JSON.parse(localStorage.getItem(KEY) || "{}"); mode = localStorage.getItem(KEY + "-mode") || "en"; } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); localStorage.setItem(KEY + "-mode", mode); } catch (e) {} }
+function day(off) { var d = new Date(); d.setDate(d.getDate() + (off || 0)); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); }
+function mark(en, how) {
+  return esc(en).replace(/\[\[(.+?)\]\]/g, function (_, w) {
+    return how === "gap" ? '<span class="gap">' + w[0] + "_".repeat(Math.max(2, w.length - 1)) + "</span>" : '<span class="hl">' + w + "</span>";
+  });
+}
+var audio = null;
+function play(url) { if (audio) audio.pause(); audio = new Audio(url); audio.play().catch(function () {}); }
+function start(all) {
+  var t = day();
+  queue = D.cards.map(function (c, i) { c.n = i + 1; return c; }).filter(function (c) { return all || !st[c.word] || st[c.word].due <= t; });
+  total = queue.length; done = 0; missed = {}; first = {};
+  show();
+}
+function meter() {
+  document.getElementById("meter").style.width = (total ? 100 * done / total : 100) + "%";
+  document.getElementById("count").textContent = "🚢 " + done + " / " + total;
+}
+function show() {
+  meter();
+  var box = document.getElementById("stage");
+  if (!queue.length) return end(box);
+  var c = queue[0], left = queue.length;
+  var h = '<div class="card' + (mode === "both" ? " open" : "") + '" id="card">';
+  h += '<div class="scene"><span>' + c.scene + " 第 " + c.n + " 幕</span><span>还剩 " + left + " 张</span></div>";
+  if (mode === "cn") {
+    h += '<div class="cn big">' + esc(c.cn) + "</div>";
+    h += '<div class="en">' + mark(c.en, "gap") + "</div>";
+    h += '<div class="ask">空里是哪个英文词？<b>先在心里说出来</b>，再看答案。</div><div class="hint">提示：' + esc(c.mean) + "</div>";
+  } else {
+    h += '<div class="en">' + mark(c.en) + "</div>";
+    if (mode === "both") h += '<div class="cn">' + esc(c.cn) + "</div>";
+    else h += '<div class="ask"><b>' + esc(c.form) + "</b> 在这里是什么意思？整句什么意思？<b>先想</b>，再看答案。</div>";
+    h += '<button class="snd" data-s="1">🔊 听这句</button>';
+  }
+  h += '<div class="ans">';
+  h += '<div><span class="word">' + esc(c.word) + '</span><span class="ipa">' + esc(c.ipa) + "</span></div>";
+  h += '<div class="mean">' + esc(c.mean) + "</div>";
+  if (mode === "cn") h += '<div class="en" style="font-size:17px">' + mark(c.en) + "</div>";
+  else if (mode === "en") h += '<div class="cn">' + esc(c.cn) + "</div>";
+  h += '<button class="snd" data-w="1">🔊 单词</button>' + (mode === "cn" ? '<button class="snd" data-s="1">🔊 听这句</button>' : "");
+  h += "</div>";
+  h += '<div class="go"><button class="reveal">看答案</button><button class="no">❌ 没记住</button><button class="yes">✅ 记住了</button></div></div>';
+  box.innerHTML = h;
+  var card = document.getElementById("card");
+  card.querySelector(".reveal").onclick = function () { card.classList.add("open"); };
+  card.querySelector(".no").onclick = function () { grade(false); };
+  card.querySelector(".yes").onclick = function () { grade(true); };
+  card.querySelectorAll("[data-w]").forEach(function (b) { b.onclick = function () { play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(c.word) + "&type=1"); }; });
+  card.querySelectorAll("[data-s]").forEach(function (b) { b.onclick = function () { play("audio/" + D.id + "-" + ("0" + c.n).slice(-2) + ".mp3"); }; });
+}
+function grade(ok) {
+  var c = queue.shift(), s = st[c.word] || {box: 0, due: day()};
+  if (ok) {
+    if (missed[c.word]) s.box = 1; else { s.box = Math.min(s.box + 1, 5); first[c.word] = 1; }
+    s.due = day(GAP[s.box]); done++;
+  } else {
+    missed[c.word] = 1; s.box = 1; s.due = day();
+    queue.splice(Math.min(3, queue.length), 0, c);            // 隔 3 张再考一次
+  }
+  st[c.word] = s; save(); show(); window.scrollTo(0, 0);
+}
+function end(box) {
+  var tomorrow = day(1), soon = D.cards.filter(function (c) { return st[c.word] && st[c.word].due <= tomorrow; }).length;
+  var next = D.cards.map(function (c) { return st[c.word] ? st[c.word].due : day(); }).sort()[0];
+  var miss = Object.keys(missed);
+  var h = '<div class="card end">';
+  if (total) {
+    h += "<h2>🚢 你们上船了！</h2><p>这一轮 " + total + " 个词，一次就记住 " + Object.keys(first).length + " 个。</p>";
+    if (miss.length) h += '<p>中途没记住过的：<span class="list">' + miss.join("、") + "</span></p><p>它们明天会再来考你。</p>";
+  } else {
+    h += "<h2>✅ 今天没有要复习的词</h2>";
+  }
+  h += "<p>下次复习：" + (soon ? "明天 " + soon + " 个" : next) + "（到时候打开这个网页就行）</p>";
+  h += '<div class="go"><button class="again">全部再来一遍</button><button class="reset">清空记录</button></div></div>';
+  box.innerHTML = h;
+  box.querySelector(".again").onclick = function () { start(true); };
+  box.querySelector(".reset").onclick = function () { if (confirm("清空这组卡片的复习记录？")) { st = {}; save(); start(true); } };
+}
+document.querySelectorAll(".modes button").forEach(function (b) {
+  b.classList.toggle("on", b.dataset.m === mode);
+  b.onclick = function () {
+    mode = b.dataset.m; save();
+    document.querySelectorAll(".modes button").forEach(function (x) { x.classList.toggle("on", x === b); });
+    show();
+  };
+});
+start(false);
+</script></body></html>
