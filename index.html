@@ -106,7 +106,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 </main>
 
 <main id="view-quiz" hidden>
-  <div class="quiz-intro">最新的一套在最上面。每套题做完，结果会自动发给我；回微信说一声「做完了」，就能收到批改。</div>
+  <div class="quiz-intro">最新内容在最上面。测验做完会自动发送结果；记忆工具的学习进度保存在当前浏览器。</div>
   <div id="quizlist"></div>
 </main>
 
@@ -278,6 +278,8 @@ const MODULES = [
 
 const QUIZZES = [
   /* QUIZ-ITEMS：新测验由 scripts/quiz_page.py 自动插在这一行下面 */
+  { label:'10·02 单词快速记忆', n:68, unit:'词', href:'quiz/october-2-memory.html', date:'2026-10-05',
+    desc:'中→英主动回忆、英→中检查和双语浏览；忘记或模糊的词会延迟重现，进度保存在本机。' },
   { label:'Present Simple · October 2 Vocabulary', n:40, href:'quiz/present-simple-october-2.html', date:'2026-10-04',
     desc:'A 40-question English-only review that uses all 68 words recorded on October 2 while practising the present simple.' },
   { label:'猴子 Coco 的一天', n:21, href:'quiz/present-simple-1.html', date:'2026-10-05',
@@ -348,7 +350,7 @@ QUIZZES.forEach((q, i) => {
   a.innerHTML =
     `<div class="q-top"><span class="q-title">${q.label}</span>${i === 0 ? '<span class="new">最新</span>' : ''}</div>
      ${q.desc ? `<div class="q-desc">${q.desc}</div>` : ''}
-     <div class="q-meta"><span>${q.n} 题</span>${mm ? `<span>${+mm} 月 ${+dd} 日</span>` : ''}</div>`;
+     <div class="q-meta"><span>${q.n} ${q.unit || '题'}</span>${mm ? `<span>${+mm} 月 ${+dd} 日</span>` : ''}</div>`;
   $quiz.appendChild(a);
 });
 
