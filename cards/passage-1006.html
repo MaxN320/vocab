@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Rainy Night</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+</style></head><body><div class="wrap">
+<header><div class="kicker">短文 · 生词本 + 词组 · 10/5–10/6</div><h1>The Rainy Night</h1><div class="sub">雨夜</div>
+<div class="how"><b>先自己读一遍</b>，黄色的是生词本和词组里的词，点一下能听发音。读不懂的段落，点「中文」看翻译。最后点「🔊 从头听一遍」，边听边跟着读。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div class="p"><div class="en">Lily&#x27;s father was a <span class="w">truck</span> driver. He <span class="w">took great pride in</span> his work and always drove <span class="w">as well as possible</span>. But Lily didn&#x27;t <span class="w">get along with</span> him. She was <span class="w">obsessed</span> with her phone, and she spent every weekend <span class="w">hanging out</span> with her friends. &quot;You&#x27;re never home, Dad,&quot; she often said.</div><div class="cn">莉莉的爸爸是个卡车司机。他对自己的工作非常自豪，开车总是尽心尽力。可莉莉和他处不来。她痴迷手机，每个周末都和朋友在外面玩。「爸，你从来都不在家。」她常这么说。</div><div class="bar"><button id="pa1" data-a="audio/passage-1006-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">One rainy night, a message <span class="w">popped up</span> on her phone. It was from the police: &quot;Your father&#x27;s truck went off the road and fell into the river. He nearly <span class="w">drowned</span>. He needs <span class="w">surgery</span> now.&quot; The message was short, but it was not <span class="w">ambiguous</span> at all. Lily was <span class="w">extremely</span> scared.</div><div class="cn">一个下雨的夜里，她手机上突然弹出一条消息，是警察发来的：「你父亲的卡车冲出了公路，掉进了河里。他差点淹死，现在需要马上做手术。」消息很短，却一点也不含糊。莉莉吓坏了。</div><div class="bar"><button id="pa2" data-a="audio/passage-1006-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">At the hospital, the doctor <span class="w">urged</span> her to stay calm. &quot;The surgery went well,&quot; he said. &quot;But your father needs <span class="w">adequate</span> rest. Make sure he takes two of these <span class="w">tablets</span> every day.&quot; Then Lily went to <span class="w">collect</span> her father&#x27;s things. In his bag, she <span class="w">came across</span> a pile of letters. They were all to her, but he had never sent them.</div><div class="cn">在医院，医生劝她冷静。「手术很顺利，」他说，「不过你父亲需要充分休息。记得让他每天吃两片这种药。」随后，莉莉去取爸爸的东西。在他的包里，她无意中发现了一沓信。信全是写给她的，可他一封也没寄出去。</div><div class="bar"><button id="pa3" data-a="audio/passage-1006-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">One sentence appeared <span class="w">many times</span>: &quot;My daughter is the greatest <span class="w">adventure</span> of my life.&quot; Lily read it again and again, and she began to <span class="w">reflect on</span> the way she had treated him. She could not remember the last time she had paid him a <span class="w">compliment</span>.</div><div class="cn">有一句话出现了很多次：「我女儿是我这辈子最了不起的冒险。」莉莉读了一遍又一遍，开始反思自己是怎么对待爸爸的。她想不起来，自己上一次夸他是什么时候了。</div><div class="bar"><button id="pa4" data-a="audio/passage-1006-04.mp3" data-next="pa5">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">A week later, Lily <span class="w">picked</span> her father <span class="w">up</span> from the hospital. That evening, she stepped out of her <span class="w">comfort zone</span>. She turned down the <span class="w">volume</span> of her music, put her phone away, and cooked dinner for him for the first time. The kitchen smelled warm and <span class="w">inviting</span>. &quot;Dad, I&#x27;m proud of you,&quot; she said. It was a small thing, but for Lily it felt like a real <span class="w">accomplishment</span>.</div><div class="cn">一周后，莉莉去医院接爸爸回家。那天晚上，她走出了自己的舒适区：把音乐的音量调小，把手机收起来，第一次给爸爸做了晚饭。厨房里暖暖的，香气诱人。「爸，我为你骄傲。」她说。这是件小事，但对莉莉来说，却像完成了一件了不起的事。</div><div class="bar"><button id="pa5" data-a="audio/passage-1006-05.mp3" data-next="pa6">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">From that day on, they shared the housework <span class="w">equally</span>, and they got along better than ever.</div><div class="cn">从那天起，他们平均分担家务，父女俩相处得比以往任何时候都好。</div><div class="bar"><button id="pa6" data-a="audio/passage-1006-06.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div>
+<div class="list"><h2>这篇用到的 26 个词和词组</h2><div class="row"><b>truck</b><span>n. 卡车</span><i>生词本</i></div><div class="row"><b>take pride in</b><span>对……引以为豪</span><i>词组</i></div><div class="row"><b>as well as possible</b><span>尽可能好地</span><i>词组</i></div><div class="row"><b>get along with</b><span>与……和睦相处</span><i>词组</i></div><div class="row"><b>obsessed</b><span>痴迷的（obsess）</span><i>生词本</i></div><div class="row"><b>hang out</b><span>出去玩，闲逛</span><i>词组</i></div><div class="row"><b>pop up</b><span>突然冒出来（pop）</span><i>生词本</i></div><div class="row"><b>drown</b><span>淹死</span><i>生词本</i></div><div class="row"><b>surgery</b><span>手术</span><i>生词本</i></div><div class="row"><b>ambiguous</b><span>模棱两可的</span><i>生词本</i></div><div class="row"><b>extremely</b><span>极其（extreme）</span><i>生词本</i></div><div class="row"><b>urge</b><span>力劝，催促</span><i>生词本</i></div><div class="row"><b>adequate</b><span>足够的，充分的</span><i>生词本</i></div><div class="row"><b>tablet</b><span>药片</span><i>生词本</i></div><div class="row"><b>collect</b><span>取（东西）；收集</span><i>生词本</i></div><div class="row"><b>come across</b><span>偶然发现</span><i>词组</i></div><div class="row"><b>many times</b><span>很多次</span><i>词组</i></div><div class="row"><b>adventure</b><span>冒险</span><i>生词本</i></div><div class="row"><b>reflect on</b><span>反思</span><i>词组</i></div><div class="row"><b>compliment</b><span>夸奖</span><i>生词本</i></div><div class="row"><b>pick sb up</b><span>接某人</span><i>词组</i></div><div class="row"><b>comfort zone</b><span>舒适区</span><i>词组</i></div><div class="row"><b>volume</b><span>音量</span><i>生词本</i></div><div class="row"><b>inviting</b><span>诱人的（invite）</span><i>生词本</i></div><div class="row"><b>accomplishment</b><span>成就（accomplish）</span><i>生词本</i></div><div class="row"><b>equally</b><span>平均地（equal）</span><i>生词本</i></div></div>
+</div><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+document.getElementById("all").onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
