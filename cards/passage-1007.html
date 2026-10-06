@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grandpa&#x27;s Last Horse</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+</style></head><body><div class="wrap">
+<header><div class="kicker">短文 · 生词本 + 词组 · 10/7</div><h1>Grandpa&#x27;s Last Horse</h1><div class="sub">爷爷的最后一匹马</div>
+<div class="how"><b>先自己读一遍</b>，黄色的是生词本和词组里的词，点一下能听发音。读不懂的段落，点「中文」看翻译。最后点「🔊 从头听一遍」，边听边跟着读。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div class="p"><div class="en">My grandfather was a sculptor. He <span class="w">lived on</span> very little money, but he never complained. &quot;A good <span class="w">sculpture</span> starts with <span class="w">raw</span> stone and a lot of <span class="w">faith</span>,&quot; he often <span class="w">reminded</span> me.</div><div class="cn">我爷爷是个雕塑家。他靠很少的钱过日子，却从不抱怨。「一件好雕塑，从一块粗糙的石头和满满的信念开始。」他常常这样提醒我。</div><div class="bar"><button id="pa1" data-a="audio/passage-1007-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">One winter, the doctor told us that Grandpa&#x27;s heart was weak. The tests <span class="w">indicated</span> that he did not have much time left. A dark cloud <span class="w">loomed</span> over our family. But Grandpa just smiled. &quot;I still have one more sculpture to finish,&quot; he said.</div><div class="cn">有一年冬天，医生告诉我们，爷爷的心脏很弱。检查结果表明，他剩下的时间不多了。一片乌云笼罩着我们家。可爷爷只是笑了笑：「我还有最后一件雕塑要完成。」</div><div class="bar"><button id="pa2" data-a="audio/passage-1007-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">He <span class="w">took on</span> the hardest work of his life: a stone horse for the village school. Every morning, he <span class="w">loaded up</span> his old truck with tools and drove to the hill behind the school. In <span class="w">contrast</span> to his weak body, his hands were still strong and steady.</div><div class="cn">他接下了这辈子最难的一件活：给村里的学校雕一匹石马。每天早上，他把工具装满那辆旧卡车，开到学校后面的山坡上。和他虚弱的身体形成鲜明对比的是，他的手依然有力、稳当。</div><div class="bar"><button id="pa3" data-a="audio/passage-1007-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Some people <span class="w">suspected</span> that he was too old to finish it. &quot;<span class="w">Whether</span> I finish it or not,&quot; he told me, &quot;I want to try.&quot; So I decided to <span class="w">pull my own weight</span>. I carried stones, cleaned his tools, and charged the <span class="w">battery</span> of his work light every night.</div><div class="cn">有人怀疑他年纪太大，完成不了。「不管我能不能做完，」他对我说，「我都想试试。」于是我决定做好自己该做的那一份：搬石头，擦工具，每天晚上给他的工作灯充电。</div><div class="bar"><button id="pa4" data-a="audio/passage-1007-04.mp3" data-next="pa5">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">On the last night, the horse was almost ready. Grandpa asked me to <span class="w">pick out</span> the best stones for its eyes. Then he pressed a button to <span class="w">activate</span> the old light, and the hill became bright like a small sun.</div><div class="cn">最后一个晚上，石马快完成了。爷爷让我挑出最好的石头给它做眼睛。然后他按下按钮，打开那盏旧工作灯，整个山坡亮得像一个小太阳。</div><div class="bar"><button id="pa5" data-a="audio/passage-1007-05.mp3" data-next="pa6">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Two weeks later, Grandpa died. The school put the horse at its front gate as a <span class="w">symbol</span> of courage. Whenever I <span class="w">approach</span> it, I hear his voice: &quot;The beauty of a sculpture <span class="w">lies in</span> the stone you take away.&quot; His last work <span class="w">demonstrates</span> what he always believed: hard work is a <span class="w">part</span> of love.</div><div class="cn">两周后，爷爷去世了。学校把石马放在大门口，作为勇气的象征。每次走近它，我都会听见他的声音：「雕塑的美，在于你凿掉的那些石头。」他的最后一件作品证明了他一直相信的事：辛苦付出，也是爱的一部分。</div><div class="bar"><button id="pa6" data-a="audio/passage-1007-06.mp3" data-next="pa7">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">He never <span class="w">lived out</span> his dream of becoming famous, but he lived a beautiful life. Today I am writing the <span class="w">preface</span> to a small book about him. He was not a man of great <span class="w">intellect</span>, but he had a great heart. The <span class="w">whole</span> village <span class="w">treasures</span> his horse, and one day I want to take his work even <span class="w">further</span>.</div><div class="cn">他一直没能实现出名的梦想，却活出了很美的一生。今天，我正在为一本写他的小书写序言。他不是什么绝顶聪明的人，却有一颗宽厚的心。全村人都珍爱他的那匹马；总有一天，我想把他的手艺再往前推进一步。</div><div class="bar"><button id="pa7" data-a="audio/passage-1007-07.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div>
+<div class="list"><h2>这篇用到的 27 个词和词组</h2><div class="row"><b>live on</b><span>靠……生活</span><i>词组</i></div><div class="row"><b>sculpture</b><span>雕塑</span><i>生词本</i></div><div class="row"><b>raw</b><span>未经加工的；生的</span><i>生词本</i></div><div class="row"><b>faith</b><span>信心，信念</span><i>生词本</i></div><div class="row"><b>remind</b><span>提醒；使想起</span><i>生词本</i></div><div class="row"><b>indicate</b><span>表明，显示</span><i>生词本</i></div><div class="row"><b>loom</b><span>逼近，笼罩</span><i>生词本</i></div><div class="row"><b>take on</b><span>承担（工作、责任）</span><i>词组</i></div><div class="row"><b>load up</b><span>装满</span><i>词组</i></div><div class="row"><b>contrast</b><span>对比，反差（in contrast to）</span><i>生词本</i></div><div class="row"><b>suspect</b><span>怀疑</span><i>生词本</i></div><div class="row"><b>whether</b><span>是否；不管……是否</span><i>生词本</i></div><div class="row"><b>pull one&#x27;s own weight</b><span>做好自己分内的事</span><i>词组</i></div><div class="row"><b>battery</b><span>电池</span><i>生词本</i></div><div class="row"><b>pick out</b><span>挑选</span><i>词组</i></div><div class="row"><b>activate</b><span>启动，激活</span><i>生词本</i></div><div class="row"><b>symbol</b><span>象征</span><i>生词本</i></div><div class="row"><b>approach</b><span>走近，接近</span><i>生词本</i></div><div class="row"><b>lie in</b><span>在于</span><i>词组</i></div><div class="row"><b>demonstrate</b><span>证明；展示</span><i>生词本</i></div><div class="row"><b>part</b><span>部分</span><i>生词本</i></div><div class="row"><b>live out</b><span>实现（梦想）</span><i>词组</i></div><div class="row"><b>preface</b><span>序言</span><i>生词本</i></div><div class="row"><b>intellect</b><span>智力，才智</span><i>生词本</i></div><div class="row"><b>whole</b><span>整个的，全部的</span><i>生词本</i></div><div class="row"><b>treasure</b><span>珍爱；珍宝</span><i>生词本</i></div><div class="row"><b>further</b><span>更进一步地</span><i>生词本</i></div></div>
+</div><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+document.getElementById("all").onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
