@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>介词 + which：the speed at which you read</title>
+<style>
+:root{
+  --ink:#141821;
+  --panel:#1a202a;
+  --rule:#2b3543;
+  --text:#d6dbe3;
+  --dim:#8b95a5;
+  --faint:#5f6a7a;
+  --blue:#6fa8e6;
+  --blue-bg:rgba(111,168,230,.09);
+  --orange:#e5a15e;
+  --orange-bg:rgba(229,161,94,.09);
+  --paper:#e8e3d9;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.01em;
+}
+
+/* 版面:正文 + 右侧目录 */
+.page{
+  display:grid;grid-template-columns:minmax(0,760px) 212px;gap:60px;
+  max-width:1032px;margin:0 auto;padding:0 28px;
+}
+.wrap{min-width:0;padding-bottom:120px}
+
+/* 头部 */
+header{padding:88px 0 0}
+h1{font-size:34px;line-height:1.3;margin:0 0 20px;font-weight:600;letter-spacing:.06em}
+.thesis{font-size:17px;color:var(--dim);margin:0;line-height:1.9}
+.thesis b{color:var(--text);font-weight:600}
+.legend{margin-top:24px;font-size:13.5px;color:var(--faint)}
+.legend span{margin-right:20px}
+
+/* 四问 */
+.asks{margin:28px 0 0;padding:0}
+.asks li{
+  list-style:none;display:grid;grid-template-columns:1fr auto;gap:16px;
+  padding:10px 0;font-size:15px;align-items:baseline;
+  border-top:1px solid rgba(43,53,67,.55);
+}
+.asks li:first-child{border-top:none}
+.asks .where{font-size:13px;color:var(--faint);white-space:nowrap}
+
+/* 路线图 */
+.map{
+  margin:36px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:6px 0;
+}
+.map-row{
+  display:grid;grid-template-columns:76px 1fr;gap:14px;
+  padding:11px 2px;font-size:14.5px;align-items:baseline;
+}
+.map-row + .map-row{border-top:1px solid rgba(43,53,67,.55)}
+.map-row .n{font-family:var(--serif);font-size:13px;color:var(--faint);letter-spacing:.1em}
+.map-row .t{color:var(--text)}
+.map-row .t em{font-style:normal;color:var(--dim)}
+a.map-row{text-decoration:none}
+a.map-row:hover .t{color:#fff}
+
+/* 阶梯 */
+.stage{margin-top:78px;scroll-margin-top:28px}
+.stage-no{display:block;font-family:var(--serif);font-size:14px;color:var(--faint);margin-bottom:10px;letter-spacing:.12em}
+.stage > h2{font-size:22px;font-weight:600;margin:0;letter-spacing:.04em;color:#eef1f5}
+
+/* 承上 */
+.bridge{margin:20px 0 0;padding-left:16px;border-left:2px solid var(--rule)}
+.bridge .before{margin:0;font-size:14.5px;color:var(--faint);line-height:1.8}
+.bridge .after{margin:4px 0 0;font-size:15px;color:var(--text);line-height:1.8}
+
+h3{font-size:16.5px;font-weight:600;margin:38px 0 12px;color:#e3e8ef;letter-spacing:.03em;scroll-margin-top:28px}
+p{margin:14px 0}
+b{color:#f0f3f7;font-weight:600}
+
+/* 例句 */
+.ex{margin:18px 0;padding:2px 0 2px 18px;border-left:1px solid var(--rule)}
+.en{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--paper);margin:0}
+.en u{text-decoration:none;border-bottom:1px solid rgba(232,227,217,.45);padding-bottom:1px}
+.zh{margin:3px 0 0;font-size:14.5px;color:var(--dim);line-height:1.75}
+.ex + .ex{margin-top:14px}
+.note{font-size:13.5px;color:var(--faint);margin:5px 0 0}
+
+/* 还原演示 */
+.restore{
+  margin:20px 0;background:var(--panel);border:1px solid var(--rule);
+  border-radius:3px;padding:16px 20px;
+}
+.restore + .restore{margin-top:12px}
+.restore .en{font-size:16.5px}
+.restore .arrow{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.8}
+.restore .arrow b{color:var(--blue);font-weight:600}
+.restore .arrow .sep{color:var(--faint);margin:0 8px}
+.restore .zh{margin-top:10px}
+
+/* 推导链 */
+.chain{margin:26px 0 10px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:8px 0}
+.step{display:grid;grid-template-columns:26px 1fr;gap:16px;padding:16px 24px}
+.step + .step{border-top:1px solid rgba(43,53,67,.6)}
+.step-n{font-family:var(--serif);font-size:14px;color:var(--faint);padding-top:3px}
+.step:last-child .step-n{color:var(--blue)}
+.step .en{font-size:16.5px}
+.step:last-child .en{color:#fff}
+.step-why{font-size:13.5px;color:var(--dim);margin:6px 0 0}
+.hl{color:var(--blue)}
+.dimtext{color:var(--dim)}
+
+/* callout */
+.box{margin:26px 0;padding:16px 20px;border-radius:3px;font-size:14.5px;line-height:1.8}
+.box p{margin:8px 0}
+.box p:first-child{margin-top:0}
+.box p:last-child{margin-bottom:0}
+.box .en{font-size:16px}
+.box .zh{font-size:14px}
+.box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
+.derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
+.rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
+.tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
+.derive .tag{color:var(--blue)}
+.rote .tag{color:var(--orange)}
+
+/* 小结 */
+.sum{margin:36px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:14.5px;color:var(--dim)}
+.sum b{color:var(--text)}
+
+/* 表格 */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl th{color:var(--dim);font-weight:600;font-size:13.5px;border-bottom-color:#3a4655}
+.tbl td:first-child{font-family:var(--serif);color:var(--paper)}
+.tbl tr:last-child td{border-bottom:none}
+
+/* 对比 */
+.pair{margin:22px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.pair > div{padding:16px 20px}
+.pair > div + div{border-top:1px solid var(--rule);background:var(--panel)}
+.pair .verdict{font-size:13.5px;color:var(--blue);margin:7px 0 0}
+.pair > div + div .verdict{color:var(--orange)}
+
+/* 流程 */
+.flow{margin:24px 0;padding:0;counter-reset:f}
+.flow li{
+  list-style:none;position:relative;padding:0 0 22px 34px;
+  border-left:1px solid var(--rule);margin-left:8px;
+}
+.flow li:last-child{border-left-color:transparent;padding-bottom:0}
+.flow li::before{
+  counter-increment:f;content:counter(f);
+  position:absolute;left:-9px;top:2px;width:18px;height:18px;
+  background:var(--ink);border:1px solid var(--rule);border-radius:50%;
+  font-size:11px;line-height:16px;text-align:center;color:var(--dim);font-family:var(--serif);
+}
+.flow .q{font-weight:600;color:#eef1f5;font-size:15px;margin:0}
+.flow .a{font-size:14.5px;color:var(--dim);margin:5px 0 0}
+
+footer{margin-top:80px;padding-top:20px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--faint)}
+
+/* ── 右侧目录 ── */
+.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:88px 0 60px;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc-h{font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin:0 0 14px;padding-left:13px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc .item{margin:0}
+.toc a{
+  display:block;text-decoration:none;color:var(--dim);
+  font-size:13.5px;line-height:1.55;padding:6px 0 6px 13px;
+  border-left:1px solid var(--rule);transition:color .15s,border-color .15s;
+}
+.toc a:hover{color:var(--text)}
+.toc .item > a .num{font-family:var(--serif);color:var(--faint);margin-right:7px;font-size:12.5px}
+.toc .item.active > a{color:#eef1f5;border-left-color:var(--blue)}
+.toc .item.active > a .num{color:var(--blue)}
+.toc .subs{display:none;padding:2px 0 6px}
+.toc .item.active .subs{display:block}
+.toc .subs a{font-size:12.5px;color:var(--faint);padding:4px 0 4px 26px;line-height:1.5}
+.toc .subs a:hover{color:var(--dim)}
+.toc .subs a.on{color:var(--text);border-left-color:#3f4b5c}
+
+/* 窄屏:目录收成按钮 */
+.toc-btn{
+  display:none;position:fixed;right:18px;bottom:18px;z-index:30;
+  width:46px;height:46px;border-radius:50%;cursor:pointer;
+  background:var(--panel);border:1px solid #3a4655;color:var(--text);
+  font-size:13px;font-family:var(--sans);line-height:1;
+}
+.scrim{display:none;position:fixed;inset:0;background:rgba(10,13,18,.6);z-index:20}
+body.nav-open .scrim{display:block}
+
+@media (max-width:1080px){
+  .page{grid-template-columns:minmax(0,1fr);max-width:816px;gap:0}
+  .toc-btn{display:block}
+  .toc{
+    position:fixed;top:0;right:0;bottom:0;width:250px;z-index:25;
+    background:#171d26;border-left:1px solid var(--rule);
+    padding:28px 18px 40px;max-height:none;
+    transform:translateX(100%);transition:transform .2s ease;
+  }
+  body.nav-open .toc{transform:translateX(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .toc{transition:none}
+}
+
+@media (max-width:600px){
+  .page{padding:0 20px}
+  .wrap{padding-bottom:80px}
+  header{padding-top:56px}
+  h1{font-size:27px}
+  .step{grid-template-columns:20px 1fr;gap:12px;padding:14px 16px}
+  .map-row{grid-template-columns:56px 1fr;gap:10px}
+  .en{font-size:16px}
+  .stage{margin-top:58px}
+  .asks li{grid-template-columns:1fr}
+  .asks .where{white-space:normal}
+}
+/* ── 本页新增 ── */
+.back{display:inline-block;font-size:13.5px;color:var(--faint);text-decoration:none;margin:0 0 18px}
+.back:hover{color:var(--text)}
+a.inl{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(111,168,230,.35)}
+.cn-big{font-size:16.5px;color:var(--paper);margin:0;line-height:1.7}
+
+/* 三块 */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:22px 0}
+.trio > div{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:12px 8px;text-align:center}
+.trio > div.on{border-color:var(--blue);background:var(--blue-bg)}
+.trio .en{font-size:16.5px}
+.trio > div.on .en{color:#fff}
+.trio .zh{margin:4px 0 0}
+.trio .note{font-size:12.5px;margin:3px 0 0;line-height:1.5}
+
+/* 整块搬 */
+.mv{display:flex;flex-wrap:nowrap;margin:24px 0 4px;font-family:var(--serif);font-size:16.5px;color:var(--paper);overflow-x:auto}
+.mv-c{display:flex;flex-direction:column;flex:none}
+.mv-w{display:block;box-sizing:border-box;height:34px;line-height:26px;margin:0 3px;padding:3px 7px;text-align:center;white-space:nowrap;border:1px solid transparent;border-radius:3px}
+.mv .chip{border-color:var(--blue);background:var(--blue-bg);color:#fff}
+.mv .ghost{border:1px dashed var(--faint);color:var(--faint);font-size:14px}
+.rail{display:block;height:16px;border-bottom:1.5px solid var(--blue)}
+.rail.r-start{margin-left:50%;border-left:1.5px solid var(--blue);position:relative}
+.rail.r-start::before{content:"";position:absolute;left:-6px;top:-1px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid var(--blue)}
+.rail.r-end{margin-right:50%;border-right:1.5px solid var(--blue)}
+.rail.r-none{border-bottom-color:transparent}
+.mv-cap{font-size:13.5px;color:var(--dim);margin:8px 0 0}
+
+/* 一组还原 */
+.rows{margin:20px 0;background:var(--panel);border:1px solid var(--rule);border-radius:3px}
+.row{padding:12px 18px}
+.row + .row{border-top:1px solid rgba(43,53,67,.6)}
+.row .en{font-size:16.5px}
+.row .arrow{margin:4px 0 0;font-size:14px;color:var(--dim);line-height:1.7}
+.row .arrow b{color:var(--blue);font-weight:600}
+.row .zh{margin:2px 0 0}
+
+/* 刻度尺 */
+.ruler{display:block;width:100%;max-width:420px;height:auto;margin:20px 0 4px}
+
+/* 正式程度 */
+.lv{margin:20px 0;border:1px solid var(--rule);border-radius:3px}
+.lv-r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 16px}
+.lv-r + .lv-r{border-top:1px solid rgba(43,53,67,.6)}
+.lv-r .en{font-size:16.5px}
+.lv-t{font-size:12.5px;color:var(--dim);white-space:nowrap;border:1px solid var(--rule);border-radius:10px;padding:0 9px;line-height:1.9}
+.lv-r:first-child .lv-t{color:var(--blue);border-color:rgba(111,168,230,.45)}
+
+/* 改错 */
+.fix{margin:12px 0;padding:12px 18px;background:var(--panel);border:1px solid var(--rule);border-radius:3px}
+.fix .en{font-size:16px}
+.fix .bad{color:var(--dim)}
+.fix .note{margin:6px 0 0}
+
+/* 练一练 */
+.qz{margin:12px 0;padding:13px 18px;background:var(--panel);border:1px solid var(--rule);border-radius:3px}
+.qn{font-size:13px;color:var(--faint);margin:0 0 4px;letter-spacing:.05em}
+.qz .en{font-size:16.5px}
+.qz .zh{margin:2px 0 0}
+.qz details{margin:8px 0 0}
+.qz summary{cursor:pointer;list-style:none;display:inline-block;font-size:13.5px;color:var(--blue);padding:1px 0}
+.qz summary::-webkit-details-marker{display:none}
+.qz summary::before{content:"▸ "}
+.qz details[open] summary::before{content:"▾ "}
+.qz .ans{margin:6px 0 0;font-size:14.5px;line-height:1.8;color:var(--text)}
+.qz .ans .en{font-size:16px;margin:2px 0}
+
+/* 总表 */
+.sumtbl td:first-child{font-family:var(--sans);color:var(--text);white-space:nowrap;font-weight:600}
+.sumtbl td{padding:10px 10px}
+.sumtbl td .k{font-family:var(--serif);color:var(--paper)}
+footer a{color:var(--dim)}
+
+@media (max-width:600px){
+  .row{padding:12px 14px}
+  .fix,.qz{padding:12px 14px}
+  .lv-r{padding:10px 12px}
+  .mv{font-size:15px}
+  .mv-w{height:32px;line-height:24px;margin:0 2px;padding:3px 5px}
+  .mv .ghost{font-size:12.5px}
+  .trio .en{font-size:15.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="page">
+
+<div class="wrap">
+<header>
+  <a class="back" href="01-定语从句.html#s4">← 定语从句 · 阶段四「介词 + 关系代词」</a>
+  <h1>介词 + which：the speed at which you read</h1>
+  <p class="thesis"><b>the speed at which you read = 你读书的速度。</b>看着绕，其实是把一句普通的话 <b>You read at the speed</b>（你以这个速度读）挂到了 speed 后面：<b>which 就是 the speed，at 是从原句里带过来的。</b></p>
+
+  <ol class="asks">
+    <li><span>一、它到底什么意思</span><span class="where">阶段一</span></li>
+    <li><span>二、at 从哪来，为什么能跑到 which 前面</span><span class="where">阶段二、三</span></li>
+    <li><span>三、介词怎么选，哪些写法会错</span><span class="where">阶段四、五</span></li>
+    <li><span>四、放进长句怎么读，自己练一练</span><span class="where">阶段六、七</span></li>
+  </ol>
+
+  <p class="legend"><span>📖 蓝色 = 值得理解的判断机制</span><span>🧷 橙色 = 直接记用法 / 语法约定</span></p>
+
+  <div class="map">
+    <a class="map-row" href="#s1"><span class="n">一</span><span class="t">先读懂这一句 <em>—— which 就是 the speed</em></span></a>
+    <a class="map-row" href="#s2"><span class="n">二</span><span class="t">一步步拼出来 <em>—— at 和 which 整块搬到从句开头</em></span></a>
+    <a class="map-row" href="#s3"><span class="n">三</span><span class="t">at 为什么不能丢 <em>—— which 是 at 的宾语</em></span></a>
+    <a class="map-row" href="#s4"><span class="n">四</span><span class="t">介词怎么选 <em>—— 回原句找搭配；speed 为什么配 at</em></span></a>
+    <a class="map-row" href="#s5"><span class="n">五</span><span class="t">四种写法 + 常见错误 <em>—— 正式 / 口语，哪些不能写</em></span></a>
+    <a class="map-row" href="#s6"><span class="n">六</span><span class="t">在长句里读它 <em>—— 先找主干，再把从句挂回去</em></span></a>
+    <a class="map-row" href="#s7"><span class="n">七</span><span class="t">练一练 <em>—— 10 题，点开看答案</em></span></a>
+    <a class="map-row" href="#s8"><span class="n">总</span><span class="t">一张表 <em>—— 整页压成八行</em></span></a>
+  </div>
+</header>
+
+<!-- ══ 阶段一 ══ -->
+<section class="stage" id="s1">
+  <span class="stage-no">阶段一</span>
+  <h2>先读懂这一句</h2>
+
+  <div class="bridge">
+    <p class="after">先不管语法名词，只认一件事：<b>which 就是前面的 the speed。</b></p>
+  </div>
+
+  <h3 id="s1a">拆成三块看</h3>
+
+  <div class="trio">
+    <div><p class="en">the speed</p><p class="zh">速度</p><p class="note">被修饰的名词<br>（先行词）</p></div>
+    <div class="on"><p class="en">at which</p><p class="zh">以这个速度</p><p class="note">which = the speed</p></div>
+    <div><p class="en">you read</p><p class="zh">你读</p><p class="note">从句自己的<br>主语 + 动词</p></div>
+  </div>
+
+  <p>三块连起来问一句：<b>什么样的速度？—— 你以它来读的那个速度</b>，也就是“你读书的速度”。</p>
+
+  <div class="restore">
+    <p class="en">the speed <span class="hl">at which</span> you read</p>
+    <p class="arrow">把 which 换回 the speed<span class="sep">→</span>you read <b>at the speed</b><span class="sep">→</span>你以这个速度读</p>
+    <p class="zh">合起来：你读书的速度（你的阅读速度）</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 整页只靠这一个动作</span>
+    <p>at which 里的 which，就是前面那个 <b>the speed</b>。</p>
+    <p>把 which 换回 the speed，<b>at which you read</b> 就还原成一句普通的话：<b>you read at the speed</b>。</p>
+    <p>后面讲的 at 从哪来、介词怎么选、长句怎么读，全是这个动作的展开。</p>
+  </div>
+
+  <h3 id="s1b">英文挂在后面，中文放在前面</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">the speed ← <u>at which you read</u></p>
+      <p class="verdict">英文：修饰的话挂在 speed 后面。</p>
+    </div>
+    <div>
+      <p class="cn-big"><u>你读书的</u> → 速度</p>
+      <p class="verdict">中文：修饰的话放在“速度”前面，加个“的”。</p>
+    </div>
+  </div>
+
+  <p>所以翻译时分两步：先把 at which you read 读懂（你以它来读），再把它搬到“速度”前面、加个“的”。</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 平时说话怎么说</span>
+    <p>同一个意思，口语更常说 <b>how fast you read</b>（你读得多快）或 <b>your reading speed</b>（你的阅读速度）。</p>
+    <p><b>the speed at which you read</b> 更书面：文章、新闻、考试里常见。读到能认出来，写正式的句子时会用，就够了。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>the speed at which you read = 你读书的速度。<b>which = the speed；at which you read = you read at the speed。</b></p>
+</section>
+
+<!-- ══ 阶段二 ══ -->
+<section class="stage" id="s2">
+  <span class="stage-no">阶段二</span>
+  <h2>一步步拼出来：at 怎么跑到 which 前面</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶知道了：which = the speed。</p>
+    <p class="after">这一阶倒过来走一遍：一句普通的话，怎么变成挂在 speed 后面的从句。</p>
+  </div>
+
+  <h3 id="s2a">四步拼出来</h3>
+
+  <div class="chain">
+    <div class="step">
+      <span class="step-n">一</span>
+      <div>
+        <p class="en">You read <b>at the speed</b>.</p>
+        <p class="step-why">你以这个速度读。the speed 挂在 at 后面，是 at 管着的名词（at 的宾语）。</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-n">二</span>
+      <div>
+        <p class="en">You read at <b>which</b>.</p>
+        <p class="step-why">想拿这句话去修饰 the speed，先把句里的 the speed 换成 which。这只是中间状态，英语里不这么说。</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-n">三</span>
+      <div>
+        <p class="en">the speed <b>which</b> you read <b>at</b></p>
+        <p class="step-why">which 要站到从句最前面。只把 which 拎过去、at 留在原地 —— 这叫<b>介词后置</b>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-n">四</span>
+      <div>
+        <p class="en">the speed <b>at which</b> you read</p>
+        <p class="step-why">也可以让 at 跟着 which 一起搬到前面 —— 这叫<b>介词前置</b>，就是你问的这个结构。</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 id="s2b">看图：at which 是整块搬过去的</h3>
+
+  <div class="mv" aria-label="at which 从句尾整块搬到从句开头">
+    <div class="mv-c"><span class="mv-w">the speed</span><i class="rail r-none"></i></div>
+    <div class="mv-c"><span class="mv-w chip">at which</span><i class="rail r-start"></i></div>
+    <div class="mv-c"><span class="mv-w">you read</span><i class="rail"></i></div>
+    <div class="mv-c"><span class="mv-w ghost">at the speed</span><i class="rail r-end"></i></div>
+  </div>
+  <p class="mv-cap">虚线框是它原来的位置：you read <b>at the speed</b>。整块搬到从句开头，原位就空了。</p>
+
+  <div class="box derive">
+    <span class="tag">📖 at 为什么能跟着 which 走</span>
+    <p><b>at the speed</b> 本来就是一个整块：介词 + 它管着的名词，合起来叫<b>介词短语</b>。</p>
+    <p>which 替掉 the speed 以后，这一块就成了 <b>at which</b>。搬的时候可以整块搬（at which you read），也可以只拎走 which、把 at 留在原地（which you read at）。</p>
+    <p>两种搬法，<b>意思完全一样</b>。</p>
+  </div>
+
+  <h3 id="s2c">两种搬法，只差正式程度</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">the speed <b>at which</b> you read</p>
+      <p class="verdict">介词前置：更正式，书面语、考试里常见。</p>
+    </div>
+    <div>
+      <p class="en">the speed <b>which</b> you read <b>at</b></p>
+      <p class="verdict">介词后置：更口语。口语里 which 还常换成 that，或者干脆省掉：the speed you read at。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 这是约定，直接记</span>
+    <p>介词放前面 = 正式；介词放句尾 = 口语。<b>意思没有区别</b>，不用推它为什么。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>介词前置 = at 和 which 整块搬到从句开头。<b>at which 本来就是 at the speed</b>，只是 the speed 换成了 which。</p>
+</section>
+
+<!-- ══ 阶段三 ══ -->
+<section class="stage" id="s3">
+  <span class="stage-no">阶段三</span>
+  <h2>at 为什么不能丢</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶知道了：at 是从原句里带过来的。</p>
+    <p class="after">那能不能干脆不要它？不能。<b>要不要介词，看 which 在从句里是谁的宾语。</b></p>
+  </div>
+
+  <h3 id="s3a">对比：the book which you read</h3>
+
+  <div class="pair">
+    <div>
+      <p class="en">the book <b>which you read</b> ✅</p>
+      <p class="verdict">还原：You read the book. → book 直接跟在 read 后面，是 read 的宾语 → 不需要介词。</p>
+    </div>
+    <div>
+      <p class="en">the speed <b>which you read</b> ❌</p>
+      <p class="verdict">还原：You read the speed. → “你读速度”？速度不是拿来读的东西 → 意思不通。</p>
+    </div>
+  </div>
+
+  <div class="restore">
+    <p class="en">the speed <span class="hl">at which</span> you read ✅</p>
+    <p class="arrow">还原：You read <b>at</b> the speed.<span class="sep">→</span>speed 要靠 at 才接得上 read<span class="sep">→</span><b>at 必须在</b></p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 判断动作：把先行词放回从句</span>
+    <p>能直接跟在动词后面（read <b>the book</b>）→ which 是动词的宾语 → <b>不要介词</b>。</p>
+    <p>要靠介词才接得上（read <b>at</b> the speed）→ which 是介词的宾语 → <b>介词必须出现</b>。放前面、放句尾都行，就是不能丢。</p>
+  </div>
+
+  <h3 id="s3b">同一个 speed，三种身份</h3>
+
+  <p>名词都是 speed，要不要介词，全看后面那句话：</p>
+
+  <div class="restore">
+    <p class="en">the speed <b>which surprised everyone</b></p>
+    <p class="arrow">还原：The speed surprised everyone.<span class="sep">→</span>speed 是主语<span class="sep">→</span><b>不要介词</b></p>
+    <p class="zh">让所有人吃惊的速度</p>
+  </div>
+  <div class="restore">
+    <p class="en">the speed <b>(which) you choose</b></p>
+    <p class="arrow">还原：You choose the speed.<span class="sep">→</span>speed 是 choose 的宾语<span class="sep">→</span><b>不要介词</b>，which 还能省</p>
+    <p class="zh">你选的速度</p>
+  </div>
+  <div class="restore">
+    <p class="en">the speed <b>at which you read</b></p>
+    <p class="arrow">还原：You read at the speed.<span class="sep">→</span>speed 是 at 的宾语<span class="sep">→</span><b>at 必须在</b></p>
+    <p class="zh">你读书的速度</p>
+  </div>
+
+  <p>前两种，speed 直接当主语或宾语，用不着介词；只有第三种，speed 挂在 at 后面，at 才必须跟来。<b>要不要介词，是从句决定的，不是 speed 自带的。</b></p>
+
+  <p class="sum"><b>小结：</b>which 是介词的宾语 → 介词必须出现；which 是主语、或者是动词的宾语 → 不用介词。至于用哪个介词，看下一阶。</p>
+</section>
+
+<!-- ══ 阶段四 ══ -->
+<section class="stage" id="s4">
+  <span class="stage-no">阶段四</span>
+  <h2>介词怎么选：回原句找搭配</h2>
+
+  <div class="bridge">
+    <p class="before">上一阶知道了：介词必须在。</p>
+    <p class="after">那为什么是 at，不是 in、on？介词不由 which 决定，由原句决定：<b>原句用什么，这里就用什么。</b></p>
+  </div>
+
+  <h3 id="s4a">方法：把 which 换回名词，读一遍原句</h3>
+
+  <div class="rows">
+    <div class="row">
+      <p class="en">the house <span class="hl">in which</span> I live</p>
+      <p class="arrow">← I live <b>in</b> the house.</p>
+      <p class="zh">我住的房子</p>
+    </div>
+    <div class="row">
+      <p class="en">the world <span class="hl">in which</span> we live</p>
+      <p class="arrow">← We live <b>in</b> the world.</p>
+      <p class="zh">我们生活的这个世界</p>
+    </div>
+    <div class="row">
+      <p class="en">the day <span class="hl">on which</span> we first met</p>
+      <p class="arrow">← We first met <b>on</b> that day.</p>
+      <p class="zh">我们第一次见面的那天</p>
+    </div>
+    <div class="row">
+      <p class="en">the pen <span class="hl">with which</span> I write</p>
+      <p class="arrow">← I write <b>with</b> the pen.</p>
+      <p class="zh">我写字用的笔</p>
+    </div>
+    <div class="row">
+      <p class="en">the music <span class="hl">to which</span> we danced</p>
+      <p class="arrow">← We danced <b>to</b> the music.（dance to = 跟着……跳舞）</p>
+      <p class="zh">我们跟着跳舞的那首曲子</p>
+    </div>
+    <div class="row">
+      <p class="en">the man <span class="hl">to whom</span> I spoke</p>
+      <p class="arrow">← I spoke <b>to</b> the man.（人 → whom）</p>
+      <p class="zh">和我说过话的那个人</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 有的“介词 + which”能换成一个词</span>
+    <p>in which（地点）≈ <b>where</b>：the house where I live</p>
+    <p>on which（日子）≈ <b>when</b>：the day when we first met</p>
+    <p>for which（原因）≈ <b>why</b>：the reason why he left</p>
+    <p>speed、price、temperature 这类没有这样的一个词可换，所以用 <b>at which</b>（或者口语把 at 放句尾）。where / when / why 见<a class="inl" href="01-定语从句.html#s3">定语从句 · 阶段三</a>。</p>
+  </div>
+
+  <h3 id="s4b">介词跟谁搭：跟名词，还是跟动词</h3>
+
+  <div class="box derive">
+    <span class="tag">📖 介词有两个来源</span>
+    <p><b>跟名词搭：</b>at a speed、in a house、on a day。名词定了，介词就定了，换个动词也不变：</p>
+    <p class="formula">the speed at which you read / he speaks / the car moves</p>
+    <p><b>跟动词搭：</b>dance to、speak to、talk about。动词定了，介词就定了，换个名词也不变：</p>
+    <p class="formula">the music / the song to which we danced</p>
+    <p>拿不准时只做一件事：<b>把 which 换回名词，读一遍原句</b>，原句里用哪个介词，就是哪个。</p>
+  </div>
+
+  <h3 id="s4c">speed 为什么配 at：at = 刻度上的一个点</h3>
+
+  <p>你的介词笔记里，at 把东西看成一个“点”：at the door、at 7 o'clock。速度也一样。想象汽车的速度表：<b>指针停在哪一格，就说 at 那一格。</b></p>
+
+  <svg class="ruler" viewBox="0 0 340 96" role="img" aria-label="速度表刻度，指针停在 60">
+    <text x="170" y="22" text-anchor="middle" fill="#6fa8e6" font-size="15" font-family="Georgia,serif">at 60 km/h</text>
+    <path d="M170 50 L163 36 L177 36 Z" fill="#6fa8e6"/>
+    <line x1="20" y1="58" x2="320" y2="58" stroke="#5f6a7a" stroke-width="1.5"/>
+    <g stroke="#5f6a7a" stroke-width="1.5">
+      <line x1="20" y1="51" x2="20" y2="65"/><line x1="70" y1="51" x2="70" y2="65"/><line x1="120" y1="51" x2="120" y2="65"/>
+      <line x1="170" y1="51" x2="170" y2="65"/><line x1="220" y1="51" x2="220" y2="65"/><line x1="270" y1="51" x2="270" y2="65"/>
+      <line x1="320" y1="51" x2="320" y2="65"/>
+    </g>
+    <g stroke="#3a4655" stroke-width="1">
+      <line x1="45" y1="54" x2="45" y2="62"/><line x1="95" y1="54" x2="95" y2="62"/><line x1="145" y1="54" x2="145" y2="62"/>
+      <line x1="195" y1="54" x2="195" y2="62"/><line x1="245" y1="54" x2="245" y2="62"/><line x1="295" y1="54" x2="295" y2="62"/>
+    </g>
+    <circle cx="170" cy="58" r="4.5" fill="#6fa8e6"/>
+    <g fill="#8b95a5" font-size="12" text-anchor="middle" font-family="Georgia,serif">
+      <text x="20" y="84">0</text><text x="70" y="84">20</text><text x="120" y="84">40</text><text x="170" y="84">60</text>
+      <text x="220" y="84">80</text><text x="270" y="84">100</text><text x="320" y="84">120</text>
+    </g>
+  </svg>
+  <p class="mv-cap">速度排成一把刻度尺，指针停在 60 这一格 → at 60 km/h。</p>
+
+  <div class="ex">
+    <p class="en">The car was moving <b>at</b> 60 kilometres an hour.</p>
+    <p class="zh">车以每小时 60 公里的速度行驶。—— 速度表上的一格</p>
+  </div>
+  <div class="ex">
+    <p class="en">You read <b>at</b> a speed of 200 words a minute.</p>
+    <p class="zh">你以每分钟 200 词的速度阅读。</p>
+  </div>
+  <div class="ex">
+    <p class="en">Water boils <b>at</b> 100°C.</p>
+    <p class="zh">水在 100 摄氏度烧开。—— 温度计上的一格（boil = 烧开）</p>
+  </div>
+  <div class="ex">
+    <p class="en">Children start school <b>at</b> the age of six.</p>
+    <p class="zh">孩子六岁上学。—— 年龄线上的一格</p>
+  </div>
+  <div class="ex">
+    <p class="en">They sold the house <b>at</b> a low price.</p>
+    <p class="zh">他们低价卖掉了房子。—— 价格上的一格</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 能排成一把“刻度尺”的，大多用 at</span>
+    <p>速度、温度、年龄、价格、时刻、做事做到的某一步……都能排成一把刻度尺。说“在哪个读数上”，用 at。</p>
+    <p>所以它们做先行词时，大多跟 <b>at which</b>。</p>
+  </div>
+
+  <h3 id="s4d">at which 家族</h3>
+
+  <div class="rows">
+    <div class="row">
+      <p class="en">the speed <span class="hl">at which</span> you read</p>
+      <p class="arrow">← You read <b>at</b> that speed.</p>
+      <p class="zh">你读书的速度</p>
+    </div>
+    <div class="row">
+      <p class="en">the age <span class="hl">at which</span> children start school</p>
+      <p class="arrow">← Children start school <b>at</b> that age.</p>
+      <p class="zh">孩子开始上学的年龄</p>
+    </div>
+    <div class="row">
+      <p class="en">the temperature <span class="hl">at which</span> water boils</p>
+      <p class="arrow">← Water boils <b>at</b> that temperature.</p>
+      <p class="zh">水烧开的温度</p>
+    </div>
+    <div class="row">
+      <p class="en">the price <span class="hl">at which</span> they sold the house</p>
+      <p class="arrow">← They sold the house <b>at</b> that price.</p>
+      <p class="zh">他们卖房子的价格</p>
+    </div>
+    <div class="row">
+      <p class="en">the point <span class="hl">at which</span> most people give up</p>
+      <p class="arrow">← Most people give up <b>at</b> that point.</p>
+      <p class="zh">大多数人放弃的那一步</p>
+    </div>
+    <div class="row">
+      <p class="en">the time <span class="hl">at which</span> the train leaves</p>
+      <p class="arrow">← The train leaves <b>at</b> that time.（也常说 the time when / the time the train leaves）</p>
+      <p class="zh">火车开车的时间</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 你还会见到 the speed with which</span>
+    <p class="en">I was surprised by the speed <b>with which</b> she answered.</p>
+    <p class="zh">她回答得那么快，让我很吃惊。</p>
+    <p>with speed 本身就是“迅速地”，所以 the speed with which… 说的是动作做得多麻利。读到认得就行；自己写，说“读数是多少”，用 at which 最稳。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>用哪个介词，还原原句看搭配。<b>速度、温度、年龄、价格这类“刻度”名词，原句里用 at，所以是 at which。</b></p>
+</section>
+
+<!-- ══ 阶段五 ══ -->
+<section class="stage" id="s5">
+  <span class="stage-no">阶段五</span>
+  <h2>四种写法 + 常见错误</h2>
+
+  <div class="bridge">
+    <p class="before">拼法、介词怎么选都会了。</p>
+    <p class="after">最后把能写的和不能写的，一次列清。</p>
+  </div>
+
+  <h3 id="s5a">四种都对，越往上越正式</h3>
+
+  <div class="lv">
+    <div class="lv-r"><p class="en">the speed <b>at which</b> you read</p><span class="lv-t">最正式</span></div>
+    <div class="lv-r"><p class="en">the speed <b>which</b> you read <b>at</b></p><span class="lv-t">能用，较少见</span></div>
+    <div class="lv-r"><p class="en">the speed <b>that</b> you read <b>at</b></p><span class="lv-t">口语</span></div>
+    <div class="lv-r"><p class="en">the speed you read <b>at</b></p><span class="lv-t">口语最常见</span></div>
+  </div>
+  <p class="note">第四种把 which / that 整个省掉了 —— 只有介词放在句尾时才能这么省。</p>
+
+  <div class="box rote">
+    <span class="tag">🧷 介词放到前面以后，三条死规矩</span>
+    <p>① 后面只能跟 <b>which</b>（物）或 <b>whom</b>（人）：不能用 that，也不能用 who。</p>
+    <p>② which / whom <b>不能省</b>。</p>
+    <p>③ 介词<b>只出现一次</b>：前面有了，句尾就不能再补。</p>
+  </div>
+
+  <h3 id="s5b">常见错误，一条一条看</h3>
+
+  <div class="fix">
+    <p class="en bad">❌ the speed at that you read</p>
+    <p class="en">✅ the speed at <b>which</b> you read</p>
+    <p class="note">介词后面不跟 that（规矩 ①）。</p>
+  </div>
+  <div class="fix">
+    <p class="en bad">❌ the speed at you read</p>
+    <p class="en">✅ the speed at <b>which</b> you read</p>
+    <p class="note">介词前置以后，which 不能省（规矩 ②）。</p>
+  </div>
+  <div class="fix">
+    <p class="en bad">❌ the speed at which you read at</p>
+    <p class="en">✅ the speed at which you read</p>
+    <p class="note">at 只能出现一次，前面已经有了（规矩 ③）。</p>
+  </div>
+  <div class="fix">
+    <p class="en bad">❌ the speed which you read</p>
+    <p class="en">✅ the speed <b>at</b> which you read ／ the speed (that) you read <b>at</b></p>
+    <p class="note">丢了 at，还原出来就成了 You read the speed“你读速度”（见阶段三）。</p>
+  </div>
+  <div class="fix">
+    <p class="en bad">❌ the speed in which you read</p>
+    <p class="en">✅ the speed <b>at</b> which you read</p>
+    <p class="note">介词选错了。回原句：read <b>at</b> a speed（见阶段四）。</p>
+  </div>
+  <div class="fix">
+    <p class="en bad">❌ the man to who I spoke</p>
+    <p class="en">✅ the man to <b>whom</b> I spoke</p>
+    <p class="note">介词后面，人用 whom（规矩 ①）。</p>
+  </div>
+
+  <h3 id="s5c">短语动词的小词不往前搬</h3>
+
+  <p>give up（放弃）、look after（照顾）这种“动词 + 小词”，合起来是一个新意思。小词和动词粘在一起，不能单独搬到 which / whom 前面。</p>
+
+  <div class="pair">
+    <div>
+      <p class="en">the baby (that) she looks <b>after</b> ✅</p>
+      <p class="zh">她照顾的那个婴儿</p>
+      <p class="verdict">after 留在 look 身边。</p>
+    </div>
+    <div>
+      <p class="en">the baby <b>after whom</b> she looks ❌</p>
+      <p class="verdict">把 after 拆走，“照顾”的意思就没了。</p>
+    </div>
+  </div>
+  <div class="pair">
+    <div>
+      <p class="en">the plan (that) he gave <b>up</b> ✅</p>
+      <p class="zh">他放弃的计划</p>
+      <p class="verdict">up 留在 gave 身边。</p>
+    </div>
+    <div>
+      <p class="en">the plan <b>up which</b> he gave ❌</p>
+      <p class="verdict">同理，give up 不拆。</p>
+    </div>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 怎么判断</span>
+    <p>拆开以后意思还在吗？look after 拆成 look + after，“照顾”就没了 → <b>不拆</b>。</p>
+    <p>read at a speed 里，at 管的是 a speed，没和 read 粘成新意思 → <b>可以搬</b>。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>四种写法都对，越往上越正式。介词前置时：<b>只用 which / whom、不能省、介词不重复</b>。短语动词的小词不往前搬。</p>
+</section>
+
+<!-- ══ 阶段六 ══ -->
+<section class="stage" id="s6">
+  <span class="stage-no">阶段六</span>
+  <h2>在长句里读它</h2>
+
+  <div class="bridge">
+    <p class="before">单独一个短语会了。</p>
+    <p class="after">放进整句里，最容易犯的错是：<b>把从句里的动词当成整句的谓语。</b></p>
+  </div>
+
+  <h3 id="s6a">三步读法</h3>
+
+  <div class="restore">
+    <p class="en"><b>The speed</b> <u>at which you read</u> <b>is not important</b>.</p>
+    <p class="zh">你读得多快并不重要。</p>
+  </div>
+
+  <ol class="flow">
+    <li>
+      <p class="q">看到“名词 + 介词 + which”，在介词前面切一刀。</p>
+      <p class="a">The speed ｜ at which you read ｜ is not important.</p>
+    </li>
+    <li>
+      <p class="q">找“没人认领”的动词。</p>
+      <p class="a">read 已经有自己的主语 you，它是从句里的；is 前面没有别的主语，它属于 The speed —— <b>is 才是整句的谓语</b>。</p>
+    </li>
+    <li>
+      <p class="q">先读主干，再把从句挂回去。</p>
+      <p class="a">主干：The speed is not important.（速度不重要）→ 什么速度？you read at the speed，你读书的速度 → 你读书的速度并不重要。</p>
+    </li>
+  </ol>
+
+  <h3 id="s6b">再读几句</h3>
+
+  <p class="note">加粗 = 主干，下划线 = 从句。</p>
+
+  <div class="restore">
+    <p class="en"><b>The temperature</b> <u>at which water boils</u> <b>is 100°C</b>.</p>
+    <p class="arrow">主干：The temperature is 100°C.<span class="sep">｜</span>从句还原：water boils at that temperature</p>
+    <p class="zh">水烧开的温度是 100 摄氏度。</p>
+  </div>
+  <div class="restore">
+    <p class="en"><b>The age</b> <u>at which children start school</u> <b>is different</b> in different countries.</p>
+    <p class="arrow">主干：The age is different.<span class="sep">｜</span>从句还原：children start school at that age</p>
+    <p class="zh">孩子开始上学的年龄，各个国家不一样。</p>
+  </div>
+  <div class="restore">
+    <p class="en"><b>This is the point</b> <u>at which most people give up</u>.</p>
+    <p class="arrow">主干：This is the point.<span class="sep">｜</span>从句还原：most people give up at that point</p>
+    <p class="zh">大多数人就是在这一步放弃的。</p>
+  </div>
+  <div class="restore">
+    <p class="en"><b>We need to understand the world</b> <u>in which we live</u>.</p>
+    <p class="arrow">主干：We need to understand the world.<span class="sep">｜</span>从句还原：we live in the world</p>
+    <p class="zh">我们得了解自己生活的这个世界。</p>
+  </div>
+  <div class="restore">
+    <p class="en"><b>Reading every day will increase the speed</b> <u>at which you read</u>.</p>
+    <p class="arrow">主干：Reading every day will increase the speed.（increase = 提高）<span class="sep">｜</span>从句还原：you read at that speed</p>
+    <p class="zh">每天读，你的阅读速度就会提上来。</p>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 翻译别硬套“……的”</span>
+    <p>短的，直接译成“……的”放到名词前：<b>你读书的速度</b>。</p>
+    <p>长的、或者整句重点就在从句里的，可以拆开说：This is the point at which most people give up → 不说“这就是大多数人放弃的那个点”，说<b>“大多数人就是在这一步放弃的”</b>。</p>
+  </div>
+
+  <p class="sum"><b>小结：</b>读长句，先在“介词 + which”前切开；找到没人认领的那个动词，它才是整句的谓语；主干读懂了，再把从句当“……的”挂回名词前。</p>
+</section>
+
+<!-- ══ 阶段七 ══ -->
+<section class="stage" id="s7">
+  <span class="stage-no">阶段七</span>
+  <h2>练一练</h2>
+
+  <div class="bridge">
+    <p class="after">先自己想，再点“看答案”。每题都只靠一个动作：<b>把 which 换回名词，读一遍原句。</b></p>
+  </div>
+
+  <div class="qz">
+    <p class="qn">1 · 填介词</p>
+    <p class="en">the age ___ which children start school</p>
+    <details><summary>看答案</summary><p class="ans"><b>at</b> —— 还原：Children start school at that age.（at the age of six）</p></details>
+  </div>
+  <div class="qz">
+    <p class="qn">2 · 填介词</p>
+    <p class="en">the house ___ which I live</p>
+    <details><summary>看答案</summary><p class="ans"><b>in</b> —— 还原：I live in the house.</p></details>
+  </div>
+  <div class="qz">
+    <p class="qn">3 · 填介词</p>
+    <p class="en">the day ___ which we first met</p>
+    <details><summary>看答案</summary><p class="ans"><b>on</b> —— 还原：We first met on that day.（日子用 on）</p></details>
+  </div>
+  <div class="qz">
+    <p class="qn">4 · 填介词</p>
+    <p class="en">the music ___ which we danced</p>
+    <details><summary>看答案</summary><p class="ans"><b>to</b> —— 还原：We danced to the music.（dance to = 跟着……跳舞，介词跟动词搭）</p></details>
+  </div>
+  <div class="qz">
+    <p class="qn">5 · 合成一句（用介词前置）</p>
+    <p class="en">This is the temperature. Water boils at this temperature.</p>
+    <details><summary>看答案</summary><div class="ans"><p class="en">This is the temperature <b>at which</b> water boils.</p>口语：This is the temperature (that) water boils at.</div></details>
+  </div>
+  <div class="qz">
+    <p class="qn">6 · 改错</p>
+    <p class="en">I like the speed at which you speak at.</p>
+    <details><summary>看答案</summary><div class="ans"><p class="en">I like the speed at which you speak.</p>删掉句尾的 at：介词只出现一次。</div></details>
+  </div>
+  <div class="qz">
+    <p class="qn">7 · 改错</p>
+    <p class="en">This is the speed at that I read.</p>
+    <details><summary>看答案</summary><div class="ans"><p class="en">This is the speed at <b>which</b> I read.</p>介词后面不跟 that。</div></details>
+  </div>
+  <div class="qz">
+    <p class="qn">8 · 找整句的谓语</p>
+    <p class="en">The speed at which you read is not important.</p>
+    <details><summary>看答案</summary><p class="ans"><b>is</b> —— read 有自己的主语 you，是从句里的；is 没人认领，属于 The speed。</p></details>
+  </div>
+  <div class="qz">
+    <p class="qn">9 · 改成口语说法</p>
+    <p class="en">the price at which they sold the house</p>
+    <details><summary>看答案</summary><div class="ans"><p class="en">the price (that) they sold the house <b>at</b></p>at 放回句尾，that 可以省。</div></details>
+  </div>
+  <div class="qz">
+    <p class="qn">10 · 能不能改成介词前置？</p>
+    <p class="en">the baby she looks after</p>
+    <details><summary>看答案</summary><div class="ans"><b>不能。</b>look after（照顾）是一个整体，after 不能拆到前面。能写的是：<p class="en">the baby (whom / who / that) she looks after</p></div></details>
+  </div>
+</section>
+
+<!-- ══ 总览 ══ -->
+<section class="stage" id="s8">
+  <span class="stage-no">总览</span>
+  <h2>一张表</h2>
+
+  <table class="tbl sumtbl">
+    <tr><th>问题</th><th>答案</th></tr>
+    <tr><td>which 指什么</td><td>前面的名词：which = <span class="k">the speed</span></td></tr>
+    <tr><td>at 从哪来</td><td>原句：<span class="k">You read at the speed.</span></td></tr>
+    <tr><td>能不能丢 at</td><td>不能。which 是 at 的宾语；at 放前、放句尾都行，就是不能没有</td></tr>
+    <tr><td>介词怎么选</td><td>把 which 换回名词读原句；速度、温度、年龄、价格这类刻度名词用 at</td></tr>
+    <tr><td>介词放前面时</td><td>只用 which（物）/ whom（人）；不用 that / who；不能省；介词不重复</td></tr>
+    <tr><td>口语怎么说</td><td><span class="k">the speed (that) you read at</span>；更随便：<span class="k">how fast you read</span></td></tr>
+    <tr><td>长句怎么读</td><td>在“介词 + which”前切开 → 找没人认领的动词 → 先主干，后从句</td></tr>
+    <tr><td>不能前置</td><td>短语动词的小词：look after、give up 不拆</td></tr>
+  </table>
+
+  <footer>上一层：<a href="01-定语从句.html#s4">定语从句 · 阶段四「介词 + 关系代词」</a>。where / when / why 和 in which / on which 的关系见<a href="01-定语从句.html#s3">阶段三</a>。</footer>
+</section>
+</div><!-- /wrap -->
+
+<!-- ══ 右侧目录 ══ -->
+<nav class="toc" id="toc">
+  <p class="toc-h">目录</p>
+  <ol>
+    <li class="item" data-sec="s1">
+      <a href="#s1"><span class="num">一</span>先读懂这一句</a>
+      <div class="subs">
+        <a href="#s1a">拆成三块看</a>
+        <a href="#s1b">英文后挂，中文前置</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s2">
+      <a href="#s2"><span class="num">二</span>一步步拼出来</a>
+      <div class="subs">
+        <a href="#s2a">四步拼出来</a>
+        <a href="#s2b">看图：整块搬</a>
+        <a href="#s2c">两种搬法</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s3">
+      <a href="#s3"><span class="num">三</span>at 为什么不能丢</a>
+      <div class="subs">
+        <a href="#s3a">对比 the book</a>
+        <a href="#s3b">一个 speed 三种身份</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s4">
+      <a href="#s4"><span class="num">四</span>介词怎么选</a>
+      <div class="subs">
+        <a href="#s4a">还原原句找介词</a>
+        <a href="#s4b">跟名词搭还是跟动词搭</a>
+        <a href="#s4c">speed 为什么配 at</a>
+        <a href="#s4d">at which 家族</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s5">
+      <a href="#s5"><span class="num">五</span>四种写法 + 常见错误</a>
+      <div class="subs">
+        <a href="#s5a">四种写法</a>
+        <a href="#s5b">常见错误</a>
+        <a href="#s5c">短语动词不拆</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s6">
+      <a href="#s6"><span class="num">六</span>在长句里读它</a>
+      <div class="subs">
+        <a href="#s6a">三步读法</a>
+        <a href="#s6b">再读几句</a>
+      </div>
+    </li>
+    <li class="item" data-sec="s7">
+      <a href="#s7"><span class="num">七</span>练一练</a>
+    </li>
+    <li class="item" data-sec="s8">
+      <a href="#s8"><span class="num">总</span>一张表</a>
+    </li>
+  </ol>
+</nav>
+
+</div><!-- /page -->
+
+<button class="toc-btn" id="tocBtn" aria-label="打开目录">目录</button>
+
+<script>
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.toc .item'));
+  var subLinks = [].slice.call(document.querySelectorAll('.toc .subs a'));
+  var secs = items.map(function(it){ return document.getElementById(it.dataset.sec); });
+  var subs = subLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var ticking = false;
+
+  function activeIndex(list, offset){
+    var idx = 0;
+    for (var i = 0; i < list.length; i++){
+      if (list[i] && list[i].getBoundingClientRect().top <= offset) idx = i;
+    }
+    return idx;
+  }
+
+  function update(){
+    ticking = false;
+    var i = activeIndex(secs, 120);
+    items.forEach(function(it, n){ it.classList.toggle('active', n === i); });
+
+    var j = activeIndex(subs, 140);
+    subLinks.forEach(function(a, n){ a.classList.toggle('on', n === j); });
+
+    // 把当前项滚进目录可视区(仅宽屏侧栏)
+    var cur = items[i];
+    if (cur && window.innerWidth > 1080){
+      var toc = document.getElementById('toc');
+      var t = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+      if (t < 0 || t > toc.clientHeight - 60) toc.scrollTop += t - toc.clientHeight / 2;
+    }
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+
+  // 窄屏抽屉
+  var btn = document.getElementById('tocBtn');
+  var scrim = document.getElementById('scrim');
+  function close(){ document.body.classList.remove('nav-open'); }
+  btn.addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
+  scrim.addEventListener('click', close);
+  document.getElementById('toc').addEventListener('click', function(e){
+    if (e.target.tagName === 'A') close();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>
