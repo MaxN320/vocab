@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>现在完成时练习</title><style>
+  :root { --bg:#11131a; --card:#191c26; --card-2:#1f2330; --line:#2a2f3d;
+          --ink:#e9ecf4; --ink-soft:#aeb4c5; --ink-mute:#6f7689;
+          --accent:#7c9cff; --green:#5ec59a; --amber:#e2b23c; --red:#ff8a80;
+          --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.6; padding:0 16px 40px; }
+  .wrap { max-width:580px; margin:0 auto; }
+  .bar { position:sticky; top:0; z-index:10; background:var(--bg); padding:12px 0 10px; border-bottom:1px solid var(--line);
+         display:flex; align-items:center; gap:12px; }
+  .back { font-size:13px; color:var(--accent); text-decoration:none; white-space:nowrap; }
+  .meter { flex:1; height:6px; border-radius:3px; background:var(--card-2); overflow:hidden; }
+  .meter i { display:block; height:100%; width:0; background:var(--green); transition:width .2s; }
+  .count { font-size:12.5px; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  header { padding:22px 0 6px; }
+  .kicker { font-size:12px; letter-spacing:.1em; color:var(--ink-mute); }
+  h1 { font-size:24px; margin:4px 0 12px; }
+  .how { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--green); border-radius:10px;
+         padding:10px 12px; font-size:13.5px; color:var(--ink-soft); }
+  .how b { color:var(--ink); }
+  .sec { margin:26px 0 10px; font-size:13.5px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:8px; }
+  .sec::after { content:""; flex:1; height:1px; background:var(--line); }
+  .q { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 16px; margin-bottom:12px; }
+  .q .qn { font-size:12.5px; color:var(--ink-mute); }
+  .q .stem { font-size:17px; margin:6px 0 12px; line-height:1.7; }
+  .q .stem b { color:#fff; }
+  .q .blank { display:inline-block; min-width:60px; border-bottom:2px solid var(--amber); text-align:center; color:var(--amber); font-weight:700; }
+  .q input { display:none; }
+  .opts { display:flex; gap:8px; flex-wrap:wrap; }
+  .opts.col { flex-direction:column; }
+  .opts label { padding:8px 16px; border-radius:999px; font-size:15px; font-weight:600; background:var(--card-2); color:var(--ink);
+                border:1px solid var(--line); cursor:pointer; transition:.15s; }
+  .opts.col label { border-radius:10px; }
+  .fb { display:none; margin-top:12px; border-radius:10px; padding:9px 12px; font-size:14px; line-height:1.7; }
+  .fb.ok { background:rgba(94,197,154,.12); color:#a8e6c9; } .fb.no { background:rgba(255,138,128,.1); color:#ffc2bb; }
+  .fb b { color:#fff; }
+  .q input:checked + label.right { background:rgba(94,197,154,.16); color:var(--green); border-color:var(--green); }
+  .q input:checked + label.wrong { background:rgba(255,138,128,.12); color:var(--red); border-color:var(--red); }
+  .q input:disabled + label { opacity:.55; cursor:default; }
+  .q:has(input.right:checked) .fb.ok { display:block; }
+  .q:has(input.wrong:checked) .fb.no { display:block; }
+  details { margin-top:10px; font-size:12.5px; color:var(--ink-mute); }
+  details summary { cursor:pointer; }
+  details p { margin-top:6px; color:var(--ink-soft); }
+  footer { text-align:center; margin-top:22px; padding:16px; border-radius:14px; background:var(--card); border:1px solid var(--line); }
+  #score { font-weight:700; font-size:15px; }
+  footer small { display:block; color:var(--ink-mute); font-size:12.5px; margin-top:4px; }
+  #submit { margin-top:12px; padding:7px 18px; border-radius:999px; border:1px solid var(--line); background:var(--card-2); color:var(--ink-soft); font-size:13.5px; }
+  #copy { display:none; margin-top:10px; width:100%; min-height:70px; font-size:13px; border-radius:8px; padding:8px;
+          background:var(--card-2); color:var(--ink); border:1px solid var(--line); }
+</style></head><body><div class="wrap">
+<div class="bar"><a class="back" href="../../index.html#tense-practice">← 时态练习</a><div class="meter"><i id="meter"></i></div><span class="count" id="count">0 / 17</span></div>
+<header><div class="kicker">时态练习 · 03 现在完成时</div><h1>现在完成时练习 · 17 题</h1></header>
+<div class="how">这一套只练<b>现在完成时</b>：先练 have / has + 过去分词，再练三种功能（结果、持续、经历）、关键词和 for / since、大坑，最后和一般过去时比一比。<br>每题上方的灰字是这题用到的你笔记里的词：📒 生词本　🔗 词组列表　🔍 单词精讲　📍 介词。<br>点选项就能对答案：<b>绿色</b>是对，<b>红色</b>是错，下面会出解析。每题只算第一次点的选项。全部做完，结果会自动发给我。</div>
+<div class="sec">① 形式 · have / has + 过去分词</div>
+<section class="q" data-answer="donated"><div class="qn">第 1 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 donate 捐赠</div>She has <span class="blank">　</span> all her old clothes to the poor.</div>
+<div class="opts"><input type="radio" name="q1" id="q1o0" class="right"><label for="q1o0" class="right">donated</label><input type="radio" name="q1" id="q1o1" class="wrong"><label for="q1o1" class="wrong">donate</label><input type="radio" name="q1" id="q1o2" class="wrong"><label for="q1o2" class="wrong">donating</label></div>
+<div class="fb ok">✅ 对了！have / has 后面跟<b>过去分词</b>；donate 是规则动词，加 d → <b>donated</b>。<br>她已经把旧衣服都捐给了穷人。</div>
+<div class="fb no">❌ 答案是 <b>donated</b>。have / has 后面跟<b>过去分词</b>；donate 是规则动词，加 d → <b>donated</b>。<br>她已经把旧衣服都捐给了穷人。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>donated</b>. have / has 后面跟<b>过去分词</b>；donate 是规则动词，加 d → <b>donated</b>。<br>她已经把旧衣服都捐给了穷人。</p></details>
+</section>
+<section class="q" data-answer="held"><div class="qn">第 2 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 hold 举行</div>We have <span class="blank">　</span> three meetings this week.</div>
+<div class="opts"><input type="radio" name="q2" id="q2o0" class="wrong"><label for="q2o0" class="wrong">hold</label><input type="radio" name="q2" id="q2o1" class="wrong"><label for="q2o1" class="wrong">holded</label><input type="radio" name="q2" id="q2o2" class="right"><label for="q2o2" class="right">held</label></div>
+<div class="fb ok">✅ 对了！hold 是不规则动词：hold – held – <b>held</b>。<br>这周我们已经开了三次会。</div>
+<div class="fb no">❌ 答案是 <b>held</b>。hold 是不规则动词：hold – held – <b>held</b>。<br>这周我们已经开了三次会。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>held</b>. hold 是不规则动词：hold – held – <b>held</b>。<br>这周我们已经开了三次会。</p></details>
+</section>
+<section class="q" data-answer="have … argued"><div class="qn">第 3 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 argue 争吵</div>My parents <span class="blank">　</span> never <span class="blank">　</span> in front of me.</div>
+<div class="opts col"><input type="radio" name="q3" id="q3o0" class="wrong"><label for="q3o0" class="wrong">have … argue</label><input type="radio" name="q3" id="q3o1" class="right"><label for="q3o1" class="right">have … argued</label><input type="radio" name="q3" id="q3o2" class="wrong"><label for="q3o2" class="wrong">has … argued</label></div>
+<div class="fb ok">✅ 对了！主语 <b>my parents</b> 是复数 → have；后面跟过去分词 <b>argued</b>；never 放在 have 和过去分词中间。<br>我父母从来没在我面前吵过架。</div>
+<div class="fb no">❌ 答案是 <b>have … argued</b>。主语 <b>my parents</b> 是复数 → have；后面跟过去分词 <b>argued</b>；never 放在 have 和过去分词中间。<br>我父母从来没在我面前吵过架。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>have … argued</b>. 主语 <b>my parents</b> 是复数 → have；后面跟过去分词 <b>argued</b>；never 放在 have 和过去分词中间。<br>我父母从来没在我面前吵过架。</p></details>
+</section>
+<section class="q" data-answer="Have … come"><div class="qn">第 4 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 come across 偶然碰到　🔍 ever 任何时候</div><span class="blank">　</span> you ever <span class="blank">　</span> across this word before?</div>
+<div class="opts col"><input type="radio" name="q4" id="q4o0" class="wrong"><label for="q4o0" class="wrong">Have … came</label><input type="radio" name="q4" id="q4o1" class="wrong"><label for="q4o1" class="wrong">Did … came</label><input type="radio" name="q4" id="q4o2" class="right"><label for="q4o2" class="right">Have … come</label></div>
+<div class="fb ok">✅ 对了！come 的三种形式是 come – came – <b>come</b>，过去分词还是 come → <b>Have</b> you ever <b>come</b> across…? ever 问「到现在为止有没有过」。<br>你以前碰到过这个词吗？</div>
+<div class="fb no">❌ 答案是 <b>Have … come</b>。come 的三种形式是 come – came – <b>come</b>，过去分词还是 come → <b>Have</b> you ever <b>come</b> across…? ever 问「到现在为止有没有过」。<br>你以前碰到过这个词吗？</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>Have … come</b>. come 的三种形式是 come – came – <b>come</b>，过去分词还是 come → <b>Have</b> you ever <b>come</b> across…? ever 问「到现在为止有没有过」。<br>你以前碰到过这个词吗？</p></details>
+</section>
+<div class="sec">② 用法 · 结果、持续、经历</div>
+<section class="q" data-answer="has damaged"><div class="qn">第 5 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 damage 损坏</div>Someone <span class="blank">　</span> my bike. I can't ride it to school today.</div>
+<div class="opts col"><input type="radio" name="q5" id="q5o0" class="wrong"><label for="q5o0" class="wrong">damages</label><input type="radio" name="q5" id="q5o1" class="wrong"><label for="q5o1" class="wrong">is damaging</label><input type="radio" name="q5" id="q5o2" class="right"><label for="q5o2" class="right">has damaged</label></div>
+<div class="fb ok">✅ 对了！过去的动作（有人弄坏了车）留下了<b>现在的结果</b>（今天骑不了）→ 现在完成时 <b>has damaged</b>（功能 A：留下一个现在的画面）。<br>有人把我的自行车弄坏了，我今天没法骑它去上学。</div>
+<div class="fb no">❌ 答案是 <b>has damaged</b>。过去的动作（有人弄坏了车）留下了<b>现在的结果</b>（今天骑不了）→ 现在完成时 <b>has damaged</b>（功能 A：留下一个现在的画面）。<br>有人把我的自行车弄坏了，我今天没法骑它去上学。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>has damaged</b>. 过去的动作（有人弄坏了车）留下了<b>现在的结果</b>（今天骑不了）→ 现在完成时 <b>has damaged</b>（功能 A：留下一个现在的画面）。<br>有人把我的自行车弄坏了，我今天没法骑它去上学。</p></details>
+</section>
+<section class="q" data-answer="has treasured"><div class="qn">第 6 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 treasure 珍惜</div>She <span class="blank">　</span> this old watch since her grandfather gave it to her.</div>
+<div class="opts col"><input type="radio" name="q6" id="q6o0" class="right"><label for="q6o0" class="right">has treasured</label><input type="radio" name="q6" id="q6o1" class="wrong"><label for="q6o1" class="wrong">treasured</label><input type="radio" name="q6" id="q6o2" class="wrong"><label for="q6o2" class="wrong">treasures</label></div>
+<div class="fb ok">✅ 对了！<b>since</b> + 过去的起点，一直持续到现在 → 现在完成时 <b>has treasured</b>（功能 B：持续）。<br>自从爷爷把这块旧手表送给她，她就一直很珍惜它。</div>
+<div class="fb no">❌ 答案是 <b>has treasured</b>。<b>since</b> + 过去的起点，一直持续到现在 → 现在完成时 <b>has treasured</b>（功能 B：持续）。<br>自从爷爷把这块旧手表送给她，她就一直很珍惜它。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>has treasured</b>. <b>since</b> + 过去的起点，一直持续到现在 → 现在完成时 <b>has treasured</b>（功能 B：持续）。<br>自从爷爷把这块旧手表送给她，她就一直很珍惜它。</p></details>
+</section>
+<section class="q" data-answer="have … witnessed"><div class="qn">第 7 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 witness 亲眼看到</div>I <span class="blank">　</span> never <span class="blank">　</span> a car accident.</div>
+<div class="opts col"><input type="radio" name="q7" id="q7o0" class="right"><label for="q7o0" class="right">have … witnessed</label><input type="radio" name="q7" id="q7o1" class="wrong"><label for="q7o1" class="wrong">have … witness</label><input type="radio" name="q7" id="q7o2" class="wrong"><label for="q7o2" class="wrong">did … witness</label></div>
+<div class="fb ok">✅ 对了！<b>never</b> 说的是到现在为止的经历 → 现在完成时：<b>have</b> never <b>witnessed</b>（功能 C：经历）。<br>我从来没亲眼见过车祸。</div>
+<div class="fb no">❌ 答案是 <b>have … witnessed</b>。<b>never</b> 说的是到现在为止的经历 → 现在完成时：<b>have</b> never <b>witnessed</b>（功能 C：经历）。<br>我从来没亲眼见过车祸。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>have … witnessed</b>. <b>never</b> 说的是到现在为止的经历 → 现在完成时：<b>have</b> never <b>witnessed</b>（功能 C：经历）。<br>我从来没亲眼见过车祸。</p></details>
+</section>
+<section class="q" data-answer="haven&#x27;t decided"><div class="qn">第 8 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 decide 决定</div>We <span class="blank">　</span> where to go yet.</div>
+<div class="opts col"><input type="radio" name="q8" id="q8o0" class="wrong"><label for="q8o0" class="wrong">didn&#x27;t decide</label><input type="radio" name="q8" id="q8o1" class="right"><label for="q8o1" class="right">haven&#x27;t decided</label><input type="radio" name="q8" id="q8o2" class="wrong"><label for="q8o2" class="wrong">don&#x27;t decide</label></div>
+<div class="fb ok">✅ 对了！句末的 <b>yet</b> 放在否定句里 = 到现在还没 → 现在完成时 <b>haven't decided</b>。<br>我们还没决定去哪儿。</div>
+<div class="fb no">❌ 答案是 <b>haven&#x27;t decided</b>。句末的 <b>yet</b> 放在否定句里 = 到现在还没 → 现在完成时 <b>haven't decided</b>。<br>我们还没决定去哪儿。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>haven&#x27;t decided</b>. 句末的 <b>yet</b> 放在否定句里 = 到现在还没 → 现在完成时 <b>haven't decided</b>。<br>我们还没决定去哪儿。</p></details>
+</section>
+<div class="sec">③ 关键词和介词 · for / since、yet、ever</div>
+<section class="q" data-answer="since"><div class="qn">第 9 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔍 decline 下降　📍 since + 起点</div>The number of wild birds has declined a lot <span class="blank">　</span> 2000.</div>
+<div class="opts"><input type="radio" name="q9" id="q9o0" class="right"><label for="q9o0" class="right">since</label><input type="radio" name="q9" id="q9o1" class="wrong"><label for="q9o1" class="wrong">for</label><input type="radio" name="q9" id="q9o2" class="wrong"><label for="q9o2" class="wrong">in</label></div>
+<div class="fb ok">✅ 对了！<b>since</b> + 一个起点（2000 年）；for + 一段时长。decline 在这里是「数量往下走」那一支。<br>从 2000 年到现在，野鸟的数量少了很多。</div>
+<div class="fb no">❌ 答案是 <b>since</b>。<b>since</b> + 一个起点（2000 年）；for + 一段时长。decline 在这里是「数量往下走」那一支。<br>从 2000 年到现在，野鸟的数量少了很多。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>since</b>. <b>since</b> + 一个起点（2000 年）；for + 一段时长。decline 在这里是「数量往下走」那一支。<br>从 2000 年到现在，野鸟的数量少了很多。</p></details>
+</section>
+<section class="q" data-answer="for"><div class="qn">第 10 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 rely on 依靠　📍 for + 时长</div>She has relied on her sister <span class="blank">　</span> three years.</div>
+<div class="opts"><input type="radio" name="q10" id="q10o0" class="wrong"><label for="q10o0" class="wrong">during</label><input type="radio" name="q10" id="q10o1" class="wrong"><label for="q10o1" class="wrong">since</label><input type="radio" name="q10" id="q10o2" class="right"><label for="q10o2" class="right">for</label></div>
+<div class="fb ok">✅ 对了！three years 是<b>一段时长</b> → <b>for</b>。during 回答「什么时候」，不回答「多久」。<br>她依靠姐姐已经三年了。</div>
+<div class="fb no">❌ 答案是 <b>for</b>。three years 是<b>一段时长</b> → <b>for</b>。during 回答「什么时候」，不回答「多久」。<br>她依靠姐姐已经三年了。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>for</b>. three years 是<b>一段时长</b> → <b>for</b>。during 回答「什么时候」，不回答「多久」。<br>她依靠姐姐已经三年了。</p></details>
+</section>
+<section class="q" data-answer="yet"><div class="qn">第 11 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 look through 翻看</div>Sorry, I haven't looked through your notes <span class="blank">　</span>.</div>
+<div class="opts"><input type="radio" name="q11" id="q11o0" class="wrong"><label for="q11o0" class="wrong">already</label><input type="radio" name="q11" id="q11o1" class="right"><label for="q11o1" class="right">yet</label><input type="radio" name="q11" id="q11o2" class="wrong"><label for="q11o2" class="wrong">ever</label></div>
+<div class="fb ok">✅ 对了！否定句末尾用 <b>yet</b> = 还（没）。already 一般用在肯定句：I have already looked through them.<br>抱歉，我还没看你的笔记。</div>
+<div class="fb no">❌ 答案是 <b>yet</b>。否定句末尾用 <b>yet</b> = 还（没）。already 一般用在肯定句：I have already looked through them.<br>抱歉，我还没看你的笔记。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>yet</b>. 否定句末尾用 <b>yet</b> = 还（没）。already 一般用在肯定句：I have already looked through them.<br>抱歉，我还没看你的笔记。</p></details>
+</section>
+<section class="q" data-answer="ever"><div class="qn">第 12 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔍 ever 时间线上任何一点</div>This is the best movie I have <span class="blank">　</span> seen.</div>
+<div class="opts"><input type="radio" name="q12" id="q12o0" class="wrong"><label for="q12o0" class="wrong">yet</label><input type="radio" name="q12" id="q12o1" class="right"><label for="q12o1" class="right">ever</label><input type="radio" name="q12" id="q12o2" class="wrong"><label for="q12o2" class="wrong">never</label></div>
+<div class="fb ok">✅ 对了！最高级 + I have <b>ever</b> seen = 我看过的最……的。ever 把到现在为止的整条时间线都扫一遍。<br>这是我看过的最好的电影。</div>
+<div class="fb no">❌ 答案是 <b>ever</b>。最高级 + I have <b>ever</b> seen = 我看过的最……的。ever 把到现在为止的整条时间线都扫一遍。<br>这是我看过的最好的电影。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>ever</b>. 最高级 + I have <b>ever</b> seen = 我看过的最……的。ever 把到现在为止的整条时间线都扫一遍。<br>这是我看过的最好的电影。</p></details>
+</section>
+<div class="sec">④ 大坑 · 过去时间词、短暂动词</div>
+<section class="q" data-answer="I contacted him yesterday."><div class="qn">第 13 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 contact 联系</div>哪一句是对的？</div>
+<div class="opts col"><input type="radio" name="q13" id="q13o0" class="wrong"><label for="q13o0" class="wrong">I have contacted him yesterday.</label><input type="radio" name="q13" id="q13o1" class="right"><label for="q13o1" class="right">I contacted him yesterday.</label><input type="radio" name="q13" id="q13o2" class="wrong"><label for="q13o2" class="wrong">I have contact him yesterday.</label></div>
+<div class="fb ok">✅ 对了！<b>yesterday</b> 是明确的过去时间，不能和现在完成时连用 → 一般过去时 <b>contacted</b>。<br>我昨天联系过他了。</div>
+<div class="fb no">❌ 答案是 <b>I contacted him yesterday.</b>。<b>yesterday</b> 是明确的过去时间，不能和现在完成时连用 → 一般过去时 <b>contacted</b>。<br>我昨天联系过他了。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>I contacted him yesterday.</b>. <b>yesterday</b> 是明确的过去时间，不能和现在完成时连用 → 一般过去时 <b>contacted</b>。<br>我昨天联系过他了。</p></details>
+</section>
+<section class="q" data-answer="They have been married for ten years."><div class="qn">第 14 题</div>
+<div class="stem">「他们结婚十年了」，哪一句对？</div>
+<div class="opts col"><input type="radio" name="q14" id="q14o0" class="wrong"><label for="q14o0" class="wrong">They married for ten years.</label><input type="radio" name="q14" id="q14o1" class="wrong"><label for="q14o1" class="wrong">They have married for ten years.</label><input type="radio" name="q14" id="q14o2" class="right"><label for="q14o2" class="right">They have been married for ten years.</label></div>
+<div class="fb ok">✅ 对了！marry（结婚）是一下子就完成的动作，不能和 for ten years 这样的时长连用；换成状态 <b>be married</b>（主系表）：They <b>have been married</b> for ten years.<br>他们结婚十年了。</div>
+<div class="fb no">❌ 答案是 <b>They have been married for ten years.</b>。marry（结婚）是一下子就完成的动作，不能和 for ten years 这样的时长连用；换成状态 <b>be married</b>（主系表）：They <b>have been married</b> for ten years.<br>他们结婚十年了。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>They have been married for ten years.</b>. marry（结婚）是一下子就完成的动作，不能和 for ten years 这样的时长连用；换成状态 <b>be married</b>（主系表）：They <b>have been married</b> for ten years.<br>他们结婚十年了。</p></details>
+</section>
+<section class="q" data-answer="was"><div class="qn">第 15 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📍 since + 起点</div>I have known him since I <span class="blank">　</span> a child.</div>
+<div class="opts"><input type="radio" name="q15" id="q15o0" class="right"><label for="q15o0" class="right">was</label><input type="radio" name="q15" id="q15o1" class="wrong"><label for="q15o1" class="wrong">am</label><input type="radio" name="q15" id="q15o2" class="wrong"><label for="q15o2" class="wrong">have been</label></div>
+<div class="fb ok">✅ 对了！since 后面接的是起点，「我还是个孩子的时候」是过去的一个时间 → 用一般过去时 <b>was</b>。<br>我从小就认识他。</div>
+<div class="fb no">❌ 答案是 <b>was</b>。since 后面接的是起点，「我还是个孩子的时候」是过去的一个时间 → 用一般过去时 <b>was</b>。<br>我从小就认识他。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>was</b>. since 后面接的是起点，「我还是个孩子的时候」是过去的一个时间 → 用一般过去时 <b>was</b>。<br>我从小就认识他。</p></details>
+</section>
+<div class="sec">⑤ 判断 · 和一般过去时比一比</div>
+<section class="q" data-answer="has gone"><div class="qn">第 16 题</div>
+<div class="stem">— Where's Tom? — He <span class="blank">　</span> to the library. He'll be back in an hour.</div>
+<div class="opts"><input type="radio" name="q16" id="q16o0" class="right"><label for="q16o0" class="right">has gone</label><input type="radio" name="q16" id="q16o1" class="wrong"><label for="q16o1" class="wrong">has been</label></div>
+<div class="fb ok">✅ 对了！<b>has gone to</b> = 去了那儿，人还没回来；<b>has been to</b> = 去过，已经回来了。Tom 现在不在，一小时后回来 → <b>has gone</b>。<br>——汤姆呢？——他去图书馆了，一小时后回来。</div>
+<div class="fb no">❌ 答案是 <b>has gone</b>。<b>has gone to</b> = 去了那儿，人还没回来；<b>has been to</b> = 去过，已经回来了。Tom 现在不在，一小时后回来 → <b>has gone</b>。<br>——汤姆呢？——他去图书馆了，一小时后回来。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>has gone</b>. <b>has gone to</b> = 去了那儿，人还没回来；<b>has been to</b> = 去过，已经回来了。Tom 现在不在，一小时后回来 → <b>has gone</b>。<br>——汤姆呢？——他去图书馆了，一小时后回来。</p></details>
+</section>
+<section class="q" data-answer="lived"><div class="qn">第 17 题</div>
+<div class="stem">I <span class="blank">　</span> in Beijing for ten years, but now I live in Shanghai.</div>
+<div class="opts"><input type="radio" name="q17" id="q17o0" class="wrong"><label for="q17o0" class="wrong">have lived</label><input type="radio" name="q17" id="q17o1" class="right"><label for="q17o1" class="right">lived</label></div>
+<div class="fb ok">✅ 对了！那十年已经过去，现在住在上海，和现在不连着 → 一般过去时 <b>lived</b>。如果现在还住在北京，才说 I have lived in Beijing for ten years.<br>我在北京住过十年，但现在住在上海。</div>
+<div class="fb no">❌ 答案是 <b>lived</b>。那十年已经过去，现在住在上海，和现在不连着 → 一般过去时 <b>lived</b>。如果现在还住在北京，才说 I have lived in Beijing for ten years.<br>我在北京住过十年，但现在住在上海。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>lived</b>. 那十年已经过去，现在住在上海，和现在不连着 → 一般过去时 <b>lived</b>。如果现在还住在北京，才说 I have lived in Beijing for ten years.<br>我在北京住过十年，但现在住在上海。</p></details>
+</section>
+<footer><span id="score">已答 0 / 17</span><small id="status">全部做完会自动把结果发给我</small><button id="submit">还没做完，先交卷</button><textarea id="copy" readonly></textarea></footer>
+</div><script>
+var TOPIC = 'vocab-quiz-b40560dafcdf39f9', QUIZ = "tense-practice-03", TITLE = "现在完成时练习", LANG = "zh", sent = false;
+var TEST = /[?&]test=1/.test(location.search);
+function tr(zh, en) { return LANG === 'en' ? en : zh; }
+function summary() {
+  var all = document.querySelectorAll('.q'), done = 0, ok = 0, wrong = [], skipped = [];
+  all.forEach(function(q, i) {
+    if (!q.dataset.done) { skipped.push(i + 1); return; }
+    done++;
+    if (q.dataset.done === '1') ok++;
+    else wrong.push({n: i + 1, chose: q.dataset.chose, answer: q.dataset.answer});
+  });
+  return {quiz: QUIZ, title: TITLE, score: ok, answered: done, total: all.length, wrong: wrong, skipped: skipped, test: TEST};
+}
+function text(s) {
+  var t = s.title + tr('：答对 ', ': ') + s.score + ' / ' + s.total;
+  if (s.wrong.length) t += tr('，错题 ', ', wrong: ') + s.wrong.map(function(w) { return tr('第' + w.n + '题（选了 ' + w.chose + '）', 'Q' + w.n + ' (chose ' + w.chose + ')'); }).join(tr('、', ', '));
+  if (s.skipped.length) t += tr('，没做 ', ', skipped: ') + s.skipped.join(', ');
+  return t;
+}
+function submit() {
+  if (sent) return;
+  var s = summary(), st = document.getElementById('status');
+  st.textContent = tr('正在把结果发给我……', 'Sending your result…');
+  fetch('https://ntfy.sh/' + TOPIC, {method: 'POST', body: JSON.stringify(s)})
+    .then(function(r) { if (!r.ok) throw new Error(r.status); sent = true;
+      st.textContent = tr('✅ 结果已经发给我了，回微信说一声「做完了」就行', '✅ Your result has been sent.'); document.getElementById('submit').style.display = 'none'; })
+    .catch(function() {
+      st.textContent = tr('⚠️ 结果没发出去，把下面这段复制发给我：', '⚠️ The result could not be sent. Copy the text below:');
+      var c = document.getElementById('copy'); c.style.display = 'block'; c.value = text(s); });
+}
+document.querySelectorAll('.q input').forEach(function(inp) {
+  inp.addEventListener('change', function() {
+    var q = inp.closest('.q');
+    if (q.dataset.done) return;
+    q.dataset.done = inp.classList.contains('right') ? '1' : '0';
+    q.dataset.chose = inp.nextElementSibling.textContent;
+    q.querySelectorAll('input').forEach(function(x) { if (x !== inp) x.disabled = true; });
+    var s = summary();
+    document.getElementById('score').textContent = tr('已答 ' + s.answered + ' / ' + s.total + '，答对 ' + s.score + ' 题', 'Answered ' + s.answered + ' / ' + s.total + ' · Correct ' + s.score);
+    document.getElementById('count').textContent = s.answered + ' / ' + s.total;
+    document.getElementById('meter').style.width = (100 * s.answered / s.total) + '%';
+    if (s.answered === s.total) submit();
+  });
+});
+document.getElementById('submit').addEventListener('click', submit);
+</script></body></html>

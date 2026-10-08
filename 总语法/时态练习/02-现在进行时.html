@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>现在进行时练习</title><style>
+  :root { --bg:#11131a; --card:#191c26; --card-2:#1f2330; --line:#2a2f3d;
+          --ink:#e9ecf4; --ink-soft:#aeb4c5; --ink-mute:#6f7689;
+          --accent:#7c9cff; --green:#5ec59a; --amber:#e2b23c; --red:#ff8a80;
+          --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.6; padding:0 16px 40px; }
+  .wrap { max-width:580px; margin:0 auto; }
+  .bar { position:sticky; top:0; z-index:10; background:var(--bg); padding:12px 0 10px; border-bottom:1px solid var(--line);
+         display:flex; align-items:center; gap:12px; }
+  .back { font-size:13px; color:var(--accent); text-decoration:none; white-space:nowrap; }
+  .meter { flex:1; height:6px; border-radius:3px; background:var(--card-2); overflow:hidden; }
+  .meter i { display:block; height:100%; width:0; background:var(--green); transition:width .2s; }
+  .count { font-size:12.5px; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  header { padding:22px 0 6px; }
+  .kicker { font-size:12px; letter-spacing:.1em; color:var(--ink-mute); }
+  h1 { font-size:24px; margin:4px 0 12px; }
+  .how { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--green); border-radius:10px;
+         padding:10px 12px; font-size:13.5px; color:var(--ink-soft); }
+  .how b { color:var(--ink); }
+  .sec { margin:26px 0 10px; font-size:13.5px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:8px; }
+  .sec::after { content:""; flex:1; height:1px; background:var(--line); }
+  .q { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 16px; margin-bottom:12px; }
+  .q .qn { font-size:12.5px; color:var(--ink-mute); }
+  .q .stem { font-size:17px; margin:6px 0 12px; line-height:1.7; }
+  .q .stem b { color:#fff; }
+  .q .blank { display:inline-block; min-width:60px; border-bottom:2px solid var(--amber); text-align:center; color:var(--amber); font-weight:700; }
+  .q input { display:none; }
+  .opts { display:flex; gap:8px; flex-wrap:wrap; }
+  .opts.col { flex-direction:column; }
+  .opts label { padding:8px 16px; border-radius:999px; font-size:15px; font-weight:600; background:var(--card-2); color:var(--ink);
+                border:1px solid var(--line); cursor:pointer; transition:.15s; }
+  .opts.col label { border-radius:10px; }
+  .fb { display:none; margin-top:12px; border-radius:10px; padding:9px 12px; font-size:14px; line-height:1.7; }
+  .fb.ok { background:rgba(94,197,154,.12); color:#a8e6c9; } .fb.no { background:rgba(255,138,128,.1); color:#ffc2bb; }
+  .fb b { color:#fff; }
+  .q input:checked + label.right { background:rgba(94,197,154,.16); color:var(--green); border-color:var(--green); }
+  .q input:checked + label.wrong { background:rgba(255,138,128,.12); color:var(--red); border-color:var(--red); }
+  .q input:disabled + label { opacity:.55; cursor:default; }
+  .q:has(input.right:checked) .fb.ok { display:block; }
+  .q:has(input.wrong:checked) .fb.no { display:block; }
+  details { margin-top:10px; font-size:12.5px; color:var(--ink-mute); }
+  details summary { cursor:pointer; }
+  details p { margin-top:6px; color:var(--ink-soft); }
+  footer { text-align:center; margin-top:22px; padding:16px; border-radius:14px; background:var(--card); border:1px solid var(--line); }
+  #score { font-weight:700; font-size:15px; }
+  footer small { display:block; color:var(--ink-mute); font-size:12.5px; margin-top:4px; }
+  #submit { margin-top:12px; padding:7px 18px; border-radius:999px; border:1px solid var(--line); background:var(--card-2); color:var(--ink-soft); font-size:13.5px; }
+  #copy { display:none; margin-top:10px; width:100%; min-height:70px; font-size:13px; border-radius:8px; padding:8px;
+          background:var(--card-2); color:var(--ink); border:1px solid var(--line); }
+</style></head><body><div class="wrap">
+<div class="bar"><a class="back" href="../../index.html#tense-practice">← 时态练习</a><div class="meter"><i id="meter"></i></div><span class="count" id="count">0 / 17</span></div>
+<header><div class="kicker">时态练习 · 02 现在进行时</div><h1>现在进行时练习 · 17 题</h1></header>
+<div class="how">这一套只练<b>现在进行时</b>：先练 be + doing 和 -ing 的拼写，再练四种用法、时间词，然后是状态动词这个大坑，最后练表将来、和一般现在时比一比。<br>每题上方的灰字是这题用到的你笔记里的词：📒 生词本　🔗 词组列表　🔍 单词精讲　📍 介词。<br>点选项就能对答案：<b>绿色</b>是对，<b>红色</b>是错，下面会出解析。每题只算第一次点的选项。全部做完，结果会自动发给我。</div>
+<div class="sec">① 形式 · be + doing</div>
+<section class="q" data-answer="are piling"><div class="qn">第 1 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 pile 堆放</div>Look! The boys <span class="blank">　</span> the boxes in the corner.</div>
+<div class="opts col"><input type="radio" name="q1" id="q1o0" class="wrong"><label for="q1o0" class="wrong">are pileing</label><input type="radio" name="q1" id="q1o1" class="right"><label for="q1o1" class="right">are piling</label><input type="radio" name="q1" id="q1o2" class="wrong"><label for="q1o2" class="wrong">is piling</label></div>
+<div class="fb ok">✅ 对了！主语 <b>the boys</b> 是复数 → are；pile 以不发音的 e 结尾，去 e 再加 -ing → <b>piling</b>。<br>看！男孩们正把箱子堆到角落里。</div>
+<div class="fb no">❌ 答案是 <b>are piling</b>。主语 <b>the boys</b> 是复数 → are；pile 以不发音的 e 结尾，去 e 再加 -ing → <b>piling</b>。<br>看！男孩们正把箱子堆到角落里。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>are piling</b>. 主语 <b>the boys</b> 是复数 → are；pile 以不发音的 e 结尾，去 e 再加 -ing → <b>piling</b>。<br>看！男孩们正把箱子堆到角落里。</p></details>
+</section>
+<section class="q" data-answer="is demonstrating"><div class="qn">第 2 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔍 demonstrate 演示</div>Look! The teacher <span class="blank">　</span> how the machine works.</div>
+<div class="opts col"><input type="radio" name="q2" id="q2o0" class="wrong"><label for="q2o0" class="wrong">demonstrating</label><input type="radio" name="q2" id="q2o1" class="right"><label for="q2o1" class="right">is demonstrating</label><input type="radio" name="q2" id="q2o2" class="wrong"><label for="q2o2" class="wrong">demonstrates</label></div>
+<div class="fb ok">✅ 对了！<b>Look!</b> 说明是此刻 → 现在进行时，be 不能少：<b>is demonstrating</b>（去 e 加 -ing）。demonstrate how = 当面做一遍给人看，演示怎么做。<br>看！老师正在演示这台机器怎么用。</div>
+<div class="fb no">❌ 答案是 <b>is demonstrating</b>。<b>Look!</b> 说明是此刻 → 现在进行时，be 不能少：<b>is demonstrating</b>（去 e 加 -ing）。demonstrate how = 当面做一遍给人看，演示怎么做。<br>看！老师正在演示这台机器怎么用。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is demonstrating</b>. <b>Look!</b> 说明是此刻 → 现在进行时，be 不能少：<b>is demonstrating</b>（去 e 加 -ing）。demonstrate how = 当面做一遍给人看，演示怎么做。<br>看！老师正在演示这台机器怎么用。</p></details>
+</section>
+<section class="q" data-answer="am tying"><div class="qn">第 3 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 tie 系</div>Wait a minute — I <span class="blank">　</span> my shoes.</div>
+<div class="opts"><input type="radio" name="q3" id="q3o0" class="wrong"><label for="q3o0" class="wrong">tying</label><input type="radio" name="q3" id="q3o1" class="right"><label for="q3o1" class="right">am tying</label><input type="radio" name="q3" id="q3o2" class="wrong"><label for="q3o2" class="wrong">am tieing</label></div>
+<div class="fb ok">✅ 对了！ie 结尾的动词，变 ie 为 y 再加 -ing：tie → <b>tying</b>（lie → lying，die → dying）。只写 tying 不行，前面要有 am。<br>等一下，我在系鞋带。</div>
+<div class="fb no">❌ 答案是 <b>am tying</b>。ie 结尾的动词，变 ie 为 y 再加 -ing：tie → <b>tying</b>（lie → lying，die → dying）。只写 tying 不行，前面要有 am。<br>等一下，我在系鞋带。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>am tying</b>. ie 结尾的动词，变 ie 为 y 再加 -ing：tie → <b>tying</b>（lie → lying，die → dying）。只写 tying 不行，前面要有 am。<br>等一下，我在系鞋带。</p></details>
+</section>
+<section class="q" data-answer="is wrapping"><div class="qn">第 4 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 wrap 包</div>Mum <span class="blank">　</span> a present for my birthday.</div>
+<div class="opts col"><input type="radio" name="q4" id="q4o0" class="right"><label for="q4o0" class="right">is wrapping</label><input type="radio" name="q4" id="q4o1" class="wrong"><label for="q4o1" class="wrong">is wraping</label><input type="radio" name="q4" id="q4o2" class="wrong"><label for="q4o2" class="wrong">wrapping</label></div>
+<div class="fb ok">✅ 对了！wrap 是「一个元音 + 一个辅音」结尾的重读音节，双写最后的辅音再加 -ing：<b>wrapping</b>（stop → stopping）。<br>妈妈正在包我的生日礼物。</div>
+<div class="fb no">❌ 答案是 <b>is wrapping</b>。wrap 是「一个元音 + 一个辅音」结尾的重读音节，双写最后的辅音再加 -ing：<b>wrapping</b>（stop → stopping）。<br>妈妈正在包我的生日礼物。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is wrapping</b>. wrap 是「一个元音 + 一个辅音」结尾的重读音节，双写最后的辅音再加 -ing：<b>wrapping</b>（stop → stopping）。<br>妈妈正在包我的生日礼物。</p></details>
+</section>
+<section class="q" data-answer="are … listening"><div class="qn">第 5 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📍 listen to 听</div>Hey, <span class="blank">　</span> you <span class="blank">　</span> to me right now?</div>
+<div class="opts col"><input type="radio" name="q5" id="q5o0" class="wrong"><label for="q5o0" class="wrong">do … listen</label><input type="radio" name="q5" id="q5o1" class="wrong"><label for="q5o1" class="wrong">are … listen</label><input type="radio" name="q5" id="q5o2" class="right"><label for="q5o2" class="right">are … listening</label></div>
+<div class="fb ok">✅ 对了！<b>right now</b> = 此刻 → 现在进行时；疑问句把 are 提到主语前：<b>are</b> you <b>listening</b> to me? listen 后面要跟 to。<br>喂，你现在在听我说话吗？</div>
+<div class="fb no">❌ 答案是 <b>are … listening</b>。<b>right now</b> = 此刻 → 现在进行时；疑问句把 are 提到主语前：<b>are</b> you <b>listening</b> to me? listen 后面要跟 to。<br>喂，你现在在听我说话吗？</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>are … listening</b>. <b>right now</b> = 此刻 → 现在进行时；疑问句把 are 提到主语前：<b>are</b> you <b>listening</b> to me? listen 后面要跟 to。<br>喂，你现在在听我说话吗？</p></details>
+</section>
+<div class="sec">② 用法 · 此刻、这阵子、变化、抱怨</div>
+<section class="q" data-answer="is sleeping"><div class="qn">第 6 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 turn down the volume 调低音量</div>Shh! The baby <span class="blank">　</span>. Please turn down the volume.</div>
+<div class="opts col"><input type="radio" name="q6" id="q6o0" class="wrong"><label for="q6o0" class="wrong">slept</label><input type="radio" name="q6" id="q6o1" class="right"><label for="q6o1" class="right">is sleeping</label><input type="radio" name="q6" id="q6o2" class="wrong"><label for="q6o2" class="wrong">sleeps</label></div>
+<div class="fb ok">✅ 对了！<b>Shh!</b> 说明宝宝此刻正在睡 → 现在进行时 <b>is sleeping</b>（小窗：此刻正在发生）。<br>嘘！宝宝在睡觉，请把音量调低。</div>
+<div class="fb no">❌ 答案是 <b>is sleeping</b>。<b>Shh!</b> 说明宝宝此刻正在睡 → 现在进行时 <b>is sleeping</b>（小窗：此刻正在发生）。<br>嘘！宝宝在睡觉，请把音量调低。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is sleeping</b>. <b>Shh!</b> 说明宝宝此刻正在睡 → 现在进行时 <b>is sleeping</b>（小窗：此刻正在发生）。<br>嘘！宝宝在睡觉，请把音量调低。</p></details>
+</section>
+<section class="q" data-answer="is taking on"><div class="qn">第 7 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 take on 承担　🔗 stressed out 压力很大</div>This month Lily <span class="blank">　</span> a lot of extra work, so she is stressed out.</div>
+<div class="opts col"><input type="radio" name="q7" id="q7o0" class="wrong"><label for="q7o0" class="wrong">takes on</label><input type="radio" name="q7" id="q7o1" class="wrong"><label for="q7o1" class="wrong">took on</label><input type="radio" name="q7" id="q7o2" class="right"><label for="q7o2" class="right">is taking on</label></div>
+<div class="fb ok">✅ 对了！<b>this month</b> 说的是这一阵子，不一定此刻正在做 → 现在进行时的「大窗」：<b>is taking on</b>。<br>这个月莉莉接了很多额外的工作，所以压力很大。</div>
+<div class="fb no">❌ 答案是 <b>is taking on</b>。<b>this month</b> 说的是这一阵子，不一定此刻正在做 → 现在进行时的「大窗」：<b>is taking on</b>。<br>这个月莉莉接了很多额外的工作，所以压力很大。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is taking on</b>. <b>this month</b> 说的是这一阵子，不一定此刻正在做 → 现在进行时的「大窗」：<b>is taking on</b>。<br>这个月莉莉接了很多额外的工作，所以压力很大。</p></details>
+</section>
+<section class="q" data-answer="is getting"><div class="qn">第 8 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 get colder and colder 越来越冷</div>Winter is coming. It <span class="blank">　</span> colder and colder.</div>
+<div class="opts"><input type="radio" name="q8" id="q8o0" class="right"><label for="q8o0" class="right">is getting</label><input type="radio" name="q8" id="q8o1" class="wrong"><label for="q8o1" class="wrong">gets</label><input type="radio" name="q8" id="q8o2" class="wrong"><label for="q8o2" class="wrong">got</label></div>
+<div class="fb ok">✅ 对了！状态正在一点点改变 → 现在进行时（变化窗）：<b>is getting</b> colder and colder。<br>冬天要来了，天越来越冷。</div>
+<div class="fb no">❌ 答案是 <b>is getting</b>。状态正在一点点改变 → 现在进行时（变化窗）：<b>is getting</b> colder and colder。<br>冬天要来了，天越来越冷。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is getting</b>. 状态正在一点点改变 → 现在进行时（变化窗）：<b>is getting</b> colder and colder。<br>冬天要来了，天越来越冷。</p></details>
+</section>
+<section class="q" data-answer="is always putting"><div class="qn">第 9 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 put the blame on 把错推给</div>My roommate <span class="blank">　</span> the blame on me! I'm so tired of it.（语气：抱怨）</div>
+<div class="opts col"><input type="radio" name="q9" id="q9o0" class="wrong"><label for="q9o0" class="wrong">always puts</label><input type="radio" name="q9" id="q9o1" class="wrong"><label for="q9o1" class="wrong">always is putting</label><input type="radio" name="q9" id="q9o2" class="right"><label for="q9o2" class="right">is always putting</label></div>
+<div class="fb ok">✅ 对了！<b>always + 进行时</b> = 抱怨「老是这样，真烦人」：<b>is always putting</b>，always 放在 is 后面。always puts 只是平静地说「总是」，没有抱怨的味道。<br>我室友老是把错推到我身上！我烦透了。</div>
+<div class="fb no">❌ 答案是 <b>is always putting</b>。<b>always + 进行时</b> = 抱怨「老是这样，真烦人」：<b>is always putting</b>，always 放在 is 后面。always puts 只是平静地说「总是」，没有抱怨的味道。<br>我室友老是把错推到我身上！我烦透了。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is always putting</b>. <b>always + 进行时</b> = 抱怨「老是这样，真烦人」：<b>is always putting</b>，always 放在 is 后面。always puts 只是平静地说「总是」，没有抱怨的味道。<br>我室友老是把错推到我身上！我烦透了。</p></details>
+</section>
+<div class="sec">③ 关键词和介词 · 此刻的信号</div>
+<section class="q" data-answer="at"><div class="qn">第 10 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📍 at + 时刻</div>I can't talk <span class="blank">　</span> the moment. I'm driving.</div>
+<div class="opts"><input type="radio" name="q10" id="q10o0" class="wrong"><label for="q10o0" class="wrong">on</label><input type="radio" name="q10" id="q10o1" class="wrong"><label for="q10o1" class="wrong">in</label><input type="radio" name="q10" id="q10o2" class="right"><label for="q10o2" class="right">at</label></div>
+<div class="fb ok">✅ 对了！<b>at the moment</b> = 此刻，是一个「点」→ at（几点 at，哪天 on，更长 in）。<br>我现在没法说话，我在开车。</div>
+<div class="fb no">❌ 答案是 <b>at</b>。<b>at the moment</b> = 此刻，是一个「点」→ at（几点 at，哪天 on，更长 in）。<br>我现在没法说话，我在开车。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>at</b>. <b>at the moment</b> = 此刻，是一个「点」→ at（几点 at，哪天 on，更长 in）。<br>我现在没法说话，我在开车。</p></details>
+</section>
+<section class="q" data-answer="right now"><div class="qn">第 11 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 look through 翻看</div>Tom is looking through his notes <span class="blank">　</span>.</div>
+<div class="opts"><input type="radio" name="q11" id="q11o0" class="right"><label for="q11o0" class="right">right now</label><input type="radio" name="q11" id="q11o1" class="wrong"><label for="q11o1" class="wrong">every day</label><input type="radio" name="q11" id="q11o2" class="wrong"><label for="q11o2" class="wrong">last night</label></div>
+<div class="fb ok">✅ 对了！现在进行时配表示「此刻」的词：<b>now / right now / at the moment</b>。every day 配一般现在时，last night 配一般过去时。<br>汤姆此刻正在翻看他的笔记。</div>
+<div class="fb no">❌ 答案是 <b>right now</b>。现在进行时配表示「此刻」的词：<b>now / right now / at the moment</b>。every day 配一般现在时，last night 配一般过去时。<br>汤姆此刻正在翻看他的笔记。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>right now</b>. 现在进行时配表示「此刻」的词：<b>now / right now / at the moment</b>。every day 配一般现在时，last night 配一般过去时。<br>汤姆此刻正在翻看他的笔记。</p></details>
+</section>
+<div class="sec">④ 大坑 · 状态动词不进进行时</div>
+<section class="q" data-answer="suspect"><div class="qn">第 12 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 suspect 怀疑</div>I <span class="blank">　</span> that he is lying.</div>
+<div class="opts col"><input type="radio" name="q12" id="q12o0" class="wrong"><label for="q12o0" class="wrong">am suspecting</label><input type="radio" name="q12" id="q12o1" class="right"><label for="q12o1" class="right">suspect</label><input type="radio" name="q12" id="q12o2" class="wrong"><label for="q12o2" class="wrong">suspecting</label></div>
+<div class="fb ok">✅ 对了！<b>suspect</b>（怀疑）是脑子里的想法，是状态不是动作，通常不用进行时 → <b>suspect</b>。<br>我怀疑他在撒谎。</div>
+<div class="fb no">❌ 答案是 <b>suspect</b>。<b>suspect</b>（怀疑）是脑子里的想法，是状态不是动作，通常不用进行时 → <b>suspect</b>。<br>我怀疑他在撒谎。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>suspect</b>. <b>suspect</b>（怀疑）是脑子里的想法，是状态不是动作，通常不用进行时 → <b>suspect</b>。<br>我怀疑他在撒谎。</p></details>
+</section>
+<section class="q" data-answer="depends"><div class="qn">第 13 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 depend on 取决于</div>— Are we going out tomorrow? — It <span class="blank">　</span> on the weather.</div>
+<div class="opts col"><input type="radio" name="q13" id="q13o0" class="wrong"><label for="q13o0" class="wrong">is depending</label><input type="radio" name="q13" id="q13o1" class="right"><label for="q13o1" class="right">depends</label><input type="radio" name="q13" id="q13o2" class="wrong"><label for="q13o2" class="wrong">depend</label></div>
+<div class="fb ok">✅ 对了！<b>depend on</b>（取决于）是一种状态，不用进行时；主语 it 三单 → <b>depends</b>。<br>——我们明天出去吗？——看天气。</div>
+<div class="fb no">❌ 答案是 <b>depends</b>。<b>depend on</b>（取决于）是一种状态，不用进行时；主语 it 三单 → <b>depends</b>。<br>——我们明天出去吗？——看天气。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>depends</b>. <b>depend on</b>（取决于）是一种状态，不用进行时；主语 it 三单 → <b>depends</b>。<br>——我们明天出去吗？——看天气。</p></details>
+</section>
+<section class="q" data-answer="are you being"><div class="qn">第 14 题</div>
+<div class="stem">Why <span class="blank">　</span> so rude to the waiter? You're usually so polite!</div>
+<div class="opts col"><input type="radio" name="q14" id="q14o0" class="wrong"><label for="q14o0" class="wrong">are you</label><input type="radio" name="q14" id="q14o1" class="wrong"><label for="q14o1" class="wrong">do you be</label><input type="radio" name="q14" id="q14o2" class="right"><label for="q14o2" class="right">are you being</label></div>
+<div class="fb ok">✅ 对了！<b>are you being</b> + 形容词 = 你这会儿「表现得」……（平时不这样）。usually so polite 说明他平时很有礼貌，只是这会儿没礼貌。<br>你怎么对服务员这么没礼貌？你平时挺有礼貌的呀！</div>
+<div class="fb no">❌ 答案是 <b>are you being</b>。<b>are you being</b> + 形容词 = 你这会儿「表现得」……（平时不这样）。usually so polite 说明他平时很有礼貌，只是这会儿没礼貌。<br>你怎么对服务员这么没礼貌？你平时挺有礼貌的呀！</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>are you being</b>. <b>are you being</b> + 形容词 = 你这会儿「表现得」……（平时不这样）。usually so polite 说明他平时很有礼貌，只是这会儿没礼貌。<br>你怎么对服务员这么没礼貌？你平时挺有礼貌的呀！</p></details>
+</section>
+<div class="sec">⑤ 表将来 & 判断 · 和一般现在时比一比</div>
+<section class="q" data-answer="am picking"><div class="qn">第 15 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">🔗 pick sb up 接人</div>I <span class="blank">　</span> my cousin up at the airport tomorrow at six. We planned it last week.</div>
+<div class="opts"><input type="radio" name="q15" id="q15o0" class="right"><label for="q15o0" class="right">am picking</label><input type="radio" name="q15" id="q15o1" class="wrong"><label for="q15o1" class="wrong">pick</label><input type="radio" name="q15" id="q15o2" class="wrong"><label for="q15o2" class="wrong">picked</label></div>
+<div class="fb ok">✅ 对了！有将来时间 <b>tomorrow</b>，又是早就安排好的事 → 现在进行时表将来：<b>am picking</b> … up。<br>我明天六点去机场接我表妹，上周就说好了。</div>
+<div class="fb no">❌ 答案是 <b>am picking</b>。有将来时间 <b>tomorrow</b>，又是早就安排好的事 → 现在进行时表将来：<b>am picking</b> … up。<br>我明天六点去机场接我表妹，上周就说好了。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>am picking</b>. 有将来时间 <b>tomorrow</b>，又是早就安排好的事 → 现在进行时表将来：<b>am picking</b> … up。<br>我明天六点去机场接我表妹，上周就说好了。</p></details>
+</section>
+<section class="q" data-answer="cycles … is taking"><div class="qn">第 16 题</div>
+<div class="stem"><div style="font-size:13px;color:#aeb4c5;margin-bottom:6px;">📒 cycle 骑车</div>Sam usually <span class="blank">　</span> to school, but this week he <span class="blank">　</span> the bus.</div>
+<div class="opts col"><input type="radio" name="q16" id="q16o0" class="wrong"><label for="q16o0" class="wrong">is cycling … takes</label><input type="radio" name="q16" id="q16o1" class="wrong"><label for="q16o1" class="wrong">cycles … takes</label><input type="radio" name="q16" id="q16o2" class="right"><label for="q16o2" class="right">cycles … is taking</label></div>
+<div class="fb ok">✅ 对了！<b>usually</b> 是平时的常态 → 一般现在时 <b>cycles</b>；<b>this week</b> 是临时的一段 → 现在进行时 <b>is taking</b>。<br>萨姆平时骑车上学，这周坐公交。</div>
+<div class="fb no">❌ 答案是 <b>cycles … is taking</b>。<b>usually</b> 是平时的常态 → 一般现在时 <b>cycles</b>；<b>this week</b> 是临时的一段 → 现在进行时 <b>is taking</b>。<br>萨姆平时骑车上学，这周坐公交。</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>cycles … is taking</b>. <b>usually</b> 是平时的常态 → 一般现在时 <b>cycles</b>；<b>this week</b> 是临时的一段 → 现在进行时 <b>is taking</b>。<br>萨姆平时骑车上学，这周坐公交。</p></details>
+</section>
+<section class="q" data-answer="is boiling"><div class="qn">第 17 题</div>
+<div class="stem">Look, the water <span class="blank">　</span>. Can you turn it off?</div>
+<div class="opts"><input type="radio" name="q17" id="q17o0" class="right"><label for="q17o0" class="right">is boiling</label><input type="radio" name="q17" id="q17o1" class="wrong"><label for="q17o1" class="wrong">boils</label></div>
+<div class="fb ok">✅ 对了！此刻正在发生 → <b>is boiling</b>。「水在 100 度沸腾」这种一直成立的事实才用 boils：Water boils at 100°C.<br>看，水开了，你能把火关了吗？</div>
+<div class="fb no">❌ 答案是 <b>is boiling</b>。此刻正在发生 → <b>is boiling</b>。「水在 100 度沸腾」这种一直成立的事实才用 boils：Water boils at 100°C.<br>看，水开了，你能把火关了吗？</div>
+<details><summary>点不动？点这里看答案</summary><p>答案：<b>is boiling</b>. 此刻正在发生 → <b>is boiling</b>。「水在 100 度沸腾」这种一直成立的事实才用 boils：Water boils at 100°C.<br>看，水开了，你能把火关了吗？</p></details>
+</section>
+<footer><span id="score">已答 0 / 17</span><small id="status">全部做完会自动把结果发给我</small><button id="submit">还没做完，先交卷</button><textarea id="copy" readonly></textarea></footer>
+</div><script>
+var TOPIC = 'vocab-quiz-b40560dafcdf39f9', QUIZ = "tense-practice-02", TITLE = "现在进行时练习", LANG = "zh", sent = false;
+var TEST = /[?&]test=1/.test(location.search);
+function tr(zh, en) { return LANG === 'en' ? en : zh; }
+function summary() {
+  var all = document.querySelectorAll('.q'), done = 0, ok = 0, wrong = [], skipped = [];
+  all.forEach(function(q, i) {
+    if (!q.dataset.done) { skipped.push(i + 1); return; }
+    done++;
+    if (q.dataset.done === '1') ok++;
+    else wrong.push({n: i + 1, chose: q.dataset.chose, answer: q.dataset.answer});
+  });
+  return {quiz: QUIZ, title: TITLE, score: ok, answered: done, total: all.length, wrong: wrong, skipped: skipped, test: TEST};
+}
+function text(s) {
+  var t = s.title + tr('：答对 ', ': ') + s.score + ' / ' + s.total;
+  if (s.wrong.length) t += tr('，错题 ', ', wrong: ') + s.wrong.map(function(w) { return tr('第' + w.n + '题（选了 ' + w.chose + '）', 'Q' + w.n + ' (chose ' + w.chose + ')'); }).join(tr('、', ', '));
+  if (s.skipped.length) t += tr('，没做 ', ', skipped: ') + s.skipped.join(', ');
+  return t;
+}
+function submit() {
+  if (sent) return;
+  var s = summary(), st = document.getElementById('status');
+  st.textContent = tr('正在把结果发给我……', 'Sending your result…');
+  fetch('https://ntfy.sh/' + TOPIC, {method: 'POST', body: JSON.stringify(s)})
+    .then(function(r) { if (!r.ok) throw new Error(r.status); sent = true;
+      st.textContent = tr('✅ 结果已经发给我了，回微信说一声「做完了」就行', '✅ Your result has been sent.'); document.getElementById('submit').style.display = 'none'; })
+    .catch(function() {
+      st.textContent = tr('⚠️ 结果没发出去，把下面这段复制发给我：', '⚠️ The result could not be sent. Copy the text below:');
+      var c = document.getElementById('copy'); c.style.display = 'block'; c.value = text(s); });
+}
+document.querySelectorAll('.q input').forEach(function(inp) {
+  inp.addEventListener('change', function() {
+    var q = inp.closest('.q');
+    if (q.dataset.done) return;
+    q.dataset.done = inp.classList.contains('right') ? '1' : '0';
+    q.dataset.chose = inp.nextElementSibling.textContent;
+    q.querySelectorAll('input').forEach(function(x) { if (x !== inp) x.disabled = true; });
+    var s = summary();
+    document.getElementById('score').textContent = tr('已答 ' + s.answered + ' / ' + s.total + '，答对 ' + s.score + ' 题', 'Answered ' + s.answered + ' / ' + s.total + ' · Correct ' + s.score);
+    document.getElementById('count').textContent = s.answered + ' / ' + s.total;
+    document.getElementById('meter').style.width = (100 * s.answered / s.total) + '%';
+    if (s.answered === s.total) submit();
+  });
+});
+document.getElementById('submit').addEventListener('click', submit);
+</script></body></html>
