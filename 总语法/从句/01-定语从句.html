@@ -122,6 +122,7 @@ b{color:#f0f3f7;font-weight:600}
 .box .en{font-size:16px}
 .box .zh{font-size:14px}
 .box .formula{font-family:var(--serif);color:var(--paper);font-size:16.5px;margin:10px 0}
+.box .formula .unit{white-space:nowrap}
 .derive{background:var(--blue-bg);border-left:2px solid var(--blue)}
 .rote{background:var(--orange-bg);border-left:2px solid var(--orange)}
 .tag{display:block;font-size:13px;font-weight:600;margin-bottom:8px;letter-spacing:.05em}
@@ -996,14 +997,44 @@ body.nav-open .scrim{display:block}
 
   <h3 id="s8b">常见简化：定语从句 → 更短的后置修饰</h3>
 
+  <div class="bridge">
+    <p class="before">看到 a book which was called X → a book called X，容易以为“被动语态可以随便省 was”。</p>
+    <p class="after">其实是<b>两种修饰 book 的表达</b>：一种用完整定语从句，一种用名词后的过去分词短语。先看清它们在整句里的位置。</p>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="en">I found a book <b>which was called X</b>.</p>
+      <p class="verdict">which 指 book，在从句里作主语；was called 是从句内部的被动谓语。整段告诉你“哪本书”。</p>
+    </div>
+    <div>
+      <p class="en">I found a book <b>called X</b>.</p>
+      <p class="verdict">called X 放在 book 后面，仍表示“名叫 X 的”；现在它是修饰语，不是完整的定语从句。</p>
+    </div>
+  </div>
+
+  <div class="box derive">
+    <span class="tag">📖 分清两层：整句的谓语 vs 名词后面的修饰</span>
+    <p>两句的主干都是 <b>I found a book</b>：整句的谓语一直是 <b>found</b>。变化的只有 book 后面那段“说明是哪本书”的部分。</p>
+    <p class="formula">名词 + which / that / who<br>+ be + <span class="unit">过去分词</span>（+ 其余成分）<br>↔ 名词 + <span class="unit">过去分词</span>（+ 其余成分）</p>
+    <p><b>which was called X</b> 里，was 帮 called 构成从句的被动谓语；换成 <b>called X</b> 后，called 以过去分词的形式修饰 book，不再独自承担从句的谓语和时态。“过去分词”这个名称也不等于“这里发生在过去”。</p>
+  </div>
+
+  <div class="box rote">
+    <span class="tag">🧷 和上一节的“省关系词”不是一回事</span>
+    <p><b>上一节：</b>the book <b>which I bought</b> → the book <b>I bought</b>。which 是 bought 的<b>宾语</b>，只省 which；I bought 还保留主语和谓语。</p>
+    <p><b>这一节：</b>the book <b>which was called X</b> → the book <b>called X</b>。which 是从句<b>主语</b>，不能只拿掉 which、留下 was called；这是把整段修饰改用过去分词短语。</p>
+    <p><b>别套进独立句：</b>要说“这本书叫 X”，完整句仍是 <span class="en">The book <b>was called</b> X.</span> 这里 was 属于句子的谓语，不能单独删掉。</p>
+  </div>
+
   <div class="pair">
     <div>
       <p class="en">a book <span class="dimtext">which was</span> written by a famous scholar</p>
-      <p class="verdict">→ a book <b>written</b> by a famous scholar</p>
+      <p class="verdict">→ a book <b>written</b> by a famous scholar：book 是“被写”的</p>
     </div>
     <div>
       <p class="en">people <span class="dimtext">who live</span> here</p>
-      <p class="verdict">→ people <b>living</b> here</p>
+      <p class="verdict">→ people <b>living</b> here：people 是“自己住”的</p>
     </div>
   </div>
 
@@ -1013,10 +1044,10 @@ body.nav-open .scrim{display:block}
   </div>
 
   <div class="box derive">
-    <span class="tag">📖 这里值得理解的只有“方向”</span>
+    <span class="tag">📖 先认得这个方向就够了</span>
     <p><b>主动意义</b>常见 doing：people <b>living</b> here。</p>
     <p><b>被动意义</b>常见 done：a book <b>written</b> by him。</p>
-    <p>这能帮助你读句子，但不要把它硬记成“任何定语从句都能机械压缩”。</p>
+    <p>上面的箭头是帮助认读两种表达的对照，不是“任何定语从句都能机械删词”的指令。进一步的条件留到非谓语动词再学。参考资料见文末 [1]。</p>
   </div>
 
   <h3 id="s8c">什么时候先别压：不会就保留完整从句</h3>
@@ -1079,7 +1110,7 @@ body.nav-open .scrim{display:block}
     </li>
   </ol>
 
-  <footer>下一步：非谓语动词。到那里再系统学习 doing / done / to do 如何作为后置定语；这里不提前用一套过强的“压缩公式”硬套。</footer>
+  <footer>下一步：非谓语动词。到那里再系统学习 doing / done / to do 如何作为后置定语；这里不提前用一套过强的“压缩公式”硬套。<br><br>参考资料：<br>[1] <a href="https://downloads.bbc.co.uk/learningenglish/intermediate/unit27/b2_u27_6min_gram_ing_ed_clauses.pdf">BBC Learning English：-ing and -ed clauses</a>（第 3–4 页：被动定语从句与过去分词短语）。</footer>
 </section>
 </div><!-- /wrap -->
 
