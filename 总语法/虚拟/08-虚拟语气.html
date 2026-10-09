@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>虚拟语气 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+  .ex.bad{border-left-color:#ef6a6a}
+  .ex.bad .en{color:#f3a3a3;text-decoration:line-through;text-decoration-color:rgba(239,106,106,.5)}
+  .ex.bad .en::after{content:" ✗";color:#ef6a6a;text-decoration:none;font-family:var(--sans)}
+  .ex.good{border-left-color:var(--r2)}
+  .ex.good .en::after{content:" ✓";color:var(--r2);font-family:var(--sans)}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.cond{color:#f0876a;font-weight:700}  /* 条件那半句：往后退过的动词 */
+.res{color:#38cabf;font-weight:700}   /* 结论那半句：would / could … */
+.real{color:#5cc98a}                  /* 现实、真话 */
+.inv{color:#e6b850;font-weight:700}   /* 提到主语前的 should / had / were */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+.callout{margin:.9rem 0;padding:.8rem 1rem;background:var(--surface-2);
+  border-left:3px solid var(--r4);border-radius:9px;font-size:.93rem}
+.callout b{color:var(--r4)}
+.vs .card.fact .lbl{color:var(--r2)}
+.vs .card.fake .lbl{color:var(--r4)}
+/* 总览表：前两列不折行，手机上收窄边距 */
+.tbl th:nth-child(-n+2),.tbl td:nth-child(-n+2),.tbl thead th{white-space:nowrap}
+@media(max-width:560px){.tbl th,.tbl td{padding:.6rem .45rem}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>虚拟语气 · 阶梯式笔记</h1>
+    <p class="sub">从“时态就是事实”起步，一阶叠一阶：地基 → 三套公式 → 拆开用 → 省掉 if → 不靠 if。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基：时态说的是事实，说假话就往后退一格</h2>
+        <div class="tag">是什么 · 一个最本质的点</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>虚拟语气到底在做什么？为什么说现在的事，反而用过去式？
+      <span class="lim"><b>为什么先讲：</b>老师说，学虚拟只要有一个意识就够了——<em>时态意识</em>。中文的动词不变形，体会不到“时态就是事实”，后面的公式就只能死记。</span>
+    </div>
+    <p>先确认一件事：<strong>用什么时态说，听的人就默认那是那个时间的客观事实</strong>。说现在的事用现在时，说过去的事用过去时——这是说话双方共同的约定。</p>
+    <div class="vs">
+      <div class="card fact">
+        <div class="en">I'm also just a girl, standing in front of a boy, asking him to love her.</div>
+        <div class="zh">《诺丁山》：我也只是个女孩，站在一个男孩面前，请求他爱她。</div>
+        <div class="lbl">am — 说话的人一定是女孩</div>
+      </div>
+      <div class="card fact">
+        <div class="en">I'm just a boy, standing in front of a girl …</div>
+        <div class="zh">《生活大爆炸》里 Raj 学这句台词。</div>
+        <div class="lbl">am — 说话的人一定是男孩</div>
+      </div>
+    </div>
+    <div class="ex"><div class="en">I had no lessons yesterday.</div><div class="zh">我昨天没课。&nbsp;<span style="color:var(--r3)">had 是过去时 → 昨天一定没课</span></div></div>
+
+    <h3>矛盾来了：女孩想说“假如我是男孩”</h3>
+    <div class="ex bad"><div class="en">If I am a boy, …</div><div class="zh">am 告诉听的人“这是事实，我就是男孩”，if 又说“假如”——一边说是，一边说不是，听的人会乱</div></div>
+    <p>现实是女孩，嘴上说男孩，这是<strong>意思上的矛盾</strong>。英语的办法是：<strong>意思上的矛盾，用形式上的矛盾来体现</strong>——该用现在时，偏不用，把时态往后退一格。听的人一听时态不对，就知道你说的不是现实。</p>
+    <div class="ex good"><div class="en">If I were a boy, …</div><div class="zh">现在的事，用了过去的 were → 听的人立刻明白：这是假的</div></div>
+
+    <h3>四个字：时态后退</h3>
+    <div class="rows">
+      <div class="row"><span class="k">说现在的假事</span><span class="v">正常该用现在时 → 改用<strong>过去时</strong>。</span></div>
+      <div class="row"><span class="k">说过去的假事</span><span class="v">正常该用过去时 → 改用<strong>过去的过去</strong>（had done）。</span></div>
+    </div>
+    <p class="note">为什么只往后退，不往将来退？老师说：将来时讲的只是“将来发生的可能性”，算不上事实；只有现在和过去才有事实可以“相反”。</p>
+
+    <h3>反过来：从时态就能听出真假</h3>
+    <p>碧昂丝（Beyoncé）是女生，她唱《If I Were a Boy》。就算不认识她，光听 I 和 were 连在一起（I 的过去式本该配 was），也能推出：唱歌的人其实是女孩。</p>
+    <div class="ex"><div class="en">If I <span class="cond">were</span> a boy, even just for a day, I<span class="res">'d roll</span> out of bed in the morning and throw on what I wanted, then go …</div><div class="zh">如果我是男孩，哪怕只当一天，早上我会从床上滚起来，随手套件衣服就出门……（I'd = I would；throw on 是随手往身上一套，比 put on 随便）</div></div>
+    <p class="note">中文做不到这一点：有人说“我会一辈子爱你”，你听不出真假；英文说 <code>I would love you forever.</code>，would 已经告诉你：他想，但做不到。</p>
+
+    <h3>if 有两个意思：如果 / 假如</h3>
+    <p>“如果”说的是真有可能发生的事，用正常时态（主将从现）；“假如”说的是和现实相反的事，时态往后退。一首歌里两种都有——《Nothing's Gonna Change My Love for You》：</p>
+    <div class="vs">
+      <div class="card fake">
+        <div class="en">If I <span class="cond">had to</span> live my life without you near me, the days <span class="res">would</span> all <span class="res">be</span> empty.</div>
+        <div class="zh">要是我得过没有你在身边的日子，每个白天都会空空荡荡。</div>
+        <div class="lbl">假如 — had to / would：其实你就在身边</div>
+      </div>
+      <div class="card fact">
+        <div class="en">If the road ahead <b>is</b> not so easy, our love <b>will</b> lead the way for us.</div>
+        <div class="zh">如果前面的路不好走，我们的爱会为我们引路。</div>
+        <div class="lbl">如果 — is / will：前路真有可能难走</div>
+      </div>
+    </div>
+    <p class="note">所以 if 后面是真是假，<strong>看时态</strong>：说现在的事用了过去时，就是假的；主将从现，就是真的。</p>
+    <p class="note"><b>was 还是 were？</b>虚拟里的 be 动词一律用 were，主语是 I、he、she 也一样。老师说：口语和美剧里用 was 也常见，不算错；但国内考试认 were，写 were 最保险。<code>he were</code> 读着“不搭”——这种不搭，正好让人一下感觉到说的是假话。</p>
+    <p class="note">老师把虚拟和倒装、强调句放在同一章讲：做一个和现实相反的假设，本身就是在强调现实。</p>
+    <div class="sum"><b>小结：</b>时态 = 那个时间的客观事实。想说和现实相反的事，就故意用“不该用”的时态，往后退一格：<strong>现在的事用过去说，过去的事用过去的过去说</strong>。反过来，你也能从时态听出别人说的是真是假。后面每一阶都长在这上面。</div>
+  </section>
+
+  <!-- ② 公式 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>公式：if 句里的现在、过去、将来</h2>
+        <div class="tag">怎么用 · 三套骨架</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>if 句前后两半，各要退成什么样子？
+      <span class="lim"><b>上一阶的局限：</b>地基只说了“往后退一格”，没给句子的形状；而且将来的事还没发生，没有事实可以“相反”，它另有一套。</span>
+    </div>
+    <p>虚拟句是从条件句的“<strong>主将从现</strong>”变来的：本来主句用 will do，if 那半句用一般现在时（am / is / are / do / does）。整句往后退一格，就是<strong>现在虚拟</strong>；再退一格，就是<strong>过去虚拟</strong>。<strong>将来虚拟</strong>另有一套，要单独记。</p>
+    <div class="legend2">
+      <span class="cond">条件那半句（退过的动词）</span>
+      <span class="res">结论那半句（would / could …）</span>
+      <span class="real">现实</span>
+      <span style="color:var(--faint)">— 骨架与例句用同色对应</span>
+    </div>
+
+    <h3>A · 和现在的事实相反</h3>
+    <div class="skel">If + 主语 + <span class="cond">did / were</span> …，主语 + <span class="res">would / could + 动词原形</span> …</div>
+    <div class="rows">
+      <div class="row"><span class="k">主句</span><span class="v">will → <b>would</b>（也可以是 could、might）</span></div>
+      <div class="row"><span class="k">从句的 be</span><span class="v">am / is / are → <b>were</b></span></div>
+      <div class="row"><span class="k">从句的实义动词</span><span class="v">do / does → <b>did</b>（过去式）</span></div>
+      <div class="row"><span class="k">从句的情态动词</span><span class="v">can → <b>could</b></span></div>
+    </div>
+    <p class="note">先看“事实 → 虚拟”：箭头左边是现实，右边是和它相反的假设。</p>
+    <div class="ex"><div class="en">I don't know the answer. → If I <span class="cond">knew</span> the answer, I <span class="res">would tell</span> you.</div><div class="zh">我不知道答案。→ 要是我知道答案，就告诉你了。</div></div>
+    <div class="ex"><div class="en">It's raining. We are not going out. → We <span class="res">would get</span> wet if we <span class="cond">went</span> out.</div><div class="zh">在下雨，我们不出门。→ 要是出门，我们会淋透。</div></div>
+    <div class="ex"><div class="en">Jane lives in the city and likes it. → She <span class="res">wouldn't be</span> happy if she <span class="cond">lived</span> in the country.</div><div class="zh">简住在城里，也喜欢城里。→ 要是住到乡下，她不会开心。</div></div>
+
+    <div class="stype">反着练：看到虚拟，说出现实</div>
+    <p class="note">老师让我们倒过来想：看到虚拟句，用正常时态把现实说出来。</p>
+    <div class="ex"><div class="en">If you <span class="cond">didn't have</span> a job, what <span class="res">would</span> you <span class="res">do</span>?</div><div class="zh">要是你没有工作，你会做什么？&nbsp;现实：<span class="real">You have a job.</span></div></div>
+    <div class="ex"><div class="en">If we <span class="cond">had</span> a car, we <span class="res">could travel</span> more.</div><div class="zh">要是有车，我们就能多出去玩。&nbsp;现实：<span class="real">We don't have a car.</span>（主语是 we，用 don't，不是 doesn't）</div></div>
+    <div class="ex"><div class="en">If I <span class="cond">could rearrange</span> the alphabet, I <span class="res">would put</span> U and I together.</div><div class="zh">要是我能重排字母表，我就把 U 和 I 放在一起。（土味情话：U 就是 you）&nbsp;现实：<span class="real">I can't.</span> 从句里也能有情态动词，can 退成 could 就行。</div></div>
+
+    <div class="stype">课上的填空</div>
+    <div class="ex"><div class="en">If I <span class="cond">wanted</span> to learn Italian, I <span class="res">would go</span> to Italy.</div><div class="zh">要是我想学意大利语，我就去意大利了。现实：我不想学。（课上有人填了 have been——别加。本来是 I will go，虚拟只是把 will 退成 would）</div></div>
+    <div class="ex"><div class="en">I haven't told Ann what happened. She <span class="res">would be</span> angry if she <span class="cond">knew</span>.</div><div class="zh">我还没告诉安发生了什么。她要是知道，肯定很生气。现实：<span class="real">She doesn't know.</span></div></div>
+    <div class="ex"><div class="en">If we <span class="cond">had</span> a map, I <span class="res">could show</span> you where we live.</div><div class="zh">要是有地图，我就能指给你看我们住哪。现实：<span class="real">We don't have a map.</span></div></div>
+    <div class="ex"><div class="en">What <span class="res">would</span> you <span class="res">do</span> if you <span class="cond">won</span> a lot of money?</div><div class="zh">要是你赢了一大笔钱，你会做什么？现实：你没赢。</div></div>
+    <div class="ex"><div class="en">I'm not going to take the job. I <span class="res">would take</span> it if the salary <span class="cond">were</span> better.</div><div class="zh">我不打算接那份工作。工资要是再高点，我就接了。现实：工资不够好。（老师等的就是 were，怕大家写 was）</div></div>
+
+    <h3>B · 和过去的事实相反</h3>
+    <div class="skel">If + 主语 + <span class="cond">had done</span> …，主语 + <span class="res">would / could + have done</span> …</div>
+    <p>本来就发生在过去的事，正常用过去时；要说和它相反的假设，就再往后退一格：从句 did → <b>had done</b>，主句 would do → <b>would have done</b>。老师说记住这五个词就够了：从句 <b>had done</b>，主句 <b>would have done</b>。</p>
+    <div class="vs">
+      <div class="card gen">
+        <div class="en">If I <span class="cond">were</span> hungry, I <span class="res">would eat</span> something.</div>
+        <div class="zh">要是（现在）饿，我就找点东西吃。</div>
+        <div class="lbl">现在虚拟 — 现实：I'm not hungry.</div>
+      </div>
+      <div class="card now">
+        <div class="en">If I <span class="cond">had been</span> hungry, I <span class="res">would have eaten</span> something.</div>
+        <div class="zh">要是（当时）饿，我就找点东西吃了。</div>
+        <div class="lbl">过去虚拟 — 现实：I wasn't hungry.</div>
+      </div>
+    </div>
+    <p class="note">一句话：<strong>现在用过去，过去用过去的过去</strong>。</p>
+    <div class="ex"><div class="en">The view was wonderful. If I <span class="cond">had had</span> a camera, I <span class="res">would have taken</span> some photographs.</div><div class="zh">当时景色很美。要是我带了相机，就拍几张照片了。现实：<span class="real">I didn't have a camera.</span>（had had 不是打错：第一个 had 是过去完成时的助动词，第二个是 have“有”的过去分词）</div></div>
+    <div class="ex"><div class="en">I decided to stay at home last night. I <span class="res">would have gone</span> out if I <span class="cond">hadn't been</span> so tired.</div><div class="zh">昨晚我决定待在家。要不是那么累，我就出门了。现实：<span class="real">I was tired.</span></div></div>
+    <div class="ex"><div class="en">If he <span class="cond">had been looking</span> where he was going, he <span class="res">wouldn't have walked</span> into the wall.</div><div class="zh">他当时要是看着路，就不会撞到墙上了。现实：<span class="real">He wasn't looking.</span> 他撞上了墙。（这里用的是过去完成进行时 had been doing，总之都是 had 开头）</div></div>
+    <p class="note">《摩登家庭》里，有人看见别人在泳池边摔倒，第一反应是笑得停不下来，被家里人数落没同情心。他回嘴：</p>
+    <div class="ex"><div class="en">If you <span class="cond">had been</span> there, you <span class="res">would have laughed</span> just as hard as I did.</div><div class="zh">你们当时要是在场，也会笑得跟我一样厉害。现实：你们当时不在场。</div></div>
+
+    <h3>C · 将来：不是“相反”，是“不太可能”</h3>
+    <p>将来的事还没发生，谈不上和事实相反。所以将来虚拟说的是：<strong>说话人主观上觉得，这事可能性很小</strong>。觉得有可能，就用主将从现（真的条件）；觉得不太可能，才用将来虚拟。老师说这一套推不出来，要背。</p>
+    <div class="skel">If + 主语 + <span class="cond">were to do / should do</span> …，主语 + <span class="res">would / could + 动词原形</span> …（主句和现在虚拟一样）</div>
+    <div class="vs">
+      <div class="card fact">
+        <div class="en">If it <b>rains</b>, I <b>will stay</b> home.</div>
+        <div class="zh">要是下雨，我就待在家。</div>
+        <div class="lbl">主将从现 — 说话人觉得很可能下雨</div>
+      </div>
+      <div class="card fake">
+        <div class="en">If it <span class="cond">were to rain</span>, I <span class="res">would stay</span> home.</div>
+        <div class="zh">万一下雨，我就待在家。</div>
+        <div class="lbl">将来虚拟 — 说话人觉得不太会下</div>
+      </div>
+    </div>
+    <div class="ex"><div class="en">If she <span class="cond">were to marry</span> Jack, she <span class="res">would be</span> very happy.</div><div class="zh">她要是能嫁给杰克，会非常开心。（说话人觉得她嫁不成）</div></div>
+    <div class="ex"><div class="en">If he <span class="cond">should have</span> enough money, he <span class="res">would buy</span> it.</div><div class="zh">他以后要是有足够的钱，会买下来的。（说话人觉得他不会有那么多钱）</div></div>
+    <div class="ex"><div class="en">If I <span class="cond">were to do</span> the work, I <span class="res">would do</span> it in a different way.</div><div class="zh">这活儿以后要是让我来干，我会换个干法。（我不太可能接这活儿）</div></div>
+    <div class="ex"><div class="en">What do you think <span class="res">would be</span> the value of the necklace if I <span class="cond">were to sell</span> it?</div><div class="zh">要是我把这条项链卖了，你觉得能值多少钱？（其实不打算卖，只是问问；真想卖，就会用主将从现：if I sell it … will be …）</div></div>
+    <div class="ex"><div class="en">Sometimes I have thought it <span class="res">would be</span> an excellent rule to live each day as if we <span class="cond">should die</span> tomorrow. Such an attitude <span class="res">would emphasize</span> sharply the values of life.</div><div class="zh">我有时想，把每一天都当作明天就会死去那样来过，会是个绝好的准则。这种态度会让人格外看清生命的价值。（海伦·凯勒《假如给我三天光明》。连词换成了 as if，道理一样；大部分人明天不会死，所以用 should die）</div></div>
+    <p class="note">最后一个场景：假释面谈。犯人在假释官面前要显得谦卑——要是信心满满，觉得自己一定能出去，反而出不去。所以他说“要是我能被放出去”时，用将来虚拟，表示自己觉得可能性很小：</p>
+    <div class="ex"><div class="en">If I <span class="cond">were to be released</span>, I <span class="res">would</span> just <span class="res">want</span> the simple life. I just want to hold down a job, make some friends, go for a walk after work in the fresh air and, you know, pay my bills.</div><div class="zh">要是我能被释放，我只想过简单的日子：保住一份工作，交几个朋友，下班后呼吸着新鲜空气散散步，还有，按时付账单。（片子里他是在演：认识他的人都知道，他出去就是为了接着犯事）</div></div>
+    <div class="sum"><b>小结：</b><strong>现在</strong>：从句 did / were，主句 would do；<strong>过去</strong>：从句 had done，主句 would have done；<strong>将来</strong>：从句 were to do / should do，主句 would do。前两套是“和事实相反”，往后退就推得出来；将来那套说的是“我觉得不太可能”，要背。</div>
+  </section>
+
+  <!-- ③ 拆开 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>拆开用：混合虚拟，和“一半真一半假”</h2>
+        <div class="tag">变式 · 条件和结论不必同一时间、不必都是假的</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>“当年要是……，现在就……”怎么说？条件不用 if 说出来，行不行？
+      <span class="lim"><b>上一阶的局限：</b>三套公式里，条件和结论总是同一个时间，而且两半都是假的。真实说话没这么整齐：会混搭时间，也会一半说真话、一半说假话。</span>
+    </div>
+
+    <h3>A · 混合虚拟：条件和结论不在同一个时间</h3>
+    <p>三套公式不是死的。<strong>条件归条件，结论归结论</strong>：条件是哪个时间的，就用哪个时间的虚拟形式；结论是哪个时间的，就用哪个时间的。老师说：把它拆开，过去的虚拟加现在的结论，就可以了。（课上叫“混合虚拟”，也叫错综条件句。）</p>
+
+    <div class="stype">① 当年的条件 + 现在的结果（常见）</div>
+    <div class="skel">If + 主语 + <span class="cond">had done</span>（当年）…，主语 + <span class="res">would + 动词原形</span>（现在）…</div>
+    <p class="note">一位 CEO 和太太去加油。太太看见加油工，表情很微妙——那是她的初恋。CEO 笑她：</p>
+    <div class="ex"><div class="en">If you <span class="cond">had married</span> him, you <span class="res">would be</span> the wife of a gas station attendant instead of the wife of a chief executive officer.</div><div class="zh">你当年要是嫁给他，现在就是加油工的老婆，不是 CEO 的老婆了。</div></div>
+    <p class="note">太太回他：</p>
+    <div class="ex"><div class="en">If I <span class="cond">had married</span> him, he <span class="res">would be</span> the chief executive officer.</div><div class="zh">我当年要是嫁给他，现在当 CEO 的就是他了。</div></div>
+    <p class="note">嫁不嫁是当年的事 → had married；现在是谁的老婆，是现在的状态 → would be，不用 would have been。（课上说这个段子据传出自克林顿夫妇，另一个版本是“他现在就是总统了”，出处没查实。）</p>
+    <p class="note">再看帕瓦罗蒂：他 22 岁辞掉教书的工作，去卖保险——卖保险时间自由，能留出时间练声乐。他说学声乐是他人生的转折点（Studying voice was the turning point of my life），还说：</p>
+    <div class="ex"><div class="en">If I <span class="cond">hadn't listened</span> to my father and dropped teaching, I <span class="res">would</span> never <span class="res">be</span> here.</div><div class="zh">当年我要是没听父亲的话、没放弃教书，今天就不会站在这里（不会有今天的成就）。</div></div>
+    <p class="note">课上让我们自己造一句：要是当年没报这门课，我现在就不会知道帕瓦罗蒂这个例子。→ <code>If I hadn't signed up for this course, I wouldn't know this example now.</code></p>
+
+    <div class="stype">② 一贯的状态 + 当年的结果（少见）</div>
+    <div class="skel">If + 主语 + <span class="cond">did / were</span>（一贯如此）…，主语 + <span class="res">would have done</span>（当年 / 刚才）…</div>
+    <p>这里从句的“现在”，是一般现在时那种<strong>一贯如此</strong>——过去、现在、将来都成立的状态（回扣一般现在时：它讲常态，不是此刻）。整句说的是：一个一直成立的状态，和过去某个动作的关系。</p>
+    <p class="note">老夫老妻，丈夫话少。朋友替妻子问他：你怎么都不说爱她了？他说：</p>
+    <div class="ex"><div class="en">If I <span class="cond">didn't love</span> her, I <span class="res">wouldn't have married</span> her.</div><div class="zh">我要是不爱她，当年就不会娶她。</div></div>
+    <p class="note">“爱”不分时间段——表白时没人说 I'm loving you，那像是下一秒就不爱了。所以“不爱她”是一贯的状态，用一般现在时退成 didn't love；“娶她”是当年的事，用 wouldn't have married。要是写成 hadn't loved，意思就变成“当年不爱”了。</p>
+    <div class="ex"><div class="en">If you <span class="cond">knew</span> me better, you <span class="res">wouldn't have said</span> that.</div><div class="zh">你要是更了解我，刚才就不会说那种话。现实：<span class="real">You don't know me well.</span> 而那番话是刚才说的。</div></div>
+
+    <h3>B · 跳层虚拟：一半真，一半假</h3>
+    <p>有时候条件不用 if 说出来，而是换成一句<strong>真话</strong>（正常时态），再用 or 或 but 接上一句<strong>假话</strong>（虚拟）。课上叫“跳层虚拟”。</p>
+    <div class="stype">① 真话 + or / or else / otherwise + 假话（“不然的话……”）</div>
+    <div class="skel"><span class="real">事实（正常时态）</span>，or / otherwise + <span class="res">would (have) done</span></div>
+    <div class="ex"><div class="en"><span class="real">We didn't know his telephone number</span>, otherwise we <span class="res">would have telephoned</span> him.</div><div class="zh">我们当时不知道他的电话，不然早就打给他了。还原成 if 句：<code>If we had known his telephone number, we would have telephoned him.</code></div></div>
+    <div class="ex"><div class="en"><span class="real">He must have had an accident</span>, or he <span class="res">would have been</span> here then.</div><div class="zh">他肯定是出事故了，不然那会儿早到了。还原：<code>If he had not had an accident, he would have been here.</code>（must have done 表示对过去的推测）</div></div>
+    <div class="stype">② 假话 + but + 真话（“本来会……，可是……”）</div>
+    <div class="skel"><span class="res">would (have) done</span>，but + <span class="real">事实（正常时态）</span></div>
+    <div class="ex"><div class="en">He <span class="res">would put</span> on weight, but <span class="real">he doesn't eat much</span>.</div><div class="zh">他本来会发胖，可他吃得不多。还原：<code>If he ate much, he would put on weight.</code></div></div>
+    <div class="ex"><div class="en">He <span class="res">could not have bought</span> the car, but <span class="real">he inherited a big fortune from his father</span>.</div><div class="zh">他本来买不起那辆车，可他从父亲那儿继承了一大笔钱。还原：<code>If he hadn't inherited a big fortune from his father, he could not have bought the car.</code></div></div>
+    <p class="note">老师有一回跟 Siri 说 I'm upset（我好烦），它回：</p>
+    <div class="ex"><div class="en">I <span class="res">would give</span> you a foot rub, but <span class="real">I don't have hands</span>.</div><div class="zh">我很想给你按按脚，可我没有手。还原：<code>If I had hands, I would give you a foot rub.</code></div></div>
+    <div class="callout"><b>记两个词就行：</b>or 后面跟的是假的（虚拟），but 后面跟的是真的（事实）。</div>
+    <div class="sum"><b>小结：</b>条件和结论可以拆开，各按各的时间退：<strong>当年的条件 + 现在的结果</strong> = had done + would do（常见）；<strong>一贯的状态 + 当年的结果</strong> = did + would have done（少见）。条件也可以不明说，换成一句真话：真话 + or + 假话，或者假话 + but + 真话。</div>
+  </section>
+
+  <!-- ④ 省 if -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>省掉 if：把 should / had / were 提到主语前</h2>
+        <div class="tag">变式 · 加强语气，多见于正式写作</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>句子一开头就是 Should / Were / Had，后面才是主语，这是什么句子？
+      <span class="lim"><b>上一阶的局限：</b>前面的句子都有 if 带路。正式写作里 if 会被省掉、动词提到主语前，不认识这个变形就读不懂。</span>
+    </div>
+    <p>想加强语气，分两步：<strong>第一步，省掉 if；第二步，把 should / had / were 提到主语前面</strong>。只有这三个词能提——老师让我们在评论区把这三个词打一遍记住。</p>
+    <div class="legend2">
+      <span class="inv">提到主语前的 should / had / were</span>
+      <span class="res">结论 would …</span>
+    </div>
+    <div class="rows">
+      <div class="row"><span class="k">过去虚拟</span><span class="v">有 had → 能提。</span></div>
+      <div class="row"><span class="k">将来虚拟</span><span class="v">有 should、were → 能提。</span></div>
+      <div class="row"><span class="k">现在虚拟</span><span class="v">be 动词的 were 能提；实义动词的过去式<strong>不能</strong>，比如 <code>If you bought that car</code> 就没法这样倒。</span></div>
+    </div>
+
+    <div class="stype">读的时候，先补回 if</div>
+    <div class="ex"><div class="en"><span class="inv">Should</span> I win the lottery, I <span class="res">would buy</span> a car.</div><div class="zh">要是我中了彩票，就买辆车。= <code>If I should win the lottery, …</code>（将来虚拟：说话人不觉得自己能中）</div></div>
+    <div class="ex"><div class="en"><span class="inv">Were</span> he to leave today, he <span class="res">would get</span> there by Monday.</div><div class="zh">他要是今天就动身，周一前就能到。= <code>If he were to leave today, …</code>（说话人觉得他今天不会走）</div></div>
+    <div class="ex"><div class="en"><span class="inv">Had</span> he not been promoted, he <span class="res">would</span> never <span class="res">have remained</span> with the company.</div><div class="zh">他当年要不是升了职，早就不在这家公司了。= <code>If he had not been promoted, …</code>（现实：他升了职，留了下来）</div></div>
+    <div class="ex"><div class="en">The cave <span class="res">might</span> never <span class="res">have been discovered</span> <span class="inv">had</span> not the entrance been spotted by the distinguished French potholer, Berger.</div><div class="zh">要不是法国著名的洞穴探险家贝尔热发现了入口，这个山洞可能永远不会被人发现。= <code>…, if the entrance had not been spotted …</code>（potholer：洞穴探险者）</div></div>
+    <p class="note">老师说这四句里最后一句最难：前半句主谓已经完整，又省掉了逗号，读到 discovered 后面突然冒出个 had。办法是：<strong>半路冒出 should / were / had + 主语，就在它前面断开，补回 if</strong>。反过来，把主句放前面、再去掉逗号，句子会更难读，但也是对的：<code>I would buy a car should I win the lottery.</code></p>
+
+    <div class="stype">小说和新闻里的句子</div>
+    <p class="note">《理智与情感》开头：父亲临终前嘱咐儿子，照顾好继母和三个妹妹（那个年代女性没有继承权）。儿子答应得好好的，他妻子却不想给钱，先给老人扣了顶帽子——说他当时脑子不清醒：</p>
+    <div class="ex"><div class="en">"It was my father's last request to me," replied her husband, "that I should assist his widow and daughters."</div><div class="zh">“这是父亲对我最后的嘱托，”她丈夫答道，“要我帮衬他的遗孀和女儿们。”</div></div>
+    <div class="ex"><div class="en">"He did not know what he was talking of, I dare say; ten to one but he was light-headed at the time. <span class="inv">Had</span> he been in his right senses, he <span class="res">could not have thought</span> of such a thing as begging you to give away half your fortune from your own child."</div><div class="zh">“我敢说他根本不知道自己在说什么，十有八九他当时脑子糊涂了。他要是神志清醒，绝想不出这种事——求你把本该给自己孩子的财产白白送掉一半。”= <code>If he had been in his right senses, …</code>（ten to one：十有八九；light-headed：头脑不清醒。老师顺带讲了 hot-headed：头脑一热、容易冲动）</div></div>
+    <div class="ex"><div class="en">Countless divorced politicians <span class="res">would have been elected</span> out of office years ago <span class="inv">had</span> they even thought of divorce.</div><div class="zh">要是当年哪怕动过离婚的念头，无数如今离了婚的政客早在多年前就被选下台了。= <code>if they had even thought of divorce</code>（那个年代对政客的道德要求很严）</div></div>
+    <p class="note">老师说这种句子很少用，多见于正式写作（小说、新闻）；口语里他只在英国议会辩论这种场合听到过。平时说话别为了秀而用，正常用 if 开头就行。</p>
+
+    <div class="stype">考试怎么考</div>
+    <p class="note">考试爱把两件事绑在一起考：先认出省掉 if 的倒装，再用 had done 配 would have done。</p>
+    <ol class="steps">
+      <li>题干开头是 <code>Had he not been so busy taking the diamonds, …</code>，空在后半句 → Had he not been = If he had not been，过去虚拟 → 后半句选 would have done。（他当时要不是忙着拿钻石，当时就会感觉到挨了一下——都是当时的事。）</li>
+      <li>后半句已经有 would have done → 空在前半句，找带 had done 的选项；再排除带 that 的：that 引出的是从句，前面还得有主句，这句话就没有主句了。</li>
+    </ol>
+    <p class="note">老师提醒：had done 和 would have done 不是 100% 绑定（第 ③ 阶的混合虚拟就是例外），只是考试最爱考这一对。做题先找搭配，平时阅读还是要读懂意思。</p>
+    <div class="sum"><b>小结：</b>省掉 if，把 <b>should / had / were</b> 提到主语前，语气更强、更正式。只有这三个词能提，实义动词的过去式不能。读到 Should / Were / Had + 主语（在句首或半路），就补回 if 再读。</div>
+  </section>
+
+  <!-- ⑤ 单句 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>不靠 if：wish / if only，和 should + 原形</h2>
+        <div class="tag">单句虚拟 · 只管一个句子</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>没有 if、只有一个句子，也能用虚拟吗？
+      <span class="lim"><b>上一阶的局限：</b>前面都是“条件 + 结论”两半句。还有两种虚拟只管一句话：说做不到的愿望（wish / if only），和跟在“坚持、建议”后面的从句。</span>
+    </div>
+
+    <h3>A · wish / if only：盼着做不到的事</h3>
+    <p>wish 表达的希望，一般是<strong>实现不了的</strong>；有可能实现的希望，用 hope。正因为实现不了，wish 后面要用虚拟。它比 if 句简单：没有主句要管，只把这一个动词往后退。</p>
+    <div class="vs">
+      <div class="card fake"><div class="en">I wish I <span class="cond">could fly</span>.</div><div class="zh">狗：真希望我会飞。</div><div class="lbl">做不到 → could</div></div>
+      <div class="card fake"><div class="en">I wish I <span class="cond">could walk</span>.</div><div class="zh">鱼：真希望我能走路。</div><div class="lbl">做不到 → could</div></div>
+      <div class="card fake"><div class="en">I wish I <span class="cond">could swim</span>.</div><div class="zh">鸟：真希望我会游泳。</div><div class="lbl">做不到 → could</div></div>
+      <div class="card fact"><div class="en">I can do all that.</div><div class="zh">鸭子：这些我都会。</div><div class="lbl">做得到 → can，说的是事实</div></div>
+    </div>
+    <p class="note">老师说鸭子就是低情商：朋友在诉苦，它摆出事实。高情商的安慰是“比惨”。</p>
+    <p><b>if only</b> = 要是……就好了。和 wish 意思差不多，语气更强烈，而且不用“我希望”开头。</p>
+
+    <div class="stype">三个时间，各退一格</div>
+    <div class="rows">
+      <div class="row"><span class="k">对现在</span><span class="v">were / did / could</span></div>
+      <div class="row"><span class="k">对过去</span><span class="v">had done</span></div>
+      <div class="row"><span class="k">对将来</span><span class="v">would + 动词原形</span></div>
+    </div>
+    <div class="ex"><div class="en">I wish I <span class="cond">were</span> a little younger.</div><div class="zh">真希望我再年轻一点。（现在：I'm → I were）</div></div>
+    <div class="ex"><div class="en">I wish I <span class="cond">knew</span> his address.</div><div class="zh">真希望我知道他的地址。（现在）现实：不知道。</div></div>
+    <div class="ex"><div class="en">I wish I <span class="cond">had</span> that gift.</div><div class="zh">真希望我也有那份礼物。（现在。老师收到的端午节礼物是一本六级单词书，课上让大家用虚拟“高情商”地接一句）</div></div>
+    <div class="ex"><div class="en">Whenever something goes wrong, I just push this little red button and restart. I wish my whole life <span class="cond">were</span> like that.</div><div class="zh">一出问题，我就按这个小红键重启。真希望我的整个人生也能这样。（现在。课上说出自玛丽莲·梦露。my whole life 是三单，过去式本该配 was，这里偏用 were——人生没法重启）</div></div>
+    <div class="ex"><div class="en">If only I <span class="cond">were</span> taller.</div><div class="zh">要是我再高点就好了。（现在）</div></div>
+    <div class="ex"><div class="en">I wish I <span class="cond">had been</span> there.</div><div class="zh">真希望我当时在场。（过去）现实：没去。</div></div>
+    <div class="ex"><div class="en">I wish I <span class="cond">had not attended</span> the party.</div><div class="zh">真希望我当时没去那个聚会。（过去）现实：去了。</div></div>
+    <div class="ex"><div class="en">If only he <span class="cond">had followed</span> your advice.</div><div class="zh">他当时要是听了你的劝就好了。（过去）</div></div>
+    <div class="ex"><div class="en">If only the rain <span class="cond">would stop</span>.</div><div class="zh">雨要是能停就好了。（将来）说话人觉得停不了。</div></div>
+
+    <h3>B · should + 动词原形：坚持、建议后面的从句</h3>
+    <p>最后一类和前面都不一样：<strong>不再往后退时态</strong>。表示坚持、建议一类的词后面，that 从句用 <b>should + 动词原形</b>；正式场合 should 常常省掉，只剩<strong>动词原形</strong>。（课上叫“原形虚拟”。）</p>
+    <div class="skel">主语 + insist / suggest … + that + 主语 + <span class="cond">(should) + 动词原形</span> …</div>
+    <div class="rows">
+      <div class="row"><span class="k">常见的词</span><span class="v">advise 建议 · command 命令 · decide 决定 · determine 决定 · insist 坚持 · suggest 建议 ……</span></div>
+      <div class="row"><span class="k">名词也一样</span><span class="v">suggestion（建议）后面的同位语从句，也用 should + 动词原形。</span></div>
+    </div>
+    <div class="ex"><div class="en">She insisted that he <span class="cond">should wear</span> a suit. → She insisted that he <span class="cond">wear</span> a suit.</div><div class="zh">她坚持要他穿西装。</div></div>
+    <p class="note">省掉 should 之后，insisted 是过去式、he 是三单，wear 却是原形——看着像“时态不一致”“三单忘了加 s”，其实是正式的虚拟。改错题常拿它当陷阱：别去改。</p>
+    <div class="ex"><div class="en">He may gently reprimand an official or even suggest to Parliament that a law <span class="cond">be altered</span>.</div><div class="zh">他可能会温和地批评某位官员，甚至向议会建议修改某条法律。（a law be altered = a law should be altered；没有 is / was / will be，直接是 be）</div></div>
+    <p class="note">BBC 报道王宝强离婚：王宝强发微博宣布离婚后，马蓉很快也发文回应，还威胁要起诉他——</p>
+    <div class="ex"><div class="en">…, insisting he <span class="cond">delete</span> his post.</div><div class="zh">……坚持要他删掉那条微博。（前面是过去式 threatened，he 是三单，delete 却是原形：should 省掉了）</div></div>
+    <p class="note">回看第 ④ 阶《理智与情感》那句：<code>my father's last request to me … that I should assist his widow and daughters</code>。request（嘱托、请求）也是这一类，所以 that 后面是 should assist。</p>
+    <p class="note"><b>补一句例外：</b>insist 当“坚称（某事是事实）”、suggest 当“暗示、表明”讲时，说的是事实，从句用正常时态，不用虚拟：<code>He insisted that he had done nothing wrong.</code>（他坚称自己没做错。）</p>
+    <div class="sum"><b>小结：</b>wish / if only 只管一个句子，往后退一格：现在 were / did / could，过去 had done，将来 would do。坚持、建议类词后面的从句<strong>不退时态</strong>，用 should + 动词原形；正式场合 should 常省，只剩原形——别当成错误去改。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>为什么退</td><td>时态就是事实；意思上的矛盾，用形式上的矛盾体现</td><td>说假话，时态退一格</td></tr>
+        <tr class="o2"><td><span class="dot">② 公式</span></td><td>if 三套</td><td>现在 did / were + would do；过去 had done + would have done；将来 were to / should + would do</td><td>前两套推得出，将来那套要背</td></tr>
+        <tr class="o3"><td><span class="dot">③ 拆开</span></td><td>混搭</td><td>当年条件 + 现在结果；一贯状态 + 当年结果；or 后假，but 后真</td><td>各按各的时间退</td></tr>
+        <tr class="o4"><td><span class="dot">④ 省 if</span></td><td>倒装</td><td>省掉 if，should / had / were 提到主语前；实义动词过去式不行</td><td>冒出 Had he…，补回 if</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 单句</span></td><td>不靠 if</td><td>wish / if only 退一格；坚持、建议类后面用 should + 原形</td><td>wish 退时态，insist 用原形</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流：遇到句子怎么判断</h2>
+    <div class="flow">
+      <div class="q">时态和它说的时间对得上吗？</div>
+      <div class="a"><span class="hit">对得上 →</span> 真的（“如果”）：说话人当它是事实，或者真有可能发生</div>
+      <div class="a"><span class="hit4">往后退了一格 →</span> 假的（“假如”）：现在的事用了过去时、过去的事用了 had done，反过来就是现实</div>
+      <div class="q">说的是将来的事吗？</div>
+      <div class="a">were to do / should do → 说话人觉得不太可能；主将从现 → 觉得有可能</div>
+      <div class="q">句首或半路冒出 Should / Were / Had + 主语？</div>
+      <div class="a">省掉了 if → 补回 if 再读</div>
+      <div class="q">前后两半时间不一样，或者中间是 or / but？</div>
+      <div class="a">各按各的时间退；or 后面是假的，but 后面是真的</div>
+      <div class="q">wish / if only 后面，或 insist / suggest 后面的从句？</div>
+      <div class="a">wish / if only：退一格（现在 were / did，过去 had done，将来 would）；insist / suggest：（should +）动词原形</div>
+    </div>
+  </div>
+
+  <footer>虚拟语气 · 地基 → 三套公式 → 拆开用 → 省掉 if → 不靠 if · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>
