@@ -213,6 +213,12 @@
 .callout b{color:var(--r4)}
 .vs .card.fact .lbl{color:var(--r2)}
 .vs .card.fake .lbl{color:var(--r4)}
+/* 补充：课上没讲、但考试和写作里常见的高频点（虚线框） */
+.add{margin:1.4rem 0 .9rem;padding:.8rem 1rem .5rem;border:1px dashed color-mix(in srgb,var(--c) 70%,transparent);
+  border-radius:10px;background:color-mix(in srgb,var(--c) 5%,transparent)}
+.add-tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--c);
+  border:1px solid color-mix(in srgb,var(--c) 60%,transparent);border-radius:20px;padding:1px 10px}
+.rung .add h3{margin-top:.6rem}
 /* 总览表：前两列不折行，手机上收窄边距 */
 .tbl th:nth-child(-n+2),.tbl td:nth-child(-n+2),.tbl thead th{white-space:nowrap}
 @media(max-width:560px){.tbl th,.tbl td{padding:.6rem .45rem}}
@@ -224,7 +230,7 @@
 
   <header class="top">
     <h1>虚拟语气 · 阶梯式笔记</h1>
-    <p class="sub">从“时态就是事实”起步，一阶叠一阶：地基 → 三套公式 → 拆开用 → 省掉 if → 不靠 if。</p>
+    <p class="sub">从“时态就是事实”起步，一阶叠一阶：地基 → 三套公式 → 拆开用 → 省掉 if → 不靠 if。<br>虚线框里是课上没讲、但考试和写作里常见的补充。</p>
     <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
   </header>
 
@@ -436,6 +442,14 @@
     <p class="note">老师有一回跟 Siri 说 I'm upset（我好烦），它回：</p>
     <div class="ex"><div class="en">I <span class="res">would give</span> you a foot rub, but <span class="real">I don't have hands</span>.</div><div class="zh">我很想给你按按脚，可我没有手。还原：<code>If I had hands, I would give you a foot rub.</code></div></div>
     <div class="callout"><b>记两个词就行：</b>or 后面跟的是假的（虚拟），but 后面跟的是真的（事实）。</div>
+    <div class="add">
+      <span class="add-tag">补充 · 课上没讲</span>
+      <h3>条件还能缩成一个介词短语：but for / without</h3>
+      <p>跳层虚拟是把条件换成一句真话。条件还能更短，缩成一个介词短语：<b>but for</b>（要不是）、<b>without</b>（要是没有）。是现在还是过去，看主句：would do 说现在，would have done 说过去。</p>
+      <div class="ex"><div class="en"><span class="cond">But for</span> your help, I <span class="res">would have failed</span>.</div><div class="zh">要不是你帮忙，我早就失败了。（过去）= <code>If it had not been for your help, …</code></div></div>
+      <div class="ex"><div class="en"><span class="cond">Without</span> water, there <span class="res">would be</span> no life.</div><div class="zh">要是没有水，就不会有生命。（现在）= <code>If it were not for water, …</code></div></div>
+      <p class="note">if it were not for / if it had not been for（要不是……）本身也是高频句型，还常写成省掉 if 的倒装：<code>Were it not for water, …</code>　<code>Had it not been for your help, …</code>（第 ④ 阶）。</p>
+    </div>
     <div class="sum"><b>小结：</b>条件和结论可以拆开，各按各的时间退：<strong>当年的条件 + 现在的结果</strong> = had done + would do（常见）；<strong>一贯的状态 + 当年的结果</strong> = did + would have done（少见）。条件也可以不明说，换成一句真话：真话 + or + 假话，或者假话 + but + 真话。</div>
   </section>
 
@@ -469,6 +483,12 @@
     <div class="ex"><div class="en"><span class="inv">Had</span> he not been promoted, he <span class="res">would</span> never <span class="res">have remained</span> with the company.</div><div class="zh">他当年要不是升了职，早就不在这家公司了。= <code>If he had not been promoted, …</code>（现实：他升了职，留了下来）</div></div>
     <div class="ex"><div class="en">The cave <span class="res">might</span> never <span class="res">have been discovered</span> <span class="inv">had</span> not the entrance been spotted by the distinguished French potholer, Berger.</div><div class="zh">要不是法国著名的洞穴探险家贝尔热发现了入口，这个山洞可能永远不会被人发现。= <code>…, if the entrance had not been spotted …</code>（potholer：洞穴探险者）</div></div>
     <p class="note">老师说这四句里最后一句最难：前半句主谓已经完整，又省掉了逗号，读到 discovered 后面突然冒出个 had。办法是：<strong>半路冒出 should / were / had + 主语，就在它前面断开，补回 if</strong>。反过来，把主句放前面、再去掉逗号，句子会更难读，但也是对的：<code>I would buy a car should I win the lottery.</code></p>
+    <div class="add">
+      <span class="add-tag">补充 · 课上没讲</span>
+      <h3>书信、邮件里最常见的一句</h3>
+      <div class="ex"><div class="en"><span class="inv">Should</span> you have any questions, please feel free to contact me.</div><div class="zh">如有任何问题，请随时联系我。= <code>If you should have any questions, …</code></div></div>
+      <p class="note">四六级书信作文、工作邮件的结尾常用。这种 should 句，主句常是祈使句（please …）或 will，不一定用 would。</p>
+    </div>
 
     <div class="stype">小说和新闻里的句子</div>
     <p class="note">《理智与情感》开头：父亲临终前嘱咐儿子，照顾好继母和三个妹妹（那个年代女性没有继承权）。儿子答应得好好的，他妻子却不想给钱，先给老人扣了顶帽子——说他当时脑子不清醒：</p>
@@ -527,6 +547,23 @@
     <div class="ex"><div class="en">I wish I <span class="cond">had not attended</span> the party.</div><div class="zh">真希望我当时没去那个聚会。（过去）现实：去了。</div></div>
     <div class="ex"><div class="en">If only he <span class="cond">had followed</span> your advice.</div><div class="zh">他当时要是听了你的劝就好了。（过去）</div></div>
     <div class="ex"><div class="en">If only the rain <span class="cond">would stop</span>.</div><div class="zh">雨要是能停就好了。（将来）说话人觉得停不了。</div></div>
+    <div class="add">
+      <span class="add-tag">补充 · 课上没讲</span>
+      <h3>另外三个“往后退一格”的句型</h3>
+      <div class="stype">as if / as though（好像……）</div>
+      <div class="ex"><div class="en">He talks as if he <span class="cond">knew</span> everything.</div><div class="zh">他说起话来好像什么都知道。（现在：其实不知道）</div></div>
+      <div class="ex"><div class="en">She looked as if she <span class="cond">had seen</span> a ghost.</div><div class="zh">她那样子，像是见了鬼。（过去：其实没见）</div></div>
+      <p class="note">说的事真有可能，就用正常时态：<code>It looks as if it's going to rain.</code>（看样子要下雨了）</p>
+      <div class="stype">It's (high) time …（早该……了）</div>
+      <div class="ex"><div class="en">It's time we <span class="cond">went</span> home.</div><div class="zh">我们该回家了。（言下之意：早该走了，还没走）</div></div>
+      <div class="ex"><div class="en">It's high time you <span class="cond">got</span> a job.</div><div class="zh">你早该找份工作了。</div></div>
+      <p class="note">也能说 It's time we should go home（should 不能省），但不如过去式常见。只说“该做某事了”，用 <code>It's time to go home.</code> 或 <code>It's time for lunch.</code>，不用虚拟。</p>
+      <div class="stype">would rather + 从句（宁愿别人……）</div>
+      <div class="ex"><div class="en">I'd rather you <span class="cond">came</span> tomorrow.</div><div class="zh">我倒希望你明天来。（现在、将来：用过去式）</div></div>
+      <div class="ex"><div class="en">I'd rather you <span class="cond">hadn't told</span> him.</div><div class="zh">我真希望你没告诉他。（过去：用 had done）</div></div>
+      <p class="note">后面不带从句、是自己做的，就直接跟原形，不虚拟：<code>I'd rather stay at home.</code>（我宁愿待在家）</p>
+      <p class="note"><b>别把 if only 和 only if 弄混：</b>if only = 要是……就好了，用虚拟；only if = 只有……才，正常时态，放句首时主句要倒装：<code>Only if you work hard will you succeed.</code>（见倒装句页）</p>
+    </div>
 
     <h3>B · should + 动词原形：坚持、建议后面的从句</h3>
     <p>最后一类和前面都不一样：<strong>不再往后退时态</strong>。表示坚持、建议一类的词后面，that 从句用 <b>should + 动词原形</b>；正式场合 should 常常省掉，只剩<strong>动词原形</strong>。（课上叫“原形虚拟”。）</p>
@@ -542,6 +579,26 @@
     <div class="ex"><div class="en">…, insisting he <span class="cond">delete</span> his post.</div><div class="zh">……坚持要他删掉那条微博。（前面是过去式 threatened，he 是三单，delete 却是原形：should 省掉了）</div></div>
     <p class="note">回看第 ④ 阶《理智与情感》那句：<code>my father's last request to me … that I should assist his widow and daughters</code>。request（嘱托、请求）也是这一类，所以 that 后面是 should assist。</p>
     <p class="note"><b>补一句例外：</b>insist 当“坚称（某事是事实）”、suggest 当“暗示、表明”讲时，说的是事实，从句用正常时态，不用虚拟：<code>He insisted that he had done nothing wrong.</code>（他坚称自己没做错。）</p>
+    <div class="add">
+      <span class="add-tag">补充 · 课上没讲</span>
+      <h3>should + 原形：词表，和另外几种位置</h3>
+      <div class="rows">
+        <div class="row"><span class="k">一坚持</span><span class="v">insist</span></div>
+        <div class="row"><span class="k">二命令</span><span class="v">order · command</span></div>
+        <div class="row"><span class="k">三建议</span><span class="v">suggest · advise · propose · recommend</span></div>
+        <div class="row"><span class="k">四要求</span><span class="v">demand · require · request · urge</span></div>
+      </div>
+      <p class="note">这是国内考试常背的口诀；课上举的 decide、determine 也属于这一类。</p>
+      <div class="stype">① 换成名词：表语从句、同位语从句</div>
+      <div class="ex"><div class="en">My suggestion is that we <span class="cond">(should) leave</span> early.</div><div class="zh">我的建议是早点走。（suggestion、advice、proposal、order、demand、request 都一样）</div></div>
+      <div class="stype">② 换成被动：It is suggested that …</div>
+      <div class="ex"><div class="en">It is suggested that the meeting <span class="cond">(should) be put off</span>.</div><div class="zh">有人建议会议延期。</div></div>
+      <div class="stype">③ 形容词：It is important that …</div>
+      <div class="ex"><div class="en">It is important that he <span class="cond">(should) be told</span> the truth.</div><div class="zh">让他知道真相很重要。（necessary、essential、vital、urgent 也这样用）</div></div>
+      <div class="stype">④ lest / for fear that（以免、生怕）</div>
+      <div class="ex"><div class="en">He wrote down the address lest he <span class="cond">(should) forget</span> it.</div><div class="zh">他把地址记了下来，免得忘了。</div></div>
+      <p class="note">倒装句页《金鸟》那句 for fear some harm should come to him（怕他出事），就是这个用法。</p>
+    </div>
     <div class="sum"><b>小结：</b>wish / if only 只管一个句子，往后退一格：现在 were / did / could，过去 had done，将来 would do。坚持、建议类词后面的从句<strong>不退时态</strong>，用 should + 动词原形；正式场合 should 常省，只剩原形——别当成错误去改。</div>
   </section>
 
@@ -577,6 +634,10 @@
       <div class="a">各按各的时间退；or 后面是假的，but 后面是真的</div>
       <div class="q">wish / if only 后面，或 insist / suggest 后面的从句？</div>
       <div class="a">wish / if only：退一格（现在 were / did，过去 had done，将来 would）；insist / suggest：（should +）动词原形</div>
+      <div class="q">as if、It's time、would rather 后面的从句？</div>
+      <div class="a">也是往后退一格：现在的事用过去时，过去的事用 had done</div>
+      <div class="q">句子里有 but for / without，主句却是 would …？</div>
+      <div class="a">条件藏在介词短语里：would do 说现在，would have done 说过去</div>
     </div>
   </div>
 

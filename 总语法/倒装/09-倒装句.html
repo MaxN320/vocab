@@ -213,6 +213,12 @@
 .callout b{color:var(--r4)}
 .vs .card.fact .lbl{color:var(--r2)}
 .vs .card.fake .lbl{color:var(--r4)}
+/* 补充：课上没讲、但考试和写作里常见的高频点（虚线框） */
+.add{margin:1.4rem 0 .9rem;padding:.8rem 1rem .5rem;border:1px dashed color-mix(in srgb,var(--c) 70%,transparent);
+  border-radius:10px;background:color-mix(in srgb,var(--c) 5%,transparent)}
+.add-tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--c);
+  border:1px solid color-mix(in srgb,var(--c) 60%,transparent);border-radius:20px;padding:1px 10px}
+.rung .add h3{margin-top:.6rem}
 /* 总览表：前两列和表头不折行，手机上收窄边距 */
 .tbl th:nth-child(-n+2),.tbl td:nth-child(-n+2),.tbl thead th{white-space:nowrap}
 @media(max-width:560px){.tbl th,.tbl td{padding:.6rem .45rem}}
@@ -224,7 +230,7 @@
 
   <header class="top">
     <h1>倒装句与强调句 · 阶梯式笔记</h1>
-    <p class="sub">课上叫“特殊句式”。从“为什么要这么说”起步，一阶叠一阶：地基 → 全部倒装 → 部分倒装 → 强调句 → 判断。</p>
+    <p class="sub">课上叫“特殊句式”。从“为什么要这么说”起步，一阶叠一阶：地基 → 全部倒装 → 部分倒装 → 强调句 → 判断。<br>虚线框里是课上没讲、但考试和写作里常见的补充。</p>
     <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
   </header>
 
@@ -335,6 +341,20 @@
     <div class="ex"><div class="en">And <span class="front">behind the familiar facade</span> <span class="verb">lies</span> <span class="subj">a building with a strange and surprising history</span>.</div><div class="zh">而在那熟悉的外墙后面，是一座有着离奇、惊人历史的建筑。（先看外墙、再看里面——符合视觉；主语带着 with 短语，很长——放后面才平衡）</div></div>
     <p class="note">老师推荐现阶段多看纪录片：文本最正式、语法最工整，而且同一个地方会反复用这种句式来介绍。听多了、读多了，自然就会写。</p>
     <p class="note"><b>补一句例外：</b>主语是代词（it、he、they）时，不全部倒装：<code>In the garden stood a tree.</code> ✓，<code>In the garden stood it.</code> ✗。全部倒装是为了把又长又新的主语放到句尾，代词又短、又是前面说过的，放到句尾反而别扭。</p>
+    <div class="add">
+      <span class="add-tag">补充 · 课上没讲</span>
+      <h3>另外几种全部倒装</h3>
+      <div class="stype">here、out 这类副词放句首</div>
+      <div class="ex"><div class="en"><span class="front">Here</span> <span class="verb">comes</span> <span class="subj">the bus</span>.</div><div class="zh">公交车来了。</div></div>
+      <div class="ex"><div class="en"><span class="front">Out</span> <span class="verb">rushed</span> <span class="subj">the children</span>.</div><div class="zh">孩子们冲了出去。</div></div>
+      <p class="note">there、in、away、up、down 放句首也一样。主语是代词就不倒：<code>Here it comes.</code>　<code>Out they rushed.</code>（和上面那条例外一样）</p>
+      <div class="stype">表语放句首</div>
+      <div class="ex"><div class="en"><span class="front">Present at the meeting</span> <span class="verb">were</span> <span class="subj">some experts from abroad</span>.</div><div class="zh">出席会议的有几位外国专家。</div></div>
+      <div class="ex"><div class="en"><span class="front">Gone</span> <span class="verb">are</span> <span class="subj">the days when we had to queue for food</span>.</div><div class="zh">排队买吃的日子一去不复返了。</div></div>
+      <div class="stype">直接引语后面</div>
+      <div class="ex"><div class="en">"Where are you going?" <span class="verb">asked</span> <span class="subj">the teacher</span>.</div><div class="zh">“你去哪儿？”老师问。（主语是代词时一般不倒：… he asked.）</div></div>
+      <p class="note">there be 其实也是全部倒装，be 还能换成 stand、lie、live 这类动词：<code>There lies a village at the foot of the mountain.</code>（山脚下有个村子）</p>
+    </div>
     <div class="sum"><b>小结：</b>全部倒装 = <strong>地点 + 不及物动词 / 系动词 + 主语</strong>。用它有三个理由：长主语放后面更平衡；由远及近、由大到小，更有画面感；上一句说到哪儿，下一句就从哪儿接。动词挑得准更加分：高的用 stand，占地广的用 sit，普通的用 lie。</div>
   </section>
 
@@ -397,6 +417,25 @@
     <div class="ex"><div class="en"><span class="front">Only when he saw that the man was actually telephoning the police</span> <span class="verb">did</span> <span class="subj">he</span> realize …</div><div class="zh">直到看见那人真的在给警察打电话，他才意识到……（only 带的是一个时间状语从句。从句本身语序正常，倒装的是后面的主句：he realized → did he realize）</div></div>
     <div class="ex"><div class="en">It will be possible to make a plan only when a good deal more information has been obtained. → <span class="front">Only when a good deal more information has been obtained</span> <span class="verb">will</span> <span class="subj">it</span> be possible to make a plan.</div><div class="zh">只有拿到多得多的信息，才有可能制订计划。（主句 it will be → will it be）</div></div>
     <p class="note"><b>补一句例外：</b>only 修饰的是主语时不倒装：<code>Only Tom knows the answer.</code>（只有汤姆知道答案）——only 后面紧跟的就是主语，句子还是正常语序。</p>
+    <div class="add">
+      <span class="add-tag">补充 · 课上没讲</span>
+      <h3>另外几种部分倒装</h3>
+      <div class="stype">⑤ so / such … that 放句首</div>
+      <div class="ex"><div class="en"><span class="front">So fast</span> <span class="verb">did</span> <span class="subj">he</span> run that no one could catch him.</div><div class="zh">他跑得太快了，谁也追不上。（原句：He ran so fast that …。只倒前半句，that 后面不倒）</div></div>
+      <div class="ex"><div class="en"><span class="front">Such</span> <span class="verb">was</span> <span class="subj">his anger</span> that he couldn't say a word.</div><div class="zh">他气得一句话都说不出来。</div></div>
+      <div class="stype">⑥ so / neither / nor：“……也是 / ……也不”</div>
+      <div class="ex"><div class="en">Tom likes music, and <span class="front">so</span> <span class="verb">do</span> <span class="subj">I</span>.</div><div class="zh">汤姆喜欢音乐，我也是。</div></div>
+      <div class="ex"><div class="en">— I can't swim. — <span class="front">Neither</span> <span class="verb">can</span> <span class="subj">I</span>.</div><div class="zh">——我不会游泳。——我也不会。（也可以说 Nor can I.）</div></div>
+      <p class="note">别和 <code>So he does.</code> 混：语序不倒，意思是“他的确如此”，是在赞同对方的话。<code>— Tom works hard. — So he does.</code>（——汤姆很用功。——确实是。）</p>
+      <div class="stype">⑦ 虚拟语气省掉 if</div>
+      <p class="note">把 should / had / were 提到主语前，也是部分倒装：<code>Had I known the truth, I would have told you.</code>（我当时要是知道真相，早就告诉你了）——详见虚拟语气页第 ④ 阶。</p>
+      <div class="stype">⑧ as / though 让步：成分提到前面</div>
+      <div class="ex"><div class="en"><span class="front">Young</span> as he is, he knows a lot.</div><div class="zh">他虽然年轻，懂的却很多。（= Though he is young, …）</div></div>
+      <div class="ex"><div class="en"><span class="front">Child</span> as he was, he understood what had happened.</div><div class="zh">他虽然还是个孩子，却明白发生了什么。（名词提前，去掉冠词 a）</div></div>
+      <div class="ex"><div class="en"><span class="front">Much</span> as I like it, I can't afford it.</div><div class="zh">虽然很喜欢，可我买不起。</div></div>
+      <p class="note">这一种不是把助动词提前，而是把表语、副词提到 as 前面，常放在倒装里一起讲。though 也能这样用，although 不行。</p>
+      <p class="note">再补两句：only if 也照 ④ 的规矩，主句倒装：<code>Only if you work hard will you succeed.</code>（只有努力，才会成功）。否定词本身是主语的一部分时，不倒装：<code>Few students passed the test.</code>（几乎没有学生及格）</p>
+    </div>
     <div class="sum"><b>小结：</b>部分倒装只把<strong>助动词</strong>（be / do·does·did / 情态动词 / have·has·had）提到主语前，读起来就是一般疑问句。四种情况放句首要部分倒装：否定副词（never、seldom、little…）；not + 一个词（not a word、not until、not only）；带 no 的短语（on no account、no sooner…）；only + 状语（only then、only when…）。老师的记法：<b>全部倒装跟地点有关，部分倒装跟否定和 only 有关</b>。</div>
   </section>
 
@@ -451,6 +490,22 @@
     <div class="stype">适者生存</div>
     <p class="note">原句的意思是 The strongest of the species doesn't survive（最强的物种未必能活下来）。否定挪到 is 上之后，doesn't survive 要变回 survives——主语 the strongest 是三单。</p>
     <div class="ex"><div class="en"><span class="shell">It is not</span> <span class="front">the strongest of the species</span> <span class="shell">that</span> survives, nor the most intelligent, but the one most responsive to change.</div><div class="zh">活下来的不是最强的物种，也不是最聪明的，而是最能适应变化的——四个字：适者生存。（课上说是达尔文的话。这句其实是后人概括进化论时写的，常被安在达尔文头上）</div></div>
+    <div class="add">
+      <span class="add-tag">补充 · 课上没讲</span>
+      <h3>强调句的四个高频考点</h3>
+      <div class="stype">① It was not until … that …</div>
+      <div class="ex"><div class="en"><span class="shell">It was not</span> <span class="front">until midnight</span> <span class="shell">that</span> he came back.</div><div class="zh">他直到半夜才回来。（原句 He didn't come back until midnight.：not 挪到 was 上，后面变回肯定的 came back——就是 B 讲的规则）</div></div>
+      <div class="stype">② 疑问句也能套壳</div>
+      <div class="ex"><div class="en"><span class="shell">Was it</span> <span class="front">you</span> <span class="shell">that</span> broke the window?</div><div class="zh">是你打破的窗户吗？（一般疑问：Was it … that …?）</div></div>
+      <div class="ex"><div class="en"><span class="front">What</span> <span class="shell">is it that</span> you want?</div><div class="zh">你到底想要什么？（特殊疑问：疑问词 + is / was it that + 陈述语序）</div></div>
+      <div class="stype">③ 强调时间、地点，也只用 that</div>
+      <div class="ex good"><div class="en"><span class="shell">It was</span> <span class="front">in this room</span> <span class="shell">that</span> I was born.</div><div class="zh">我就是在这个房间出生的。</div></div>
+      <div class="ex bad"><div class="en">It was in this room where I was born.</div><div class="zh">强调句的壳里不用 when / where，只用 that（强调人可以用 who）</div></div>
+      <div class="stype">④ 想强调谓语动词：用 do / does / did</div>
+      <div class="ex"><div class="en">I <b>do</b> love you.</div><div class="zh">我是真的爱你。（壳只能强调主语、宾语、状语；强调动词本身，就在前面加 do / does / did，动词回原形）</div></div>
+      <div class="ex"><div class="en">He <b>did</b> come yesterday.</div><div class="zh">他昨天确实来了。</div></div>
+      <p class="note">顺带一条：that / who 后面的动词，跟被强调的主语保持一致：<code>It is I who am to blame.</code>（该怪的是我）——所以课上那句是 It is I that <b>love</b> you，不是 loves。</p>
+    </div>
     <div class="sum"><b>小结：</b>强调句 = <span class="shell">It is / was</span> + 被强调的部分 + <span class="shell">that / who</span> + 原句剩下的部分。原句一个词都不改（It is I that love you）；去掉壳，能拼回原句。能强调主语、宾语、状语。强调否定句时，把 not 挪到壳上：It wasn't I that killed him，后面的动词变回肯定。</div>
   </section>
 
@@ -470,7 +525,7 @@
     <h3>三步判断法</h3>
     <ol class="steps">
       <li>句首是<b>地点</b>（in the garden、on the floor、behind …），紧跟着动词，主语在最后 → <b>全部倒装</b>。还原：把主语放回句首。</li>
-      <li>句首是<b>否定词</b>（never、little、not until、on no account …）或 <b>only + 状语</b>，后面是“助动词 + 主语”，读着像一般疑问句 → <b>部分倒装</b>。还原：把句首那部分放回原位，助动词放回主语后面（加上去的 do / does / did 去掉，动词恢复原来的形式）。</li>
+      <li>句首是<b>否定词</b>（never、little、not until、on no account …）、<b>only + 状语</b>，或 so / such …、so / neither / nor，后面是“助动词 + 主语”，读着像一般疑问句 → <b>部分倒装</b>。还原：把句首那部分放回原位，助动词放回主语后面（加上去的 do / does / did 去掉，动词恢复原来的形式）。</li>
       <li>句子是 <b>It is / was … that / who …</b> → 先当强调句试试：去掉 It is 和 that / who，剩下的能拼回完整句子，就是<b>强调句</b>；否定在 is 上的，还原时把 not 放回动词上。拼不回去的（比如 <code>It is important that …</code>），是 it 作形式主语，不是强调句。</li>
     </ol>
 
@@ -513,14 +568,16 @@
   <div class="decide">
     <h2>一图流：遇到句子怎么定</h2>
     <div class="flow">
-      <div class="q">句首是地点，动词跑到了主语前面？</div>
+      <div class="q">句首是地点（或 here、out 这类副词，或表语），动词跑到了主语前面？</div>
       <div class="a"><span class="hit">是 →</span> 全部倒装：把主语放回句首来读（主语是代词时不这样倒）</div>
-      <div class="q">句首是 never / little / not until / on no account / only … ，后面是“助动词 + 主语”？</div>
+      <div class="q">句首是 never / little / not until / on no account / only …（或 so / such …、so / neither / nor），后面是“助动词 + 主语”？</div>
       <div class="a"><span class="hit4">是 →</span> 部分倒装：按一般疑问句的语序读，还原时把助动词放回主语后面</div>
       <div class="q">句子是 It is / was … that / who …？</div>
       <div class="a">去掉 It is 和 that / who，能拼回完整句子 → 强调句；拼不回去 → it 作形式主语</div>
       <div class="q">强调的是否定句？</div>
       <div class="a">not 放在壳上：<code>It wasn't I that killed him.</code>，后面的动词用肯定形式</div>
+      <div class="q">动词前面多了个 do / does / did，句子又不是疑问、否定？</div>
+      <div class="a">在强调谓语动词：<code>I do love you.</code></div>
     </div>
   </div>
 
