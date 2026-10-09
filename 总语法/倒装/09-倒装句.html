@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>倒装句与强调句 · 阶梯式笔记</title>
+<style>
+  :root{
+    --bg:#14161c;
+    --surface:#1b1e26;
+    --surface-2:#20242e;
+    --border:#2b3040;
+    --text:#e7e9f0;
+    --muted:#9aa2b4;
+    --faint:#727a8c;
+    /* 五阶,由冷到暖,像逐级攀登 */
+    --r1:#38cabf;
+    --r2:#5cc98a;
+    --r3:#e6b850;
+    --r4:#f0876a;
+    --r5:#b48ef0;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    padding:clamp(1.2rem,4vw,3rem) 1rem 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* 页头 */
+  header.top{margin-bottom:2.6rem}
+  header.top h1{
+    font-size:clamp(1.7rem,5vw,2.5rem);
+    font-weight:700;letter-spacing:.5px;line-height:1.2;
+  }
+  header.top .sub{color:var(--muted);margin-top:.6rem;font-size:1rem}
+  .rail{
+    display:flex;gap:.35rem;margin-top:1.4rem;
+  }
+  .rail span{height:5px;flex:1;border-radius:3px;opacity:.85}
+  .rail span:nth-child(1){background:var(--r1)}
+  .rail span:nth-child(2){background:var(--r2)}
+  .rail span:nth-child(3){background:var(--r3)}
+  .rail span:nth-child(4){background:var(--r4)}
+  .rail span:nth-child(5){background:var(--r5)}
+
+  /* 每一阶 */
+  section.rung{
+    --c:var(--r1);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--c);
+    border-radius:14px;
+    padding:1.5rem 1.5rem 1.3rem;
+    margin-bottom:1.6rem;
+  }
+  section.rung.s1{--c:var(--r1)}
+  section.rung.s2{--c:var(--r2)}
+  section.rung.s3{--c:var(--r3)}
+  section.rung.s4{--c:var(--r4)}
+  section.rung.s5{--c:var(--r5)}
+
+  .rung-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.2rem}
+  .num{
+    font-family:var(--serif);
+    font-size:2.3rem;font-weight:700;line-height:1;
+    color:var(--c);flex:none;
+  }
+  .rung-head .titles{flex:1}
+  .rung-head h2{font-size:1.25rem;font-weight:700;line-height:1.35}
+  .rung-head .tag{
+    font-size:.82rem;color:var(--c);opacity:.9;font-weight:600;
+    margin-top:.15rem;
+  }
+
+  /* 解决问题 / 上一阶局限 */
+  .why{
+    background:var(--surface-2);
+    border-radius:9px;
+    padding:.75rem .95rem;
+    margin:1rem 0 1.1rem;
+    font-size:.93rem;
+  }
+  .why b{color:var(--c)}
+  .why .lim{color:var(--muted);display:block;margin-top:.35rem}
+  .why .lim b{color:var(--muted)}
+
+  .rung p{margin:.7rem 0;color:var(--text)}
+  .rung p.note{color:var(--muted);font-size:.92rem}
+  .rung h3{
+    font-size:1rem;font-weight:600;margin:1.2rem 0 .4rem;
+    color:var(--text);
+  }
+  .rung h3::before{content:"▸ ";color:var(--c)}
+
+  /* 例句 */
+  .ex{
+    border-left:2px solid var(--c);
+    padding:.15rem 0 .15rem .85rem;
+    margin:.7rem 0;
+  }
+  .ex .en{font-family:var(--serif);font-size:1.12rem;line-height:1.5}
+  .ex .zh{color:var(--muted);font-size:.9rem;margin-top:.1rem}
+  .ex.sub{margin-left:1.1rem;opacity:.92}
+  .ex.bad{border-left-color:#ef6a6a}
+  .ex.bad .en{color:#f3a3a3;text-decoration:line-through;text-decoration-color:rgba(239,106,106,.5)}
+  .ex.bad .en::after{content:" ✗";color:#ef6a6a;text-decoration:none;font-family:var(--sans)}
+  .ex.good{border-left-color:var(--r2)}
+  .ex.good .en::after{content:" ✓";color:var(--r2);font-family:var(--sans)}
+
+  /* 对比小卡 */
+  .vs{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.9rem 0}
+  @media(min-width:560px){.vs{grid-template-columns:1fr 1fr}}
+  .vs .card{background:var(--surface-2);border-radius:9px;padding:.75rem .9rem}
+  .vs .card .en{font-family:var(--serif);font-size:1.05rem}
+  .vs .card .zh{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+  .vs .card .lbl{font-size:.76rem;font-weight:600;margin-top:.4rem}
+  .vs .card.now .lbl{color:var(--r4)}
+  .vs .card.gen .lbl{color:var(--r1)}
+
+  /* 速查行 */
+  .rows{margin:.5rem 0}
+  .rows .row{
+    display:flex;gap:.7rem;padding:.4rem 0;
+    border-bottom:1px dashed var(--border);font-size:.93rem;
+  }
+  .rows .row:last-child{border-bottom:none}
+  .rows .k{color:var(--c);font-weight:600;flex:none;min-width:8.5em}
+  .rows .v{color:var(--text)}
+  .rows .v code{color:var(--muted)}
+
+  code{
+    font-family:"SF Mono",Consolas,monospace;
+    background:var(--surface-2);
+    padding:.05rem .35rem;border-radius:5px;font-size:.88em;
+  }
+
+  /* 步骤 */
+  ol.steps{margin:.6rem 0 .3rem;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;position:relative;
+    padding:.5rem 0 .5rem 2.1rem;font-size:.94rem;
+    border-bottom:1px solid var(--border);
+  }
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{
+    content:counter(st);position:absolute;left:0;top:.5rem;
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:var(--c);color:#12141a;font-weight:700;
+    font-size:.82rem;display:grid;place-items:center;
+  }
+
+  /* 小结 */
+  .sum{
+    margin-top:1.2rem;padding:.75rem .95rem;
+    background:color-mix(in srgb,var(--c) 12%,transparent);
+    border-radius:9px;font-size:.94rem;
+  }
+  .sum b{color:var(--c)}
+
+  /* 总览 */
+  .overview{margin-top:2.8rem}
+  .overview h2{font-size:1.4rem;margin-bottom:1rem}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;
+       border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:.65rem .7rem;text-align:left;
+       border-bottom:1px solid var(--border);vertical-align:top}
+  .tbl thead th{background:var(--surface-2);color:var(--muted);font-weight:600}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .dot{font-weight:700}
+  .tbl tr.o1 .dot{color:var(--r1)} .tbl tr.o2 .dot{color:var(--r2)}
+  .tbl tr.o3 .dot{color:var(--r3)} .tbl tr.o4 .dot{color:var(--r4)}
+  .tbl tr.o5 .dot{color:var(--r5)}
+
+  /* 判断法 */
+  .decide{
+    margin-top:1.6rem;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;
+  }
+  .decide h2{font-size:1.15rem;margin-bottom:.9rem}
+  .flow{font-size:.95rem}
+  .flow .q{color:var(--text);font-weight:600;margin-top:.8rem}
+  .flow .a{color:var(--muted);padding-left:1.1rem;position:relative;margin-top:.2rem}
+  .flow .a::before{content:"└ ";color:var(--faint)}
+  .flow .a .hit{color:var(--r1);font-weight:600}
+  .flow .a .hit4{color:var(--r4);font-weight:600}
+
+  footer{margin-top:3rem;color:var(--faint);font-size:.8rem;text-align:center}
+
+
+/* --- skeleton additions --- */
+.legend2{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.2rem 0 1.1rem;align-items:center}
+.legend2 span{font-weight:600}
+.front{color:#e6b850;font-weight:700}  /* 提到句首的部分；强调句里被强调的部分 */
+.verb{color:#f0876a;font-weight:700}   /* 跑到主语前的动词 / 助动词 */
+.subj{color:#38cabf;font-weight:700}   /* 主语 */
+.shell{color:#b48ef0;font-weight:700}  /* 强调句的壳：It is / was … that / who */
+.stype{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;
+  padding:2px 11px;border-radius:20px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);color:var(--muted);margin:1rem 0 .45rem}
+.skel{font-family:var(--sans);background:var(--surface-2);border:1px solid var(--border);
+  border-left:3px solid var(--c);border-radius:9px;padding:.6rem .85rem;
+  font-size:.85rem;color:var(--muted);line-height:2;margin:0 0 .55rem;letter-spacing:.01em}
+.skel b{color:var(--text);font-weight:700}
+.callout{margin:.9rem 0;padding:.8rem 1rem;background:var(--surface-2);
+  border-left:3px solid var(--r4);border-radius:9px;font-size:.93rem}
+.callout b{color:var(--r4)}
+.vs .card.fact .lbl{color:var(--r2)}
+.vs .card.fake .lbl{color:var(--r4)}
+/* 总览表：前两列和表头不折行，手机上收窄边距 */
+.tbl th:nth-child(-n+2),.tbl td:nth-child(-n+2),.tbl thead th{white-space:nowrap}
+@media(max-width:560px){.tbl th,.tbl td{padding:.6rem .45rem}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>倒装句与强调句 · 阶梯式笔记</h1>
+    <p class="sub">课上叫“特殊句式”。从“为什么要这么说”起步，一阶叠一阶：地基 → 全部倒装 → 部分倒装 → 强调句 → 判断。</p>
+    <div class="rail"><span></span><span></span><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- ① 地基 -->
+  <section class="rung s1">
+    <div class="rung-head">
+      <div class="num">1</div>
+      <div class="titles">
+        <h2>地基：倒装和强调句，都是为了“强调”</h2>
+        <div class="tag">是什么 · 一张总图</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>好好的句子，为什么要倒过来说，或者套上一层 It is … that？
+      <span class="lim"><b>为什么先讲：</b>老师先给了一张总图：两大类、几种情况。先把图立住，后面每一阶都往这张图里放。</span>
+    </div>
+    <p>说话有正常的顺序：主语 → 动词 → 其他（记作 ①②③）。<strong>故意不按正常顺序说，或者给句子套一个壳，听的人就会感觉到：你在强调什么</strong>。老师把这类句子叫“特殊句式”，分两大类：</p>
+    <div class="rows">
+      <div class="row"><span class="k">倒装</span><span class="v">把句子倒过来说。<b>全部倒装</b>：①②③ → ③②①；<b>部分倒装</b>：①②③ → ②①③，只挪助动词。</span></div>
+      <div class="row"><span class="k">强调句</span><span class="v">不动顺序，给句子套一个壳 <code>It is … that</code>。分<b>肯定</b>和<b>否定</b>两种，否定的有一条特殊规则。</span></div>
+    </div>
+
+    <h3>从英文名就能看出两种倒装的差别</h3>
+    <div class="rows">
+      <div class="row"><span class="k">全部倒装</span><span class="v">subject-verb inversion：主语（subject）和动词（verb）整个对调。</span></div>
+      <div class="row"><span class="k">部分倒装</span><span class="v">subject-auxiliary inversion：主语只和助动词（auxiliary）对调。</span></div>
+    </div>
+    <p class="note">三种先各看一眼，后面几阶细讲：</p>
+    <div class="legend2">
+      <span class="front">提到前面的部分</span>
+      <span class="verb">跑到主语前的动词</span>
+      <span class="subj">主语</span>
+      <span class="shell">强调句的壳</span>
+      <span style="color:var(--faint)">— 全页同色对应</span>
+    </div>
+    <div class="ex"><div class="en"><span class="subj">Mount Tai</span> <span class="verb">stands</span> <span class="front">in the west of Shandong Province</span>. → <span class="front">In the west of Shandong Province</span> <span class="verb">stands</span> <span class="subj">Mount Tai</span>.</div><div class="zh">泰山位于山东省西部。①②③ → ③②①：地点、动词、主语整个倒过来——全部倒装</div></div>
+    <div class="ex"><div class="en"><span class="subj">We</span> seldom <span class="verb">go</span> to the theatre nowadays. → <span class="front">Seldom</span> <span class="verb">do</span> <span class="subj">we</span> go to the theatre nowadays.</div><div class="zh">如今我们很少去剧院看戏了。只把助动词 do 挪到主语前，go 留在原处——部分倒装</div></div>
+    <div class="ex"><div class="en">I love you. → <span class="shell">It is</span> <span class="front">you</span> <span class="shell">that</span> I love.</div><div class="zh">我爱的就是你。顺序不动，外面套一个壳——强调句</div></div>
+    <p class="note">老师在最后一课说：倒装、强调句，再加上虚拟语气，其实都是在强调——一般人不会这么说，你偏这么说，别人就知道你想突出什么。</p>
+    <div class="sum"><b>小结：</b>特殊句式只有一个目的：<strong>强调某个成分</strong>。倒装靠换顺序：全部倒装是主语和动词整个对调，部分倒装只把助动词提到主语前；强调句不换顺序，给句子套一个 It is … that 的壳。后面每一阶都长在这上面。</div>
+  </section>
+
+  <!-- ② 全部倒装 -->
+  <section class="rung s2">
+    <div class="rung-head">
+      <div class="num">2</div>
+      <div class="titles">
+        <h2>全部倒装：地点放最前，主语放最后</h2>
+        <div class="tag">怎么用 · 地点 + 动词 + 主语</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>全部倒装什么时候用？长什么样？
+      <span class="lim"><b>上一阶的局限：</b>地基只说了“①②③ 写成 ③②①”，没说哪些句子能这么倒，也没说为什么要倒。</span>
+    </div>
+    <p>常见句型：<b>地点 + 不及物动词 / 系动词 + 主语</b>。句子里得有一个地点，动词是 be、stand、sit、lie 这种不带宾语的动词，才能整个倒过来。</p>
+    <div class="skel">正常：<span class="subj">主语</span> ① + <span class="verb">动词</span> ② + <span class="front">地点</span> ③<br>全部倒装：<span class="front">地点</span> ③ + <span class="verb">动词</span> ② + <span class="subj">主语</span> ①</div>
+
+    <div class="stype">四级翻译：泰山位于山东省西部</div>
+    <p class="note">老师拿这句讲写句子怎么一步步加分：</p>
+    <div class="ex"><div class="en"><span class="subj">Mount Tai</span> <span class="verb">is</span> in the west of Shandong Province.</div><div class="zh">最简单：用 is。</div></div>
+    <div class="ex"><div class="en"><span class="subj">Mount Tai</span> <span class="verb">lies</span> in the west of Shandong Province.</div><div class="zh">多数人会写 lies（位于）。</div></div>
+    <div class="ex"><div class="en"><span class="subj">Mount Tai</span> <span class="verb">stands</span> in the west of Shandong Province.</div><div class="zh">更形象：stands 像人站着，显出泰山的高大。</div></div>
+    <div class="ex good"><div class="en"><span class="front">In the west of Shandong Province</span> <span class="verb">stands</span> <span class="subj">Mount Tai</span>.</div><div class="zh">再加分：地点放最前，①②③ 变成 ③②①。</div></div>
+
+    <div class="stype">课上的例句</div>
+    <div class="ex"><div class="en"><span class="front">On the floor</span> <span class="verb">were</span> <span class="subj">piles of books, magazines and newspapers</span>.</div><div class="zh">地板上是一摞摞的书、杂志和报纸。= <code>Piles of books, magazines and newspapers were on the floor.</code></div></div>
+    <div class="ex"><div class="en"><span class="front">Below the window</span> <span class="verb">were</span> <span class="subj">several melon stalls</span>, …</div><div class="zh">窗户下面是几个卖瓜的摊子……（后半句 and above them … 也是同样的 ③②①：窗户上方是一座顶上有钟的塔楼）</div></div>
+    <div class="ex"><div class="en"><span class="front">In the center of the campus</span> <span class="verb">was</span> <span class="subj">a newly built fan-shaped fountain</span>.</div><div class="zh">校园中心是一座新建的扇形喷泉。</div></div>
+
+    <h3>为什么要倒：三个理由</h3>
+    <ol class="steps">
+      <li><b>句子平衡。</b>上面这些主语都很长。英语最怕头重脚轻（学 it 作形式主语时讲过），把长主语挪到句尾，句子就稳了。</li>
+      <li><b>符合视觉。</b>人看东西是由远及近、由大到小：先看到校园，再看到喷泉；先说山东西部，再说泰山。这样写更有画面感。</li>
+      <li><b>画面衔接。</b>上一句结尾说到哪儿，下一句就从哪儿接着说。</li>
+    </ol>
+
+    <div class="stype">格林童话《金鸟》</div>
+    <div class="ex"><div class="en">A certain king had a beautiful garden, and <span class="front">in the garden</span> <span class="verb">stood</span> <span class="subj">a tree which bore golden apples</span>.</div><div class="zh">从前有个国王，他有一座美丽的花园，花园里长着一棵结金苹果的树。</div></div>
+    <p class="note">一句话占全了三个理由：上一句刚说到 garden，下一句就从 garden 接（衔接）；先说花园，再把目光收到树上（由大到小）；主语 a tree 后面还拖着定语从句 which bore golden apples，放句尾才平衡。要是写成 A tree which bore golden apples stood in the garden，就和上一句接不上了。</p>
+    <p class="note">中文也讲究这种衔接。老师打了一个英文版，让大家猜中文：</p>
+    <div class="vs">
+      <div class="card now">
+        <div class="en">There was a temple on the mountain. There were two monks in the temple.</div>
+        <div class="zh">用 there be：每句开头都是 There。</div>
+        <div class="lbl">接不上 — 上一句说到庙，下一句却从 There 开始</div>
+      </div>
+      <div class="card fact">
+        <div class="en"><span class="front">On the mountain</span> <span class="verb">was</span> <span class="subj">a temple</span>. <span class="front">In the temple</span> <span class="verb">were</span> <span class="subj">two monks</span>.</div>
+        <div class="zh">从前有座山，山里有座庙，庙里有和尚……</div>
+        <div class="lbl">首尾相接 — 山 → 山上的庙 → 庙里的和尚</div>
+      </div>
+    </div>
+    <p class="note">《金鸟》里还有一句老师很喜欢：<code>the gardener at first would not let him, for fear some harm should come to him</code>（园丁起初不让他去，怕他出事）。中文说“怕他受伤”，英文却用 harm（伤害）做主语：harm comes to him，不用人做主语，也不用被动。课上叫“非人称主语句”，点到为止。</p>
+    <p class="note">老师的推荐：Kindle 上有很多免费的公版书（版权已经过期的书，把价格筛到 0 元就能搜到）。从格林童话这类童话或名著读起，句子短、语法点多，点一下单词就能查意思。</p>
+
+    <div class="stype">纪录片：白金汉宫</div>
+    <div class="ex"><div class="en"><span class="front">In the heart of London</span> <span class="verb">sits</span> <span class="subj">one of Britain's most recognisable buildings</span>.</div><div class="zh">在伦敦的中心，坐落着英国最有辨识度的建筑之一。</div></div>
+    <p class="note">老师说：想背一句全部倒装，就背这句。好在三处：① 全部倒装；② 动词用 sits，不用 stands；③ recognisable 是“一眼就认得出”，像自由女神像、埃菲尔铁塔那样，比 famous、well-known 好得多。</p>
+    <div class="rows">
+      <div class="row"><span class="k">stand</span><span class="v">高大的东西：树、纪念碑（人民英雄纪念碑）、泰山</span></div>
+      <div class="row"><span class="k">sit</span><span class="v">占地广的东西：宫殿，比如白金汉宫、故宫</span></div>
+      <div class="row"><span class="k">lie</span><span class="v">最普通的“位于”</span></div>
+    </div>
+    <p class="note">换成写故宫：in the center of 换成更好的 in the heart of；故宫是宫殿，占地广，用 sits；Britain's 换成 China's：</p>
+    <div class="ex"><div class="en"><span class="front">In the heart of Beijing</span> <span class="verb">sits</span> <span class="subj">one of China's most recognisable buildings</span>.</div><div class="zh">在北京的中心，坐落着中国最有辨识度的建筑之一。</div></div>
+    <p class="note">纪录片从外墙介绍到里面时，又用了一次：</p>
+    <div class="ex"><div class="en">And <span class="front">behind the familiar facade</span> <span class="verb">lies</span> <span class="subj">a building with a strange and surprising history</span>.</div><div class="zh">而在那熟悉的外墙后面，是一座有着离奇、惊人历史的建筑。（先看外墙、再看里面——符合视觉；主语带着 with 短语，很长——放后面才平衡）</div></div>
+    <p class="note">老师推荐现阶段多看纪录片：文本最正式、语法最工整，而且同一个地方会反复用这种句式来介绍。听多了、读多了，自然就会写。</p>
+    <p class="note"><b>补一句例外：</b>主语是代词（it、he、they）时，不全部倒装：<code>In the garden stood a tree.</code> ✓，<code>In the garden stood it.</code> ✗。全部倒装是为了把又长又新的主语放到句尾，代词又短、又是前面说过的，放到句尾反而别扭。</p>
+    <div class="sum"><b>小结：</b>全部倒装 = <strong>地点 + 不及物动词 / 系动词 + 主语</strong>。用它有三个理由：长主语放后面更平衡；由远及近、由大到小，更有画面感；上一句说到哪儿，下一句就从哪儿接。动词挑得准更加分：高的用 stand，占地广的用 sit，普通的用 lie。</div>
+  </section>
+
+  <!-- ③ 部分倒装 -->
+  <section class="rung s3">
+    <div class="rung-head">
+      <div class="num">3</div>
+      <div class="titles">
+        <h2>部分倒装：只把助动词提到主语前</h2>
+        <div class="tag">怎么用 · 读起来就是一般疑问句</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>什么时候只倒一半？倒的是哪一半？
+      <span class="lim"><b>上一阶的局限：</b>全部倒装只管“地点”开头的句子。否定词、only 放到句首时，不是整个动词提前，而是只提助动词。</span>
+    </div>
+    <p>部分倒装不是 ①②③ 变 ③②①。老师的说法是：从动词里硬挑出一个“2.5”——助动词，把它放到主语前面：</p>
+    <div class="skel"><span class="front">提到句首的部分</span> + <span class="verb">助动词</span> + <span class="subj">主语</span> + 动词剩下的部分 …</div>
+    <div class="rows">
+      <div class="row"><span class="k">be 动词</span><span class="v">am / is / are / was / were，直接提</span></div>
+      <div class="row"><span class="k">实义动词</span><span class="v">自己不能提，要加 do / does / did，后面的动词回原形</span></div>
+      <div class="row"><span class="k">情态动词</span><span class="v">can / will / could / should …，直接提</span></div>
+      <div class="row"><span class="k">完成时</span><span class="v">have / has / had，直接提</span></div>
+    </div>
+    <div class="callout"><b>老师说重要的事说三遍：</b>部分倒装 = 一般疑问句的语序。会把句子变成一般疑问句，就会部分倒装。</div>
+    <p>什么时候用？课上讲了四种情况：前三种都和“否定”有关，最后一种和 only 有关。</p>
+
+    <h3>① 否定副词放句首</h3>
+    <div class="rows">
+      <div class="row"><span class="k">常见的词</span><span class="v">never 从不 · seldom 很少 · rarely 很少 · little 几乎不 · hardly 几乎不 · scarcely 几乎不 · nowhere 哪儿都不</span></div>
+    </div>
+    <div class="ex"><div class="en">We seldom go to the theatre nowadays. → <span class="front">Seldom</span> <span class="verb">do</span> <span class="subj">we</span> go to the theatre nowadays.</div><div class="zh">如今我们很少去剧院看戏了。（go 是实义动词，自己不能提，要加 do。去掉 Seldom，剩下的 do we go … 就是一般疑问句）</div></div>
+    <div class="ex"><div class="en">I have never heard American music played better in a foreign country. → <span class="front">Never</span> <span class="verb">have</span> <span class="subj">I</span> heard American music played better in a foreign country.</div><div class="zh">我在国外从没听过演奏得这么好的美国音乐。（现在完成时，提 have）</div></div>
+    <p class="note">never have I 是个固定说法：“我从来没……过”。美剧《Never Have I Ever》的片名就是它，多加了一个 ever，讲的是一个印度裔女孩的青春故事。</p>
+    <div class="stype">背下来：Little did I know …</div>
+    <div class="ex"><div class="en">I wanted one. <span class="front">Little</span> <span class="verb">did</span> <span class="subj">I</span> know I would end up with twelve.</div><div class="zh">《一个购物狂的自白》：我也想要一张。那时我怎么也没想到，后来我会有十二张。（小时候羡慕大人有“魔法卡片”，不用钱就能买东西——其实就是信用卡）</div></div>
+    <div class="ex"><div class="en">See you make your way through the crowd and say hello. <span class="front">Little</span> <span class="verb">did</span> <span class="subj">I</span> know …</div><div class="zh">泰勒·斯威夫特《Love Story》：看见你穿过人群走来，说了声 hello。那时我怎么也没想到……（罗密欧与朱丽叶的故事。老师说：谁能想到一句 hello，把两个人的命都搭进去了）</div></div>
+    <p class="note">little 在这里是否定词“几乎不、一点也不”，不是“小”。little did I know = 我当时完全不知道、怎么也没想到。</p>
+
+    <h3>② not + 一个词，一起提前</h3>
+    <p>not 不单独提前，要和它否定的那个词绑在一起提。课上的三个：not a word、not until、not only。</p>
+    <div class="ex"><div class="en">He did not tell me a word today. → <span class="front">Not a word</span> <span class="verb">did</span> <span class="subj">he</span> tell me today.</div><div class="zh">他今天一个字也没跟我说。（要强调的是“一个字”，所以 not 和 a word 一起提）</div></div>
+    <div class="ex"><div class="en">I did not leave until he came back. → <span class="front">Not until he came back</span> <span class="verb">did</span> <span class="subj">I</span> leave.</div><div class="zh">他回来了我才走。（not … until = 直到……才。倒装的是主句 I leave，until 后面的 he came back 不倒）</div></div>
+    <p class="note">讲《饥饿游戏》时的一句：几个区暴动过之后，都城（Capitol）规定每年从每个区选一男一女送去互相厮杀，只能活一个，好让大家记住不许再暴动。</p>
+    <div class="ex"><div class="en"><span class="front">Not only</span> <span class="verb">are</span> <span class="subj">we in the districts</span> forced to remember the iron grip of the Capitol's power, we are forced to celebrate it.</div><div class="zh">我们各区的人不但被迫记住都城的铁腕统治，还被迫为它庆祝。（not only 提前，前半句用 are we；后半句不倒）</div></div>
+
+    <h3>③ 带 no 的短语放句首</h3>
+    <div class="rows">
+      <div class="row"><span class="k">都是“绝不”</span><span class="v">at no time · in no way · by no means · in no case · on no account · in no circumstances</span></div>
+      <div class="row"><span class="k">“一……就……”</span><span class="v">no sooner … than（hardly / scarcely … when 同理，见过去完成时）</span></div>
+    </div>
+    <div class="ex"><div class="en">I will on no account consider your suggestion that the power plant be built by the river. → <span class="front">On no account</span> <span class="verb">will</span> <span class="subj">I</span> consider your suggestion that the power plant be built by the river.</div><div class="zh">我绝不会考虑你把电厂建在河边的提议。（power plant 是电厂，不是“能量植物”。suggestion 后面的同位语从句用了原形 be built，就是虚拟语气里的 should + 动词原形）</div></div>
+    <div class="ex"><div class="en">We could in no circumstances agree to such a principle. → <span class="front">In no circumstances</span> <span class="verb">could</span> <span class="subj">we</span> agree to such a principle.</div><div class="zh">无论如何，我们都不能同意这样的原则。</div></div>
+    <div class="ex"><div class="en">I had no sooner sat down than the phone rang. → <span class="front">No sooner</span> <span class="verb">had</span> <span class="subj">I</span> sat down than the phone rang.</div><div class="zh">我刚坐下，电话就响了。（课上只提了这个结构，讲时间状语从句时说过）</div></div>
+
+    <h3>④ only + 状语放句首</h3>
+    <p>最后一种和否定无关：only 带的状语放到句首，句子也要部分倒装。这个状语可以是一个词、一个短语，也可以是一个从句。</p>
+    <div class="ex"><div class="en"><span class="front">Only then</span> <span class="verb">could</span> <span class="subj">the work</span> be seriously begun.</div><div class="zh">只有到那时，工作才能真正开始。（时间状语。原句：The work could be seriously begun only then.）</div></div>
+    <div class="ex"><div class="en"><span class="front">Only in this way</span> <span class="verb">can</span> <span class="subj">our honour</span> be saved.</div><div class="zh">只有这样，我们的荣誉才能保住。（方式状语）</div></div>
+    <div class="ex"><div class="en"><span class="front">Only when he saw that the man was actually telephoning the police</span> <span class="verb">did</span> <span class="subj">he</span> realize …</div><div class="zh">直到看见那人真的在给警察打电话，他才意识到……（only 带的是一个时间状语从句。从句本身语序正常，倒装的是后面的主句：he realized → did he realize）</div></div>
+    <div class="ex"><div class="en">It will be possible to make a plan only when a good deal more information has been obtained. → <span class="front">Only when a good deal more information has been obtained</span> <span class="verb">will</span> <span class="subj">it</span> be possible to make a plan.</div><div class="zh">只有拿到多得多的信息，才有可能制订计划。（主句 it will be → will it be）</div></div>
+    <p class="note"><b>补一句例外：</b>only 修饰的是主语时不倒装：<code>Only Tom knows the answer.</code>（只有汤姆知道答案）——only 后面紧跟的就是主语，句子还是正常语序。</p>
+    <div class="sum"><b>小结：</b>部分倒装只把<strong>助动词</strong>（be / do·does·did / 情态动词 / have·has·had）提到主语前，读起来就是一般疑问句。四种情况放句首要部分倒装：否定副词（never、seldom、little…）；not + 一个词（not a word、not until、not only）；带 no 的短语（on no account、no sooner…）；only + 状语（only then、only when…）。老师的记法：<b>全部倒装跟地点有关，部分倒装跟否定和 only 有关</b>。</div>
+  </section>
+
+  <!-- ④ 强调句 -->
+  <section class="rung s4">
+    <div class="rung-head">
+      <div class="num">4</div>
+      <div class="titles">
+        <h2>强调句：给句子套个壳 It is … that</h2>
+        <div class="tag">怎么用 · 原句不动，套壳就行</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>不想动句子的顺序，又想强调某个成分，怎么办？
+      <span class="lim"><b>上一阶的局限：</b>倒装要改句子的结构。强调句不改结构，只在外面加一个壳。</span>
+    </div>
+    <p>强调句的壳是 <span class="shell">It is / was … that</span>：把想强调的成分<strong>原封不动地</strong>挪到 it is 和 that 中间，句子剩下的部分照抄。</p>
+    <div class="legend2">
+      <span class="shell">壳：It is / was … that / who</span>
+      <span class="front">被强调的部分</span>
+    </div>
+    <div class="skel"><span class="shell">It is / was</span> + <span class="front">被强调的部分</span> + <span class="shell">that / who</span> + 句子剩下的部分（照抄）</div>
+    <div class="rows">
+      <div class="row"><span class="k">时态</span><span class="v">说过去的事，用 It was</span></div>
+      <div class="row"><span class="k">that 还是 who</span><span class="v">强调物用 that；强调人用 that 或 who 都行</span></div>
+      <div class="row"><span class="k">能强调什么</span><span class="v">主语、宾语、状语；别的成分不行</span></div>
+    </div>
+
+    <h3>A · 肯定句的强调</h3>
+    <div class="stype">课上的练习：I love you.</div>
+    <div class="ex"><div class="en"><span class="shell">It is</span> <span class="front">you</span> <span class="shell">that</span> I love.</div><div class="zh">我爱的就是你。（强调宾语 you）</div></div>
+    <div class="ex good"><div class="en"><span class="shell">It is</span> <span class="front">I</span> <span class="shell">that</span> love you.</div><div class="zh">就是我爱你。（强调主语 I）</div></div>
+    <div class="ex bad"><div class="en">It is me that love you.</div><div class="zh">老师在这里画了星号：强调句是在原句外面套壳，原句是 I love you，主语就还是 I，不能改成 me</div></div>
+    <p class="note"><b>检验方法：</b>把 it is 和 that（或 who）去掉，剩下的部分能拼回一个完整的句子，就是强调句。</p>
+    <p class="note">老师跟 Siri 说 Thank you so much，Siri 回了一句强调句：</p>
+    <div class="ex"><div class="en"><span class="shell">It is</span> <span class="front">I</span> <span class="shell">who</span> should be thanking you.</div><div class="zh">该说谢谢的是我才对。（去掉 It is 和 who，剩下 I should be thanking you，完整）</div></div>
+
+    <div class="stype">书里的强调句</div>
+    <div class="ex"><div class="en"><span class="shell">It is</span> <span class="front">only with the heart</span> <span class="shell">that</span> one can see rightly.</div><div class="zh">《小王子》：只有用心，才能看得真切。（强调方式状语。原句：One can see rightly only with the heart.）</div></div>
+    <div class="ex"><div class="en"><span class="shell">It is</span> <span class="front">the time you spent on your rose</span> <span class="shell">that</span> makes your rose so important.</div><div class="zh">《小王子》里狐狸说：正是你在玫瑰上花的时间，才让你的玫瑰变得这么重要。（强调主语。原句：The time you spent on your rose makes your rose so important.）</div></div>
+    <div class="ex"><div class="en"><span class="shell">It is</span> <span class="front">only through art</span> <span class="shell">that</span> we can escape from ourselves and know how another person sees the universe.</div><div class="zh">普鲁斯特（六级阅读里出现过）：只有通过艺术，我们才能走出自己，知道别人眼中的宇宙是什么样子。（强调方式状语）</div></div>
+    <p class="note">同一个意思，不用强调句，也可以用上一阶的 only 倒装——方法是通的：</p>
+    <div class="ex"><div class="en"><span class="front">Only through art</span> <span class="verb">can</span> <span class="subj">we</span> escape from ourselves and know how another person sees the universe.</div><div class="zh">only 状语放句首，助动词 can 提到主语前。</div></div>
+
+    <h3>B · 否定句的强调：把 not 挪到壳上</h3>
+    <p>强调一个否定句时，<strong>否定要转移到壳上</strong>：<span class="shell">It is not / It wasn't</span> … that …，后面的动词变回肯定形式。中文也一样：我们说“不是我杀的”，不说“正是我没杀他”。</p>
+    <div class="ex bad"><div class="en">It was I that didn't kill him.</div><div class="zh">课上画了删除线：否定留在后面，很别扭</div></div>
+    <div class="ex good"><div class="en"><span class="shell">It wasn't</span> <span class="front">I</span> <span class="shell">that</span> killed him.</div><div class="zh">不是我杀的他。（原句 I didn't kill him.：not 挪到 was 上，didn't kill 变回 killed）</div></div>
+    <div class="stype">伏尔泰</div>
+    <p class="note">老师先给了一个改写版：Men are equal; birth doesn't make the difference …（人人平等，出身并不让人和人不一样）。men 在这里是“人”，不是“男人”。要强调“不是出身”，就把 not 挪到 is 上：</p>
+    <div class="ex"><div class="en">Men are equal; <span class="shell">it is not</span> <span class="front">birth</span> but <span class="front">virtue</span> <span class="shell">that</span> makes the difference.</div><div class="zh">人人平等，让人和人不同的不是出身，而是品德。</div></div>
+    <div class="stype">适者生存</div>
+    <p class="note">原句的意思是 The strongest of the species doesn't survive（最强的物种未必能活下来）。否定挪到 is 上之后，doesn't survive 要变回 survives——主语 the strongest 是三单。</p>
+    <div class="ex"><div class="en"><span class="shell">It is not</span> <span class="front">the strongest of the species</span> <span class="shell">that</span> survives, nor the most intelligent, but the one most responsive to change.</div><div class="zh">活下来的不是最强的物种，也不是最聪明的，而是最能适应变化的——四个字：适者生存。（课上说是达尔文的话。这句其实是后人概括进化论时写的，常被安在达尔文头上）</div></div>
+    <div class="sum"><b>小结：</b>强调句 = <span class="shell">It is / was</span> + 被强调的部分 + <span class="shell">that / who</span> + 原句剩下的部分。原句一个词都不改（It is I that love you）；去掉壳，能拼回原句。能强调主语、宾语、状语。强调否定句时，把 not 挪到壳上：It wasn't I that killed him，后面的动词变回肯定。</div>
+  </section>
+
+  <!-- ⑤ 判断 -->
+  <section class="rung s5">
+    <div class="rung-head">
+      <div class="num">5</div>
+      <div class="titles">
+        <h2>判断：三步认出来，还原回去</h2>
+        <div class="tag">收口 · 实战抓手 + 整门课的主线</div>
+      </div>
+    </div>
+    <div class="why">
+      <b>要解决：</b>读到这些句子，怎么一眼认出来、还原成正常句子？
+      <span class="lim"><b>上一阶的局限：</b>前面一种一种地讲。这一阶把三种放在一起，给出认的抓手，最后回顾老师讲的整门课的主线。</span>
+    </div>
+    <h3>三步判断法</h3>
+    <ol class="steps">
+      <li>句首是<b>地点</b>（in the garden、on the floor、behind …），紧跟着动词，主语在最后 → <b>全部倒装</b>。还原：把主语放回句首。</li>
+      <li>句首是<b>否定词</b>（never、little、not until、on no account …）或 <b>only + 状语</b>，后面是“助动词 + 主语”，读着像一般疑问句 → <b>部分倒装</b>。还原：把句首那部分放回原位，助动词放回主语后面（加上去的 do / does / did 去掉，动词恢复原来的形式）。</li>
+      <li>句子是 <b>It is / was … that / who …</b> → 先当强调句试试：去掉 It is 和 that / who，剩下的能拼回完整句子，就是<b>强调句</b>；否定在 is 上的，还原时把 not 放回动词上。拼不回去的（比如 <code>It is important that …</code>），是 it 作形式主语，不是强调句。</li>
+    </ol>
+
+    <h3>想强调什么，选哪一种</h3>
+    <div class="rows">
+      <div class="row"><span class="k">全部倒装</span><span class="v">想突出地点、画面。<code>In the heart of London sits …</code></span></div>
+      <div class="row"><span class="k">部分倒装</span><span class="v">想突出“从不、绝不、只有”。<code>Never have I …</code> <code>Only through art can we …</code></span></div>
+      <div class="row"><span class="k">强调句</span><span class="v">想突出主语、宾语或状语，又不想动顺序。<code>It is only through art that …</code></span></div>
+    </div>
+
+    <h3>这门课的主线（老师最后的总结）</h3>
+    <ol class="steps">
+      <li><b>句子。</b>英文的基本单位是句子 = 主语 + 谓语。讲得最多的是谓语动词：时态（什么时间）、语态（主动还是被动）、情态（态度和把握）。</li>
+      <li><b>连接。</b>句子多了要连起来。并列连词连出来的句子一样重要；从属连词连出来的，一个是主要的，其他都是次要的。</li>
+      <li><b>精简。</b>句子越写越长，会啰嗦、重复，就用非谓语动词精简：介词 + 动名词能省掉一个句子；分词作定语、作状语是定语从句、状语从句的简化版；主语不同时用独立主格；to do 还能代替目的、结果状语从句。</li>
+      <li><b>强调。</b>最后找出最想突出的点来强调：倒装、强调句，还有虚拟语气——做一个和现实相反的假设，本身就是在强调现实。</li>
+    </ol>
+    <p class="note">老师说这像人的一生：一开始拼命把句子写长，初高中时凑字数，本来不用定语从句也要硬写一个；语言能力真上来了，反而能少说一个字就少说一个字。句子没有绝对的好坏，用在该用的地方就是好句子。凯撒的 <code>I came, I saw, I conquered.</code>（我来，我见，我征服；课上说成了拿破仑）就是三个简单句并列，照样霸气。老师的版本是 <code>I came, I saw, I bought.</code>——看到的都买了。</p>
+    <div class="sum"><b>小结：</b>地点开头、动词跑到主语前 → 全部倒装；否定词或 only 开头、助动词跑到主语前 → 部分倒装；It is … that 套壳、去掉能拼回原句 → 强调句。三种句式，一个目的：<strong>强调</strong>。</div>
+  </section>
+
+  <!-- 总览 -->
+  <div class="overview">
+    <h2>总览表</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th>阶</th><th>关注点</th><th>关键内容</th><th>一句话记忆</th></tr>
+      </thead>
+      <tbody>
+        <tr class="o1"><td><span class="dot">① 地基</span></td><td>为了什么</td><td>倒装换顺序，强调句套壳</td><td>不按常理说，就是在强调</td></tr>
+        <tr class="o2"><td><span class="dot">② 全倒</span></td><td>地点开头</td><td>地点 + 动词 + 主语；为了平衡、画面、衔接</td><td>先大后小，主语殿后</td></tr>
+        <tr class="o3"><td><span class="dot">③ 部倒</span></td><td>否定、only</td><td>助动词提到主语前</td><td>部分倒装就是一般疑问句</td></tr>
+        <tr class="o4"><td><span class="dot">④ 强调句</span></td><td>套壳</td><td>It is … that；原句不改；not 挪到 is 上</td><td>去掉壳，拼回原句</td></tr>
+        <tr class="o5"><td><span class="dot">⑤ 判断</span></td><td>怎么认</td><td>看句首，看主语前面是什么</td><td>三种句式，一个目的</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 一图流 -->
+  <div class="decide">
+    <h2>一图流：遇到句子怎么定</h2>
+    <div class="flow">
+      <div class="q">句首是地点，动词跑到了主语前面？</div>
+      <div class="a"><span class="hit">是 →</span> 全部倒装：把主语放回句首来读（主语是代词时不这样倒）</div>
+      <div class="q">句首是 never / little / not until / on no account / only … ，后面是“助动词 + 主语”？</div>
+      <div class="a"><span class="hit4">是 →</span> 部分倒装：按一般疑问句的语序读，还原时把助动词放回主语后面</div>
+      <div class="q">句子是 It is / was … that / who …？</div>
+      <div class="a">去掉 It is 和 that / who，能拼回完整句子 → 强调句；拼不回去 → it 作形式主语</div>
+      <div class="q">强调的是否定句？</div>
+      <div class="a">not 放在壳上：<code>It wasn't I that killed him.</code>，后面的动词用肯定形式</div>
+    </div>
+  </div>
+
+  <footer>倒装句与强调句 · 地基 → 全部倒装 → 部分倒装 → 强调句 → 判断 · 例句均配中文</footer>
+
+</div>
+
+</body>
+</html>
