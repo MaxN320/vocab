@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一个故事记 7 个词</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;--red:#ff8a80;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:24px;margin:4px 0 10px}
+.how{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft)}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.story,.recall{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:18px}
+.st-head{font-size:17px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:600;color:var(--amber);border:1px solid rgba(226,178,60,.45);border-radius:999px;padding:1px 9px}
+.st-text p{font-size:16.5px;line-height:1.95;margin-top:10px}
+.w{color:var(--amber);font-weight:800;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.sub{margin:16px 0 4px;font-size:13px;color:var(--mute);letter-spacing:.05em}
+.line{border-top:1px solid var(--line);padding:10px 0 8px;display:flex;gap:10px;align-items:flex-start}
+.line .txt{flex:1}
+.line .en{font-size:16.5px;line-height:1.7}
+.hl{color:var(--green);font-weight:800}
+.line .cn{font-size:14px;color:var(--soft);margin-top:2px}
+body.hide-cn .line:not(.show) .cn{display:none}
+body.hide-cn .line .en{cursor:pointer}
+.snd{flex:0 0 auto;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.rc{border-top:1px solid var(--line);padding:12px 0}
+.rc .n{font-size:12px;color:var(--mute)}
+.rc .cue{font-size:15.5px;margin:4px 0 6px}
+.rc .en{font-size:16.5px;line-height:1.7}
+.gap{color:var(--amber);font-weight:800;letter-spacing:2px;border-bottom:2px solid var(--amber)}
+.rc .ans{display:none;margin-top:6px;font-size:14.5px;color:var(--soft)}
+.rc .ans b{color:var(--green);font-size:17px}
+.rc.open .ans{display:block}
+.btns{display:flex;gap:8px;margin-top:8px}
+.btns button{flex:1;padding:9px 6px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:14.5px;font-weight:700}
+.btns .reveal{border-color:var(--accent);color:var(--accent)}
+.btns .no{border-color:rgba(255,138,128,.5);color:var(--red)}
+.btns .yes{border-color:rgba(94,197,154,.5);color:var(--green)}
+.rc.open .reveal,.rc:not(.open) .no,.rc:not(.open) .yes,.rc.done .btns{display:none}
+.rc.done.ok .n::after{content:"  ✅";}
+.rc.done.bad .n::after{content:"  ❌";}
+.sum{position:sticky;bottom:0;margin-top:14px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;color:var(--soft)}
+.sum b{color:var(--ink)}
+.sum .miss{color:var(--amber);font-weight:700}
+</style></head><body><div class="wrap">
+<header><div class="kicker">复习 · 老记不住的 7 个词</div><h1>一个故事记 7 个词</h1>
+<div class="how"><b>① 读故事</b>：靠剧情记住黄色英文的意思，点它能听发音。<br><b>② 读关键句</b>：学这个词在英文里怎么用，点 🔊 跟读。<br><b>③ 回忆</b>：最下面 7 题打乱了顺序，看中文想出英文词，再点「看答案」对一下。</div>
+<div class="toggle">关键句的中文：<button data-cn="show" class="on">显示</button><button data-cn="hide">隐藏（点英文才出来）</button></div>
+</header>
+<section class="story"><div class="st-head">🕯️ 故事 1：祥林嫂 <span class="tag">名著 · 心疼、愤怒</span></div><div class="st-text"><p>鲁镇，那年冬初，鲁四老爷家来了个女工：二十六七岁，脸色青黄，头上扎着白头绳——那是戴孝。她丈夫春天刚死，她 <span class="w">was widowed</span>，才二十六岁。</p><p>她是偷偷逃出来的。家里那个精明强干的婆婆 <span class="w">dominated the whole family</span>，说一不二。在鲁家，她比勤快的男人还勤快：扫尘、洗地、杀鸡、宰鹅，年底彻夜煮福礼，一个人全包。工钱一文不花，全攒着。这辈子头一回，她是 <span class="w">independent</span> 的：自己干活，自己挣钱，不靠任何人。嘴角渐渐有了笑，脸也白胖了。</p><p>新年刚过，她在河边淘米，一只白篷船靠了岸，跳出两个男人，把她拖进船，堵住了嘴。同一天，婆婆来到鲁家，客客气气地把她攒下的工钱——一千七百五十文——一文不剩全拿走了。</p><p>原来婆婆早就 <span class="w">estimated her price</span>：嫁给本村人，彩礼不多；卖进深山，能换八十千。正好拿去给小儿子娶媳妇。</p><p>她一路嚎、一路骂，拜堂时一头撞在香案角上，血流不止。后来她生了儿子阿毛，日子刚有点盼头，丈夫得伤寒死了——她 <span class="w">was widowed again</span>。那年春天，阿毛坐在门槛上剥豆，被狼叼走了。找到时，他的小手还紧紧攥着那只小篮……</p><p>她又回到鲁镇，见人就说：「我真傻，真的……」一开始，她的故事 <span class="w">stimulated people&#x27;s interest</span>：老女人们特意赶来听，陪着掉几滴泪，满足地走了。没多久，全镇都能背她的话，一听就烦。</p><p>柳妈压低声音告诉她：「你嫁过两个男人，到了阴间，两个死鬼都要争你。阎王只好把你锯开，<span class="w">separate you into two halves</span>，一人一半！」她吓坏了，攒了一年工钱，去土地庙捐了条门槛当替身，给千人踏，万人跨。</p><p>冬至祭祖，她以为罪赎完了，坦然去拿酒杯和筷子。四婶慌忙大喊：「你放着罢，祥林嫂！」她像被烙铁烫了一样缩回手，脸色灰黑。</p><p>她连自己的名字都没有——「祥林嫂」只是「祥林的老婆」。在鲁镇，从来没人把她当成一个 <span class="w">individual</span>。鲁镇准备祝福的那个雪夜，她死了。「怎么死的？」「还不是穷死的？」</p></div><div class="sub">关键句 · 点 🔊 听，自己跟着说一遍</div><div class="line"><div class="txt"><div class="en">She was <span class="hl">widowed</span> at twenty-six, and again a few years later.</div><div class="cn">她二十六岁就守了寡，几年后第二个丈夫也死了。</div></div><button class="snd" data-a="audio/s1009-xianglin-01.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Her mother-in-law <span class="hl">dominated</span> the whole family; nobody could say no to her.</div><div class="cn">婆婆在家里说一不二，谁也不能对她说不。</div></div><button class="snd" data-a="audio/s1009-xianglin-02.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">For the first time in her life, she was <span class="hl">independent</span>: she earned her own money.</div><div class="cn">这辈子头一回，她靠自己活着：自己挣钱。</div></div><button class="snd" data-a="audio/s1009-xianglin-03.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Her mother-in-law <span class="hl">estimated</span> that the young widow was worth eighty thousand coins.</div><div class="cn">婆婆早就估算过：这个年轻寡妇能卖八十千（八万文钱）。</div></div><button class="snd" data-a="audio/s1009-xianglin-04.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">At first, her sad story <span class="hl">stimulated</span> people&#x27;s interest, but soon everyone got bored.</div><div class="cn">一开始，她的伤心事勾起了大家的兴趣，可没多久，人人都听烦了。</div></div><button class="snd" data-a="audio/s1009-xianglin-05.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">&quot;The King of Hell will <span class="hl">separate</span> you into two halves, one for each husband!&quot;</div><div class="cn">「阎王会把你锯成两半，两个男人一人一半！」</div></div><button class="snd" data-a="audio/s1009-xianglin-06.mp3">🔊</button></div><div class="line"><div class="txt"><div class="en">Nobody saw her as an <span class="hl">individual</span>; she didn&#x27;t even have her own name.</div><div class="cn">没人把她当成一个有血有肉的人——她连自己的名字都没有。</div></div><button class="snd" data-a="audio/s1009-xianglin-07.mp3">🔊</button></div></section>
+<section class="recall"><div class="st-head">🧠 回忆 · 7 个词打乱顺序</div><div id="rcs"></div><div class="sum" id="sum"></div></section>
+</div><script>
+var D = {"id": "s1009-xianglin", "stories": [{"lines": [{"word": "widowed", "en": "She was [[widowed]] at twenty-six, and again a few years later.", "cn": "她二十六岁就守了寡，几年后第二个丈夫也死了。"}, {"word": "dominate", "en": "Her mother-in-law [[dominated]] the whole family; nobody could say no to her.", "cn": "婆婆在家里说一不二，谁也不能对她说不。"}, {"word": "independent", "en": "For the first time in her life, she was [[independent]]: she earned her own money.", "cn": "这辈子头一回，她靠自己活着：自己挣钱。"}, {"word": "estimate", "en": "Her mother-in-law [[estimated]] that the young widow was worth eighty thousand coins.", "cn": "婆婆早就估算过：这个年轻寡妇能卖八十千（八万文钱）。"}, {"word": "stimulate", "en": "At first, her sad story [[stimulated]] people's interest, but soon everyone got bored.", "cn": "一开始，她的伤心事勾起了大家的兴趣，可没多久，人人都听烦了。"}, {"word": "separate", "en": "\"The King of Hell will [[separate]] you into two halves, one for each husband!\"", "cn": "「阎王会把你锯成两半，两个男人一人一半！」"}, {"word": "individual", "en": "Nobody saw her as an [[individual]]; she didn't even have her own name.", "cn": "没人把她当成一个有血有肉的人——她连自己的名字都没有。"}]}]}, audio = null;
+function play(url) { if (audio) audio.pause(); audio = new Audio(url); audio.play().catch(function () {}); }
+function say(t) { play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(t) + "&type=1"); }
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function () { say(e.textContent); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function () { play(b.dataset.a); }; });
+document.querySelectorAll(".line .en").forEach(function (e) { e.onclick = function () { e.closest(".line").classList.toggle("show"); }; });
+var tg = document.querySelectorAll(".toggle button");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("hide-cn", b.dataset.cn === "hide");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+// 回忆：所有关键句打乱顺序，看中文想英文
+var all = [], k = 0;
+D.stories.forEach(function (s) { s.lines.forEach(function (l) { k++; all.push({w: l.word, en: l.en, cn: l.cn, a: "audio/" + D.id + "-" + ("0" + k).slice(-2) + ".mp3"}); }); });
+for (var i = all.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = all[i]; all[i] = all[j]; all[j] = t; }
+function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); }
+var box = document.getElementById("rcs"), res = {};
+all.forEach(function (c, i) {
+  var gap = esc(c.en).replace(/\[\[(.+?)\]\]/g, function (_, w) { return '<span class="gap">' + w[0] + "_".repeat(Math.max(2, w.length - 1)) + "</span>"; });
+  var full = esc(c.en).replace(/\[\[(.+?)\]\]/g, '<span class="hl">$1</span>');
+  var d = document.createElement("div"); d.className = "rc";
+  d.innerHTML = '<div class="n">' + (i + 1) + " / " + all.length + '</div><div class="cue">' + esc(c.cn) + '</div><div class="en">' + gap + "</div>" +
+    '<div class="ans"><b>' + esc(c.w) + "</b>　" + full + ' <button class="snd">🔊</button></div>' +
+    '<div class="btns"><button class="reveal">看答案</button><button class="no">❌ 没想起来</button><button class="yes">✅ 想起来了</button></div>';
+  d.querySelector(".reveal").onclick = function () { d.classList.add("open"); };
+  d.querySelector(".snd").onclick = function () { play(c.a); };
+  d.querySelector(".no").onclick = function () { res[c.w] = 0; d.classList.add("done", "bad"); sum(); };
+  d.querySelector(".yes").onclick = function () { res[c.w] = 1; d.classList.add("done", "ok"); sum(); };
+  box.appendChild(d);
+});
+function sum() {
+  var ks = Object.keys(res), ok = ks.filter(function (w) { return res[w]; }).length;
+  var miss = ks.filter(function (w) { return !res[w]; });
+  document.getElementById("sum").innerHTML = "已做 <b>" + ks.length + " / " + all.length + "</b>，想起来 <b>" + ok + "</b> 个" +
+    (miss.length ? "<br>没想起来：<span class=\"miss\">" + miss.join("、") + "</span>" : "") +
+    (ks.length === all.length ? "<br>做完了。没想起来的词，回微信告诉我就行。" : "");
+}
+sum();
+</script></body></html>
