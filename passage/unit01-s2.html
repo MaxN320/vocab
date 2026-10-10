@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>进阶造句</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+
+.grp{margin-top:22px}
+.grp>h2{font-size:16px;margin:0 0 8px}
+.pat{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:10px 13px}
+.pat b{color:var(--amber);font-size:16px}
+.pat .m{color:var(--ink);font-size:14px;margin-left:6px}
+.pat ul{margin:6px 0 0 18px;font-size:13.5px;color:var(--soft);line-height:1.7}
+.mk{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.mcn{font-size:15px;line-height:1.7}
+.mcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.mhint{font-size:12.5px;color:var(--mute);margin-top:2px}
+.mk details{margin-top:6px}
+.mk summary{font-size:13px;color:var(--accent);cursor:pointer}
+.mans{margin-top:6px;font-size:16.5px;line-height:1.8;color:var(--amber)}
+.mk .bar{margin-top:6px}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 1 组 · 进阶造句</div><h1>进阶造句</h1><div class="sub">I&#x27;m … ／ Are you …? 带上从句、不定式、虚拟</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit01-1.html">1 新邻居</a><a href="unit01-2.html">2 周日的咖啡馆</a><a href="unit01-3.html">3 钥匙找不到了</a><a href="unit01-4.html">4 进阶：莉莉的日记</a><a href="unit01-s.html">✍️ 骨架造句</a><a href="unit01-s2.html" class="on">✍️ 进阶造句</a></div><div class="toc-row"><span>本页</span><a href="#grp-1">骨架 1 进阶</a><a href="#grp-2">骨架 2 进阶</a><a href="#grp-3">一问一答（进阶）</a></div></nav>
+<div class="how">还是这两个骨架，但后面要接从句、不定式，或者放进虚拟句里。<b>先看中文和提示，把整句英文说出声</b>；说完再点「看答案」对照，然后点 🔊 跟读。</div></header>
+<div class="grp" id="grp-1"><h2>骨架 1 进阶</h2><div class="pat"><b>I&#x27;m + 形容词 + 从句 / 不定式</b><span class="m">我……（后面再接一句话或一个动作）</span><ul><li>形容词后面接从句：I&#x27;m sure (that) … ｜ I&#x27;m afraid (that) … ｜ I&#x27;m not sure whether …</li><li>形容词后面接不定式：I&#x27;m glad to … ｜ I&#x27;m ready to … ｜ I&#x27;m too tired to …</li><li>名词后面还能挂定语从句：I&#x27;m the kind of person who …</li></ul></div><div class="mk"><div class="mcn"><em>1</em>我不确定自己是不是选对了地方。</div><div class="mhint">提示：I&#x27;m not sure whether …</div><details><summary>看答案</summary><div class="mans">I&#x27;m not sure whether I chose the right place.</div><div class="bar"><button data-a="audio/unit01-s2-01.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>2</em>恐怕我今晚得加班。</div><div class="mhint">提示：I&#x27;m afraid (that) … + have to</div><details><summary>看答案</summary><div class="mans">I&#x27;m afraid I have to work late tonight.</div><div class="bar"><button data-a="audio/unit01-s2-02.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>3</em>我太累了，什么都不想做。</div><div class="mhint">提示：too … to …</div><details><summary>看答案</summary><div class="mans">I&#x27;m too tired to do anything.</div><div class="bar"><button data-a="audio/unit01-s2-03.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>4</em>你今天能来，我很高兴。</div><div class="mhint">提示：I&#x27;m glad that …</div><details><summary>看答案</summary><div class="mans">I&#x27;m glad that you could come today.</div><div class="bar"><button data-a="audio/unit01-s2-04.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>5</em>我确信他会喜欢这份礼物的。</div><div class="mhint">提示：I&#x27;m sure that … + will</div><details><summary>看答案</summary><div class="mans">I&#x27;m sure that he will like the present.</div><div class="bar"><button data-a="audio/unit01-s2-05.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>6</em>我就是那种第一天总是很紧张的人。</div><div class="mhint">提示：I&#x27;m the kind of person who …</div><details><summary>看答案</summary><div class="mans">I&#x27;m the kind of person who is always nervous on the first day.</div><div class="bar"><button data-a="audio/unit01-s2-06.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>7</em>我已经准备好开始新工作了。</div><div class="mhint">提示：I&#x27;m ready to …</div><details><summary>看答案</summary><div class="mans">I&#x27;m ready to start my new job.</div><div class="bar"><button data-a="audio/unit01-s2-07.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>8</em>要是我是你，我就先去找汤姆。</div><div class="mhint">提示：虚拟：If I were you, I would …</div><details><summary>看答案</summary><div class="mans">If I were you, I would go to Tom first.</div><div class="bar"><button data-a="audio/unit01-s2-08.mp3">🔊 听这句</button></div></details></div></div><div class="grp" id="grp-2"><h2>骨架 2 进阶</h2><div class="pat"><b>Are you + 形容词 + 从句 / 不定式?</b><span class="m">你……吗？（后面再接一句话或一个动作）</span><ul><li>问句里一样能带从句和不定式：Are you sure (that) …? ｜ Are you ready to …?</li><li>名词后面挂定语从句：Are you the person who …?</li><li>回答还是 Yes, I am. / No, I&#x27;m not.</li></ul></div><div class="mk"><div class="mcn"><em>9</em>你确定这条路是对的吗？</div><div class="mhint">提示：Are you sure that …?</div><details><summary>看答案</summary><div class="mans">Are you sure that this is the right way?</div><div class="bar"><button data-a="audio/unit01-s2-09.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>10</em>你准备好明天开始上班了吗？</div><div class="mhint">提示：Are you ready to …?</div><details><summary>看答案</summary><div class="mans">Are you ready to start work tomorrow?</div><div class="bar"><button data-a="audio/unit01-s2-10.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>11</em>你就是管整栋楼的那个人吗？</div><div class="mhint">提示：Are you the person who …? + be responsible for</div><details><summary>看答案</summary><div class="mans">Are you the person who is responsible for the whole building?</div><div class="bar"><button data-a="audio/unit01-s2-11.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>12</em>你还在为我昨天说的话生气吗？</div><div class="mhint">提示：Are you still angry about what …?</div><details><summary>看答案</summary><div class="mans">Are you still angry about what I said yesterday?</div><div class="bar"><button data-a="audio/unit01-s2-12.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>13</em>你有把握八点前赶到医院吗？</div><div class="mhint">提示：Are you sure (that) you can …? + get to</div><details><summary>看答案</summary><div class="mans">Are you sure you can get to the hospital before eight?</div><div class="bar"><button data-a="audio/unit01-s2-13.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>14</em>他们没请你，你是不是很失望？</div><div class="mhint">提示：Are you disappointed that …?</div><details><summary>看答案</summary><div class="mans">Are you disappointed that they didn&#x27;t invite you?</div><div class="bar"><button data-a="audio/unit01-s2-14.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>15</em>你是不是忙得连午饭都没时间吃？</div><div class="mhint">提示：Are you too busy to …?</div><details><summary>看答案</summary><div class="mans">Are you too busy to have lunch?</div><div class="bar"><button data-a="audio/unit01-s2-15.mp3">🔊 听这句</button></div></details></div></div><div class="grp" id="grp-3"><h2>一问一答（进阶）</h2><div class="pat"><b>Are you …? — I&#x27;m … + 虚拟 / 从句</b><span class="m">两个骨架一起用，回答里再加一句难的</span><ul><li>回答先用 Yes, I am. / No, I&#x27;m not.，再用从句或虚拟把理由说完整。</li></ul></div><div class="mk"><div class="mcn"><em>16</em>A：你确定这事跟你没关系吗？<br>B：确定。要是跟我有关系，我早就告诉你了。</div><div class="mhint">提示：have … to do with；If it had …, I would have …</div><details><summary>看答案</summary><div class="mans">A: Are you sure it has nothing to do with you?<br>B: Yes, I&#x27;m sure. If it had anything to do with me, I would have told you already.</div><div class="bar"><button data-a="audio/unit01-s2-16.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>17</em>A：你是不是后悔搬到这儿来了？<br>B：不，一点也不。我只是希望自己早点认识大家。</div><div class="mhint">提示：Are you sorry that …?；I wish I had …</div><details><summary>看答案</summary><div class="mans">A: Are you sorry that you moved here?<br>B: No, not at all. I just wish I had met everyone earlier.</div><div class="bar"><button data-a="audio/unit01-s2-17.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>18</em>A：你累不累？我们是不是该回家了？<br>B：是有点累，不过我想先把这杯咖啡喝完。</div><div class="mhint">提示：I&#x27;m a bit …, but I&#x27;d like to …</div><details><summary>看答案</summary><div class="mans">A: Are you tired? Should we go home?<br>B: I&#x27;m a bit tired, but I&#x27;d like to finish this coffee first.</div><div class="bar"><button data-a="audio/unit01-s2-18.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>19</em>A：你是新来的护士吧？<br>B：是的。要不是汤姆帮忙，这一周我根本撑不下来。</div><div class="mhint">提示：If it hadn&#x27;t been for …, I wouldn&#x27;t have …</div><details><summary>看答案</summary><div class="mans">A: Are you the new nurse?<br>B: Yes, I am. If it hadn&#x27;t been for Tom, I wouldn&#x27;t have got through this week.</div><div class="bar"><button data-a="audio/unit01-s2-19.mp3">🔊 听这句</button></div></details></div></div>
+<a class="next" href="../index.html#passage">做完了，回到短文模块 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function () {
+  var same = playing === b; stop(); if (same) return;
+  audio = new Audio(b.dataset.a); playing = b; b.classList.add("playing");
+  audio.onended = stop; audio.play().catch(stop);
+}; });
+</script></body></html>

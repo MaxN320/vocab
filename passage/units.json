@@ -71,6 +71,12 @@
      "title": "骨架造句",
      "kind": "make",
      "cn": "骨架造句"
+    },
+    {
+     "id": "unit01-s2",
+     "title": "进阶造句",
+     "cn": "进阶造句",
+     "kind": "make"
     }
    ],
    "progress": {
