@@ -29,6 +29,9 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 .tab.on{background:var(--card-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .tab.on .n{color:var(--accent)}
 .tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sentence-link{display:block;margin-top:12px;padding:12px 14px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:600}
+.sentence-link:hover,.sentence-link:focus-visible{border-color:var(--accent);color:var(--accent)}
 
 /* ---- 章节目录 ---- */
 .toc{position:sticky;top:0;z-index:10;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
@@ -98,6 +101,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
     <button class="tab" data-tab="quiz" role="tab">测验<span class="n" id="n-quiz"></span></button>
     <button class="tab" data-tab="check" role="tab">对照检查<span class="n" id="n-check"></span></button>
   </div>
+  <a class="sentence-link" href="句子本.html">句子本 <span aria-hidden="true">›</span></a>
 </header>
 
 <main id="view-notes">
