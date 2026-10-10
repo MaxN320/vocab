@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cake on the Street</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+</style></head><body><div class="wrap">
+<header><div class="kicker">短文 · 精选 7 个 · 10/10</div><h1>The Cake on the Street</h1><div class="sub">掉在街上的蛋糕</div>
+<div class="how">这篇只练 <b>7 个</b>：2 个生词、3 个词组、2 个骨架，每个在故事里出现 2–3 次。<br>① 先读故事，黄色的就是这 7 个，点一下能听发音；读不懂就点「中文」。<br>② 看「拆开看」，注意同一个说法在故事里怎么变形。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用它们说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div class="p"><div class="en">Mia was nineteen, and it was her second week at a small café. On Saturday morning, an old man came in for a big birthday cake. &quot;It&#x27;s for my wife,&quot; he said with a smile. &quot;She is eighty today.&quot; Mia carried the cake out to his car. Then her foot hit the step, and the cake fell onto the street.</div><div class="cn">米娅十九岁，在一家小咖啡馆上班才第二周。星期六早上，一位老人来取一个大生日蛋糕。「是给我太太的，」他笑着说，「她今天八十岁了。」米娅把蛋糕端出去，往他车上送。就在这时，她的脚绊到了台阶，蛋糕摔在了街上。</div><div class="bar"><button id="pa1" data-a="audio/passage-1010-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">That night, Mia could not sleep. She <span class="w">beat herself up</span> again and again: &quot;How could I be so careless? It was her eightieth birthday!&quot; Her heart was beating fast, and she could not <span class="w">keep her fear at bay</span>.</div><div class="cn">那天晚上，米娅睡不着。她一遍又一遍地责怪自己：「我怎么这么不小心？那可是老太太的八十大寿啊！」她的心怦怦直跳，怎么也压不住心里的害怕。</div><div class="bar"><button id="pa2" data-a="audio/passage-1010-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">The next morning, her friend Sam called. &quot;Don&#x27;t <span class="w">beat yourself up</span> about it,&quot; he said. &quot;Everyone makes mistakes. But you can <span class="w">take responsibility for</span> this one. Go and see the old man.&quot; Mia was afraid. &quot;<span class="w">Being honest</span> is hard,&quot; she said. &quot;I know,&quot; said Sam. &quot;But <span class="w">being honest</span> is the only way to feel better.&quot;</div><div class="cn">第二天早上，她的朋友萨姆打来电话。「别为这事太自责，」他说，「谁都会犯错。但这个错，你可以担起来。去见见那位老人吧。」米娅很害怕。「说实话太难了。」她说。「我知道，」萨姆说，「可只有说实话，你心里才会好受。」</div><div class="bar"><button id="pa3" data-a="audio/passage-1010-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">So Mia and the café owner made a new cake, and she drove it to the old man&#x27;s house. At the door, she took a deep breath to <span class="w">keep her fear at bay</span>. &quot;I&#x27;m so sorry,&quot; she said. &quot;I <span class="w">take full responsibility for</span> what happened.&quot; The old man laughed. <span class="w">It turned out that</span> he was not angry at all. &quot;Sixty years ago, my wife dropped our wedding cake,&quot; he said. &quot;We still laugh about it.&quot;</div><div class="cn">于是米娅和店老板一起重新做了一个蛋糕，她开车送到老人家里。到了门口，她深吸一口气，把害怕压下去。「真的很对不起，」她说，「发生的事，责任全在我。」老人笑了。原来他一点都没生气。「六十年前，我太太把我们的结婚蛋糕摔了，」他说，「我们到现在想起来还会笑。」</div><div class="bar"><button id="pa4" data-a="audio/passage-1010-04.mp3" data-next="pa5">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">He asked Mia to stay for the party. She helped his wife cut the new cake, and the whole family sang together. <span class="w">It turned out that</span> the new cake was even better than the first one. The old woman closed her eyes and said, &quot;Mm, this is pure <span class="w">bliss</span>!&quot; Mia watched the happy faces with deep <span class="w">satisfaction</span>.</div><div class="cn">他请米娅留下来参加派对。她帮老太太切了新蛋糕，一家人一起唱歌。结果新蛋糕比原来那个还要好吃。老太太闭上眼睛说：「嗯，真是太幸福了！」米娅看着一张张开心的脸，心里特别满足。</div><div class="bar"><button id="pa5" data-a="audio/passage-1010-05.mp3" data-next="pa6">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Mia still makes mistakes, but she does not <span class="w">beat herself up</span> anymore. She <span class="w">takes responsibility for</span> them, says sorry, and moves on. When she feels anxious, she looks for someone to help. <span class="w">It turns out that</span> <span class="w">being kind</span> is one of the best ways to <span class="w">keep anxiety at bay</span>. Every small kindness gives her a little <span class="w">satisfaction</span>, and sometimes even a moment of <span class="w">bliss</span>.</div><div class="cn">米娅现在还是会犯错，但她不再狠狠责怪自己了。她会把错认下来，道个歉，然后接着往前走。感到焦虑的时候，她就去找个需要帮忙的人。原来，善良是让焦虑近不了身最好的办法之一。每一次小小的善意都会给她带来一点满足感，有时甚至是片刻的幸福。</div><div class="bar"><button id="pa6" data-a="audio/passage-1010-06.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div>
+<div class="sec"><h2>拆开看：这 7 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>beat yourself up</b><i>词组</i><span>过分自责，一直怪自己</span></div><div class="fcore">自己「揍」自己：出了错以后，一遍遍在心里骂自己，放不下。</div><div class="ff"><div>She beat herself up again and again.</div><div>Don&#x27;t beat yourself up about it.</div><div>She does not beat herself up anymore.</div></div><div class="fw">⚠️ yourself 跟着人变：I beat myself up ｜ she beats herself up。</div></div><div class="fc"><div class="fh"><b>take responsibility for</b><i>词组</i><span>为……承担责任，把事情认下来</span></div><div class="fcore">主动把事揽到自己身上：是我的错，我来认。</div><div class="ff"><div>You can take responsibility for this one.</div><div>I take full responsibility for what happened.</div><div>She takes responsibility for them.</div></div><div class="fw">⚠️ take 后面是名词 responsibility，不说 take responsible for。</div></div><div class="fc"><div class="fh"><b>keep … at bay</b><i>词组</i><span>不让（不好的东西）靠近</span></div><div class="fcore">把坏东西挡在一定距离外：害怕、焦虑、压力都能这样「挡」。</div><div class="ff"><div>She could not keep her fear at bay.</div><div>She took a deep breath to keep her fear at bay.</div><div>… one of the best ways to keep anxiety at bay.</div></div><div class="fw">⚠️ 不好的东西放在 keep 和 at bay 中间；这里的 bay 不是「海湾」。</div></div><div class="fc"><div class="fh"><b>It turns out that …</b><i>骨架</i><span>结果发现……，原来……</span></div><div class="fcore">本来以为是 A，后来发现是 B。</div><div class="ff"><div>It turned out that he was not angry at all.</div><div>It turned out that the new cake was even better.</div><div>It turns out that being kind is one of the best ways …</div></div><div class="fw">⚠️ 讲过去的事用 turned；that 后面跟完整的句子。</div></div><div class="fc"><div class="fh"><b>Being + 形容词</b><i>骨架</i><span>「……这件事」当主语</span></div><div class="fcore">形容词不能直接当主语，前面加 being，就变成「这件事」。</div><div class="ff"><div>Being honest is hard.</div><div>Being honest is the only way to feel better.</div><div>… being kind is one of the best ways …</div></div><div class="fw">⚠️ 主语是一件事，后面的动词用单数：Being kind makes you happy.</div></div><div class="fc"><div class="fh"><b>satisfaction</b><i>生词</i><span>n. 满足感，满意</span></div><div class="fcore">想要的得到了、事情做成了以后，那种「够了、值了」的感觉。</div><div class="ff"><div>Mia watched the happy faces with deep satisfaction.</div><div>Every small kindness gives her a little satisfaction.</div></div><div class="fw">⚠️ 说人「感到满意」用 satisfied：I&#x27;m satisfied，不说 I&#x27;m satisfying。</div></div><div class="fc"><div class="fh"><b>bliss</b><i>生词</i><span>n. 极大的幸福</span></div><div class="fcore">幸福到了顶点，一点烦恼都没有，比 happiness 强得多。</div><div class="ff"><div>This is pure bliss!</div><div>… sometimes even a moment of bliss.</div></div><div class="fw">⚠️ 不可数：It was bliss，不说 a bliss。</div></div></div><div class="sec"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>她一遍又一遍地责怪自己。</div><div class="den">She <span class="gap" data-ans="beat herself up">　　　</span> again and again.</div><div class="bar"><button data-a="audio/passage-1010-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>别为这事太自责。</div><div class="den">Don&#x27;t <span class="gap" data-ans="beat yourself up">　　　</span> about it.</div><div class="bar"><button data-a="audio/passage-1010-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>这个错，你可以担起来。</div><div class="den">You can <span class="gap" data-ans="take responsibility for">　　　</span> this one.</div><div class="bar"><button data-a="audio/passage-1010-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>发生的事，责任全在我。</div><div class="den">I <span class="gap" data-ans="take full responsibility for">　　　</span> what happened.</div><div class="bar"><button data-a="audio/passage-1010-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>她深吸一口气，把害怕压下去。</div><div class="den">She took a deep breath to <span class="gap" data-ans="keep her fear at bay">　　　</span>.</div><div class="bar"><button data-a="audio/passage-1010-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>原来他一点都没生气。</div><div class="den"><span class="gap" data-ans="It turned out that">　　　</span> he was not angry at all.</div><div class="bar"><button data-a="audio/passage-1010-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>说实话太难了。</div><div class="den"><span class="gap" data-ans="Being honest">　　　</span> is hard.</div><div class="bar"><button data-a="audio/passage-1010-d07.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>8</em>嗯，真是太幸福了！</div><div class="den">Mm, this is pure <span class="gap" data-ans="bliss">　　　</span>!</div><div class="bar"><button data-a="audio/passage-1010-d08.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>9</em>米娅看着一张张开心的脸，心里特别满足。</div><div class="den">Mia watched the happy faces with deep <span class="gap" data-ans="satisfaction">　　　</span>.</div><div class="bar"><button data-a="audio/passage-1010-d09.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>10</em>原来，善良是让焦虑近不了身最好的办法之一。</div><div class="den"><span class="gap" data-ans="It turns out that">　　　</span> <span class="gap" data-ans="being kind">　　　</span> is one of the best ways to <span class="gap" data-ans="keep anxiety at bay">　　　</span>.</div><div class="bar"><button data-a="audio/passage-1010-d10.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 用 It turns out that，说一件「本来以为……结果发现……」的事。</div><details><summary>看参考说法</summary><div class="sa">I thought grammar was boring. It turns out that it is like a puzzle.</div></details></div><div class="sp"><div>2. 用 Being + 形容词，说一句你相信的道理。</div><details><summary>看参考说法</summary><div class="sa">Being patient is the key to learning English.</div></details></div><div class="sp"><div>3. 用 keep … at bay，说说你怎么对付压力。</div><details><summary>看参考说法</summary><div class="sa">I go for a walk every evening to keep stress at bay.</div></details></div><div class="sp"><div>4. 用 beat yourself up，安慰一个做错事的朋友。</div><details><summary>看参考说法</summary><div class="sa">Don&#x27;t beat yourself up. You did your best.</div></details></div><div class="sp"><div>5. 用 take responsibility for，说一件你自己负责的事。</div><details><summary>看参考说法</summary><div class="sa">I take responsibility for my own learning.</div></details></div><div class="sp"><div>6. 用 satisfaction 或 bliss，说一个让你特别满足、特别幸福的时刻。</div><details><summary>看参考说法</summary><div class="sa">Lying in bed on a rainy Sunday morning is pure bliss.</div></details></div></div>
+</div><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+document.getElementById("all").onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
