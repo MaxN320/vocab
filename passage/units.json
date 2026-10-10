@@ -1,0 +1,69 @@
+{
+ "totals": {
+  "skeleton": 107,
+  "phrase": 598,
+  "word": 2000
+ },
+ "units": [
+  {
+   "unit": 1,
+   "date": "2026-10-11",
+   "skeletons": [
+    "I'm + 形容词 / 名词",
+    "Are you + 形容词 / 名词?"
+   ],
+   "phrases": [
+    "have to",
+    "there is / there are",
+    "such as",
+    "go on",
+    "be going to"
+   ],
+   "words": [
+    "have",
+    "do",
+    "not",
+    "that",
+    "in",
+    "know",
+    "get",
+    "go",
+    "so",
+    "this",
+    "on",
+    "for",
+    "think",
+    "like",
+    "there",
+    "will",
+    "say",
+    "what",
+    "just",
+    "well"
+   ],
+   "review": [
+    "be responsible for",
+    "have … to do with"
+   ],
+   "pages": [
+    {
+     "id": "unit01-1",
+     "title": "The New Neighbor"
+    },
+    {
+     "id": "unit01-2",
+     "title": "Sunday at the Café"
+    },
+    {
+     "id": "unit01-3",
+     "title": "The Lost Key"
+    }
+   ],
+   "progress": {
+    "skeleton": 2,
+    "phrase": 5,
+    "word": 20
+   }
+  }
+ ]
+}

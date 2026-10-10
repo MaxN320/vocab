@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The New Neighbor</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 1 组 · 第 1 篇（共 3 篇）</div><h1>The New Neighbor</h1><div class="sub">新邻居</div>
+<div class="how">这一组练 <b>2 个骨架、5 个词组、20 个单词</b>，分在 3 篇里，这一篇重点练卡片里的 12 个。<br>① 先读故事，黄色的是这一组要练的，点一下能听发音；读不懂就点「中文」。<br>② 看「拆开看」，留意同一个说法在 3 篇里怎么变。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用它们说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div class="p"><div class="en">Lily moved into a small flat last week. On Saturday morning, she opened her door and saw a man <span class="w">in</span> the hall. He was putting down a big box.</div><div class="cn">莉莉上周搬进了一套小公寓。星期六早上，她一开门，就看见楼道里有个男人，正把一个大箱子放下来。</div><div class="bar"><button id="pa1" data-a="audio/unit01-1-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">&quot;Hi! <span class="w">Are you new</span> here?&quot; he asked. &quot;Yes. <span class="w">I&#x27;m Lily</span>.&quot; &quot;Nice to meet you. I&#x27;m Tom. I live next door, and I&#x27;m <span class="w">responsible for</span> this building. If <span class="w">there&#x27;s</span> a problem, just knock on my door.&quot;</div><div class="cn">「嗨！你是新搬来的吗？」他问。「是的，我叫莉莉。」「很高兴认识你。我叫汤姆，就住隔壁，这栋楼也归我管。有什么问题，敲我的门就行。」</div><div class="bar"><button id="pa2" data-a="audio/unit01-1-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">&quot;What <span class="w">do</span> you <span class="w">do</span>, Lily?&quot; &quot;<span class="w">I&#x27;m a nurse</span>. I <span class="w">have to</span> start my new job on Monday, but I <span class="w">don&#x27;t</span> <span class="w">know</span> the way to the hospital.&quot; &quot;That&#x27;s easy. <span class="w">There&#x27;s</span> a bus stop near the station, and <span class="w">there are</span> buses every ten minutes.&quot;</div><div class="cn">「莉莉，你是做什么工作的？」「我是护士。星期一就得去新单位上班了，可我还不知道去医院怎么走。」「那简单。车站旁边有个公交站，每十分钟就有一班车。」</div><div class="bar"><button id="pa3" data-a="audio/unit01-1-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">&quot;Great. I also need to <span class="w">get</span> some food. I <span class="w">have</span> nothing <span class="w">in</span> my fridge!&quot; &quot;<span class="w">That</span>&#x27;s <span class="w">not</span> a problem,&quot; said Tom. &quot;<span class="w">There&#x27;s</span> a shop on the corner. It sells good things, <span class="w">such as</span> fresh bread and cheap fruit. I&#x27;m going there now. Come with me.&quot;</div><div class="cn">「太好了。我还得买点吃的，冰箱里什么都没有！」「这不是问题，」汤姆说，「拐角就有一家店，卖的东西不错，比如新鲜面包和便宜的水果。我正要过去，跟我一起走吧。」</div><div class="bar"><button id="pa4" data-a="audio/unit01-1-04.mp3" data-next="pa5">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">At the shop, Lily <span class="w">got</span> bread, milk and eggs. Tom <span class="w">knew</span> the man at the counter, and the man gave her a free cake. &quot;Welcome to the street!&quot; he said. Lily smiled. She <span class="w">liked</span> her new street already. For the first time, she <span class="w">didn&#x27;t</span> feel alone.</div><div class="cn">在店里，莉莉买了面包、牛奶和鸡蛋。汤姆认识柜台后面的店主，店主还送了她一块蛋糕。「欢迎来到这条街！」他说。莉莉笑了，她已经喜欢上这条新街了。这是她第一次不觉得孤单。</div><div class="bar"><button id="pa5" data-a="audio/unit01-1-05.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div>
+<div class="sec"><h2>拆开看：这 12 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>I&#x27;m + 形容词 / 名词</b><i>骨架</i><span>我是……；我很……</span></div><div class="fcore">I&#x27;m = I am，后面接名字、职业，或者说自己的感觉。</div><div class="ff"><div>I&#x27;m Lily.</div><div>I&#x27;m a nurse.</div><div>I&#x27;m nervous about tomorrow.（第 2 篇）</div><div>I&#x27;m so tired.（第 3 篇）</div></div><div class="fw">⚠️ 职业前面要加 a / an：I&#x27;m a nurse，不说 I&#x27;m nurse。</div></div><div class="fc"><div class="fh"><b>Are you + 形容词 / 名词?</b><i>骨架</i><span>你是……吗？你……吗？</span></div><div class="fcore">把 are 提到 you 前面，就变成问句。</div><div class="ff"><div>Are you new here?</div><div>Are you tired?（第 2 篇）</div><div>Are you hungry?（第 3 篇）</div></div><div class="fw">⚠️ 回答说 Yes, I am. / No, I&#x27;m not.，不说 Yes, I&#x27;m.</div></div><div class="fc"><div class="fh"><b>have to</b><i>词组</i><span>必须，不得不</span></div><div class="fcore">外面的情况要求你这么做，比如上班、规定。</div><div class="ff"><div>I have to start my new job on Monday.</div><div>I have to be at the hospital at eight.（第 2 篇）</div><div>I have to learn so many new things.（第 3 篇）</div></div><div class="fw">⚠️ 否定 don&#x27;t have to 是「不必」，不是「不许」。</div></div><div class="fc"><div class="fh"><b>there is / there are</b><i>词组</i><span>有（某处有某物）</span></div><div class="fcore">说「某个地方有什么」：there is + 一个，there are + 好几个。</div><div class="ff"><div>There&#x27;s a bus stop near the station.</div><div>There are buses every ten minutes.</div><div>There was nothing to worry about.（第 3 篇）</div></div><div class="fw">⚠️ 「某处有」别说 ✗ There have…，要说 There is / There are。</div></div><div class="fc"><div class="fh"><b>have</b><i>单词</i><span>v. 有；吃，喝</span></div><div class="fcore">身边、手里「有」；也能说吃饭喝东西：have breakfast。</div><div class="ff"><div>I have nothing in my fridge!</div><div>I have a spare one for every flat.（第 3 篇）</div></div><div class="fw">⚠️ he / she / it 后面用 has：It has nothing to do with you.（第 2 篇）</div></div><div class="fc"><div class="fh"><b>do</b><i>单词</i><span>v. 做；（助动词）帮着构成问句和否定句</span></div><div class="fcore">What do you do? 里，第一个 do 帮着提问，第二个 do 才是「做」。</div><div class="ff"><div>What do you do?</div><div>I don&#x27;t know the way.</div><div>Don&#x27;t say that.（第 3 篇）</div></div><div class="fw">⚠️ 问职业说 What do you do?；What are you doing? 是「你在干嘛」。</div></div><div class="fc"><div class="fh"><b>not</b><i>单词</i><span>adv. 不，没有</span></div><div class="fcore">放在 be 动词或助动词后面，句子就变成否定：isn&#x27;t、don&#x27;t、didn&#x27;t。</div><div class="ff"><div>That&#x27;s not a problem.</div><div>She didn&#x27;t feel alone.</div><div>Her key wasn&#x27;t in her bag.（第 3 篇）</div></div><div class="fw">⚠️ 动词前面不能直接加 not：✗ I not know → ✓ I don&#x27;t know。</div></div><div class="fc"><div class="fh"><b>that</b><i>单词</i><span>pron. 那，那个；conj. 引出后面一句话</span></div><div class="fcore">指远一点的东西，或者刚说过的那件事。</div><div class="ff"><div>That&#x27;s not a problem.</div><div>That&#x27;s my sister, Anna.（第 2 篇）</div><div>Don&#x27;t say that.（第 3 篇）</div></div><div class="fw">⚠️ 近的用 this，远的或刚提到的事用 that。</div></div><div class="fc"><div class="fh"><b>in</b><i>单词</i><span>prep. 在……里面；在（某段时间）</span></div><div class="fcore">在一个空间里面：楼道里、冰箱里、包里。</div><div class="ff"><div>a man in the hall</div><div>I have nothing in my fridge!</div><div>the keys in this building（第 3 篇）</div></div><div class="fw">⚠️ 在拐角、在街上用 on：on the corner。</div></div><div class="fc"><div class="fh"><b>know</b><i>单词</i><span>v. 知道；认识</span></div><div class="fcore">脑子里有这个信息（知道），或者见过这个人（认识）。</div><div class="ff"><div>I don&#x27;t know the way to the hospital.</div><div>Tom knew the man at the counter.</div><div>She knew there was nothing to worry about.（第 3 篇）</div></div><div class="fw">⚠️ 过去式 knew，读音和 new 一样。</div></div><div class="fc"><div class="fh"><b>get</b><i>单词</i><span>v. 得到；变得</span></div><div class="fcore">把东西弄到手：买到、拿到、取来。</div><div class="ff"><div>I need to get some food.</div><div>Lily got bread, milk and eggs.</div><div>I&#x27;ll get it for you.（第 3 篇）</div></div><div class="fw">⚠️ get home 是「到家」，home 前面不加 to：I just got home.（第 3 篇）</div></div><div class="fc"><div class="fh"><b>be responsible for</b><i>复习</i><span>负责……；……归某人管</span></div><div class="fcore">这件事归你管。</div><div class="ff"><div>I&#x27;m responsible for this building.</div><div>I&#x27;m responsible for the keys in this building.（第 3 篇）</div></div><div class="fw">⚠️ for 后面接名词或 doing。</div></div></div><div class="sec"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>你是新搬来的吗？</div><div class="den"><span class="gap" data-ans="Are you new">　　　</span> here?</div><div class="bar"><button data-a="audio/unit01-1-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>我是护士。</div><div class="den"><span class="gap" data-ans="I&#x27;m a nurse">　　　</span>.</div><div class="bar"><button data-a="audio/unit01-1-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>你是做什么工作的？</div><div class="den">What <span class="gap" data-ans="do you do">　　　</span>?</div><div class="bar"><button data-a="audio/unit01-1-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>星期一我就得去新单位上班了。</div><div class="den">I <span class="gap" data-ans="have to">　　　</span> start my new job on Monday.</div><div class="bar"><button data-a="audio/unit01-1-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>我不知道去医院怎么走。</div><div class="den">I <span class="gap" data-ans="don&#x27;t know">　　　</span> the way to the hospital.</div><div class="bar"><button data-a="audio/unit01-1-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>车站旁边有个公交站。</div><div class="den"><span class="gap" data-ans="There&#x27;s">　　　</span> a bus stop near the station.</div><div class="bar"><button data-a="audio/unit01-1-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>我冰箱里什么都没有！</div><div class="den">I <span class="gap" data-ans="have">　　　</span> nothing <span class="gap" data-ans="in">　　　</span> my fridge!</div><div class="bar"><button data-a="audio/unit01-1-d07.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>8</em>这不是问题。</div><div class="den"><span class="gap" data-ans="That&#x27;s not">　　　</span> a problem.</div><div class="bar"><button data-a="audio/unit01-1-d08.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>9</em>我还得买点吃的。</div><div class="den">I also need to <span class="gap" data-ans="get">　　　</span> some food.</div><div class="bar"><button data-a="audio/unit01-1-d09.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>10</em>这栋楼归我管。</div><div class="den">I&#x27;m <span class="gap" data-ans="responsible for">　　　</span> this building.</div><div class="bar"><button data-a="audio/unit01-1-d10.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 用 I&#x27;m + 名词 / 形容词，介绍你自己：名字、工作、今天的心情。</div><details><summary>看参考说法</summary><div class="sa">I&#x27;m Wang Lei. I&#x27;m a teacher. I&#x27;m a bit tired today.</div></details></div><div class="sp"><div>2. 用 I have to，说一件你明天必须做的事。</div><details><summary>看参考说法</summary><div class="sa">I have to get up at six tomorrow.</div></details></div><div class="sp"><div>3. 用 there is / there are，说说你家附近有什么。</div><details><summary>看参考说法</summary><div class="sa">There&#x27;s a small park near my home, and there are two supermarkets.</div></details></div><div class="sp"><div>4. 用 I don&#x27;t know，说一件你不知道的事。</div><details><summary>看参考说法</summary><div class="sa">I don&#x27;t know the way to the new library.</div></details></div></div><a class="next" href="unit01-2.html">下一篇 →</a>
+</div><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+document.getElementById("all").onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>

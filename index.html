@@ -23,7 +23,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 /* ---- 顶部 ---- */
 .brand{font-size:26px;font-weight:700}
 .sub{font-size:13px;color:var(--ink-mute);margin:6px 0 18px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
 .tab{appearance:none;border:0;background:transparent;color:var(--ink-soft);font:600 14.5px var(--sans);padding:9px 0;border-radius:9px;cursor:pointer}
 .tab .n{font-weight:500;font-size:12px;color:var(--ink-mute);margin-left:5px}
 .tab.on{background:var(--card-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
@@ -87,6 +87,20 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 .check-go .cg-t{font-size:16px;font-weight:700}
 .check-go .cg-d{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin-top:3px}
 .c-label{font-size:11.5px;letter-spacing:.08em;color:var(--ink-mute);margin:4px 0 8px}
+/* ---- 短文 ---- */
+.pp{margin:0 0 16px;padding:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.pp-row{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:13px;color:var(--ink-soft)}
+.pp-row b{flex:0 0 32px;color:var(--ink);font-weight:600}
+.pp-bar{flex:1;height:8px;border-radius:999px;background:var(--card-2);overflow:hidden}
+.pp-bar i{display:block;height:100%;background:var(--amber);border-radius:999px}
+.pp-row span{flex:0 0 76px;text-align:right;font:12px var(--mono);color:var(--ink-mute)}
+.unit{margin-bottom:10px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.unit .q-meta{margin-left:auto}
+.u-items{font-size:12.5px;color:var(--ink-soft);line-height:1.75;margin:6px 0 10px}
+.u-items b{color:var(--ink-mute);font-weight:600;margin-right:6px}
+.u-pages{display:flex;flex-wrap:wrap;gap:8px}
+.u-pages a{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card-2);color:var(--ink);text-decoration:none;font-size:13px}
+.u-pages a:hover{border-color:var(--amber);color:var(--amber)}
 #checklist .q-meta{flex-wrap:wrap}#checklist .q-meta span{white-space:nowrap}
 .q-meta span.miss{color:#ff8a80}.q-meta span.half{color:var(--amber)}.q-meta span.off{color:#c29bff}.q-meta span.ok{color:var(--green)}
 </style>
@@ -100,6 +114,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
     <button class="tab" data-tab="notes" role="tab">语法笔记<span class="n" id="n-notes"></span></button>
     <button class="tab" data-tab="quiz" role="tab">测验<span class="n" id="n-quiz"></span></button>
     <button class="tab" data-tab="check" role="tab">对照检查<span class="n" id="n-check"></span></button>
+    <button class="tab" data-tab="passage" role="tab">短文<span class="n" id="n-passage"></span></button>
   </div>
   <a class="sentence-link" href="句子本.html">句子本 <span aria-hidden="true">›</span></a>
 </header>
@@ -119,6 +134,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
     <div class="cg-d">贴上「我的理解」和「原文文稿」，提交给我</div></div><div class="it-arrow">›</div></a>
   <div class="c-label">检查记录</div>
   <div id="checklist"><div class="empty">还没有检查记录</div></div>
+</main>
+
+<main id="view-passage" hidden>
+  <div class="quiz-intro">按大纲的顺序往下练：每一组取 2 个骨架、5 个词组、20 个单词，写成几篇日常口语短文，每个说法在这一组里至少出现 3 次。下面三条是大纲练到哪儿了。</div>
+  <div class="pp" id="passprog"></div>
+  <div class="c-label">每一组</div>
+  <div id="passlist"><div class="empty">还没有短文</div></div>
 </main>
 </div>
 
@@ -466,9 +488,30 @@ fetch('check/checks.json?' + Date.now()).then(r => r.ok ? r.json() : []).then(li
   });
 }).catch(() => {});
 
-/* 三个标签页：地址带 #quiz / #check 时直接打开对应的页 */
+/* 短文：记录在 passage/units.json（totals 是三份大纲的总条数，units 里最新的一组在最前面） */
+fetch('passage/units.json?' + Date.now()).then(r => r.json()).then(d => {
+  const units = d.units || [], t = d.totals || {}, at = units.length ? units[0].progress : { skeleton: 0, phrase: 0, word: 0 };
+  const row = (name, n, total) => `<div class="pp-row"><b>${name}</b><div class="pp-bar"><i style="width:${total ? Math.min(100, n / total * 100) : 0}%"></i></div><span>${n} / ${total}</span></div>`;
+  document.getElementById('passprog').innerHTML = row('骨架', at.skeleton, t.skeleton) + row('词组', at.phrase, t.phrase) + row('单词', at.word, t.word);
+  document.getElementById('n-passage').textContent = units.length;
+  if (!units.length) return;
+  const $p = document.getElementById('passlist');
+  $p.innerHTML = '';
+  units.forEach((u, i) => {
+    const [, mm, dd] = (u.date || '').split('-');
+    const div = document.createElement('div');
+    div.className = 'unit';
+    div.innerHTML =
+      `<div class="q-top"><span class="q-title">第 ${u.unit} 组</span>${i === 0 ? '<span class="new">最新</span>' : ''}${mm ? `<span class="q-meta"><span>${+mm} 月 ${+dd} 日</span></span>` : ''}</div>
+       <div class="u-items"><b>骨架</b>${u.skeletons.join('；')}<br><b>词组</b>${u.phrases.join('，')}</div>
+       <div class="u-pages">${u.pages.map((p, k) => `<a href="passage/${p.id}.html">${k + 1}. ${p.title}</a>`).join('')}</div>`;
+    $p.appendChild(div);
+  });
+}).catch(() => {});
+
+/* 四个标签页：地址带 #quiz / #check / #passage 时直接打开对应的页 */
 const tabs = [...document.querySelectorAll('.tab')];
-const VIEWS = ['notes', 'quiz', 'check'];
+const VIEWS = ['notes', 'quiz', 'check', 'passage'];
 function show(name) {
   VIEWS.forEach(v => { document.getElementById('view-' + v).hidden = name !== v; });
   tabs.forEach(t => { t.classList.toggle('on', t.dataset.tab === name); t.setAttribute('aria-selected', t.dataset.tab === name); });

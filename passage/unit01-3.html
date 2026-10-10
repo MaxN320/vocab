@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Lost Key</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 1 组 · 第 3 篇（共 3 篇）</div><h1>The Lost Key</h1><div class="sub">钥匙找不到了</div>
+<div class="how">这一组练 <b>2 个骨架、5 个词组、20 个单词</b>，分在 3 篇里，这一篇重点练卡片里的 7 个，前两篇的说法也会再出现。<br>① 先读故事，黄色的是这一组要练的，点一下能听发音；读不懂就点「中文」。<br>② 看「拆开看」，留意同一个说法在 3 篇里怎么变。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用它们说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div class="p"><div class="en">On Monday evening, Lily came home after her first day at work. &quot;<span class="w">I&#x27;m so tired</span>,&quot; she thought. Then she stopped. Her key wasn&#x27;t in her bag!</div><div class="cn">星期一晚上，莉莉上完第一天班回到家。「我累坏了。」她心想。接着她停住了——包里没有钥匙！</div><div class="bar"><button id="pa1" data-a="audio/unit01-3-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">She knocked on Tom&#x27;s door. &quot;Tom, <span class="w">are you</span> <span class="w">there</span>?&quot; &quot;Yes! <span class="w">What</span>&#x27;s wrong?&quot; &quot;I <span class="w">just</span> got home, and I can&#x27;t find my key. <span class="w">I&#x27;m going to</span> call the hospital.&quot;</div><div class="cn">她敲了敲汤姆的门。「汤姆，你在吗？」「在！怎么了？」「我刚到家，找不到钥匙了。我打算给医院打个电话。」</div><div class="bar"><button id="pa2" data-a="audio/unit01-3-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">&quot;Wait,&quot; Tom <span class="w">said</span>. &quot;I&#x27;m <span class="w">responsible for</span> the keys in this building. I have a spare one for every flat. <span class="w">I&#x27;ll</span> get it for you.&quot; &quot;Really? Oh, Tom, you&#x27;re so kind!&quot;</div><div class="cn">「等等，」汤姆说，「这栋楼的钥匙归我管，每套公寓我都有一把备用的。我去给你拿。」「真的吗？哎呀，汤姆，你真好！」</div><div class="bar"><button id="pa3" data-a="audio/unit01-3-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Tom came back with the key. &quot;<span class="w">Well</span>, here you are. <span class="w">What&#x27;s going on</span> at work?&quot; Lily sat down on the stairs. &quot;It was a hard day. I <span class="w">have to</span> learn so many new things, <span class="w">such as</span> the names of all the doctors. I think I&#x27;m too slow.&quot; &quot;Don&#x27;t <span class="w">say</span> that,&quot; said Tom. &quot;It&#x27;s <span class="w">just</span> your first day, and you did <span class="w">well</span>. Being slow at first <span class="w">has nothing to do with</span> being a bad nurse.&quot;</div><div class="cn">汤姆拿着钥匙回来了。「好了，给你。上班的时候出什么事了？」莉莉在楼梯上坐下来。「今天太难了。要学的新东西太多了，比如所有医生的名字。我觉得自己太慢了。」「别这么说，」汤姆说，「这才是你上班第一天，你做得很好。刚开始慢一点，跟是不是好护士没有关系。」</div><div class="bar"><button id="pa4" data-a="audio/unit01-3-04.mp3" data-next="pa5">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Lily smiled. &quot;You&#x27;re right. I <span class="w">will</span> try again tomorrow.&quot; &quot;Good. Now <span class="w">I&#x27;m going to</span> make some tea. <span class="w">Are you hungry</span>?&quot; &quot;Yes, very!&quot; <span class="w">What</span> a kind neighbor, she thought. She knew <span class="w">there was</span> nothing to worry about.</div><div class="cn">莉莉笑了：「你说得对，我明天再试试。」「这就对了。我去泡点茶。你饿不饿？」「饿，饿坏了！」多好的邻居啊，她心想。她知道，已经没什么可担心的了。</div><div class="bar"><button id="pa5" data-a="audio/unit01-3-05.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div>
+<div class="sec"><h2>拆开看：这 7 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>be going to</b><i>词组</i><span>打算；将要</span></div><div class="fcore">已经想好、准备去做的事。</div><div class="ff"><div>I&#x27;m going to call the hospital.</div><div>Now I&#x27;m going to make some tea.</div><div>I think I&#x27;m going to like it here.（第 2 篇）</div></div><div class="fw">⚠️ be 不能丢：✗ I going to → ✓ I&#x27;m going to。</div></div><div class="fc"><div class="fh"><b>there</b><i>单词</i><span>adv. 那里；（there is / are）有</span></div><div class="fcore">指那个地方；Are you there? 就是「你在吗？」</div><div class="ff"><div>Tom, are you there?</div><div>She knew there was nothing to worry about.</div><div>I&#x27;m going there now.（第 1 篇）</div></div><div class="fw">⚠️ 去那里说 go there，不说 ✗ go to there。</div></div><div class="fc"><div class="fh"><b>will</b><i>单词</i><span>aux. 将要，会</span></div><div class="fcore">说将来的事，或者当场决定要做的事：I&#x27;ll…</div><div class="ff"><div>I&#x27;ll get it for you.</div><div>I will try again tomorrow.</div><div>I think you&#x27;ll be great.（第 2 篇）</div></div><div class="fw">⚠️ will 后面接动词原形；I&#x27;ll = I will。</div></div><div class="fc"><div class="fh"><b>say</b><i>单词</i><span>v. 说</span></div><div class="fcore">说出来的话：say 后面直接接说的内容。</div><div class="ff"><div>&quot;Wait,&quot; Tom said.</div><div>Don&#x27;t say that.</div><div>&quot;Welcome to the street!&quot; he said.（第 1 篇）</div></div><div class="fw">⚠️ say 后面直接接话；tell 后面先接人：tell me。</div></div><div class="fc"><div class="fh"><b>what</b><i>单词</i><span>pron. 什么</span></div><div class="fcore">问东西、问事情；What a …! 是感叹「多么……」。</div><div class="ff"><div>What&#x27;s wrong?</div><div>What&#x27;s going on at work?</div><div>What a kind neighbor!</div></div><div class="fw">⚠️ What a + 形容词 + 名词! 是感叹句，不是问句。</div></div><div class="fc"><div class="fh"><b>just</b><i>单词</i><span>adv. 只是；刚刚</span></div><div class="fcore">刚刚发生；或者「只不过」。</div><div class="ff"><div>I just got home.</div><div>It&#x27;s just your first day.</div><div>Just knock on my door.（第 1 篇）</div></div><div class="fw">⚠️ 「刚刚」的 just 放在动词前面：I just got home。</div></div><div class="fc"><div class="fh"><b>well</b><i>单词</i><span>adv. 好；int. 嗯，那么</span></div><div class="fcore">放在动词后面是「好」；放在句首是说话时停一下。</div><div class="ff"><div>Well, here you are.</div><div>You did well.</div><div>Well, I like simple things.（第 2 篇）</div></div><div class="fw">⚠️ 做得好说 did well，不说 did good。</div></div></div><div class="sec"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>汤姆，你在吗？</div><div class="den">Tom, <span class="gap" data-ans="are you there">　　　</span>?</div><div class="bar"><button data-a="audio/unit01-3-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>我刚到家。</div><div class="den">I <span class="gap" data-ans="just">　　　</span> got home.</div><div class="bar"><button data-a="audio/unit01-3-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>我打算给医院打个电话。</div><div class="den"><span class="gap" data-ans="I&#x27;m going to">　　　</span> call the hospital.</div><div class="bar"><button data-a="audio/unit01-3-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>我去给你拿。</div><div class="den"><span class="gap" data-ans="I&#x27;ll">　　　</span> get it for you.</div><div class="bar"><button data-a="audio/unit01-3-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>上班的时候出什么事了？</div><div class="den"><span class="gap" data-ans="What&#x27;s going on">　　　</span> at work?</div><div class="bar"><button data-a="audio/unit01-3-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>别这么说。</div><div class="den">Don&#x27;t <span class="gap" data-ans="say">　　　</span> that.</div><div class="bar"><button data-a="audio/unit01-3-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>这才是你上班第一天，你做得很好。</div><div class="den">It&#x27;s <span class="gap" data-ans="just">　　　</span> your first day, and you did <span class="gap" data-ans="well">　　　</span>.</div><div class="bar"><button data-a="audio/unit01-3-d07.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>8</em>我明天再试试。</div><div class="den">I <span class="gap" data-ans="will">　　　</span> try again tomorrow.</div><div class="bar"><button data-a="audio/unit01-3-d08.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>9</em>你饿不饿？</div><div class="den"><span class="gap" data-ans="Are you">　　　</span> hungry?</div><div class="bar"><button data-a="audio/unit01-3-d09.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>10</em>多好的邻居啊！</div><div class="den"><span class="gap" data-ans="What">　　　</span> a kind neighbor!</div><div class="bar"><button data-a="audio/unit01-3-d10.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 用 I&#x27;m going to，说说你今晚打算做什么。</div><details><summary>看参考说法</summary><div class="sa">I&#x27;m going to read a book tonight.</div></details></div><div class="sp"><div>2. 用 I&#x27;ll，当场答应帮别人做一件事。</div><details><summary>看参考说法</summary><div class="sa">Your bag looks heavy. I&#x27;ll carry it for you.</div></details></div><div class="sp"><div>3. 用 I just + 过去式，说说你刚刚做了什么。</div><details><summary>看参考说法</summary><div class="sa">I just finished my dinner.</div></details></div><div class="sp"><div>4. 用 What a …!，夸一夸身边的人或东西。</div><details><summary>看参考说法</summary><div class="sa">What a lovely day!</div></details></div></div>
+</div><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+document.getElementById("all").onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunday at the Café</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 1 组 · 第 2 篇（共 3 篇）</div><h1>Sunday at the Café</h1><div class="sub">周日的咖啡馆</div>
+<div class="how">这一组练 <b>2 个骨架、5 个词组、20 个单词</b>，分在 3 篇里，这一篇重点练卡片里的 10 个。<br>① 先读故事，黄色的是这一组要练的，点一下能听发音；读不懂就点「中文」。<br>② 看「拆开看」，留意同一个说法在 3 篇里怎么变。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用它们说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div class="p"><div class="en">On Sunday, Lily and Tom <span class="w">went</span> to the café <span class="w">on</span> the corner. <span class="w">This</span> café is famous for its cakes, and it was <span class="w">so</span> busy! They waited <span class="w">for</span> ten minutes <span class="w">for</span> a table.</div><div class="cn">星期天，莉莉和汤姆去了拐角那家咖啡馆。这家店的蛋糕很有名，店里人特别多！他们等了十分钟才等到一张桌子。</div><div class="bar"><button id="pa1" data-a="audio/unit01-2-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">&quot;<span class="w">Are you tired</span>?&quot; Tom asked. &quot;A little. <span class="w">I&#x27;m nervous</span> about tomorrow. I <span class="w">have to</span> be at the hospital at eight, and <span class="w">this</span> is my first job here.&quot; &quot;Don&#x27;t worry. I <span class="w">think</span> you&#x27;ll be great.&quot;</div><div class="cn">「你累了吗？」汤姆问。「有一点。我在为明天紧张。八点就得到医院，而且这是我在这里的第一份工作。」「别担心，我觉得你会做得很好。」</div><div class="bar"><button id="pa2" data-a="audio/unit01-2-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">&quot;What do you <span class="w">like</span> doing at the weekend?&quot; Lily asked. &quot;Well, I <span class="w">like</span> simple things, <span class="w">such as</span> cooking and walking in the park. And you?&quot; &quot;I love reading, and I <span class="w">go</span> swimming <span class="w">on</span> Sundays. Swimming is <span class="w">like</span> a holiday for my head.&quot;</div><div class="cn">「你周末喜欢做什么？」莉莉问。「嗯，我喜欢简单的事，比如做饭、在公园散步。你呢？」「我爱看书，每个星期天都去游泳。游泳就像给脑子放了个假。」</div><div class="bar"><button id="pa3" data-a="audio/unit01-2-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Just then, a young woman ran into the café. Her face was red. &quot;Oh no! <span class="w">What&#x27;s going on</span>?&quot; Lily asked. Tom laughed. &quot;That&#x27;s my sister, Anna. She&#x27;s always late. Don&#x27;t worry, it <span class="w">has nothing to do with</span> you!&quot;</div><div class="cn">就在这时，一个年轻女人冲进了咖啡馆，满脸通红。「哎呀！出什么事了？」莉莉问。汤姆笑了：「那是我妹妹安娜，她总是迟到。别担心，这跟你一点关系都没有！」</div><div class="bar"><button id="pa4" data-a="audio/unit01-2-04.mp3" data-next="pa5">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Anna sat down. &quot;Sorry! My bus didn&#x27;t come, <span class="w">so</span> I ran all the way here.&quot; &quot;<span class="w">Go on</span>, tell us,&quot; said Tom. Anna told a long, funny story, and they laughed <span class="w">for</span> an hour. &quot;I <span class="w">think</span> I&#x27;m <span class="w">going to</span> <span class="w">like</span> it here,&quot; said Lily.</div><div class="cn">安娜坐下来：「对不起！我等的公交车没来，所以一路跑过来的。」「接着说，讲给我们听听。」汤姆说。安娜讲了一个又长又好笑的故事，他们笑了整整一个小时。「我想我会喜欢这里的。」莉莉说。</div><div class="bar"><button id="pa5" data-a="audio/unit01-2-05.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div>
+<div class="sec"><h2>拆开看：这 10 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>such as</b><i>词组</i><span>比如，例如</span></div><div class="fcore">先说一类东西，再举几个例子。</div><div class="ff"><div>simple things, such as cooking and walking in the park</div><div>good things, such as fresh bread and cheap fruit（第 1 篇）</div><div>new things, such as the names of all the doctors（第 3 篇）</div></div><div class="fw">⚠️ such as 后面直接接例子；举了例子，句尾就别再加 etc.。</div></div><div class="fc"><div class="fh"><b>go on</b><i>词组</i><span>发生；继续</span></div><div class="fcore">What&#x27;s going on? = 出什么事了？　Go on. = 接着说、接着做。</div><div class="ff"><div>What&#x27;s going on?</div><div>Go on, tell us.</div><div>What&#x27;s going on at work?（第 3 篇）</div></div><div class="fw">⚠️ 问「出什么事了」用进行时 What&#x27;s going on?，问的是眼下正在发生的事。</div></div><div class="fc"><div class="fh"><b>go</b><i>单词</i><span>v. 去；（事情）进展</span></div><div class="fcore">从一个地方去另一个地方。</div><div class="ff"><div>Lily and Tom went to the café.</div><div>I go swimming on Sundays.</div><div>I&#x27;m going there now.（第 1 篇）</div></div><div class="fw">⚠️ 去做某项活动用 go + doing：go swimming、go shopping。</div></div><div class="fc"><div class="fh"><b>so</b><i>单词</i><span>adv. 这么，那么；conj. 所以</span></div><div class="fcore">放在形容词前面是「这么」；连接两句话是「所以」。</div><div class="ff"><div>It was so busy!</div><div>My bus didn&#x27;t come, so I ran all the way here.</div><div>I&#x27;m so tired.（第 3 篇）</div></div><div class="fw">⚠️ 「因为……所以……」英语只用一个：✗ Because…, so… → ✓ …, so…</div></div><div class="fc"><div class="fh"><b>this</b><i>单词</i><span>pron. 这，这个</span></div><div class="fcore">指近处的东西，或者现在、这一次的事。</div><div class="ff"><div>This café is famous for its cakes.</div><div>This is my first job here.</div><div>the keys in this building（第 3 篇）</div></div><div class="fw">⚠️ this 后面接单数名词，复数要用 these。</div></div><div class="fc"><div class="fh"><b>on</b><i>单词</i><span>prep. 在……上面；在（某一天）</span></div><div class="fcore">贴在表面上、靠在边上；也用在具体某一天前面。</div><div class="ff"><div>the café on the corner</div><div>I go swimming on Sundays.</div><div>On Monday evening…（第 3 篇）</div></div><div class="fw">⚠️ 某一天用 on（on Sunday），几点用 at（at eight），月份用 in。</div></div><div class="fc"><div class="fh"><b>for</b><i>单词</i><span>prep. 为了，给；（持续）多久</span></div><div class="fcore">for + 一段时间 = 多长时间；for + 东西 = 为了得到它。</div><div class="ff"><div>They waited for ten minutes for a table.</div><div>They laughed for an hour.</div><div>I&#x27;ll get it for you.（第 3 篇）</div></div><div class="fw">⚠️ for 后面接一段时间（for an hour），不接时间点。</div></div><div class="fc"><div class="fh"><b>think</b><i>单词</i><span>v. 认为；想</span></div><div class="fcore">说自己的看法：I think…</div><div class="ff"><div>I think you&#x27;ll be great.</div><div>I think I&#x27;m going to like it here.</div><div>I think I&#x27;m too slow.（第 3 篇）</div></div><div class="fw">⚠️ 「我觉得不……」通常说 I don&#x27;t think…，把 not 放在前面。</div></div><div class="fc"><div class="fh"><b>like</b><i>单词</i><span>v. 喜欢；prep. 像</span></div><div class="fcore">喜欢做某事：like + doing；像某样东西：be like + 名词。</div><div class="ff"><div>What do you like doing at the weekend?</div><div>I like simple things.</div><div>Swimming is like a holiday for my head.</div></div><div class="fw">⚠️ like doing 是「平时喜欢做」，would like to do 是「这会儿想做」。</div></div><div class="fc"><div class="fh"><b>have … to do with</b><i>复习</i><span>和……有关</span></div><div class="fcore">中间放 nothing，就是一点关系都没有。</div><div class="ff"><div>It has nothing to do with you!</div><div>Being slow at first has nothing to do with being a bad nurse.（第 3 篇）</div></div><div class="fw">⚠️ 去掉 with，have a lot to do 就成了「有很多事要做」。</div></div></div><div class="sec"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>你累了吗？</div><div class="den"><span class="gap" data-ans="Are you">　　　</span> tired?</div><div class="bar"><button data-a="audio/unit01-2-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>他们等了十分钟才等到一张桌子。</div><div class="den">They waited <span class="gap" data-ans="for">　　　</span> ten minutes <span class="gap" data-ans="for">　　　</span> a table.</div><div class="bar"><button data-a="audio/unit01-2-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>我觉得你会做得很好。</div><div class="den">I <span class="gap" data-ans="think">　　　</span> you&#x27;ll be great.</div><div class="bar"><button data-a="audio/unit01-2-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>我喜欢简单的事，比如做饭和在公园散步。</div><div class="den">I like simple things, <span class="gap" data-ans="such as">　　　</span> cooking and walking in the park.</div><div class="bar"><button data-a="audio/unit01-2-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>我每个星期天都去游泳。</div><div class="den">I <span class="gap" data-ans="go">　　　</span> swimming <span class="gap" data-ans="on">　　　</span> Sundays.</div><div class="bar"><button data-a="audio/unit01-2-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>游泳就像给脑子放了个假。</div><div class="den">Swimming is <span class="gap" data-ans="like">　　　</span> a holiday for my head.</div><div class="bar"><button data-a="audio/unit01-2-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>出什么事了？</div><div class="den">What&#x27;s <span class="gap" data-ans="going on">　　　</span>?</div><div class="bar"><button data-a="audio/unit01-2-d07.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>8</em>这跟你一点关系都没有！</div><div class="den">It <span class="gap" data-ans="has nothing to do with">　　　</span> you!</div><div class="bar"><button data-a="audio/unit01-2-d08.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>9</em>公交车没来，所以我一路跑过来的。</div><div class="den">My bus didn&#x27;t come, <span class="gap" data-ans="so">　　　</span> I ran all the way here.</div><div class="bar"><button data-a="audio/unit01-2-d09.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>10</em>接着说，讲给我们听听。</div><div class="den"><span class="gap" data-ans="Go on">　　　</span>, tell us.</div><div class="bar"><button data-a="audio/unit01-2-d10.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 用 Are you + 形容词?，问朋友一个问题。</div><details><summary>看参考说法</summary><div class="sa">Are you free this weekend?</div></details></div><div class="sp"><div>2. 用 such as，说说你喜欢的东西。</div><details><summary>看参考说法</summary><div class="sa">I like simple food, such as noodles and eggs.</div></details></div><div class="sp"><div>3. 用 I think，说一句你的看法。</div><details><summary>看参考说法</summary><div class="sa">I think this café is too busy.</div></details></div><div class="sp"><div>4. 用 so（所以），说一件事和它带来的结果。</div><details><summary>看参考说法</summary><div class="sa">It was raining, so I took a taxi.</div></details></div></div><a class="next" href="unit01-3.html">下一篇 →</a>
+</div><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+document.getElementById("all").onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
