@@ -48,20 +48,24 @@
    "pages": [
     {
      "id": "unit01-1",
-     "title": "The New Neighbor"
+     "title": "The New Neighbor",
+     "cn": "新邻居"
     },
     {
      "id": "unit01-2",
-     "title": "Sunday at the Café"
+     "title": "Sunday at the Café",
+     "cn": "周日的咖啡馆"
     },
     {
      "id": "unit01-3",
-     "title": "The Lost Key"
+     "title": "The Lost Key",
+     "cn": "钥匙找不到了"
     },
     {
      "id": "unit01-s",
      "title": "骨架造句",
-     "kind": "make"
+     "kind": "make",
+     "cn": "骨架造句"
     }
    ],
    "progress": {
