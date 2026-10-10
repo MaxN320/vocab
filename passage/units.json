@@ -62,6 +62,11 @@
      "cn": "钥匙找不到了"
     },
     {
+     "id": "unit01-4",
+     "title": "Lily's Diary",
+     "cn": "进阶：莉莉的日记"
+    },
+    {
      "id": "unit01-s",
      "title": "骨架造句",
      "kind": "make",

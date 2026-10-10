@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lily&#x27;s Diary</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 1 组 · 第 4 篇 · 进阶篇</div><h1>Lily&#x27;s Diary</h1><div class="sub">进阶篇：莉莉的日记</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit01-1.html">1 新邻居</a><a href="unit01-2.html">2 周日的咖啡馆</a><a href="unit01-3.html">3 钥匙找不到了</a><a href="unit01-4.html" class="on">4 进阶：莉莉的日记</a><a href="unit01-s.html">✍️ 骨架造句</a></div><div class="toc-row"><span>本页</span><a href="#sec-text">短文</a><a href="#sec-focus">难句拆解</a><a href="#sec-drill">回忆练习</a><a href="#sec-speak">换成你自己的事</a></div></nav>
+<div class="how">这一篇用的还是第 1 组的骨架、词组和单词（黄色的），但<b>句子更长、语法更难</b>：完成时、各种从句、不定式、分词、虚拟，还有一句虚拟倒装。<br>① 先读一遍，读不懂就点「中文」。<br>② 看「难句拆解」，一句一句先找主干。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用这几个句型说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div id="sec-text"><div class="p"><div class="en">Saturday, 10 p.m. It has been a week since I moved into <span class="w">this</span><span class="ipa">/ðɪs/</span> flat, and <span class="w">I&#x27;m still not sure</span> whether I chose the right place. When I arrived, I <span class="w">didn&#x27;t</span><span class="ipa">/ˈdɪdnt/</span> <span class="w">know</span><span class="ipa">/nəʊ/</span> a single person <span class="w">in</span><span class="ipa">/ɪn/</span> the city and <span class="w">had</span><span class="ipa">/hæd/</span> nobody to talk to, <span class="w">so</span><span class="ipa">/səʊ/</span> I spent the first night wondering <span class="w">what</span><span class="ipa">/wɒt/</span> I would do if something went wrong.</div><div class="cn">星期六，晚上十点。我搬进这套公寓已经一个星期了，可还是说不准自己是不是选对了地方。刚到的时候，我在这座城市一个人都不认识，也没有人可以说话，所以第一个晚上我一直在想：要是出了什么事，我该怎么办。</div><div class="bar"><button id="pa1" data-a="audio/unit01-4-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">That was before I met Tom, the man who lives next door and who is <span class="w">responsible for</span> the whole building. If he hadn&#x27;t been in the hall that morning, carrying a box that looked far too heavy <span class="w">for</span><span class="ipa">/fɔː(r)/</span> one person, I might never have found the courage to <span class="w">say</span><span class="ipa">/seɪ/</span> hello. &quot;<span class="w">Are you new here</span>?&quot; he asked, in a voice so warm <span class="w">that</span><span class="ipa">/ðæt/</span> I forgot to be shy.</div><div class="cn">那是在我认识汤姆之前。他就住在隔壁，整栋楼也归他管。要不是那天早上他正好在楼道里，搬着一个一个人根本搬不动的大箱子，我可能永远鼓不起勇气跟他打招呼。「你是新搬来的吗？」他问，声音那么温和，我一下子就忘了害羞。</div><div class="bar"><button id="pa2" data-a="audio/unit01-4-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">What I <span class="w">like</span><span class="ipa">/laɪk/</span> most about him is not that he helps people, but the way he <span class="w">does</span><span class="ipa">/dʌz/</span> it: quietly, without making them feel <span class="w">like</span> they owe him anything. When I lost my key <span class="w">on</span><span class="ipa">/ɒn/</span> Monday, he didn&#x27;t <span class="w">just</span><span class="ipa">/dʒʌst/</span> give me a spare one; he sat with me on the stairs until I felt <span class="w">well</span><span class="ipa">/wel/</span> enough to <span class="w">go</span><span class="ipa">/ɡəʊ/</span> in. I wish I knew how to thank him.</div><div class="cn">我最喜欢他的地方，不是他帮人，而是他帮人的方式：安安静静的，从不让人觉得欠了他什么。星期一我把钥匙弄丢了，他不只是给了我一把备用的，还陪我在楼梯上坐着，直到我缓过来、能进屋了。真希望我知道该怎么谢谢他。</div><div class="bar"><button id="pa3" data-a="audio/unit01-4-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en"><span class="w">There are</span> so many things I <span class="w">have to</span> learn at the hospital, <span class="w">such as</span> where every medicine is kept and which doctor works on which floor, that sometimes I <span class="w">think</span><span class="ipa">/θɪŋk/</span> I <span class="w">will</span><span class="ipa">/wɪl/</span> never be good enough. But Tom <span class="w">says</span><span class="ipa">/sez/</span> nobody <span class="w">gets</span><span class="ipa">/ɡets/</span> everything right in their first week, and that being slow at the start <span class="w">has nothing to do with</span> being a bad nurse. What is <span class="w">going on</span> in my head, he says, is just fear, not the truth.</div><div class="cn">在医院要学的东西太多了，比如每种药放在哪儿、哪位医生在哪一层上班，多得让我有时候觉得自己永远都不够好。可汤姆说，谁也不可能第一个星期就把所有事做对；刚开始慢一点，跟是不是好护士没有关系。他说，我脑子里乱糟糟的那些，不过是害怕，不是事实。</div><div class="bar"><button id="pa4" data-a="audio/unit01-4-04.mp3" data-next="pa5">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Tomorrow <span class="w">I&#x27;m going to</span> visit his sister Anna, who has invited me to go swimming with her. Had someone told me a week ago that I would have friends here by Saturday, I wouldn&#x27;t have believed it. For the first time since I came, I&#x27;m not afraid of Monday. <span class="w">Well</span>, maybe only a little.</div><div class="cn">明天我打算去拜访他妹妹安娜，她约我跟她一起去游泳。要是一个星期前有人告诉我，到了星期六我在这儿就会有朋友，我才不会信。来这儿以后，我第一次不害怕星期一了。好吧，也许还有一点点。</div><div class="bar"><button id="pa5" data-a="audio/unit01-4-05.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div></div>
+<div class="sec" id="sec-focus"><h2>难句拆解：7 句</h2><div class="tip">先找主干，再看挂在主干上的从句、不定式和分词</div><div class="fc"><div class="fh"><b>It has been a week since I moved into this flat, and I&#x27;m still not sure whether I chose the right place.</b><i>完成时 + whether 从句</i><span>我搬进这套公寓已经一个星期了，可还是说不准自己是不是选对了地方。</span></div><div class="fcore">两句话用 and 连起来：It has been a week … ｜ I&#x27;m still not sure whether …</div><div class="ff"><div>It has been + 一段时间 + since + 过去式：自从……已经有多久了</div><div>I&#x27;m not sure whether …：不确定是不是……；whether 后面用陈述语序</div></div><div class="fw">⚠️ since 后面用过去式（since I moved），主句用现在完成时（It has been）。</div></div><div class="fc"><div class="fh"><b>When I arrived, I didn&#x27;t know a single person in the city, so I spent the first night wondering what I would do if something went wrong.</b><i>分词 + 宾语从句 + 虚拟</i><span>刚到的时候，我在这座城市一个人都不认识，所以第一个晚上我一直在想：要是出了事，我该怎么办。</span></div><div class="fcore">主干：I spent the first night wondering …</div><div class="ff"><div>spend + 时间 + doing：花时间做某事</div><div>what I would do：宾语从句，陈述语序</div><div>if something went wrong：用过去式说「万一」，跟着 would do</div></div><div class="fw">⚠️ spend 后面接 doing，不接 to do。</div></div><div class="fc"><div class="fh"><b>If he hadn&#x27;t been in the hall that morning, carrying a box that looked far too heavy for one person, I might never have found the courage to say hello.</b><i>虚拟（过去）+ 分词 + 定语从句</i><span>要不是那天早上他正好在楼道里，搬着一个一个人根本搬不动的大箱子，我可能永远鼓不起勇气跟他打招呼。</span></div><div class="fcore">主干：If he hadn&#x27;t been in the hall, I might never have found the courage.</div><div class="ff"><div>If + had done …, might / would have done：说过去没发生的事和它的结果</div><div>carrying a box：现在分词短语，说他当时在干什么</div><div>a box that looked far too heavy：that 引导的定语从句，修饰 box</div><div>the courage to say hello：不定式修饰 courage，说是什么勇气</div></div><div class="fw">⚠️ if 那一半用 had done，结果那一半用 would / might have done，两半都往过去推一格。</div></div><div class="fc"><div class="fh"><b>What I like most about him is not that he helps people, but the way he does it.</b><i>主语从句 + not … but …</i><span>我最喜欢他的地方，不是他帮人，而是他帮人的方式。</span></div><div class="fcore">主干：What I like most … is not A, but B.</div><div class="ff"><div>What I like most about him：what 引导的主语从句，整块当主语</div><div>not that he helps people, but the way he does it：不是 A，而是 B</div></div><div class="fw">⚠️ what 从句当主语时，后面的 be 动词用单数：What I like most is …</div></div><div class="fc"><div class="fh"><b>I wish I knew how to thank him.</b><i>虚拟（现在）+ 疑问词 + 不定式</i><span>真希望我知道该怎么谢谢他。</span></div><div class="fcore">I wish + 过去式：对现在的遗憾（其实现在不知道）。</div><div class="ff"><div>I wish I knew：现在的事用过去式，表示「可惜现在不是这样」</div><div>how to thank him：疑问词 + 不定式 = 该怎么……</div></div><div class="fw">⚠️ 对现在的遗憾用过去式（I wish I knew），对过去的遗憾用 had done（I wish I had known）。</div></div><div class="fc"><div class="fh"><b>There are so many things I have to learn at the hospital, such as where every medicine is kept, that sometimes I think I will never be good enough.</b><i>so … that + 被动 + 定语从句</i><span>在医院要学的东西太多了，比如每种药放在哪儿，多得让我有时候觉得自己永远都不够好。</span></div><div class="fcore">主干：There are so many things … that …</div><div class="ff"><div>so many + 名词 + that …：多得……以至于……</div><div>things I have to learn：省掉了 that 的定语从句</div><div>where every medicine is kept：被动（be + 过去分词），药「被放」在哪儿</div></div><div class="fw">⚠️ so 后面接 many / much + 名词或直接接形容词；such 后面接 a / an + 名词。</div></div><div class="fc"><div class="fh"><b>Had someone told me a week ago that I would have friends here by Saturday, I wouldn&#x27;t have believed it.</b><i>虚拟倒装</i><span>要是一个星期前有人告诉我，到了星期六我在这儿就会有朋友，我才不会信。</span></div><div class="fcore">= If someone had told me … , I wouldn&#x27;t have believed it.</div><div class="ff"><div>Had someone told me …：去掉 if，把 had 提到主语前面，意思不变</div><div>that I would have friends here by Saturday：宾语从句，站在过去说将来用 would</div><div>I wouldn&#x27;t have believed it：过去没发生的结果</div></div><div class="fw">⚠️ 能这样倒装的，只有 had、were、should 开头的虚拟句。</div></div></div><div class="sec" id="sec-drill"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>我搬进这套公寓已经一个星期了。</div><div class="den">It <span class="gap" data-ans="has been">　　　</span> a week <span class="gap" data-ans="since">　　　</span> I moved into this flat.</div><div class="bar"><button data-a="audio/unit01-4-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>我还说不准自己是不是选对了地方。</div><div class="den">I&#x27;m still not sure <span class="gap" data-ans="whether">　　　</span> I chose the right place.</div><div class="bar"><button data-a="audio/unit01-4-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>第一个晚上我一直在想，要是出了事我该怎么办。</div><div class="den">I spent the first night <span class="gap" data-ans="wondering">　　　</span> what I would do if something <span class="gap" data-ans="went">　　　</span> wrong.</div><div class="bar"><button data-a="audio/unit01-4-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>要不是他那天早上在楼道里，我可能永远鼓不起勇气打招呼。</div><div class="den">If he <span class="gap" data-ans="hadn&#x27;t been">　　　</span> in the hall that morning, I <span class="gap" data-ans="might never have found">　　　</span> the courage to say hello.</div><div class="bar"><button data-a="audio/unit01-4-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>我最喜欢他的地方，不是他帮人，而是他帮人的方式。</div><div class="den"><span class="gap" data-ans="What I like most">　　　</span> about him is <span class="gap" data-ans="not">　　　</span> that he helps people, <span class="gap" data-ans="but">　　　</span> the way he does it.</div><div class="bar"><button data-a="audio/unit01-4-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>真希望我知道该怎么谢谢他。</div><div class="den">I wish I <span class="gap" data-ans="knew">　　　</span> <span class="gap" data-ans="how to">　　　</span> thank him.</div><div class="bar"><button data-a="audio/unit01-4-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>要学的东西多得让我觉得自己永远不够好。</div><div class="den">There are <span class="gap" data-ans="so">　　　</span> many things I have to learn <span class="gap" data-ans="that">　　　</span> I think I will never be good enough.</div><div class="bar"><button data-a="audio/unit01-4-d07.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>8</em>要是一个星期前有人告诉我，我才不会信。</div><div class="den"><span class="gap" data-ans="Had someone told me">　　　</span> a week ago, I <span class="gap" data-ans="wouldn&#x27;t have believed">　　　</span> it.</div><div class="bar"><button data-a="audio/unit01-4-d08.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec" id="sec-speak"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 用 It has been … since …，说你做某件事多久了。</div><details><summary>看参考说法</summary><div class="sa">It has been two years since I started learning English.</div></details></div><div class="sp"><div>2. 用 If I had …, I would have …，说一件你后悔的事。</div><details><summary>看参考说法</summary><div class="sa">If I had gone to bed earlier, I wouldn&#x27;t have been so tired today.</div></details></div><div class="sp"><div>3. 用 I wish I + 过去式，说一个对现在的遗憾。</div><details><summary>看参考说法</summary><div class="sa">I wish I had more time to read.</div></details></div><div class="sp"><div>4. 用 What I like most about … is …，夸一个人。</div><details><summary>看参考说法</summary><div class="sa">What I like most about my friend is that he always listens.</div></details></div></div><a class="next" href="unit01-s.html">下一步：骨架造句 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+document.getElementById("all").onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
