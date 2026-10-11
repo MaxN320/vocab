@@ -138,9 +138,12 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 </main>
 
 <main id="view-passage" hidden>
-  <div class="quiz-intro">按大纲的顺序往下练：每一组重点练 2 个骨架、5 个词组、20 个单词，让常用说法在不同日常短文里自然复现；是否进入下一组由你决定。下面三条是大纲练到哪儿了。</div>
+  <div class="quiz-intro">GPT 独立选材、独立记录；读完不自动推进，由你根据练习反馈决定。</div>
+  <div class="c-label">GPT 独立组</div>
+  <div id="gptpasslist"><div class="empty">正在加载短文</div></div>
+  <div class="c-label">原有版本（进度独立）</div>
+  <div class="quiz-intro">以下是原有大纲与页面，不计入 GPT 的组别和进度。</div>
   <div class="pp" id="passprog"></div>
-  <div class="c-label">每一组</div>
   <div id="passlist"><div class="empty">还没有短文</div></div>
 </main>
 </div>
@@ -489,12 +492,32 @@ fetch('check/checks.json?' + Date.now()).then(r => r.ok ? r.json() : []).then(li
   });
 }).catch(() => {});
 
-/* 短文：记录在 passage/units.json（totals 是三份大纲的总条数，units 里最新的一组在最前面） */
+/* 两套短文索引与进度彼此独立；标签数只统计已建组。 */
+const passageCounts = { gpt: 0, original: 0 };
+function setPassageCount(series, n) {
+  passageCounts[series] = n;
+  document.getElementById('n-passage').textContent = passageCounts.gpt + passageCounts.original;
+}
+fetch('passage/gpt/units.json?' + Date.now()).then(r => r.json()).then(d => {
+  const units = d.units || [], $p = document.getElementById('gptpasslist');
+  setPassageCount('gpt', units.length);
+  $p.innerHTML = units.length ? '' : '<div class="empty">还没有短文</div>';
+  units.forEach(u => {
+    const div = document.createElement('div');
+    div.className = 'unit';
+    div.innerHTML = `<div class="q-top"><span class="q-title">GPT 第 ${u.unit} 组</span></div>
+      <div class="u-items"><b>骨架</b>${u.skeletons.map(escHtml).join('；')}<br><b>词组</b>${u.phrases.map(escHtml).join('，')}<br><b>练过</b>${Number(u.practiced) || 0} 次</div>
+      <div class="u-pages">${u.pages.map((p,k) => `<a href="passage/gpt/${encodeURIComponent(p.id)}.html">${k+1}. ${escHtml(p.title)}</a>`).join('')}</div>`;
+    $p.appendChild(div);
+  });
+}).catch(() => { document.getElementById('gptpasslist').innerHTML = '<div class="empty">GPT 短文暂时无法加载</div>'; });
+
+/* 原有短文只读取原有索引与进度。 */
 fetch('passage/units.json?' + Date.now()).then(r => r.json()).then(d => {
   const units = d.units || [], t = d.totals || {}, at = units.length ? units[0].progress : { skeleton: 0, phrase: 0, word: 0 };
   const row = (name, n, total) => `<div class="pp-row"><b>${name}</b><div class="pp-bar"><i style="width:${total ? Math.min(100, n / total * 100) : 0}%"></i></div><span>${n} / ${total}</span></div>`;
   document.getElementById('passprog').innerHTML = row('骨架', at.skeleton, t.skeleton) + row('词组', at.phrase, t.phrase) + row('单词', at.word, t.word);
-  document.getElementById('n-passage').textContent = units.length;
+  setPassageCount('original', units.length);
   if (!units.length) return;
   const $p = document.getElementById('passlist');
   $p.innerHTML = '';

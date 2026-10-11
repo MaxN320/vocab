@@ -1,0 +1,56 @@
+{
+  "id": "gpt01-1",
+  "unit": 1,
+  "units_file": "passage/gpt/units.json",
+  "dir": "passage/gpt",
+  "back": "../../index.html#passage",
+  "next": "gpt01-2",
+  "next_label": "下一篇：换个场景再练",
+  "title": "Lunch Under the Trees",
+  "cn_title": "树下的午餐",
+  "kicker": "GPT 独立第 1 组 · 第 1 篇",
+  "how": "<b>这是 GPT 自己选材的第 1 组。</b>先顺读故事；点黄色词听有道发音，必要时展开中文。读完遮住正文做回忆题，再说一件自己的事。",
+  "audio": false,
+  "paras": [
+    {
+      "en": "On Saturday morning, Mina wanted to have a [[picnic|/ˈpɪknɪk/]] for her sister's birthday. Her [[budget|/ˈbʌdʒɪt/]] was small, and she could not [[afford|/əˈfɔːd/]] to eat at a restaurant. [[To save money]], she [[decided|/dɪˈsaɪdɪd/]] to make lunch herself.",
+      "cn": "周六早上，米娜想在妹妹生日时办一次野餐。她预算不多，去餐厅吃饭负担不起。为了省钱，她决定自己做午餐。"
+    },
+    {
+      "en": "Her brother Leo [[recommended|/ˌrekəˈmendɪd/]] a [[grocery store]] two [[blocks|/blɒks/]] from home. Mina was [[in a hurry]]; it was [[almost|/ˈɔːlməʊst/]] eleven. She [[made sure]] she had her list and bought bread, fruit, and a [[snack|/snæk/]] for each person. The bread there was [[not as expensive as]] the bread near the park.",
+      "cn": "哥哥利奥推荐了一家离家两个街区的杂货店。米娜赶时间，快十一点了。她确认带了清单，买了面包、水果和每人一份小吃。那里的面包没有公园附近的贵。"
+    },
+    {
+      "en": "At home, she [[wrapped|/ræpt/]] the sandwiches and put them in a bag. The fruit was [[already|/ɔːlˈredi/]] in it. Leo called. \"I can [[pick you up]] at eleven thirty.\" \"Thanks. I'm ready now,\" Mina said.",
+      "cn": "回到家，她把三明治包好放进袋子，水果已经在袋里了。利奥打来电话：「我十一点半来接你。」「谢谢，我现在准备好了。」米娜说。"
+    },
+    {
+      "en": "At the park, they [[came across]] an old friend by the gate. \"Eat with us!\" Mina said. They arrived [[in time]] for lunch. A [[crowd|/kraʊd/]] sat at the tables, but Leo [[spotted|/ˈspɒtɪd/]] a quiet place under a tree.",
+      "cn": "在公园门口，他们偶然遇到一位老朋友。「和我们一起吃吧！」米娜说。他们赶上了午餐时间。桌子都被一群人占了，但利奥发现树下有个安静的地方。"
+    },
+    {
+      "en": "The [[wind|/wɪnd/]] lifted their [[blanket|/ˈblæŋkɪt/]]. Leo [[held|/held/]] one corner while Mina set out the food. \"This picnic is [[as good as]] a big party,\" her sister said. Mina smiled. \"I really [[appreciate|/əˈpriːʃieɪt/]] your help, Leo.\"",
+      "cn": "风把他们的野餐毯掀了起来。利奥按住一角，米娜摆好食物。妹妹说：「这次野餐和大聚会一样棒。」「利奥，真的谢谢你帮忙。」米娜笑了。"
+    }
+  ],
+  "focus": [
+    {"item": "To do, S + V", "tag": "骨架", "mean": "为了做……，某人做了……", "core": "句首先说目的，后面再说行动；省钱和做午餐的是同一个人。", "forms": ["To save money, she decided to make lunch herself.", "To find a gift within her budget, she looked at used books.（第 3 篇）"], "warn": "句首 To save money 回答『为什么自己做』，不是另一个人的目的。"},
+    {"item": "(not) as + 形容词 + as", "tag": "骨架", "mean": "（不）和……一样……", "core": "拿两家店的面包比较价格；最后把野餐和聚会比较。", "forms": ["The bread was not as expensive as the bread near the park.", "This picnic is as good as a big party."], "warn": "两处 as 中间用原级 expensive / good，不说 as more expensive as。"},
+    {"item": "in a hurry / in time", "tag": "词组", "mean": "赶时间 / 及时赶上", "core": "买东西时赶，最后还是赶上了午餐；前者是状态，后者是结果。", "forms": ["Mina was in a hurry.", "They arrived in time for lunch."], "warn": "in time 是来得及；on time 才是按约定时刻准点。"},
+    {"item": "pick sb up", "tag": "词组", "mean": "接人", "core": "利奥来接米娜，不是『捡起米娜』。", "forms": ["I can pick you up at eleven thirty.", "She needed to pick up her little brother from school at four.（第 3 篇）"], "warn": "代词放中间：pick you up；不说 pick up you。"},
+    {"item": "budget / afford", "tag": "单词", "mean": "预算 / 负担得起", "core": "钱的总额度有限，所以不去餐厅。", "forms": ["Her budget was small.", "She could not afford to eat at a restaurant."], "warn": "afford 后常接 to do：can't afford to eat out。"}
+  ],
+  "drills": [
+    {"cn": "为了省钱，她决定自己做午餐。", "en": "[[To save money]], she decided to make lunch herself."},
+    {"cn": "那里的面包没有公园附近的贵。", "en": "The bread there was [[not as expensive as]] the bread near the park."},
+    {"cn": "米娜赶时间。", "en": "Mina was [[in a hurry]]."},
+    {"cn": "他们来得及和朋友一起吃午饭。", "en": "They arrived [[in time]] to eat with their friend."},
+    {"cn": "我十一点半来接你。", "en": "I can [[pick you up]] at eleven thirty."},
+    {"cn": "利奥，真的谢谢你帮忙。", "en": "I really [[appreciate]] your help, Leo."}
+  ],
+  "speak": [
+    {"q": "说一个你为了省钱而做过的选择。", "a": "To save money, I made lunch at home."},
+    {"q": "说一次你赶时间，但最终来得及的经历。", "a": "I was in a hurry, but I arrived in time."},
+    {"q": "比较两种你真的买过的东西，用 not as ... as。", "a": "This bag is not as expensive as my old one."}
+  ]
+}

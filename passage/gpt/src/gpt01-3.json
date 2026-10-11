@@ -1,0 +1,50 @@
+{
+  "id": "gpt01-3",
+  "unit": 1,
+  "units_file": "passage/gpt/units.json",
+  "dir": "passage/gpt",
+  "back": "../../index.html#passage",
+  "title": "An Old Book, a New Plan",
+  "cn_title": "一本旧书，一个新计划",
+  "kicker": "GPT 独立第 1 组 · 第 3 篇",
+  "how": "<b>同一批骨架和词，第三个场景。</b>读完不要立刻重读：先说出美为什么买旧书、怎样赶到学校，再试着把自己的经历填进骨架。点黄色词可听有道发音。",
+  "audio": false,
+  "paras": [
+    {
+      "en": "On Friday afternoon, Mei went to a used-book fair near her office. She was [[in a hurry]]: she needed to [[pick up]] her little brother from school at four. [[To find a gift]] [[within]] her [[budget]], she looked at used books. A new book cost more than she could [[afford]].",
+      "cn": "周五下午，美去了办公室附近的旧书市集。她赶时间，因为四点要去学校接弟弟。为了在预算内找到礼物，她翻看旧书；新书太贵，她买不起。"
+    },
+    {
+      "en": "She [[came across]] an old book about local parks. It was [[almost]] [[as useful as]] the new one, and much cheaper. The seller [[recommended]] a park by the river. Mei [[spotted]] a photo of a small [[picnic]] area in the book. She [[decided]] to go there with her brother on Sunday. She [[made sure]] the book was in her bag.",
+      "cn": "她偶然发现一本介绍本地公园的旧书。它几乎和新书一样有用，却便宜得多。摊主推荐了河边的一座公园，美在书里看到了那里的小型野餐区。她决定周日带弟弟去，还确认书已经放进包里。"
+    },
+    {
+      "en": "Outside, the [[wind]] blew hard. Mei [[held]] her bag close. A [[crowd]] waited at the bus stop, but the school was only two [[blocks]] away. She walked past them and arrived [[in time]]; her brother was [[already]] waiting.",
+      "cn": "外面风很大。美把包紧紧抱在身边。公交站有一群人在等车，不过学校只有两个街区远。她从人群旁走过去，及时赶到了；弟弟已经在等她。"
+    },
+    {
+      "en": "At home, they made a list for Sunday: [[groceries]], [[snacks]], and a [[blanket]]. \"We can [[wrap]] our sandwiches before we leave,\" Mei said. Her brother smiled. \"Then we won't be [[in a hurry]] in the morning.\" They planned to leave early and enjoy their day together.",
+      "cn": "回到家，他们列了周日的清单：食材、零食和野餐毯。美说：「我们可以出门前把三明治包好。」弟弟笑着说：「那早上就不用手忙脚乱了。」他们计划早点出发，一起好好度过那一天。"
+    }
+  ],
+  "focus": [
+    {"item": "To do, S + V", "tag": "骨架", "mean": "为了……，做……", "core": "美翻旧书是为了找到预算内的礼物，和第 1 篇为了省钱做饭不同。", "forms": ["To find a gift within her budget, she looked at used books.", "To help her, Noah picked up two bags.（第 2 篇）"], "warn": "目的短语的动作执行者通常就是后面主句的主语：找礼物和翻书的都是美。"},
+    {"item": "as + 形容词 + as", "tag": "骨架", "mean": "和……一样……", "core": "旧书几乎和新书一样有用；almost 表示差一点达到同样程度。", "forms": ["It was almost as useful as the new one.", "The path was not as busy as the main road.（第 2 篇）"], "warn": "almost as useful as = 几乎一样有用；不是完全相等。"},
+    {"item": "come across / spot", "tag": "词组＋单词", "mean": "偶然遇到 / 发现、看见", "core": "无意间翻到旧书；之后在书里看见公园的照片。", "forms": ["She came across an old book.", "Mei spotted a photo in the book."], "warn": "come across 强调意外碰上；spot 强调眼睛发现。"},
+    {"item": "in a hurry / in time", "tag": "词组", "mean": "赶时间 / 及时赶上", "core": "开始着急接人，后来及时赶到学校；次日准备好就不用慌。", "forms": ["She was in a hurry.", "She arrived in time.", "We won't be in a hurry in the morning."], "warn": "in time to meet her brother = 来得及接弟弟；on time 强调按约定时刻准点。"},
+    {"item": "pick up", "tag": "词组", "mean": "接人 / 取东西", "core": "这里是去学校接弟弟，不同于第 2 篇从店里取货。", "forms": ["She needed to pick up her brother from school.", "Noah picked up two bags at the shop.（第 2 篇）"], "warn": "宾语是代词：pick him up；不是 pick up him。"}
+  ],
+  "drills": [
+    {"cn": "为了在预算内找礼物，她翻看旧书。", "en": "[[To find a gift within her budget]], she looked at used books."},
+    {"cn": "这本旧书几乎和新书一样有用。", "en": "It was almost [[as useful as]] the new one."},
+    {"cn": "她偶然发现一本介绍本地公园的旧书。", "en": "She [[came across]] an old book about local parks."},
+    {"cn": "她四点得去学校接弟弟。", "en": "She needed to [[pick up]] her little brother from school at four."},
+    {"cn": "她来得及接弟弟。", "en": "She arrived [[in time]] to pick up her brother."},
+    {"cn": "我们可以出门前把三明治包好。", "en": "We can [[wrap]] our sandwiches before we leave."}
+  ],
+  "speak": [
+    {"q": "说一件你为了省钱或赶时间而做过的事。", "a": "To save money, I looked at used books."},
+    {"q": "比较两件你用过的东西，说明它们是否一样好用。", "a": "My old bag is almost as useful as my new one."},
+    {"q": "说你偶然碰到什么，然后做了什么决定。", "a": "I came across an old book, so I decided to read it."}
+  ]
+}

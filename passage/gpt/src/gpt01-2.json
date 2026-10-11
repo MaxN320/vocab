@@ -1,0 +1,46 @@
+{
+  "id": "gpt01-2",
+  "unit": 1,
+  "units_file": "passage/gpt/units.json",
+  "dir": "passage/gpt",
+  "back": "../../index.html#passage",
+  "next": "gpt01-3",
+  "next_label": "下一篇：换个场景再练",
+  "title": "The Hill Street Delivery",
+  "cn_title": "山街的送货任务",
+  "kicker": "GPT 独立第 1 组 · 第 2 篇",
+  "how": "<b>同一组，换成送货场景。</b>先不看中文读完；再遮住故事做回忆题，最后把其中一句换成你自己的经历。黄色词可点听有道发音。",
+  "audio": false,
+  "paras": [
+    {
+      "en": "On Monday, Noah worked for a [[grocery store]] on Hill Street. He needed to [[deliver|/dɪˈlɪvə/]] food to Mrs Park, a [[regular|/ˈreɡjələ/]] customer, [[within|/wɪˈðɪn/]] an hour. She could not carry heavy bags herself. [[To help her]], Noah [[picked up]] two bags at the shop. They were [[already]] packed.",
+      "cn": "周一，诺亚在山街的一家杂货店工作。他得在一小时内给常客帕克太太送去食物。她自己提不动重袋子。为了帮她，诺亚在店里取了两袋东西，袋子已经装好了。"
+    },
+    {
+      "en": "Outside, a van [[blocked|/blɒkt/]] the road. A [[crowd]] waited for the bus, and Noah did not want to be late. \"I'm [[in a hurry]]. Is there another way?\" he asked. A woman [[recommended]] a path behind the station. Noah checked the address on his phone [[to make sure]] he had the right house.",
+      "cn": "外面，一辆货车堵住了路。一群人在等公交，诺亚不想迟到。他问：「我赶时间。还有别的路吗？」一位女士推荐了车站后面的小路。为了确认没走错地方，诺亚看了看手机里的地址。"
+    },
+    {
+      "en": "The path was [[not as busy as]] the main road. Noah walked fast and [[spotted]] Mrs Park at her door. He arrived [[in time]] for her lunch. \"I really [[appreciate]] your help,\" she said. \"Those bags were too heavy for me.\" Noah smiled. \"I'm glad I got here.\"",
+      "cn": "小路没有大马路那么忙，诺亚快步走，很快发现帕克太太站在门口。他及时赶上了她的午餐时间。「真谢谢你帮忙，」她说，「那些袋子对我来说太重了。」诺亚笑了：「幸好我赶到了。」"
+    }
+  ],
+  "focus": [
+    {"item": "To do, S + V", "tag": "骨架", "mean": "为了……，做……", "core": "为了帮帕克太太，诺亚从店里取了两袋东西；目的和行动由同一个人完成。", "forms": ["To help her, Noah picked up two bags at the shop.", "To save money, she decided to make lunch herself.（第 1 篇）"], "warn": "这里帮人和取货的是同一个人。"},
+    {"item": "(not) as ... as", "tag": "骨架", "mean": "（不）和……一样……", "core": "比较小路与大马路的繁忙程度。", "forms": ["The path was not as busy as the main road.", "The bread was not as expensive as the bread near the park.（第 1 篇）"], "warn": "中间用 busy 原级，不用 busier。"},
+    {"item": "pick up / deliver", "tag": "词组＋单词", "mean": "去取东西 / 送到某人手上", "core": "先在店里取两袋货，再送到帕克太太家；一取一送。", "forms": ["Noah picked up two bags at the shop.", "He needed to deliver food to Mrs Park."], "warn": "这里 pick up 是『取货』；第 1 篇 pick you up 是『开车接人』。"},
+    {"item": "make sure / within", "tag": "词组＋单词", "mean": "确认 / 不超过……时间", "core": "手机核对地址，送达不超过一小时。", "forms": ["He checked the address to make sure he had the right house.", "He needed to deliver food within an hour."], "warn": "within an hour 是『一小时之内』，不是恰好在一小时整。"}
+  ],
+  "drills": [
+    {"cn": "为了帮她，诺亚在店里取了两袋东西。", "en": "[[To help her]], Noah picked up two bags at the shop."},
+    {"cn": "小路没有大马路那么忙。", "en": "The path was [[not as busy as]] the main road."},
+    {"cn": "他得在一小时内给帕克太太送去食物。", "en": "He needed to deliver food to Mrs Park [[within an hour]]."},
+    {"cn": "为了确认自己找对了房子，诺亚看了看地址。", "en": "Noah checked the address [[to make sure]] he had the right house."},
+    {"cn": "他及时赶到，在午饭前把食材送给她。", "en": "He arrived [[in time]] to bring her the groceries before lunch."}
+  ],
+  "speak": [
+    {"q": "说一件你为了帮别人而做的事。", "a": "To help my friend, I carried her bag."},
+    {"q": "说你上次在哪里取了一样东西，后来送到了哪里。", "a": "I picked up a bag at the shop and delivered it to my friend."},
+    {"q": "说一次你用手机确认地址、时间或约定的经历。", "a": "I checked my phone to make sure I had the right address."}
+  ]
+}

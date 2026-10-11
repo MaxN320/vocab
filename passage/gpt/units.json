@@ -1,0 +1,21 @@
+{
+  "series": "GPT 独立短文内化",
+  "source": "用户原有 01-骨架.md、02-词组列表.md、04-生词本.md；不使用原有短文大纲的分组和进度",
+  "units": [
+    {
+      "unit": 1,
+      "date": "2026-10-11",
+      "skeletons": ["To do, S + V（表目的）", "as + 形容词 / 副词 + as …（同程度比较）"],
+      "phrases": ["in a hurry", "in time", "pick sb/sth up", "make sure", "come across sb/sth"],
+      "words": ["almost", "already", "spot", "block", "grocery", "budget", "appreciate", "recommend", "crowd", "regular", "deliver", "decide", "afford", "within", "picnic", "blanket", "snack", "wrap", "hold", "wind"],
+      "pages": [
+        {"id": "gpt01-1", "title": "Lunch Under the Trees", "cn": "树下的午餐"},
+        {"id": "gpt01-2", "title": "The Hill Street Delivery", "cn": "山街的送货任务"},
+        {"id": "gpt01-3", "title": "An Old Book, a New Plan", "cn": "一本旧书，一个新计划"}
+      ],
+      "assigned": {"skeleton": 2, "phrase": 5, "word": 20},
+      "practiced": 0,
+      "next_unit": "only_when_user_explicitly_decides"
+    }
+  ]
+}
