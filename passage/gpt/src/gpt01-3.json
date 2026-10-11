@@ -19,12 +19,12 @@
       "cn": "她偶然发现一本介绍本地公园的旧书。它几乎和新书一样有用，却便宜得多。摊主推荐了河边的一座公园，美在书里看到了那里的小型野餐区。她决定周日带弟弟去，还确认书已经放进包里。"
     },
     {
-      "en": "Outside, the [[wind]] blew hard. Mei [[held]] her bag close. A [[crowd]] waited at the bus stop, but the school was only two [[blocks]] away. She walked past them and arrived [[in time]]; her brother was [[already]] waiting.",
-      "cn": "外面风很大。美把包紧紧抱在身边。公交站有一群人在等车，不过学校只有两个街区远。她从人群旁走过去，及时赶到了；弟弟已经在等她。"
+      "en": "Outside, the [[wind]] blew hard. Mei kept her bag close. A [[crowd]] waited at the bus stop, but the school was only two [[blocks]] away. She walked past them and arrived [[in time]]; her brother was [[already]] waiting.",
+      "cn": "外面风很大。美把包放在身边。公交站有一群人在等车，不过学校只有两个街区远。她从人群旁走过去，及时赶到了；弟弟已经在等她。"
     },
     {
-      "en": "At home, they made a list for Sunday: [[groceries]], [[snacks]], and a [[blanket]]. \"We can [[wrap]] our sandwiches before we leave,\" Mei said. Her brother smiled. \"Then we won't be [[in a hurry]] in the morning.\" They planned to leave early and enjoy their day together.",
-      "cn": "回到家，他们列了周日的清单：食材、零食和野餐毯。美说：「我们可以出门前把三明治包好。」弟弟笑着说：「那早上就不用手忙脚乱了。」他们计划早点出发，一起好好度过那一天。"
+      "en": "At home, they made a [[grocery]] list for Sunday: bread, [[snacks]], and water. \"We can buy everything on Saturday,\" Mei said. Her brother smiled. \"Then we won't be [[in a hurry]] on Sunday morning.\" They planned to leave early and enjoy their day together.",
+      "cn": "回到家，他们列了一张周日野餐的采购清单：面包、零食和水。美说：「周六就可以买齐这些东西。」弟弟笑着说：「那周日早上就不用赶了。」他们计划早点出发，一起好好度过那一天。"
     }
   ],
   "focus": [
@@ -40,7 +40,7 @@
     {"cn": "她偶然发现一本介绍本地公园的旧书。", "en": "She [[came across]] an old book about local parks."},
     {"cn": "她四点得去学校接弟弟。", "en": "She needed to [[pick up]] her little brother from school at four."},
     {"cn": "她来得及接弟弟。", "en": "She arrived [[in time]] to pick up her brother."},
-    {"cn": "我们可以出门前把三明治包好。", "en": "We can [[wrap]] our sandwiches before we leave."}
+    {"cn": "她确认书在包里。", "en": "She [[made sure]] the book was in her bag."}
   ],
   "speak": [
     {"q": "说一件你为了省钱或赶时间而做过的事。", "a": "To save money, I looked at used books."},
