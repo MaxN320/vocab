@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back in the Water</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 1 组 · 第 5 篇（回到简单场景）</div><h1>Back in the Water</h1><div class="sub">再下水试试</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit01-1.html">1 新邻居</a><a href="unit01-2.html">2 周日的咖啡馆</a><a href="unit01-3.html">3 钥匙找不到了</a><a href="unit01-4.html">4 进阶：莉莉的日记</a><a href="unit01-5.html" class="on">5 再下水试试</a><a href="unit01-s.html">✍️ 骨架造句</a><a href="unit01-s2.html">✍️ 进阶造句</a></div><div class="toc-row"><span>本页</span><a href="#sec-text">短文</a><a href="#sec-focus">拆开看</a><a href="#sec-drill">回忆练习</a><a href="#sec-speak">换成你自己的事</a></div></nav>
+<div class="how"><b>还是第 1 组，不学新组。</b>先读莉莉和安娜去游泳的故事；黄色词点一下听有道发音，看不懂再点「中文」。读完先遮住正文做回忆题，最后用这组说法讲自己的事。</div>
+<div class="toggle">　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div id="sec-text"><div class="p"><div class="en">On Sunday morning, Lily met Anna outside a swimming pool. Lily held a small bag. &quot;<span class="w">Are you ready</span>?&quot; Anna asked. &quot;<span class="w">I&#x27;m not sure</span>,&quot; said Lily. &quot;I <span class="w">like</span><span class="ipa">/laɪk/</span> swimming, but I don&#x27;t <span class="w">know</span><span class="ipa">/nəʊ/</span> this place.&quot;</div><div class="cn">星期天早上，莉莉在游泳馆外见到了安娜。莉莉拎着一个小包。安娜问：「你准备好了吗？」「我不太确定，」莉莉说，「我喜欢游泳，但不熟悉这里。」</div><div class="bar"><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Anna showed her the door. &quot;<span class="w">There&#x27;s</span> a small pool on the left, and <span class="w">there are</span> lockers near the wall. We <span class="w">don&#x27;t have to</span> hurry.&quot; &quot;Good. I forgot my towel. Where can I <span class="w">get</span><span class="ipa">/ɡet/</span> one?&quot; &quot;I <span class="w">have</span><span class="ipa">/hæv/</span> an extra one in my bag. Here you are.&quot;</div><div class="cn">安娜领她进了门。「左边有一个小泳池，墙边有储物柜。我们不用着急。」「太好了。我忘带毛巾了，去哪儿能弄到一条？」「我包里多带了一条，给你。」</div><div class="bar"><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">At the pool, Lily put one foot in the water. &quot;It&#x27;s cold!&quot; &quot;<span class="w">Go on</span>, <span class="w">get in</span> slowly. <span class="w">I&#x27;ll</span><span class="ipa">/aɪl/</span> stay next to you.&quot; Lily took another step. Then she began to swim. &quot;<span class="w">Are you OK</span>?&quot; Anna asked. &quot;Yes, <span class="w">I&#x27;m fine</span> now.&quot;</div><div class="cn">到了泳池边，莉莉把一只脚伸进水里。「好冷！」「来吧，慢慢下水。我会在旁边陪你。」莉莉又往前迈了一步，然后游了起来。安娜问：「你还好吗？」「嗯，我现在没事了。」</div><div class="bar"><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">After a few minutes, Lily stopped to rest. &quot;I <span class="w">thought</span><span class="ipa">/θɔːt/</span> this would be hard, but I&#x27;m doing <span class="w">well</span><span class="ipa">/wel/</span>!&quot; &quot;You are,&quot; said Anna. &quot;Do you want to try again?&quot; &quot;Yes. <span class="w">I&#x27;m going to</span> swim to the other side.&quot; Anna smiled. &quot;I <span class="w">think</span><span class="ipa">/θɪŋk/</span> you can do it.&quot;</div><div class="cn">过了几分钟，莉莉停下来歇了歇。「我原以为会很难，可我游得还不错！」「是啊，」安娜说，「要不要再试一次？」「要。我打算游到另一边。」安娜笑了：「我觉得你能做到。」</div><div class="bar"><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">When they left, Lily said, &quot;I <span class="w">have to</span> work tomorrow, but <span class="w">I&#x27;m going to</span> come back next Sunday.&quot; Anna said, &quot;Great. <span class="w">I&#x27;ll</span> come with you.&quot;</div><div class="cn">离开时，莉莉说：「我明天得上班，不过下个星期天我打算再来。」安娜说：「太好了，我陪你来。」</div><div class="bar"><button class="cnbtn">中文</button></div></div></div>
+<div class="sec" id="sec-focus"><h2>拆开看：这 6 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>Are you + 形容词 / 名词?</b><i>骨架</i><span>你……吗？</span></div><div class="fcore">把 are 放到 you 前，问对方的状态；这次换成游泳前和游泳中。</div><div class="ff"><div>Are you ready?</div><div>Are you OK?</div><div>Are you tired?（第 2 篇）</div></div><div class="fw">⚠️ 回答 Yes, I am. / No, I&#x27;m not.；不要说 Yes, I&#x27;m.</div></div><div class="fc"><div class="fh"><b>I&#x27;m + 形容词 / 名词</b><i>骨架</i><span>我很……；我是……</span></div><div class="fcore">说自己的状态，开始不确定，下水后感觉好了。</div><div class="ff"><div>I&#x27;m not sure.</div><div>I&#x27;m fine now.</div><div>I&#x27;m a nurse.（第 1 篇）</div></div><div class="fw">⚠️ 说职业要加 a/an；说状态不加：I&#x27;m fine，不说 I&#x27;m a fine。</div></div><div class="fc"><div class="fh"><b>have to / don&#x27;t have to</b><i>词组</i><span>必须；不必</span></div><div class="fcore">有事不得不做：明天得上班；没必要做：现在不必着急。</div><div class="ff"><div>We don&#x27;t have to hurry.</div><div>I have to work tomorrow.</div><div>I have to start my new job on Monday.（第 1 篇）</div></div><div class="fw">⚠️ don&#x27;t have to 是『不必』，不是『不许』。</div></div><div class="fc"><div class="fh"><b>go on</b><i>词组</i><span>继续；来吧，接着试</span></div><div class="fcore">看对方犹豫，就鼓励对方继续往前。</div><div class="ff"><div>Go on, get in slowly.</div><div>Go on, tell us.（第 2 篇）</div></div><div class="fw">⚠️ 这里是鼓励继续；别把 go on 当成单纯的『走到上面』。</div></div><div class="fc"><div class="fh"><b>get</b><span class="ipa">/ɡet/</span><i>单词</i><span>拿到；到达某处</span></div><div class="fcore">需要毛巾就去弄到一条；get in 是进到水里。</div><div class="ff"><div>Where can I get one?</div><div>Go on, get in slowly.</div><div>I need to get some food.（第 1 篇）</div></div><div class="fw">⚠️ get + 东西是弄到；get in 是进到里面。</div></div><div class="fc"><div class="fh"><b>well</b><span class="ipa">/wel/</span><i>单词</i><span>好地（做得好）</span></div><div class="fcore">说动作做得怎么样：游得好、做得好。</div><div class="ff"><div>I&#x27;m doing well!</div><div>You did well.（第 3 篇）</div></div><div class="fw">⚠️ 说游得好用 swim well；well 在这里不是形容人『是个好人』。</div></div></div><div class="sec" id="sec-drill"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案</div><div class="dr"><div class="dcn"><em>1</em>你准备好了吗？</div><div class="den"><span class="gap" data-ans="Are you ready">　　　</span>?</div><div class="bar"></div></div><div class="dr"><div class="dcn"><em>2</em>我不太确定。</div><div class="den"><span class="gap" data-ans="I&#x27;m not sure">　　　</span>.</div><div class="bar"></div></div><div class="dr"><div class="dcn"><em>3</em>我们不用着急。</div><div class="den">We <span class="gap" data-ans="don&#x27;t have to">　　　</span> hurry.</div><div class="bar"></div></div><div class="dr"><div class="dcn"><em>4</em>我去哪儿能弄到一条（毛巾）？</div><div class="den">Where can I <span class="gap" data-ans="get">　　　</span> one?</div><div class="bar"></div></div><div class="dr"><div class="dcn"><em>5</em>来吧，慢慢下水。</div><div class="den"><span class="gap" data-ans="Go on">　　　</span>, get in slowly.</div><div class="bar"></div></div><div class="dr"><div class="dcn"><em>6</em>我游得不错！</div><div class="den">I&#x27;m doing <span class="gap" data-ans="well">　　　</span>!</div><div class="bar"></div></div><div class="dr"><div class="dcn"><em>7</em>我打算游到另一边。</div><div class="den"><span class="gap" data-ans="I&#x27;m going to">　　　</span> swim to the other side.</div><div class="bar"></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec" id="sec-speak"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 朋友犹豫时，先问『你准备好了吗？』，再说『来吧，慢慢来』。</div><details><summary>看参考说法</summary><div class="sa">Are you ready? Go on, take your time.</div></details></div><div class="sp"><div>2. 说一件你明天必须做的事，再说一件你今天不必做的事。</div><details><summary>看参考说法</summary><div class="sa">I have to work tomorrow, but I don&#x27;t have to hurry today.</div></details></div><div class="sp"><div>3. 讲一次你起初不确定、后来做得不错的经历。</div><details><summary>看参考说法</summary><div class="sa">I wasn&#x27;t sure at first, but I did well.</div></details></div></div><a class="next" href="unit01-s.html">下一步：骨架造句 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) n.click(); } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+var allBtn = document.getElementById("all");
+if (allBtn) allBtn.onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+function copyFallback(t) {
+  var a = document.createElement("textarea"); a.value = t; a.setAttribute("readonly", "");
+  a.style.position = "fixed"; a.style.top = "0"; a.style.opacity = "0"; document.body.appendChild(a);
+  a.select(); a.setSelectionRange(0, t.length); var ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(a); return ok;
+}
+document.querySelectorAll(".cpbtn").forEach(function (b) { b.onclick = function (ev) {
+  ev.stopPropagation(); var t = b.dataset.copy, old = b.textContent;
+  var done = function () { b.textContent = "已复制 ✓"; b.classList.add("playing"); setTimeout(function () { b.textContent = old; b.classList.remove("playing"); }, 1500); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, function () { if (copyFallback(t)) done(); });
+  else if (copyFallback(t)) done();
+}; });
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
