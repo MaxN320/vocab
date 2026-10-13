@@ -23,8 +23,8 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 /* ---- 顶部 ---- */
 .brand{font-size:26px;font-weight:700}
 .sub{font-size:13px;color:var(--ink-mute);margin:6px 0 18px}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
-.tab{appearance:none;border:0;background:transparent;color:var(--ink-soft);font:600 14.5px var(--sans);padding:9px 0;border-radius:9px;cursor:pointer}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.tab{appearance:none;border:0;background:transparent;color:var(--ink-soft);font:600 14.5px var(--sans);padding:9px 0;border-radius:9px;cursor:pointer;white-space:nowrap}
 .tab .n{font-weight:500;font-size:12px;color:var(--ink-mute);margin-left:5px}
 .tab.on{background:var(--card-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .tab.on .n{color:var(--accent)}
@@ -116,6 +116,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
     <button class="tab" data-tab="quiz" role="tab">测验<span class="n" id="n-quiz"></span></button>
     <button class="tab" data-tab="check" role="tab">对照检查<span class="n" id="n-check"></span></button>
     <button class="tab" data-tab="passage" role="tab">短文<span class="n" id="n-passage"></span></button>
+    <button class="tab" data-tab="article" role="tab">文章<span class="n" id="n-article"></span></button>
   </div>
   <a class="sentence-link" href="句子本.html">句子本 <span aria-hidden="true">›</span></a>
 </header>
@@ -145,6 +146,11 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
   <div class="quiz-intro">以下是原有大纲与页面，不计入 GPT 的组别和进度。</div>
   <div class="pp" id="passprog"></div>
   <div id="passlist"><div class="empty">还没有短文</div></div>
+</main>
+
+<main id="view-article" hidden>
+  <div class="quiz-intro">看到的好文章收在这里：英文原文、中文意思和要点。</div>
+  <div id="articlelist"><div class="empty">还没有文章</div></div>
 </main>
 </div>
 
@@ -533,9 +539,30 @@ fetch('passage/units.json?' + Date.now()).then(r => r.json()).then(d => {
   });
 }).catch(() => {});
 
-/* 四个标签页：地址带 #quiz / #check / #passage 时直接打开对应的页 */
+/* 文章：收藏的文章，索引在 article/articles.json（新的放最前面） */
+document.getElementById('n-article').textContent = 0;
+fetch('article/articles.json?' + Date.now()).then(r => r.ok ? r.json() : {}).then(d => {
+  const list = d.articles || [];
+  document.getElementById('n-article').textContent = list.length;
+  if (!list.length) return;
+  const box = document.getElementById('articlelist');
+  box.innerHTML = '';
+  list.forEach((x, i) => {
+    const [, mm, dd] = (x.date || '').split('-');
+    const a = document.createElement('a');
+    a.className = 'quiz';
+    a.href = 'article/' + encodeURIComponent(x.id) + '.html';
+    a.innerHTML =
+      `<div class="q-top"><span class="q-title">${escHtml(x.title)}</span>${i === 0 && list.length > 1 ? '<span class="new">最新</span>' : ''}</div>
+       ${x.desc ? `<div class="q-desc">${escHtml(x.desc)}</div>` : ''}
+       <div class="q-meta">${x.words ? `<span>约 ${x.words} 词</span>` : ''}${mm ? `<span>${+mm} 月 ${+dd} 日</span>` : ''}</div>`;
+    box.appendChild(a);
+  });
+}).catch(() => {});
+
+/* 五个标签页：地址带 #quiz / #check / #passage / #article 时直接打开对应的页 */
 const tabs = [...document.querySelectorAll('.tab')];
-const VIEWS = ['notes', 'quiz', 'check', 'passage'];
+const VIEWS = ['notes', 'quiz', 'check', 'passage', 'article'];
 function show(name) {
   VIEWS.forEach(v => { document.getElementById('view-' + v).hidden = name !== v; });
   tabs.forEach(t => { t.classList.toggle('on', t.dataset.tab === name); t.setAttribute('aria-selected', t.dataset.tab === name); });
