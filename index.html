@@ -23,15 +23,12 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 /* ---- 顶部 ---- */
 .brand{font-size:26px;font-weight:700}
 .sub{font-size:13px;color:var(--ink-mute);margin:6px 0 18px}
-.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
 .tab{appearance:none;border:0;background:transparent;color:var(--ink-soft);font:600 14.5px var(--sans);padding:9px 0;border-radius:9px;cursor:pointer;white-space:nowrap}
 .tab .n{font-weight:500;font-size:12px;color:var(--ink-mute);margin-left:5px}
 .tab.on{background:var(--card-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .tab.on .n{color:var(--accent)}
 .tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.sentence-link{display:block;margin-top:12px;padding:12px 14px;background:var(--card);border:1px solid var(--line);
-  border-radius:12px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:600}
-.sentence-link:hover,.sentence-link:focus-visible{border-color:var(--accent);color:var(--accent)}
 
 /* ---- 章节目录 ---- */
 .toc{position:sticky;top:0;z-index:10;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
@@ -65,7 +62,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 .it-arrow{flex-shrink:0;font-size:18px;color:var(--ink-mute)}
 .badge{font-size:10.5px;padding:2px 7px;border-radius:6px;font-weight:700;background:rgba(226,178,60,.15);color:var(--amber)}
 
-/* ---- 测验 ---- */
+/* ---- 列表卡片（对照检查、短文、文章共用） ---- */
 .quiz-intro{margin:18px 0 14px;padding:10px 12px;font-size:13px;line-height:1.7;color:var(--ink-soft);
   background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px}
 .quiz{display:block;margin-bottom:10px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -113,21 +110,15 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
   <div class="sub" id="sub"></div>
   <div class="tabs" role="tablist">
     <button class="tab" data-tab="notes" role="tab">语法笔记<span class="n" id="n-notes"></span></button>
-    <button class="tab" data-tab="quiz" role="tab">测验<span class="n" id="n-quiz"></span></button>
     <button class="tab" data-tab="check" role="tab">对照检查<span class="n" id="n-check"></span></button>
     <button class="tab" data-tab="passage" role="tab">短文<span class="n" id="n-passage"></span></button>
     <button class="tab" data-tab="article" role="tab">文章<span class="n" id="n-article"></span></button>
   </div>
-  <a class="sentence-link" href="句子本.html">句子本 <span aria-hidden="true">›</span></a>
 </header>
 
 <main id="view-notes">
   <nav class="toc" id="toc"></nav>
   <div id="body"></div>
-</main>
-
-<main id="view-quiz" hidden>
-  <div id="quizlist"></div>
 </main>
 
 <main id="view-check" hidden>
@@ -160,8 +151,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
      条目 { label:'00 · 标题', href, desc } → 正常链接（label 开头的编号会显示成左边的方块）
           { label, desc, todo:true }        → 还没写的，虚线灰显，不可点
      label 为空的 section 不显示子标题。
-   测验 QUIZZES：{ label, n:题数, href, date:'YYYY-MM-DD', desc }，最新的放最上面
-     （scripts/quiz_page.py 会自动插在 QUIZ-ITEMS 标记下面）
 ====================================================== */
 const MODULES = [
   {
@@ -334,62 +323,9 @@ const MODULES = [
           desc:'全部倒装（地点 + 动词 + 主语）；部分倒装（否定词、only 放句首，助动词提到主语前，读起来就是一般疑问句）；强调句 It is … that 套壳，否定要挪到 is 上；最后是整门课的主线。' }
       ]}
     ]
-  },
-
-  {
-    id: 'drill',
-    name: '句库篇',
-    intro: '时态、语态、句型放在一起练：一个时态一页，同一件事换主动被动，再换陈述、否定、一般疑问、特殊疑问，看熟了就会用。',
-    sections: [
-      { label: '', items: [
-        { label:'00 · 总览', href:'总语法/时态语态句库/00-总览.html',
-          desc:'一句话走遍 16 个时态的主动和被动；四种句型怎么变，一条规则讲完：只动谓语第一个词。' }
-      ]},
-      { label: '各时态句库', items: [
-        { label:'01 · 一般现在时', href:'总语法/时态语态句库/01-一般现在时.html',
-          desc:'常态、习惯、事实——讲「一向如此」，不是「此刻正在」。（12 组主动↔被动 + 9 组只有主动）' },
-        { label:'02 · 现在进行时', href:'总语法/时态语态句库/02-现在进行时.html',
-          desc:'框住一个时间窗，窗里的动作正在进行、还没做完。（12 组主动↔被动 + 9 组只有主动）' },
-        { label:'03 · 现在完成时', href:'总语法/时态语态句库/03-现在完成时.html',
-          desc:'过去的动作，现在的结果——讲的是过去在现在留下的影响。（12 组主动↔被动 + 9 组只有主动）' },
-        { label:'04 · 现在完成进行时', href:'总语法/时态语态句库/04-现在完成进行时.html',
-          desc:'从过去一直做到现在（可能还在做），镜头对准「一直在做」这个过程。（10 组，这个时态没有被动）' },
-        { label:'05 · 一般过去时', href:'总语法/时态语态句库/05-一般过去时.html',
-          desc:'动作封在过去，和现在切断——只说「那时发生了」。（12 组主动↔被动 + 9 组只有主动）' },
-        { label:'06 · 过去进行时', href:'总语法/时态语态句库/06-过去进行时.html',
-          desc:'过去某一刻正在做，常给另一个动作当背景。（8 组主动↔被动 + 6 组只有主动）' },
-        { label:'07 · 过去完成时', href:'总语法/时态语态句库/07-过去完成时.html',
-          desc:'过去的过去——先立一个过去的时间点，再讲它之前已经完成的事。（8 组主动↔被动 + 5 组只有主动）' },
-        { label:'08 · 过去完成进行时', href:'总语法/时态语态句库/08-过去完成进行时.html',
-          desc:'到过去某一点为止，一直在做，做了多久。（6 组，这个时态没有被动）' },
-        { label:'09 · 一般将来时', href:'总语法/时态语态句库/09-一般将来时.html',
-          desc:'从现在指向将来：预测、打算、临时决定。will 和 be going to 两种都练。（12 组主动↔被动 + 8 组只有主动）' },
-        { label:'10 · 将来进行时', href:'总语法/时态语态句库/10-将来进行时.html',
-          desc:'将来某一刻正在做——「明天这个点我正在飞」。（8 组，这个时态没有被动）' },
-        { label:'11 · 将来完成时', href:'总语法/时态语态句库/11-将来完成时.html',
-          desc:'站在将来某个点回头看：到那时已经做完了。（6 组主动↔被动 + 4 组只有主动）' },
-        { label:'12 · 将来完成进行时', href:'总语法/时态语态句库/12-将来完成进行时.html',
-          desc:'到将来某一点为止，一直做了多久。（6 组，这个时态没有被动）' },
-        { label:'13 · 一般过去将来时', href:'总语法/时态语态句库/13-一般过去将来时.html',
-          desc:'站在过去看当时的将来——常跟在 said / thought 后面；was going to 是「原本打算」。（6 组主动↔被动 + 3 组只有主动）' },
-        { label:'14 · 过去将来进行时', href:'总语法/时态语态句库/14-过去将来进行时.html',
-          desc:'站在过去看：将来那一刻正在做。（5 组，这个时态没有被动）' },
-        { label:'15 · 过去将来完成时', href:'总语法/时态语态句库/15-过去将来完成时.html',
-          desc:'站在过去看：到将来某个截止点，已经做完了。（4 组主动↔被动 + 2 组只有主动）' },
-        { label:'16 · 过去将来完成进行时', href:'总语法/时态语态句库/16-过去将来完成进行时.html',
-          desc:'站在过去看：到将来某一点，已经持续了多久。（4 组，这个时态没有被动）' }
-      ]},
-      { label: '不定式', items: [
-        { label:'17 · 不定式', href:'总语法/时态语态句库/17-不定式.html',
-          desc:'to do 也分主动被动、也分早晚：to do / to be done / to have done；情态动词后面去掉 to。（10 组主动↔被动 + 26 句高频 to do）' }
-      ]}
-    ]
   }
 ];
 
-const QUIZZES = [
-  /* QUIZ-ITEMS：新测验由 scripts/quiz_page.py 自动插在这一行下面 */
-];
 /* ====================================================== */
 
 const $toc = document.getElementById('toc'), $body = document.getElementById('body');
@@ -437,22 +373,8 @@ MODULES.forEach(mod => {
   $body.appendChild(sec);
 });
 
-const $quiz = document.getElementById('quizlist');
-QUIZZES.forEach((q, i) => {
-  const [, mm, dd] = (q.date || '').split('-');
-  const a = document.createElement('a');
-  a.className = 'quiz';
-  a.href = q.href;
-  a.innerHTML =
-    `<div class="q-top"><span class="q-title">${q.label}</span>${i === 0 ? '<span class="new">最新</span>' : ''}</div>
-     ${q.desc ? `<div class="q-desc">${q.desc}</div>` : ''}
-     <div class="q-meta"><span>${q.n} ${q.unit || '题'}</span>${mm ? `<span>${+mm} 月 ${+dd} 日</span>` : ''}</div>`;
-  $quiz.appendChild(a);
-});
-
-document.getElementById('sub').textContent = `${notes} 篇笔记 · ${QUIZZES.length} 套测验`;
+document.getElementById('sub').textContent = `${notes} 篇笔记`;
 document.getElementById('n-notes').textContent = notes;
-document.getElementById('n-quiz').textContent = QUIZZES.length;
 
 /* 对照检查：记录由 scripts/check_page.py 写在 check/checks.json，这里读出来 */
 const CHECK_NAMES = { miss:'漏了', half:'抓到一半', off:'理解有偏差', ok:'抓到了' };
@@ -540,9 +462,9 @@ fetch('article/articles.json?' + Date.now()).then(r => r.ok ? r.json() : {}).the
   });
 }).catch(() => {});
 
-/* 五个标签页：地址带 #quiz / #check / #passage / #article 时直接打开对应的页 */
+/* 四个标签页：地址带 #check / #passage / #article 时直接打开对应的页 */
 const tabs = [...document.querySelectorAll('.tab')];
-const VIEWS = ['notes', 'quiz', 'check', 'passage', 'article'];
+const VIEWS = ['notes', 'check', 'passage', 'article'];
 function show(name) {
   VIEWS.forEach(v => { document.getElementById('view-' + v).hidden = name !== v; });
   tabs.forEach(t => { t.classList.toggle('on', t.dataset.tab === name); t.setAttribute('aria-selected', t.dataset.tab === name); });
