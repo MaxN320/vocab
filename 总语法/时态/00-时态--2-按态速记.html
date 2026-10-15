@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时态速记 · 4 个「态」× 4 个「时」</title>
+<style>
+:root{
+  --bg:#0b0f14; --panel:#151b23; --panel-2:#1b2330; --code:#090d12;
+  --ink:#e7eef5; --ink-soft:#9aa6b3; --ink-faint:#69727f; --line:#28313d;
+  --simple:#2dd4bf; --prog:#60a5fa; --perf:#fbbf24; --pprog:#34d399; --warn:#fb7185;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 80px}
+a{color:inherit;text-decoration:none}
+.back{font-size:14px;color:var(--prog)}
+.kicker{margin:18px 0 6px;font-size:12px;letter-spacing:.2em;color:var(--ink-faint)}
+h1{font-size:26px;line-height:1.3;margin:0 0 10px}
+.lead{color:var(--ink-soft);font-size:15px;margin:0 0 18px}
+.lead b{color:var(--ink)}
+h2{font-size:19px;margin:34px 0 10px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+.box p{margin:0 0 8px;font-size:14.5px;color:var(--ink-soft)}
+.box p b{color:var(--ink)}
+.mono{font-family:"SF Mono",Consolas,Menlo,monospace}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--ink-faint);font-weight:600;font-size:12.5px}
+td:first-child,th:first-child{white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.key{margin-top:10px;padding:9px 12px;border-radius:10px;background:var(--panel-2);font-size:14px;color:var(--ink-soft)}
+.key b{color:var(--ink)}
+.aspect{border:1px solid var(--line);border-left:4px solid var(--c);border-radius:14px;background:var(--panel);padding:14px 14px 12px;margin:16px 0}
+.a1{--c:var(--simple)}.a2{--c:var(--prog)}.a3{--c:var(--perf)}.a4{--c:var(--pprog)}
+.aspect h2{margin:0 0 4px;font-size:18px;color:var(--c)}
+.pic{margin:0 0 8px;font-size:15px}
+.fx{display:inline-block;margin:0 0 10px;padding:3px 10px;border-radius:8px;background:var(--code);border:1px solid var(--line);font-size:14px}
+.fx b{color:var(--c)}
+.row{display:block;border-top:1px solid var(--line);padding:9px 2px}
+.row:hover{background:var(--panel-2)}
+.r1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.when{font-size:12px;color:var(--ink-faint);border:1px solid var(--line);border-radius:6px;padding:0 6px}
+.name{font-weight:700;font-size:15px}
+.form{margin-top:3px;font-family:"SF Mono",Consolas,Menlo,monospace;color:var(--c);font-size:14px}
+.tag{margin-left:auto;font-size:11.5px;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.t1{background:rgba(251,113,133,.15);color:#fda4af}.t2{background:rgba(251,191,36,.14);color:#fcd34d}
+.t3{background:rgba(96,165,250,.14);color:#93c5fd}.t4{background:rgba(148,163,184,.14);color:#cbd5e1}
+.en{margin-top:4px;font-size:15px}
+.en b{color:var(--c);font-weight:600}
+.zh{font-size:13.5px;color:var(--ink-soft)}
+.arrow{color:var(--ink-faint);margin-left:4px}
+.sig,.warn{margin-top:8px;padding:8px 11px;border-radius:9px;font-size:13.5px;color:var(--ink-soft)}
+.sig{background:var(--panel-2)}
+.sig b,.warn b{color:var(--ink)}
+.warn{background:rgba(251,113,133,.08);border:1px dashed rgba(251,113,133,.35)}
+ol.steps{margin:0;padding-left:20px;font-size:14.5px;color:var(--ink-soft)}
+ol.steps li{margin:6px 0}
+ol.steps b{color:var(--ink)}
+.grid td{font-family:"SF Mono",Consolas,Menlo,monospace;font-size:12.5px}
+.grid td:first-child{font-family:inherit;font-weight:700;font-size:13px}
+.c1{color:var(--simple)}.c2{color:var(--prog)}.c3{color:var(--perf)}.c4{color:var(--pprog)}
+footer{margin-top:30px;font-size:13px;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../../index.html#tense">← 时态篇</a>
+<div class="kicker">时态 · 速记版</div>
+<h1>十六种时态，其实只要记 4 个画面</h1>
+<p class="lead">每个<b>「态」</b>是一种看动作的方式，也就是一个画面；4 个<b>「时」</b>只是把这个画面挪到不同的时间点：现在、过去、将来、过去的将来。<b>记住 4 个画面，再加 1 条换挡规则，16 种时态都能自己推出来。</b>下面的例句都用同一件事：汤姆（Tom）写作业。</p>
+
+<h2>第一步：换挡规则（定「时」）</h2>
+<div class="box">
+<p><b>只有最前面那个词管时间。</b>后面的形式跟着「态」走，四个时都一样。</p>
+<table>
+<tr><th>时</th><th>最前面那个词</th><th>例子</th></tr>
+<tr><td>现在</td><td class="mono">am / is / are · have / has · do / does</td><td class="mono">is doing · has done</td></tr>
+<tr><td>过去</td><td class="mono">was / were · had · 过去式</td><td class="mono">was doing · had done</td></tr>
+<tr><td>将来</td><td class="mono">will + 原形</td><td class="mono">will be doing · will have done</td></tr>
+<tr><td>过去将来</td><td class="mono">would + 原形</td><td class="mono">would be doing · would have done</td></tr>
+</table>
+<div class="key"><b>「过去将来」就是把「将来」里的 will 换成 would</b>，意思是站在过去看当时的将来，常跟在 said、thought 后面。</div>
+</div>
+
+<h2>第二步：四个画面（定「态」）</h2>
+<div class="box">
+<table>
+<tr><th>态</th><th>后面跟什么</th><th>画面</th></tr>
+<tr><td class="c1">一般</td><td class="mono">动词本身</td><td>有这回事</td></tr>
+<tr><td class="c2">进行</td><td class="mono">be + doing</td><td>那一刻正在做</td></tr>
+<tr><td class="c3">完成</td><td class="mono">have + done</td><td>到那时已经做完</td></tr>
+<tr><td class="c4">完成进行</td><td class="mono">have been + doing</td><td>到那时已经一直做了多久</td></tr>
+</table>
+<div class="key">时 + 态 拼起来就是时态。比如 <b>将来 + 完成</b> = will + have done = <b class="mono">will have done</b>。</div>
+</div>
+<p class="zh">每一行右边标的是学习优先级，和首页时态篇的四档一致；点一行就能打开那个时态的详细笔记。</p>
+
+<section class="aspect a1">
+  <h2>① 一般态：有这回事</h2>
+  <p class="pic">不管过程，只说这件事发生了、经常这样，或者是个事实。</p>
+  <div class="fx">公式：<b>动词本身</b>（时间靠动词变形，或者加 will / would）</div>
+  <a class="row" href="01-一般现在时.html"><div class="r1"><span class="when">现在</span><span class="name">一般现在时</span><span class="tag t1">第一档</span><span class="arrow">›</span></div>
+    <div class="form">do / does</div>
+    <div class="en">Tom <b>does</b> his homework every evening.</div><div class="zh">汤姆每天晚上写作业。</div></a>
+  <a class="row" href="05-一般过去时.html"><div class="r1"><span class="when">过去</span><span class="name">一般过去时</span><span class="tag t1">第一档</span><span class="arrow">›</span></div>
+    <div class="form">did</div>
+    <div class="en">Tom <b>did</b> his homework yesterday.</div><div class="zh">汤姆昨天写了作业。</div></a>
+  <a class="row" href="09-一般将来时.html"><div class="r1"><span class="when">将来</span><span class="name">一般将来时</span><span class="tag t1">第一档</span><span class="arrow">›</span></div>
+    <div class="form">will do</div>
+    <div class="en">Tom <b>will do</b> his homework tomorrow.</div><div class="zh">汤姆明天会写作业。</div></a>
+  <a class="row" href="13-一般过去将来时.html"><div class="r1"><span class="when">过去将来</span><span class="name">一般过去将来时</span><span class="tag t3">第三档</span><span class="arrow">›</span></div>
+    <div class="form">would do</div>
+    <div class="en">Tom said he <b>would do</b> his homework later.</div><div class="zh">汤姆说他待会儿会写作业。</div></a>
+  <div class="sig"><b>标志词</b>　always · usually · every day ｜ yesterday · last week · ago ｜ tomorrow · next week</div>
+  <div class="warn"><b>⚠️</b> 一般现在时，主语是 he / she / it，动词要加 s；will 和 would 后面一律用动词原形。</div>
+</section>
+
+<section class="aspect a2">
+  <h2>② 进行态：那一刻正在做</h2>
+  <p class="pic">把镜头定格在某一个时刻，那时动作正在进行，还没做完。</p>
+  <div class="fx">公式：<b>be + doing</b></div>
+  <a class="row" href="02-现在进行时.html"><div class="r1"><span class="when">现在</span><span class="name">现在进行时</span><span class="tag t1">第一档</span><span class="arrow">›</span></div>
+    <div class="form">am / is / are doing</div>
+    <div class="en">Tom <b>is doing</b> his homework now.</div><div class="zh">汤姆现在正在写作业。</div></a>
+  <a class="row" href="06-过去进行时.html"><div class="r1"><span class="when">过去</span><span class="name">过去进行时</span><span class="tag t2">第二档</span><span class="arrow">›</span></div>
+    <div class="form">was / were doing</div>
+    <div class="en">Tom <b>was doing</b> his homework at 8 last night.</div><div class="zh">昨晚 8 点，汤姆正在写作业。</div></a>
+  <a class="row" href="10-将来进行时.html"><div class="r1"><span class="when">将来</span><span class="name">将来进行时</span><span class="tag t3">第三档</span><span class="arrow">›</span></div>
+    <div class="form">will be doing</div>
+    <div class="en">Tom <b>will be doing</b> his homework at 8 tomorrow.</div><div class="zh">明天 8 点，汤姆会正在写作业。</div></a>
+  <a class="row" href="14-过去将来进行时.html"><div class="r1"><span class="when">过去将来</span><span class="name">过去将来进行时</span><span class="tag t4">第四档</span><span class="arrow">›</span></div>
+    <div class="form">would be doing</div>
+    <div class="en">Tom said he <b>would be doing</b> his homework at 8.</div><div class="zh">汤姆说 8 点那会儿他会正在写作业。</div></a>
+  <div class="sig"><b>标志词</b>　now · look! ｜ at that moment · at 8 last night · while ｜ this time tomorrow · at 8 tomorrow</div>
+  <div class="warn"><b>⚠️</b> know、like、want、believe 这类表示状态的动词，一般不用进行时：✗ I am knowing ✓ I know</div>
+</section>
+
+<section class="aspect a3">
+  <h2>③ 完成态：到那时已经做完</h2>
+  <p class="pic">站在参照点往回看：事情在那之前已经做完了，结果还在。</p>
+  <div class="fx">公式：<b>have + done</b>（done 是过去分词）</div>
+  <a class="row" href="03-现在完成时.html"><div class="r1"><span class="when">现在</span><span class="name">现在完成时</span><span class="tag t2">第二档</span><span class="arrow">›</span></div>
+    <div class="form">have / has done</div>
+    <div class="en">Tom <b>has done</b> his homework, so he can play now.</div><div class="zh">汤姆已经写完作业了，现在可以玩了。</div></a>
+  <a class="row" href="07-过去完成时.html"><div class="r1"><span class="when">过去</span><span class="name">过去完成时</span><span class="tag t2">第二档</span><span class="arrow">›</span></div>
+    <div class="form">had done</div>
+    <div class="en">Tom <b>had done</b> his homework before dinner.</div><div class="zh">吃晚饭之前，汤姆就已经写完作业了。</div></a>
+  <a class="row" href="11-将来完成时.html"><div class="r1"><span class="when">将来</span><span class="name">将来完成时</span><span class="tag t3">第三档</span><span class="arrow">›</span></div>
+    <div class="form">will have done</div>
+    <div class="en">Tom <b>will have done</b> his homework by 9 tomorrow.</div><div class="zh">明天 9 点之前，汤姆会已经写完作业。</div></a>
+  <a class="row" href="15-过去将来完成时.html"><div class="r1"><span class="when">过去将来</span><span class="name">过去将来完成时</span><span class="tag t4">第四档</span><span class="arrow">›</span></div>
+    <div class="form">would have done</div>
+    <div class="en">Tom said he <b>would have done</b> his homework by 9.</div><div class="zh">汤姆说 9 点之前他会写完作业。</div></a>
+  <div class="sig"><b>标志词</b>　already · yet · ever · just · for · since ｜ before · by the time ｜ by + 将来的时间</div>
+  <div class="warn"><b>⚠️</b> 现在完成时不能和 yesterday、last year、ago 这种明确的过去时间连用：✗ I have seen him yesterday ✓ I saw him yesterday。would have done 还和虚拟语气长得一样（本来会……），要看上下文。</div>
+</section>
+
+<section class="aspect a4">
+  <h2>④ 完成进行态：到那时一直做了多久</h2>
+  <p class="pic">从之前一直做到参照点，强调持续了多久，不管做没做完。</p>
+  <div class="fx">公式：<b>have been + doing</b></div>
+  <a class="row" href="04-现在完成进行时.html"><div class="r1"><span class="when">现在</span><span class="name">现在完成进行时</span><span class="tag t3">第三档</span><span class="arrow">›</span></div>
+    <div class="form">have / has been doing</div>
+    <div class="en">Tom <b>has been doing</b> his homework for two hours.</div><div class="zh">汤姆已经写了两个小时作业了（还在写）。</div></a>
+  <a class="row" href="08-过去完成进行时.html"><div class="r1"><span class="when">过去</span><span class="name">过去完成进行时</span><span class="tag t4">第四档</span><span class="arrow">›</span></div>
+    <div class="form">had been doing</div>
+    <div class="en">Tom <b>had been doing</b> his homework for two hours when his mom came home.</div><div class="zh">妈妈回家的时候，汤姆已经写了两个小时作业了。</div></a>
+  <a class="row" href="12-将来完成进行时.html"><div class="r1"><span class="when">将来</span><span class="name">将来完成进行时</span><span class="tag t4">第四档</span><span class="arrow">›</span></div>
+    <div class="form">will have been doing</div>
+    <div class="en">By 9, Tom <b>will have been doing</b> his homework for two hours.</div><div class="zh">到 9 点，汤姆就已经写了两个小时作业了。</div></a>
+  <a class="row" href="16-过去将来完成进行时.html"><div class="r1"><span class="when">过去将来</span><span class="name">过去将来完成进行时</span><span class="tag t4">第四档</span><span class="arrow">›</span></div>
+    <div class="form">would have been doing</div>
+    <div class="en">Tom said that by 9 he <b>would have been doing</b> his homework for two hours.</div><div class="zh">汤姆说到 9 点他就已经写了两个小时作业了。</div></a>
+  <div class="sig"><b>标志词</b>　for + 一段时间 · since + 起点 · all day · how long</div>
+  <div class="warn"><b>⚠️</b> 没有过程的动词（arrive、die、find 这类一下子就完成的）不能用完成进行时。</div>
+</section>
+
+<h2>用的时候：三步定时态</h2>
+<div class="box">
+<ol class="steps">
+  <li><b>什么时候？</b>定「时」：现在 / 过去 / 将来 / 过去的将来，决定最前面那个词。</li>
+  <li><b>想强调什么？</b>定「态」：只说有这回事 / 那一刻正在做 / 到那时已经做完 / 到那时一直做了多久。</li>
+  <li><b>拼起来</b>：最前面那个词 + 态的形式。</li>
+</ol>
+<div class="key">例：「明天这个时候，我正在坐飞机。」→ ① 明天 → 将来 → will　② 这个时候正在做 → 进行 → be + doing　③ <b class="mono">I will be flying at this time tomorrow.</b></div>
+</div>
+
+<h2>一张表全记住</h2>
+<div class="box">
+<table class="grid">
+<tr><th></th><th>现在</th><th>过去</th><th>将来</th><th>过去将来</th></tr>
+<tr><td class="c1">一般</td><td>do / does</td><td>did</td><td>will do</td><td>would do</td></tr>
+<tr><td class="c2">进行</td><td>am / is / are doing</td><td>was / were doing</td><td>will be doing</td><td>would be doing</td></tr>
+<tr><td class="c3">完成</td><td>have / has done</td><td>had done</td><td>will have done</td><td>would have done</td></tr>
+<tr><td class="c4">完成进行</td><td>have / has been doing</td><td>had been doing</td><td>will have been doing</td><td>would have been doing</td></tr>
+</table>
+<div class="key">横着看：同一个画面，只有最前面那个词在变。竖着看：同一个时间，进行多一个 be，完成多一个 have，完成进行 have 和 be 都有。</div>
+</div>
+
+<footer>详细讲解点上面每一行进去看。优先级和首页时态篇的四档一致：第一档必须熟练，第四档见到能认出来就行。</footer>
+</div>
+</body>
+</html>
