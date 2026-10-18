@@ -1,3 +1,12 @@
 {
-  "drills": []
+  "drills": [
+    {
+      "id": "disable-for-20261019",
+      "date": "2026-10-19",
+      "title": "disable A for B · 练到反胃",
+      "desc": "随机抽中一个骨架，用生词和词组连续造句；答案先隐藏，自己写完才可看。",
+      "skeletons": 1,
+      "items": 32
+    }
+  ]
 }

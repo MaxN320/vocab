@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>骨架密集练习 · disable A for B</title>
+<style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#8891a5;--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;--red:#ec8d8d;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 var(--sans);padding:22px 15px 80px}.wrap{max-width:580px;margin:auto}a{color:var(--accent)}.back{text-decoration:none;font-size:14px}h1{font-size:25px;line-height:1.3;margin:16px 0 4px}.sub{color:var(--soft);font-size:14px}.frame{margin:18px 0;padding:15px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:13px}.frame strong{color:var(--accent);font-size:17px}.frame p{margin:5px 0 0;font-size:13.5px;color:var(--soft)}.frame b{color:var(--ink)}.how{font-size:13px;color:var(--soft);margin-bottom:15px}.tools{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;flex-wrap:wrap}.progress{flex:1;min-width:135px;color:var(--soft);font-size:13px}.track{height:5px;background:var(--card2);border-radius:5px;margin-top:4px;overflow:hidden}.fill{height:100%;background:var(--green);width:0}.tools button, .actions button, .end button{border:1px solid var(--line);border-radius:9px;background:var(--card2);color:var(--ink);font:inherit;cursor:pointer;padding:7px 11px}.tools button:hover,.actions button:hover,.end button:hover{border-color:var(--accent)}.round{margin-top:23px}.round h2{font-size:16px;margin:0 0 3px}.round>p{margin:0 0 11px;color:var(--mute);font-size:13px}.card{background:var(--card);border:1px solid var(--line);border-radius:13px;margin:10px 0;padding:13px 14px;scroll-margin-top:68px}.card.passed{border-left:3px solid var(--green)}.card.retry{border-left:3px solid var(--amber)}.row{display:flex;gap:10px;align-items:baseline}.num{font:700 12px ui-monospace,monospace;color:var(--mute);min-width:26px}.cn{font-size:17px;line-height:1.55;font-weight:600}.tags{margin:7px 0 9px 36px;display:flex;gap:6px;flex-wrap:wrap}.tag{font-size:12px;border-radius:6px;padding:1px 7px;background:var(--card2);color:var(--soft)}.tag.word{color:var(--amber)}.tag.phrase{color:var(--accent)}textarea{display:block;width:100%;min-height:62px;resize:vertical;padding:10px 11px;background:#11131a;color:var(--ink);font:15px/1.45 var(--sans);border:1px solid #3a4051;border-radius:9px;outline:none}textarea:focus{border-color:var(--accent)}textarea::placeholder{color:var(--mute)}.actions{display:flex;gap:7px;margin-top:8px;align-items:center;flex-wrap:wrap}.actions button{font-size:13px;padding:6px 10px}.actions button:disabled{opacity:.48;cursor:not-allowed}.state{font-size:12px;color:var(--mute);margin-left:auto}.answer{margin-top:10px;padding:10px 11px;border:1px solid rgba(94,197,154,.35);border-radius:9px;background:rgba(94,197,154,.07)}.answer b{font-size:16px;color:var(--green);font-weight:600}.answer small{display:block;color:var(--soft);margin-top:5px}.answer .actions button.good{border-color:var(--green);color:var(--green)}.answer .actions button.again{border-color:var(--amber);color:var(--amber)}.end{margin-top:20px;border:1px solid var(--line);border-radius:13px;padding:16px;background:var(--card)}.end p{margin:0 0 8px;color:var(--soft)}.end button{color:var(--accent)}[hidden]{display:none!important}@media(max-width:380px){h1{font-size:22px}.cn{font-size:16px}.tools button{font-size:12px}}
+</style>
+</head>
+<body><div class="wrap">
+<a class="back" href="../index.html#skeleton">← 返回骨架练习</a>
+<h1>一个骨架，练到反胃</h1><div class="sub">从《01-骨架》随机抽中：disable A for B · 32 句 · 4 轮</div>
+<div class="frame"><strong>disable A for B</strong><p>先说<b>禁用什么 A</b>，再说<b>对谁／哪里 B</b> 禁用。例：disable the camera for guests = 对访客禁用摄像头。<br>本页的词和词组取自你的生词本、词组列表；蓝色是词组，黄色是生词提示。</p></div>
+<div class="how">先看中文和提示，自己输入完整英文；写完才可点「看参考答案」。答案是参考表达，不是唯一译法。自己判断写对没有，点「记住了／再练」。草稿和进度仅保存在本机浏览器。</div>
+<div class="tools"><div class="progress"><span id="progress">0 / 32 已掌握</span><div class="track"><div class="fill" id="fill"></div></div></div><button id="next" type="button">跳到待练</button><button id="reset" type="button">再来一轮</button></div>
+<div id="list"></div><div class="end"><p>不是“看过一遍”就算会。按「再来一轮」重新造，直到看到中文能直接脱口而出。</p><button type="button" id="end-next">回到待练题</button></div>
+</div>
+<script id="exercise-data" type="application/json">
+[
+{"cn":"为访客禁用摄像头。","en":"Disable the camera for guests.","words":["camera"],"phrases":[]},
+{"cn":"为孩子禁用摄像头。","en":"Disable the camera for children.","words":["camera"],"phrases":[]},
+{"cn":"为新用户禁用摄像头。","en":"Disable the camera for new users.","words":["camera"],"phrases":[]},
+{"cn":"为访客禁用这个选项。","en":"Disable this option for guests.","words":[],"phrases":[]},
+{"cn":"为孩子禁用这个功能。","en":"Disable this feature for children.","words":[],"phrases":[]},
+{"cn":"为访客禁用评论。","en":"Disable comments for guests.","words":[],"phrases":[]},
+{"cn":"为这个应用禁用通知。","en":"Disable notifications for this app.","words":[],"phrases":[]},
+{"cn":"为访客禁用这个功能。","en":"Disable this feature for guests.","words":[],"phrases":[]},
+{"cn":"我们昨天为访客禁用了摄像头。","en":"We disabled the camera for guests yesterday.","words":["camera"],"phrases":[]},
+{"cn":"我们昨天为孩子禁用了摄像头。","en":"We disabled the camera for children yesterday.","words":["camera"],"phrases":[]},
+{"cn":"我们今天为访客禁用了评论。","en":"We disabled comments for guests today.","words":[],"phrases":[]},
+{"cn":"管理员为访客禁用了这个功能。","en":"The admin disabled this feature for guests.","words":[],"phrases":[]},
+{"cn":"这个应用为新用户禁用了通知。","en":"The app disabled notifications for new users.","words":[],"phrases":[]},
+{"cn":"他们为学生禁用了这个选项。","en":"They disabled this option for students.","words":[],"phrases":[]},
+{"cn":"我为我的孩子禁用了摄像头。","en":"I disabled the camera for my child.","words":["camera"],"phrases":[]},
+{"cn":"我们为这个应用禁用了通知。","en":"We disabled notifications for this app.","words":[],"phrases":[]},
+{"cn":"确保为访客禁用摄像头。","en":"Make sure you disable the camera for guests.","words":["camera"],"phrases":["make sure"]},
+{"cn":"从现在起，为访客禁用摄像头。","en":"From now on, disable the camera for guests.","words":["camera"],"phrases":["from now on"]},
+{"cn":"为访客禁用摄像头，以防止误用。","en":"Disable the camera for guests to prevent misuse.","words":["camera","prevent"],"phrases":[]},
+{"cn":"为访客禁用这个功能，以免影响其他用户。","en":"Disable this feature for guests so it does not affect other users.","words":["affect"],"phrases":[]},
+{"cn":"记住，我们已经为访客禁用了摄像头。","en":"Keep in mind that we have disabled the camera for guests.","words":["camera"],"phrases":["keep in mind that ..."]},
+{"cn":"因此，我们为访客禁用了摄像头。","en":"As a result, we disabled the camera for guests.","words":["camera"],"phrases":["as a result"]},
+{"cn":"我们负责为访客禁用摄像头。","en":"We are responsible for disabling the camera for guests.","words":["camera"],"phrases":["be responsible for sth/doing"]},
+{"cn":"我们当时赶时间，但还是为访客禁用了摄像头。","en":"We were in a hurry, but we still disabled the camera for guests.","words":["camera"],"phrases":["in a hurry"]},
+{"cn":"你为访客禁用了摄像头吗？","en":"Did you disable the camera for guests?","words":["camera"],"phrases":[]},
+{"cn":"他们为什么为访客禁用了摄像头？","en":"Why did they disable the camera for guests?","words":["camera"],"phrases":[]},
+{"cn":"这个应用会为访客禁用摄像头。","en":"This app will disable the camera for guests.","words":["camera"],"phrases":[]},
+{"cn":"如果访客不需要这个功能，就为他们禁用它。","en":"If guests do not need this feature, disable it for them.","words":[],"phrases":[]},
+{"cn":"摄像头仍然可用；请为访客禁用它。","en":"The camera is still available; please disable it for guests.","words":["camera","available"],"phrases":[]},
+{"cn":"管理员独自为访客禁用了摄像头。","en":"The admin disabled the camera for guests on his own.","words":["camera"],"phrases":["on one's own"]},
+{"cn":"为访客禁用摄像头，而不是禁用整个应用。","en":"Disable the camera for guests instead of disabling the whole app.","words":["camera"],"phrases":["instead of sth/doing"]},
+{"cn":"这个功能原本对访客开放，但我们为他们禁用了它。","en":"This feature was available to guests, but we disabled it for them.","words":["available"],"phrases":[]}
+]
+</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('exercise-data').textContent);
+const key='skeleton-disable-for-20261019-v1';
+let saved={};try{saved=JSON.parse(localStorage.getItem(key))||{}}catch(e){};
+const state={drafts:saved.drafts||{},grades:saved.grades||{},round:saved.round||1};
+function store(){try{localStorage.setItem(key,JSON.stringify(state))}catch(e){}}
+const sections=[['第一轮 · 只换 A 和 B','不要追求花样：禁用什么？对谁禁用？'],['第二轮 · 换主语和时间','骨架不变，只换人称和过去式。'],['第三轮 · 把已学词组接上','即使句子变长，disable A for B 也不要拆散。'],['第四轮 · 问句与变形','遇到代词、问句或条件句，仍先找 A 和 B。']];
+const list=document.getElementById('list');
+function tag(text,kind){const span=document.createElement('span');span.className='tag '+kind;span.textContent=(kind==='word'?'词 · ':'词组 · ')+text;return span}
+sections.forEach(([title,tip],group)=>{
+ const sec=document.createElement('section');sec.className='round';const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=tip;sec.append(h,p);
+ data.slice(group*8,(group+1)*8).forEach((item,j)=>{
+  const i=group*8+j,card=document.createElement('article');card.className='card';card.id='q'+(i+1);
+  const row=document.createElement('div');row.className='row';const num=document.createElement('span');num.className='num';num.textContent=String(i+1).padStart(2,'0');const cn=document.createElement('div');cn.className='cn';cn.textContent=item.cn;row.append(num,cn);card.appendChild(row);
+  if(item.words.length||item.phrases.length){const tags=document.createElement('div');tags.className='tags';item.words.forEach(x=>tags.appendChild(tag(x,'word')));item.phrases.forEach(x=>tags.appendChild(tag(x,'phrase')));card.appendChild(tags)}
+  const input=document.createElement('textarea');input.setAttribute('aria-label','第'+(i+1)+'题，写下你的英文句子');input.placeholder='不看答案，先自己造句…';input.value=state.drafts[i]||'';input.addEventListener('input',()=>{state.drafts[i]=input.value;store();revealBtn.disabled=!input.value.trim()});card.appendChild(input);
+  const actions=document.createElement('div');actions.className='actions';const revealBtn=document.createElement('button');revealBtn.type='button';revealBtn.textContent='看参考答案';revealBtn.disabled=!input.value.trim();const flag=document.createElement('span');flag.className='state';actions.append(revealBtn,flag);card.appendChild(actions);
+  const answer=document.createElement('div');answer.className='answer';answer.hidden=true;const en=document.createElement('b');en.textContent=item.en;const note=document.createElement('small');note.textContent='先对照骨架和意思；表达不完全一样也可能正确。';const bar=document.createElement('div');bar.className='actions';const yes=document.createElement('button');yes.type='button';yes.className='good';yes.textContent='✓ 记住了';const no=document.createElement('button');no.type='button';no.className='again';no.textContent='↺ 再练';bar.append(yes,no);answer.append(en,note,bar);card.append(answer);
+  revealBtn.addEventListener('click',()=>{if(!input.value.trim())return;answer.hidden=!answer.hidden;revealBtn.textContent=answer.hidden?'看参考答案':'收起答案'});
+  yes.addEventListener('click',()=>grade(i,'good'));no.addEventListener('click',()=>grade(i,'again'));
+  function grade(n,value){state.grades[n]=value;store();refresh();if(n<data.length-1)document.getElementById('q'+(n+2)).scrollIntoView({behavior:'smooth',block:'start'})}
+  function refreshCard(){const status=state.grades[i];card.classList.toggle('passed',status==='good');card.classList.toggle('retry',status==='again');flag.textContent=status==='good'?'已掌握 ✓':status==='again'?'待重练':''}
+  card.refreshCard=refreshCard;refreshCard();sec.appendChild(card);
+ });list.appendChild(sec)
+});
+function refresh(){const good=Object.values(state.grades).filter(x=>x==='good').length;document.getElementById('progress').textContent=good+' / '+data.length+' 已掌握 · 第 '+state.round+' 轮';document.getElementById('fill').style.width=(good/data.length*100)+'%';document.querySelectorAll('.card').forEach(c=>c.refreshCard())}
+function next(){const i=data.findIndex((_,n)=>state.grades[n]!=='good');document.getElementById('q'+(i<0?1:i+1)).scrollIntoView({behavior:'smooth',block:'start'})}
+document.getElementById('next').addEventListener('click',next);document.getElementById('end-next').addEventListener('click',next);
+document.getElementById('reset').addEventListener('click',()=>{if(!confirm('清空本轮草稿和掌握标记，重新造 32 句？'))return;state.round++;state.grades={};state.drafts={};store();location.reload()});
+refresh();
+</script>
+</body></html>
