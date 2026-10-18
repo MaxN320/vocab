@@ -15,10 +15,17 @@ a:hover{text-decoration:underline}
 h1{font-size:24px;margin:22px 0 6px}
 .meta{color:var(--ink-mute);font-size:13px;margin:0 0 24px}
 h2{font-size:12px;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;margin:26px 0 10px}
-.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:1.85;overflow-wrap:anywhere}
+.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:2.3;overflow-wrap:anywhere}
 .text p{margin:0}
 .text p+p{margin-top:.9em}
 .text b{font-weight:600;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;background:var(--c)}
+.legend-note{margin:0 0 10px;font-size:12.5px;line-height:1.65;color:var(--ink-mute)}
+.g{padding-bottom:var(--pb);background:linear-gradient(var(--c),var(--c)) left bottom/100% 2px no-repeat}
+.s{--c:#f2b84b}.v{--c:#ff6b6b}.t{--c:#c792ea}.c{--c:#5ec59a}.c.cs{--c:#f2b84b}
+.s,.v,.t{--pb:2px}.c1{--pb:6px}.c2{--pb:10px}.c3{--pb:14px}
 .text .tip{display:block;font-weight:700;color:var(--ink)}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 18px}
 summary{cursor:pointer;padding:13px 0;color:var(--ink-soft);font-size:14px;font-weight:600}
@@ -39,11 +46,13 @@ li b{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
   <p class="meta">约 167 词 · 12 句</p>
 
   <h2>原文</h2>
+  <div class="legend"><span class="s"><i></i>主语</span><span class="v"><i></i>谓语</span><span class="t"><i></i>不定式</span><span class="c"><i></i>从句</span></div>
+  <p class="legend-note">从句线画在最下面，从句里再套从句，就再往下多画一条；整个从句当主语时，这条从句线是黄的。there be 句型的主语在 be 后面。help 后面不带 to 的动词原形（remember）也算不定式。</p>
   <div class="text" lang="en">
-    <p><b>There is no such thing as</b> a “bad memory”, and everyone can improve their memory, <b>as long as</b> you are not <b>suffering from</b> <b>memory loss as medical condition</b>. If you want to improve your memory, there are <b>a number of</b> things you can do.</p>
-    <p><span class="tip"><b>Stop thinking that</b> you have a “bad memory”.</span>Too many people <b>get stuck</b> here and <b>convince themselves</b> their memory is bad so <b>what they need to remember just slip</b> <b>out of their minds</b> <b>for some reason</b>. What should you do? Convince yourself that you <b>do have</b> a good memory that will improve. And remove those <b>negative thoughts</b> and promise to improve your memory.</p>
-    <p><span class="tip">Use <b>association</b> to remember facts.</span>You can <b>create a picture in your mind</b> to help you remember a word or an image.</p>
-    <p><span class="tip"><b>Involve multiple senses</b>.</span>You can <b>stimulate</b> more parts of your brain by using <b>as many senses as possible</b> <b>when memorizing</b> information. When a larger part of your brain is active, your ability to <b>arouse your memory</b> will increase.</p>
+    <p><b>There <span class="g v">is</span> </b><span class="g s"><b>no such thing as</b> a “bad memory”</span>, and <span class="g s">everyone</span> <span class="g v">can improve</span> their memory, <span class="g c c1"><b>as long as</b> <span class="g s">you</span> <span class="g v">are not <b>suffering</b></span><b> from</b> <b>memory loss as medical condition</b></span>. <span class="g c c1">If <span class="g s">you</span> <span class="g v">want</span> <span class="g t">to improve</span> your memory</span>, there <span class="g v">are</span> <span class="g s"><b>a number of</b> things</span> <span class="g c c1"><span class="g s">you</span> <span class="g v">can do</span></span>.</p>
+    <p><span class="tip"><b><span class="g v">Stop</span> thinking </b><span class="g c c1"><b>that</b> <span class="g s">you</span> <span class="g v">have</span> a “bad memory”</span>.</span><span class="g s">Too many people</span> <b><span class="g v">get</span> stuck</b> here and <b><span class="g v">convince</span> themselves</b> <span class="g c c1"><span class="g s">their memory</span> <span class="g v">is</span> bad</span> so <b><span class="g c c1 cs">what <span class="g s">they</span> <span class="g v">need</span> <span class="g t">to remember</span></span> just <span class="g v">slip</span></b> <b>out of their minds</b> <b>for some reason</b>. What <span class="g v">should</span> <span class="g s">you</span> <span class="g v">do</span>? <span class="g v">Convince</span> yourself <span class="g c c1">that <span class="g s">you</span> <span class="g v"><b>do have</b></span> a good memory <span class="g c c2"><span class="g s">that</span> <span class="g v">will improve</span></span></span>. And <span class="g v">remove</span> those <b>negative thoughts</b> and <span class="g v">promise</span> <span class="g t">to improve</span> your memory.</p>
+    <p><span class="tip"><span class="g v">Use</span> <b>association</b> <span class="g t">to remember</span> facts.</span><span class="g s">You</span> <span class="g v">can <b>create</b></span><b> a picture in your mind</b> <span class="g t">to help</span> you <span class="g t">remember</span> a word or an image.</p>
+    <p><span class="tip"><b><span class="g v">Involve</span> multiple senses</b>.</span><span class="g s">You</span> <span class="g v">can <b>stimulate</b></span> more parts of your brain by using <b>as many senses as possible</b> <b>when memorizing</b> information. <span class="g c c1">When <span class="g s">a larger part of your brain</span> <span class="g v">is</span> active</span>, <span class="g s">your ability</span> <span class="g t">to <b>arouse</b></span><b> your memory</b> <span class="g v">will increase</span>.</p>
   </div>
 
   <h2>意思</h2>

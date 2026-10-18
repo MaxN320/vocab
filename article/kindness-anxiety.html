@@ -15,10 +15,17 @@ a:hover{text-decoration:underline}
 h1{font-size:24px;margin:22px 0 6px}
 .meta{color:var(--ink-mute);font-size:13px;margin:0 0 24px}
 h2{font-size:12px;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;margin:26px 0 10px}
-.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:1.85;overflow-wrap:anywhere}
+.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:2.3;overflow-wrap:anywhere}
 .text p{margin:0}
 .text p+p{margin-top:.9em}
 .text b{font-weight:600;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;background:var(--c)}
+.legend-note{margin:0 0 10px;font-size:12.5px;line-height:1.65;color:var(--ink-mute)}
+.g{padding-bottom:var(--pb);background:linear-gradient(var(--c),var(--c)) left bottom/100% 2px no-repeat}
+.s{--c:#f2b84b}.v{--c:#ff6b6b}.t{--c:#c792ea}.c{--c:#5ec59a}.c.cs{--c:#f2b84b}
+.s,.v,.t{--pb:2px}.c1{--pb:6px}.c2{--pb:10px}.c3{--pb:14px}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 18px}
 summary{cursor:pointer;padding:13px 0;color:var(--ink-soft);font-size:14px;font-weight:600}
 details[open] summary{border-bottom:1px solid var(--line)}
@@ -37,9 +44,11 @@ li b{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
   <p class="meta">约 129 词 · 8 句</p>
 
   <h2>原文</h2>
+  <div class="legend"><span class="s"><i></i>主语</span><span class="v"><i></i>谓语</span><span class="t"><i></i>不定式</span><span class="c"><i></i>从句</span></div>
+  <p class="legend-note">从句线画在最下面，从句里再套从句，就再往下多画一条。there be 句型的主语在 be 后面。make 后面不带 to 的动词原形（feel）也算不定式。</p>
   <div class="text" lang="en">
-    <p><b>Have you ever noticed that</b> when you do <b>something nice</b> for someone else, it makes you feel better too? This isn’t just something that happens randomly. It <b>has something to do with</b> the <b>pleasure centres</b> in your brain. Doing nice things for others increases your serotonin (血清素), which <b>is responsible for</b> feelings of satisfaction and bliss.</p>
-    <p>Anxiety is an extremely common human experience. <b>While</b> there are several ways to reduce anxiety, <b>it turns out that</b> <b>being nice to others</b> can be <b>one of the easiest, most inexpensive ways</b> to <b>keep anxiety at bay</b>. Researchers found that participants who engaged in kind acts displayed <b>significant increases</b> in <b>positive affect</b> that lasted over the four weeks of their study. So, the next time you’re feeling anxious, look for opportunities to help others.</p>
+    <p><b><span class="g v">Have</span> <span class="g s">you</span> ever <span class="g v">noticed</span> </b><span class="g c c1"><b>that</b> <span class="g c c2">when <span class="g s">you</span> <span class="g v">do</span> <b>something nice</b> for someone else</span>, <span class="g s">it</span> <span class="g v">makes</span> you <span class="g t">feel</span> better too</span>? <span class="g s">This</span> <span class="g v">isn’t</span> just something <span class="g c c1"><span class="g s">that</span> <span class="g v">happens</span> randomly</span>. <span class="g s">It</span> <b><span class="g v">has</span> something <span class="g t">to do</span> with</b> the <b>pleasure centres</b> in your brain. <span class="g s">Doing nice things for others</span> <span class="g v">increases</span> your serotonin (血清素), <span class="g c c1"><span class="g s">which</span> <b><span class="g v">is</span> responsible for</b> feelings of satisfaction and bliss</span>.</p>
+    <p><span class="g s">Anxiety</span> <span class="g v">is</span> an extremely common human experience. <span class="g c c1"><b>While</b> there <span class="g v">are</span> <span class="g s">several ways</span> <span class="g t">to reduce</span> anxiety</span>, <b><span class="g s">it</span> <span class="g v">turns out</span> </b><span class="g c c1"><b>that</b> <span class="g s"><b>being nice to others</b></span> <span class="g v">can be</span> <b>one of the easiest, most inexpensive ways</b> <span class="g t">to <b>keep</b></span><b> anxiety at bay</b></span>. <span class="g s">Researchers</span> <span class="g v">found</span> <span class="g c c1">that <span class="g s">participants</span> <span class="g c c2"><span class="g s">who</span> <span class="g v">engaged</span> in kind acts</span> <span class="g v">displayed</span> <b>significant increases</b> in <b>positive affect</b> <span class="g c c2"><span class="g s">that</span> <span class="g v">lasted</span> over the four weeks of their study</span></span>. So, <span class="g c c1">the next time <span class="g s">you</span><span class="g v">’re feeling</span> anxious</span>, <span class="g v">look</span> for opportunities <span class="g t">to help</span> others.</p>
   </div>
 
   <h2>意思</h2>

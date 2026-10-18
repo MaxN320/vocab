@@ -15,10 +15,17 @@ a:hover{text-decoration:underline}
 h1{font-size:24px;margin:22px 0 6px}
 .meta{color:var(--ink-mute);font-size:13px;margin:0 0 24px}
 h2{font-size:12px;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;margin:26px 0 10px}
-.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:1.85;overflow-wrap:anywhere}
+.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:2.3;overflow-wrap:anywhere}
 .text p{margin:0}
 .text p+p{margin-top:.9em}
 .text b{font-weight:600;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;background:var(--c)}
+.legend-note{margin:0 0 10px;font-size:12.5px;line-height:1.65;color:var(--ink-mute)}
+.g{padding-bottom:var(--pb);background:linear-gradient(var(--c),var(--c)) left bottom/100% 2px no-repeat}
+.s{--c:#f2b84b}.v{--c:#ff6b6b}.t{--c:#c792ea}.c{--c:#5ec59a}.c.cs{--c:#f2b84b}
+.s,.v,.t{--pb:2px}.c1{--pb:6px}.c2{--pb:10px}.c3{--pb:14px}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 18px}
 summary{cursor:pointer;padding:13px 0;color:var(--ink-soft);font-size:14px;font-weight:600}
 details[open] summary{border-bottom:1px solid var(--line)}
@@ -37,9 +44,11 @@ li b{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
   <p class="meta">约 186 词 · 8 句</p>
 
   <h2>原文</h2>
+  <div class="legend"><span class="s"><i></i>主语</span><span class="v"><i></i>谓语</span><span class="t"><i></i>不定式</span><span class="c"><i></i>从句</span></div>
+  <p class="legend-note">从句线画在最下面，从句里再套从句，就再往下多画一条。there be 句型的主语在 be 后面。have to 和后面的动词连起来算谓语。</p>
   <div class="text" lang="en">
-    <p>It’s <b>not all that hard</b> to build an advanced and large vocabulary. Like many things in life, it’s <b>an ongoing process</b>, and <b>the best part of</b> the process <b>is that</b> there’s enough <b>room for improvement</b>, <b>which means</b> you’ll just <b>keep getting better and better</b>. Of course you have to <b>work at it</b>. You wouldn’t think that a few months of exercise in your teens would <b>be enough for the rest of your life</b>, and <b>that’s also true for</b> building your vocabulary—you have to <b>keep at it</b> daily, and <b>pretty soon</b> you will find that you have an excellent vocabulary.</p>
-    <p>One of the effective ways to build vocabulary is to read good books. You need to really read at least one good book a week, <b>preferably</b> a classic. <b>This isn’t as hard as it sounds</b>, and it is <b>far better</b> than any other method because you improve your vocabulary while reading an interesting piece of literature. Another nice thing is that you learn both new words and their use <b>unconsciously</b>, <b>meaning that</b> you will <b>tend to</b> use the words learnt this way in conversations <b>almost automatically</b>.</p>
+    <p><span class="g s">It</span><span class="g v">’s <b>not</b></span><b> all that hard</b> <span class="g t">to build</span> an advanced and large vocabulary. Like many things in life, <span class="g s">it</span><span class="g v">’s</span> <b>an ongoing process</b>, and <span class="g s"><b>the best part of</b> the process</span> <b><span class="g v">is</span> </b><span class="g c c1"><b>that</b> there<span class="g v">’s</span> <span class="g s">enough <b>room for improvement</b></span>, <span class="g c c2"><b><span class="g s">which</span> <span class="g v">means</span></b> <span class="g c c3"><span class="g s">you</span><span class="g v">’ll just <b>keep</b></span><b> getting better and better</b></span></span></span>. Of course <span class="g s">you</span> <span class="g v">have to <b>work</b></span><b> at it</b>. <span class="g s">You</span> <span class="g v">wouldn’t think</span> <span class="g c c1">that <span class="g s">a few months of exercise in your teens</span> <span class="g v">would <b>be</b></span><b> enough for the rest of your life</b></span>, and <b><span class="g s">that</span><span class="g v">’s</span> also true for</b> building your vocabulary—<span class="g s">you</span> <span class="g v">have to <b>keep</b></span><b> at it</b> daily, and <b>pretty soon</b> <span class="g s">you</span> <span class="g v">will find</span> <span class="g c c1">that <span class="g s">you</span> <span class="g v">have</span> an excellent vocabulary</span>.</p>
+    <p><span class="g s">One of the effective ways</span> <span class="g t">to build</span> vocabulary <span class="g v">is</span> <span class="g t">to read</span> good books. <span class="g s">You</span> <span class="g v">need</span> <span class="g t">to really read</span> at least one good book a week, <b>preferably</b> a classic. <b><span class="g s">This</span> <span class="g v">isn’t</span> as hard <span class="g c c1">as <span class="g s">it</span> <span class="g v">sounds</span></span></b>, and <span class="g s">it</span> <span class="g v">is</span> <b>far better</b> than any other method <span class="g c c1">because <span class="g s">you</span> <span class="g v">improve</span> your vocabulary while reading an interesting piece of literature</span>. <span class="g s">Another nice thing</span> <span class="g v">is</span> <span class="g c c1">that <span class="g s">you</span> <span class="g v">learn</span> both new words and their use <b>unconsciously</b>, <b>meaning </b><span class="g c c2"><b>that</b> <span class="g s">you</span> <span class="g v">will <b>tend</b></span> <span class="g t"><b>to</b> use</span> the words learnt this way in conversations <b>almost automatically</b></span></span>.</p>
   </div>
 
   <h2>意思</h2>

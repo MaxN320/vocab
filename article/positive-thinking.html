@@ -15,10 +15,17 @@ a:hover{text-decoration:underline}
 h1{font-size:24px;margin:22px 0 6px}
 .meta{color:var(--ink-mute);font-size:13px;margin:0 0 24px}
 h2{font-size:12px;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;margin:26px 0 10px}
-.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:1.85;overflow-wrap:anywhere}
+.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:2.3;overflow-wrap:anywhere}
 .text p{margin:0}
 .text p+p{margin-top:.9em}
 .text b{font-weight:600;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;background:var(--c)}
+.legend-note{margin:0 0 10px;font-size:12.5px;line-height:1.65;color:var(--ink-mute)}
+.g{padding-bottom:var(--pb);background:linear-gradient(var(--c),var(--c)) left bottom/100% 2px no-repeat}
+.s{--c:#f2b84b}.v{--c:#ff6b6b}.t{--c:#c792ea}.c{--c:#5ec59a}.c.cs{--c:#f2b84b}
+.s,.v,.t{--pb:2px}.c1{--pb:6px}.c2{--pb:10px}.c3{--pb:14px}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 18px}
 summary{cursor:pointer;padding:13px 0;color:var(--ink-soft);font-size:14px;font-weight:600}
 details[open] summary{border-bottom:1px solid var(--line)}
@@ -37,10 +44,12 @@ li b{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
   <p class="meta">约 136 词 · 9 句</p>
 
   <h2>原文</h2>
+  <div class="legend"><span class="s"><i></i>主语</span><span class="v"><i></i>谓语</span><span class="t"><i></i>不定式</span><span class="c"><i></i>从句</span></div>
+  <p class="legend-note">从句线画在最下面；整个从句当主语时，这条从句线是黄的。is going to happen 整个算谓语。</p>
   <div class="text" lang="en">
-    <p>Is your glass <b>half-empty or half-full</b>? How you answer this <b>age-old question</b> about positive thinking may reflect your <b>outlook on life</b>, your <b>attitude toward</b> yourself, and whether you’re <b>optimistic or pessimistic</b>—and it may even affect your health.</p>
-    <p>Indeed, some studies show that <b>personality traits</b> such as optimism and pessimism can affect many areas of your health and <b>well-being</b>. The positive thinking that usually <b>comes with</b> optimism is a key part of effective <b>stress management</b>. And effective stress management <b>is associated with</b> many health benefits. If you <b>tend to</b> be pessimistic, <b>don’t despair</b>—you can learn positive thinking skills.</p>
-    <p>Positive thinking doesn’t mean that you ignore life’s <b>less pleasant</b> situations. Positive thinking just means that you <b>approach</b> unpleasantness in a more positive and <b>productive</b> way. You think <b>the best is going to happen, not the worst</b>.</p>
+    <p><span class="g v">Is</span> <span class="g s">your glass</span> <b>half-empty or half-full</b>? <span class="g c c1 cs">How <span class="g s">you</span> <span class="g v">answer</span> this <b>age-old question</b> about positive thinking</span> <span class="g v">may reflect</span> your <b>outlook on life</b>, your <b>attitude toward</b> yourself, and <span class="g c c1">whether <span class="g s">you</span><span class="g v">’re</span> <b>optimistic or pessimistic</b></span>—and <span class="g s">it</span> <span class="g v">may even affect</span> your health.</p>
+    <p>Indeed, <span class="g s">some studies</span> <span class="g v">show</span> <span class="g c c1">that <span class="g s"><b>personality traits</b> such as optimism and pessimism</span> <span class="g v">can affect</span> many areas of your health and <b>well-being</b></span>. <span class="g s">The positive thinking</span> <span class="g c c1"><span class="g s">that</span> usually <b><span class="g v">comes</span> with</b> optimism</span> <span class="g v">is</span> a key part of effective <b>stress management</b>. And <span class="g s">effective stress management</span> <b><span class="g v">is associated</span> with</b> many health benefits. <span class="g c c1">If <span class="g s">you</span> <b><span class="g v">tend</span> </b><span class="g t"><b>to</b> be</span> pessimistic</span>, <span class="g v"><b>don’t despair</b></span>—<span class="g s">you</span> <span class="g v">can learn</span> positive thinking skills.</p>
+    <p><span class="g s">Positive thinking</span> <span class="g v">doesn’t mean</span> <span class="g c c1">that <span class="g s">you</span> <span class="g v">ignore</span> life’s <b>less pleasant</b> situations</span>. <span class="g s">Positive thinking</span> just <span class="g v">means</span> <span class="g c c1">that <span class="g s">you</span> <span class="g v"><b>approach</b></span> unpleasantness in a more positive and <b>productive</b> way</span>. <span class="g s">You</span> <span class="g v">think</span> <span class="g c c1"><b><span class="g s">the best</span> <span class="g v">is going to happen</span>, not the worst</b></span>.</p>
   </div>
 
   <h2>意思</h2>

@@ -15,10 +15,17 @@ a:hover{text-decoration:underline}
 h1{font-size:24px;margin:22px 0 6px}
 .meta{color:var(--ink-mute);font-size:13px;margin:0 0 24px}
 h2{font-size:12px;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;margin:26px 0 10px}
-.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:1.85;overflow-wrap:anywhere}
+.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:2.3;overflow-wrap:anywhere}
 .text p{margin:0}
 .text p+p{margin-top:.9em}
 .text b{font-weight:600;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;background:var(--c)}
+.legend-note{margin:0 0 10px;font-size:12.5px;line-height:1.65;color:var(--ink-mute)}
+.g{padding-bottom:var(--pb);background:linear-gradient(var(--c),var(--c)) left bottom/100% 2px no-repeat}
+.s{--c:#f2b84b}.v{--c:#ff6b6b}.t{--c:#c792ea}.c{--c:#5ec59a}.c.cs{--c:#f2b84b}
+.s,.v,.t{--pb:2px}.c1{--pb:6px}.c2{--pb:10px}.c3{--pb:14px}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 18px}
 summary{cursor:pointer;padding:13px 0;color:var(--ink-soft);font-size:14px;font-weight:600}
 details[open] summary{border-bottom:1px solid var(--line)}
@@ -37,11 +44,13 @@ li b{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
   <p class="meta">约 161 词 · 9 句</p>
 
   <h2>原文</h2>
+  <div class="legend"><span class="s"><i></i>主语</span><span class="v"><i></i>谓语</span><span class="t"><i></i>不定式</span><span class="c"><i></i>从句</span></div>
+  <p class="legend-note">从句线画在最下面，从句里再套从句，就再往下多画一条。let 后面不带 to 的动词原形（know）也算不定式；you're not to be disturbed 是 be to 结构，整个算谓语。</p>
   <div class="text" lang="en">
-    <p><b>Interruptions</b> are one of the worst <b>things to deal with</b> while you’re trying to <b>get work done</b>.</p>
-    <p>If you’re busy, don’t <b>feel bad about saying no</b>. Tell the person you’re sorry and explain that you have <b>a million things to do</b> and then <b>ask if the two of you can talk at a different time</b>.</p>
-    <p>When people try to interrupt you, <b>have set hours planned</b> and <b>let them know</b> to come back during that time or that you’ll find them then. <b>It’s important that</b> you let them know <b>when you’ll be available</b>. It can <b>help to eliminate</b> future interruptions.</p>
-    <p>If you have a door to your office, <b>make good use of</b> it. <b>Leave it open</b> when you’re available to talk and close it when you’re not. If someone knocks and it’s not an important matter, <b>excuse yourself</b> and let the person know you’re busy so they can <b>get the hint</b> that when the door is closed, <b>you’re not to be disturbed</b>.</p>
+    <p><span class="g s"><b>Interruptions</b></span> <span class="g v">are</span> one of the worst <b>things <span class="g t">to deal</span> with</b> <span class="g c c1">while <span class="g s">you</span><span class="g v">’re trying</span> <span class="g t">to <b>get</b></span><b> work done</b></span>.</p>
+    <p><span class="g c c1">If <span class="g s">you</span><span class="g v">’re</span> busy</span>, <span class="g v">don’t <b>feel</b></span><b> bad about saying no</b>. <span class="g v">Tell</span> the person <span class="g c c1"><span class="g s">you</span><span class="g v">’re</span> sorry</span> and <span class="g v">explain</span> <span class="g c c1">that <span class="g s">you</span> <span class="g v">have</span> <b>a million things <span class="g t">to do</span></b></span> and then <b><span class="g v">ask</span> <span class="g c c1">if <span class="g s">the two of you</span> <span class="g v">can talk</span> at a different time</span></b>.</p>
+    <p><span class="g c c1">When <span class="g s">people</span> <span class="g v">try</span> <span class="g t">to interrupt</span> you</span>, <b><span class="g v">have</span> set hours planned</b> and <b><span class="g v">let</span> them <span class="g t">know</span></b> <span class="g t">to come back</span> during that time or <span class="g c c1">that <span class="g s">you</span><span class="g v">’ll find</span> them then</span>. <b><span class="g s">It</span><span class="g v">’s</span> important </b><span class="g c c1"><b>that</b> <span class="g s">you</span> <span class="g v">let</span> them <span class="g t">know</span> <span class="g c c2"><b>when <span class="g s">you</span><span class="g v">’ll be</span> available</b></span></span>. <span class="g s">It</span> <span class="g v">can <b>help</b></span><b> <span class="g t">to eliminate</span></b> future interruptions.</p>
+    <p><span class="g c c1">If <span class="g s">you</span> <span class="g v">have</span> a door to your office</span>, <b><span class="g v">make</span> good use of</b> it. <b><span class="g v">Leave</span> it open</b> <span class="g c c1">when <span class="g s">you</span><span class="g v">’re</span> available <span class="g t">to talk</span></span> and <span class="g v">close</span> it <span class="g c c1">when <span class="g s">you</span><span class="g v">’re not</span></span>. <span class="g c c1">If <span class="g s">someone</span> <span class="g v">knocks</span> and <span class="g s">it</span><span class="g v">’s not</span> an important matter</span>, <b><span class="g v">excuse</span> yourself</b> and <span class="g v">let</span> the person <span class="g t">know</span> <span class="g c c1"><span class="g s">you</span><span class="g v">’re</span> busy</span> <span class="g c c1">so <span class="g s">they</span> <span class="g v">can <b>get</b></span><b> the hint</b> <span class="g c c2">that <span class="g c c3">when <span class="g s">the door</span> <span class="g v">is closed</span></span>, <b><span class="g s">you</span><span class="g v">’re not to be disturbed</span></b></span></span>.</p>
   </div>
 
   <h2>意思</h2>

@@ -15,10 +15,17 @@ a:hover{text-decoration:underline}
 h1{font-size:24px;margin:22px 0 6px}
 .meta{color:var(--ink-mute);font-size:13px;margin:0 0 24px}
 h2{font-size:12px;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;margin:26px 0 10px}
-.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:1.85;overflow-wrap:anywhere}
+.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:2.3;overflow-wrap:anywhere}
 .text p{margin:0}
 .text p+p{margin-top:.9em}
 .text b{font-weight:600;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;background:var(--c)}
+.legend-note{margin:0 0 10px;font-size:12.5px;line-height:1.65;color:var(--ink-mute)}
+.g{padding-bottom:var(--pb);background:linear-gradient(var(--c),var(--c)) left bottom/100% 2px no-repeat}
+.s{--c:#f2b84b}.v{--c:#ff6b6b}.t{--c:#c792ea}.c{--c:#5ec59a}.c.cs{--c:#f2b84b}
+.s,.v,.t{--pb:2px}.c1{--pb:6px}.c2{--pb:10px}.c3{--pb:14px}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 18px}
 summary{cursor:pointer;padding:13px 0;color:var(--ink-soft);font-size:14px;font-weight:600}
 details[open] summary{border-bottom:1px solid var(--line)}
@@ -37,8 +44,10 @@ li b{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
   <p class="meta">约 130 词 · 9 句</p>
 
   <h2>原文</h2>
+  <div class="legend"><span class="s"><i></i>主语</span><span class="v"><i></i>谓语</span><span class="t"><i></i>不定式</span><span class="c"><i></i>从句</span></div>
+  <p class="legend-note">从句线画在最下面。help 后面不带 to 的动词原形（reduce）也算不定式。</p>
   <div class="text" lang="en">
-    <p>Gratitude is a powerful emotion and a <b>transformative habit</b>. It’s <b>more than just</b> saying “thank you”. It’s also about <b>acknowledging</b> the goodness in our lives and <b>recognizing that</b> the source of the goodness often comes from the outside of ourselves. It’s a celebration of the positive aspects of life, both big and small. <b>Practising gratitude</b> encourages us to change our <b>perception</b> <b>from scarcity to abundance</b>. It <b>prevents us from focusing</b> on <b>what we lack</b> or what we want, <b>directing our attention instead to</b> the happiness we already have. This change in viewpoint can greatly increase our <b>life fulfillment</b>. By encouraging joyful emotions, gratitude can help reduce feelings of anxiety and depression. <b>Moreover</b>, it can enhance overall mood and <b>emotional resilience</b> (恢复能力), <b>enabling us to</b> better <b>cope with</b> stress and life’s challenges.</p>
+    <p><span class="g s">Gratitude</span> <span class="g v">is</span> a powerful emotion and a <b>transformative habit</b>. <span class="g s">It</span><span class="g v">’s</span> <b>more than just</b> saying “thank you”. <span class="g s">It</span><span class="g v">’s</span> also about <b>acknowledging</b> the goodness in our lives and <b>recognizing </b><span class="g c c1"><b>that</b> <span class="g s">the source of the goodness</span> often <span class="g v">comes</span> from the outside of ourselves</span>. <span class="g s">It</span><span class="g v">’s</span> a celebration of the positive aspects of life, both big and small. <span class="g s"><b>Practising gratitude</b></span> <span class="g v">encourages</span> us <span class="g t">to change</span> our <b>perception</b> <b>from scarcity to abundance</b>. <span class="g s">It</span> <b><span class="g v">prevents</span> us from focusing</b> on <span class="g c c1"><b>what <span class="g s">we</span> <span class="g v">lack</span></b></span> or <span class="g c c1">what <span class="g s">we</span> <span class="g v">want</span></span>, <b>directing our attention instead to</b> the happiness <span class="g c c1"><span class="g s">we</span> already <span class="g v">have</span></span>. <span class="g s">This change in viewpoint</span> <span class="g v">can greatly increase</span> our <b>life fulfillment</b>. By encouraging joyful emotions, <span class="g s">gratitude</span> <span class="g v">can help</span> <span class="g t">reduce</span> feelings of anxiety and depression. <b>Moreover</b>, <span class="g s">it</span> <span class="g v">can enhance</span> overall mood and <b>emotional resilience</b> (恢复能力), <b>enabling us </b><span class="g t"><b>to</b> better <b>cope</b></span><b> with</b> stress and life’s challenges.</p>
   </div>
 
   <h2>意思</h2>

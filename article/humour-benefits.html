@@ -15,10 +15,17 @@ a:hover{text-decoration:underline}
 h1{font-size:24px;margin:22px 0 6px}
 .meta{color:var(--ink-mute);font-size:13px;margin:0 0 24px}
 h2{font-size:12px;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;margin:26px 0 10px}
-.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:1.85;overflow-wrap:anywhere}
+.text{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:17px;line-height:2.3;overflow-wrap:anywhere}
 .text p{margin:0}
 .text p+p{margin-top:.9em}
 .text b{font-weight:600;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;background:var(--c)}
+.legend-note{margin:0 0 10px;font-size:12.5px;line-height:1.65;color:var(--ink-mute)}
+.g{padding-bottom:var(--pb);background:linear-gradient(var(--c),var(--c)) left bottom/100% 2px no-repeat}
+.s{--c:#f2b84b}.v{--c:#ff6b6b}.t{--c:#c792ea}.c{--c:#5ec59a}.c.cs{--c:#f2b84b}
+.s,.v,.t{--pb:2px}.c1{--pb:6px}.c2{--pb:10px}.c3{--pb:14px}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 18px}
 summary{cursor:pointer;padding:13px 0;color:var(--ink-soft);font-size:14px;font-weight:600}
 details[open] summary{border-bottom:1px solid var(--line)}
@@ -37,8 +44,10 @@ li b{display:block;color:var(--ink);font-weight:600;font-size:15.5px}
   <p class="meta">约 116 词 · 6 句</p>
 
   <h2>原文</h2>
+  <div class="legend"><span class="s"><i></i>主语</span><span class="v"><i></i>谓语</span><span class="t"><i></i>不定式</span><span class="c"><i></i>从句</span></div>
+  <p class="legend-note">从句线画在最下面。make / let / help 后面不带 to 的动词原形（look、seem、understand、laugh）也算不定式。</p>
   <div class="text" lang="en">
-    <p>If you <b>see humour as</b> an <b>optional</b> form of entertainment, you’re missing some of its biggest benefits: Humour <b>makes</b> <b>average-looking</b> people <b>look cute</b> and uninteresting people <b>seem entertaining</b>. Studies show that <b>a good sense of humour</b> even makes you seem smarter. <b>Best of all</b>, humour raises your energy, and that can <b>have an effect on everything</b> you do at school, at work, or in your personal life. The increase of energy will even make you more <b>willing to exercise</b>, and that will raise your overall energy even more. Humour also <b>transports your mind away from</b> your daily troubles. Humour lets you better understand life and sometimes helps you <b>laugh at even the worst of your problems</b>.</p>
+    <p><span class="g c c1">If <span class="g s">you</span> <b><span class="g v">see</span> humour as</b> an <b>optional</b> form of entertainment</span>, <span class="g s">you</span><span class="g v">’re missing</span> some of its biggest benefits: <span class="g s">Humour</span> <span class="g v"><b>makes</b></span> <b>average-looking</b> people <b><span class="g t">look</span> cute</b> and uninteresting people <b><span class="g t">seem</span> entertaining</b>. <span class="g s">Studies</span> <span class="g v">show</span> <span class="g c c1">that <span class="g s"><b>a good sense of humour</b></span> even <span class="g v">makes</span> you <span class="g t">seem</span> smarter</span>. <b>Best of all</b>, <span class="g s">humour</span> <span class="g v">raises</span> your energy, and <span class="g s">that</span> <span class="g v">can <b>have</b></span><b> an effect on everything</b> <span class="g c c1"><span class="g s">you</span> <span class="g v">do</span> at school, at work, or in your personal life</span>. <span class="g s">The increase of energy</span> <span class="g v">will even make</span> you more <b>willing <span class="g t">to exercise</span></b>, and <span class="g s">that</span> <span class="g v">will raise</span> your overall energy even more. <span class="g s">Humour</span> also <b><span class="g v">transports</span> your mind away from</b> your daily troubles. <span class="g s">Humour</span> <span class="g v">lets</span> you better <span class="g t">understand</span> life and sometimes <span class="g v">helps</span> you <b><span class="g t">laugh</span> at even the worst of your problems</b>.</p>
   </div>
 
   <h2>意思</h2>
