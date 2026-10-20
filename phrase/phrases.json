@@ -1,7 +1,12 @@
 {
- "count": 201,
+ "count": 202,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-81",
+   "phrase": "reach out to sb",
+   "meaning": "v. 联系某人，主动找某人；关心某人，向某人伸出援手"
+  },
   {
    "id": "p2-80",
    "phrase": "work out",
@@ -46,11 +51,6 @@
    "id": "p2-72",
    "phrase": "be prone to sth / to do sth",
    "meaning": "adj. 容易（得某种病、出某种问题）；动不动就……（多指不好的事）"
-  },
-  {
-   "id": "p2-71",
-   "phrase": "at all",
-   "meaning": "adv. 一点也（不）；到底，究竟（用在否定句、问句里加强语气）"
   }
  ]
 }
