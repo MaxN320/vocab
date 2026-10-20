@@ -1,7 +1,12 @@
 {
- "count": 200,
+ "count": 201,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-80",
+   "phrase": "work out",
+   "meaning": "v. 锻炼，健身；（事情）进展顺利，有好结果；算出，想出（办法），弄明白"
+  },
   {
    "id": "p2-79",
    "phrase": "be through",
@@ -46,11 +51,6 @@
    "id": "p2-71",
    "phrase": "at all",
    "meaning": "adv. 一点也（不）；到底，究竟（用在否定句、问句里加强语气）"
-  },
-  {
-   "id": "p2-70",
-   "phrase": "find oneself doing",
-   "meaning": "v. 发现自己（不知不觉地）在做某事"
   }
  ]
 }
