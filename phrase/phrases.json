@@ -1,7 +1,12 @@
 {
- "count": 207,
+ "count": 208,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-87",
+   "phrase": "go with the flow",
+   "meaning": "v. 顺其自然，随遇而安；随大流"
+  },
   {
    "id": "p2-86",
    "phrase": "the same goes for sb/sth",
@@ -46,11 +51,6 @@
    "id": "p2-78",
    "phrase": "be full of",
    "meaning": "adj. 装满了……，满是……；有很多（错误、洞……）；充满（精力、希望、某种感情）"
-  },
-  {
-   "id": "p2-77",
-   "phrase": "a bunch of",
-   "meaning": "n. 一束，一串；（口语）一大堆，很多；一群（人），一帮"
   }
  ]
 }
