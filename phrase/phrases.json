@@ -1,7 +1,12 @@
 {
- "count": 205,
+ "count": 206,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-85",
+   "phrase": "start with sth",
+   "meaning": "v. 从……开始，先做……；以……开头"
+  },
   {
    "id": "p2-84",
    "phrase": "by the end of sth",
@@ -46,11 +51,6 @@
    "id": "p2-76",
    "phrase": "stand out",
    "meaning": "v. 显眼，醒目；出众，突出（比别的好很多）"
-  },
-  {
-   "id": "p2-75",
-   "phrase": "see beyond A to B",
-   "meaning": "v. 越过 A，一直看到 B；不被眼前的 A 挡住，看到更远、更深的 B"
   }
  ]
 }
