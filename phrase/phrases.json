@@ -1,7 +1,12 @@
 {
- "count": 203,
+ "count": 204,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-83",
+   "phrase": "at the start (of sth)",
+   "meaning": "prep. 在（……的）开头，在……开始的时候"
+  },
   {
    "id": "p2-82",
    "phrase": "give up",
@@ -46,11 +51,6 @@
    "id": "p2-74",
    "phrase": "at the end of sth",
    "meaning": "prep. 在……的末尾，在……结束时；在……的尽头"
-  },
-  {
-   "id": "p2-73",
-   "phrase": "rub out",
-   "meaning": "v. （用橡皮、布）擦掉（字迹、记号）"
   }
  ]
 }
