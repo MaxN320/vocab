@@ -1,7 +1,12 @@
 {
- "count": 206,
+ "count": 207,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-86",
+   "phrase": "the same goes for sb/sth",
+   "meaning": "……也一样，对……也是如此"
+  },
   {
    "id": "p2-85",
    "phrase": "start with sth",
@@ -46,11 +51,6 @@
    "id": "p2-77",
    "phrase": "a bunch of",
    "meaning": "n. 一束，一串；（口语）一大堆，很多；一群（人），一帮"
-  },
-  {
-   "id": "p2-76",
-   "phrase": "stand out",
-   "meaning": "v. 显眼，醒目；出众，突出（比别的好很多）"
   }
  ]
 }
