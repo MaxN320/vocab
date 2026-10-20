@@ -1,7 +1,12 @@
 {
- "count": 202,
+ "count": 203,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-82",
+   "phrase": "give up",
+   "meaning": "v. 放弃；戒掉（习惯）；让出（座位等）"
+  },
   {
    "id": "p2-81",
    "phrase": "reach out to sb",
@@ -46,11 +51,6 @@
    "id": "p2-73",
    "phrase": "rub out",
    "meaning": "v. （用橡皮、布）擦掉（字迹、记号）"
-  },
-  {
-   "id": "p2-72",
-   "phrase": "be prone to sth / to do sth",
-   "meaning": "adj. 容易（得某种病、出某种问题）；动不动就……（多指不好的事）"
   }
  ]
 }
