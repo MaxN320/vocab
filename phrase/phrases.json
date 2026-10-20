@@ -1,7 +1,12 @@
 {
- "count": 204,
+ "count": 205,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-84",
+   "phrase": "by the end of sth",
+   "meaning": "prep. 到……结束的时候，在……结束之前（最晚到那时）"
+  },
   {
    "id": "p2-83",
    "phrase": "at the start (of sth)",
@@ -46,11 +51,6 @@
    "id": "p2-75",
    "phrase": "see beyond A to B",
    "meaning": "v. 越过 A，一直看到 B；不被眼前的 A 挡住，看到更远、更深的 B"
-  },
-  {
-   "id": "p2-74",
-   "phrase": "at the end of sth",
-   "meaning": "prep. 在……的末尾，在……结束时；在……的尽头"
   }
  ]
 }
