@@ -1,7 +1,12 @@
 {
- "count": 208,
+ "count": 209,
  "updated": "2026-10-20",
  "latest": [
+  {
+   "id": "p2-88",
+   "phrase": "turn to sb for sth",
+   "meaning": "v. 向某人求助，找某人要（帮助、建议、安慰）"
+  },
   {
    "id": "p2-87",
    "phrase": "go with the flow",
@@ -46,11 +51,6 @@
    "id": "p2-79",
    "phrase": "be through",
    "meaning": "adj. （做）完了，用完了；（两个人的关系）完了，分手了；（比赛、考试）过关，晋级"
-  },
-  {
-   "id": "p2-78",
-   "phrase": "be full of",
-   "meaning": "adj. 装满了……，满是……；有很多（错误、洞……）；充满（精力、希望、某种感情）"
   }
  ]
 }
