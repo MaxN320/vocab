@@ -1,7 +1,12 @@
 {
- "count": 209,
- "updated": "2026-10-20",
+ "count": 210,
+ "updated": "2026-10-21",
  "latest": [
+  {
+   "id": "p2-89",
+   "phrase": "drop off",
+   "meaning": "v. （开车）把……送到，让……下车；打个盹，不知不觉睡着；（数量）减少，下降"
+  },
   {
    "id": "p2-88",
    "phrase": "turn to sb for sth",
@@ -46,11 +51,6 @@
    "id": "p2-80",
    "phrase": "work out",
    "meaning": "v. 锻炼，健身；（事情）进展顺利，有好结果；算出，想出（办法），弄明白"
-  },
-  {
-   "id": "p2-79",
-   "phrase": "be through",
-   "meaning": "adj. （做）完了，用完了；（两个人的关系）完了，分手了；（比赛、考试）过关，晋级"
   }
  ]
 }
