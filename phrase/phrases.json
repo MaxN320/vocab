@@ -1,7 +1,12 @@
 {
- "count": 210,
- "updated": "2026-10-21",
+ "count": 211,
+ "updated": "2026-10-26",
  "latest": [
+  {
+   "id": "p2-90",
+   "phrase": "why not do sth?",
+   "meaning": "口语表达：（提建议）何不……呢？……吧"
+  },
   {
    "id": "p2-89",
    "phrase": "drop off",
@@ -46,11 +51,6 @@
    "id": "p2-81",
    "phrase": "reach out to sb",
    "meaning": "v. 联系某人，主动找某人；关心某人，向某人伸出援手"
-  },
-  {
-   "id": "p2-80",
-   "phrase": "work out",
-   "meaning": "v. 锻炼，健身；（事情）进展顺利，有好结果；算出，想出（办法），弄明白"
   }
  ]
 }
