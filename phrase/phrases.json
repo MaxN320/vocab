@@ -1,7 +1,12 @@
 {
- "count": 211,
+ "count": 212,
  "updated": "2026-10-26",
  "latest": [
+  {
+   "id": "p2-91",
+   "phrase": "show sb around sp",
+   "meaning": "v. 带某人参观（某地）；领某人四处看看"
+  },
   {
    "id": "p2-90",
    "phrase": "why not do sth?",
@@ -46,11 +51,6 @@
    "id": "p2-82",
    "phrase": "give up",
    "meaning": "v. 放弃；戒掉（习惯）；让出（座位等）"
-  },
-  {
-   "id": "p2-81",
-   "phrase": "reach out to sb",
-   "meaning": "v. 联系某人，主动找某人；关心某人，向某人伸出援手"
   }
  ]
 }
