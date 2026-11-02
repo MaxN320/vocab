@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三个月英语学习计划</title>
+<style>
+:root {
+  --paper: #F6F8F5;
+  --sheet: #FFFFFF;
+  --ink: #1C2A39;
+  --ink-soft: #56636F;
+  --rule: #D3DFD7;
+  --rule-strong: #AFC2B5;
+  --red: #C63A2F;
+  --red-tint: #FBEAE7;
+  --g: #2D5A9A;
+  --v: #2A7448;
+  --c: #8A5809;
+  --p: #74479A;
+  --focus: #2D5A9A;
+  --serif: "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1D2A24;
+    --sheet: #24342C;
+    --ink: #EBEFE8;
+    --ink-soft: #A9B7AE;
+    --rule: #384C42;
+    --rule-strong: #587064;
+    --red: #EF8778;
+    --red-tint: #3B2E29;
+    --g: #95B7EE;
+    --v: #90D3A7;
+    --c: #E7C37C;
+    --p: #CBABEB;
+    --focus: #95B7EE;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.7 var(--sans); }
+.wrap { max-width: 680px; margin: 0 auto; padding: 20px 20px 72px; }
+a { color: var(--g); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2 { font-family: var(--serif); font-weight: 900; line-height: 1.3; letter-spacing: .02em; }
+h1 { font-size: clamp(30px, 8vw, 42px); margin: 2px 0 4px; }
+h2 { font-size: 22px; margin: 48px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+p { margin: 0 0 12px; }
+b { font-weight: 600; }
+.lede { color: var(--ink-soft); margin: 0; }
+
+/* copybook strip: four lines, red baseline */
+.copybook { display: block; width: 100%; max-width: 400px; height: auto; }
+.copybook line { stroke: var(--rule-strong); stroke-width: 1; }
+.copybook line.base { stroke: var(--red); }
+.copybook text { fill: var(--ink); font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+
+.start { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 14px; font-size: 14px; color: var(--ink-soft); }
+.start label { color: var(--ink); font-weight: 600; }
+.start input { font: inherit; color: var(--ink); background: var(--sheet); border: 1px solid var(--rule-strong); border-radius: 6px; padding: 4px 8px; }
+
+/* today */
+.today { margin-top: 24px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 18px 16px; }
+.today .when { font-size: 14px; color: var(--ink-soft); margin: 0; }
+.today .big { font-family: var(--serif); font-weight: 900; font-size: 32px; line-height: 1.25; margin: 2px 0 12px; }
+.today .units { flex-direction: column; gap: 4px; font-size: 18px; }
+.today .units b { font-size: 20px; }
+.today .sub { font-size: 14px; color: var(--ink-soft); margin: 14px 0 4px; }
+.today .routine { margin: 0 0 12px; padding-left: 20px; }
+.behind { color: var(--red); font-size: 14px; margin: 12px 0 0; }
+.done-toggle { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 10px 12px; min-height: 48px; border: 1px solid var(--rule-strong); border-radius: 8px; cursor: pointer; font-weight: 600; }
+.done-toggle:has(input:checked) { border-color: var(--red); color: var(--red); }
+
+/* unit chips */
+.units { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 14px; }
+.u { --cat: var(--ink-soft); display: inline-flex; align-items: center; gap: 7px; font-variant-numeric: tabular-nums; }
+.u::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--cat); flex: none; }
+.u.g { --cat: var(--g); }
+.u.v { --cat: var(--v); }
+.u.c { --cat: var(--c); }
+.u.p { --cat: var(--p); }
+.u.r::before { background: transparent; border: 1.5px solid var(--ink-soft); }
+
+/* checkbox: teacher's red tick */
+input[type="checkbox"] { appearance: none; -webkit-appearance: none; margin: 0; width: 24px; height: 24px; flex: none; border: 1.5px solid var(--rule-strong); border-radius: 5px; background: var(--sheet); display: inline-grid; place-content: center; cursor: pointer; }
+input[type="checkbox"]::before { content: ""; width: 15px; height: 15px; background: var(--red); transform: scale(0); transition: transform .12s ease-out; clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); }
+input[type="checkbox"]:checked { border-color: var(--red); }
+input[type="checkbox"]:checked::before { transform: scale(1); }
+
+/* progress grid */
+.progress { margin-top: 18px; }
+.progress p { font-size: 14px; color: var(--ink-soft); margin: 0 0 8px; }
+.grid { display: grid; grid-template-columns: 44px repeat(6, 1fr); gap: 4px; }
+.grid .rl { font-size: 12px; color: var(--ink-soft); align-self: center; }
+.cell { appearance: none; height: 30px; padding: 0; border: 1px solid var(--rule-strong); border-radius: 4px; background: transparent; color: var(--ink-soft); font: 12px/1 var(--sans); font-variant-numeric: tabular-nums; cursor: pointer; }
+.cell.review { border-style: dashed; }
+.cell.done { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.cell.is-today { outline: 2px solid var(--red); outline-offset: 1px; }
+
+/* day list */
+details.week { border-bottom: 1px solid var(--rule); }
+details.week > summary { list-style: none; display: flex; align-items: baseline; gap: 10px; padding: 12px 0; cursor: pointer; font-weight: 600; }
+details.week > summary::-webkit-details-marker { display: none; }
+details.week > summary::before { content: ""; width: 7px; height: 7px; flex: none; align-self: center; border-right: 1.5px solid var(--ink-soft); border-bottom: 1.5px solid var(--ink-soft); transform: rotate(-45deg); transition: transform .15s; }
+details.week[open] > summary::before { transform: rotate(45deg); }
+summary .range { font-weight: 400; font-size: 14px; color: var(--ink-soft); }
+summary .cnt { margin-left: auto; font-weight: 400; font-size: 14px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+ol.days, ol.p3weeks { list-style: none; margin: 0 0 14px; padding: 0; }
+.day, .p3w { display: grid; grid-template-columns: 24px 1fr; gap: 4px 12px; padding: 10px 8px; border-radius: 8px; }
+.day + .day, .p3w + .p3w { border-top: 1px dashed var(--rule); border-radius: 0; }
+.day .head, .p3w .head { display: flex; flex-wrap: wrap; gap: 0 10px; align-items: baseline; cursor: pointer; }
+.day .num, .p3w .num { font-weight: 600; }
+.day .date, .p3w .date { font-size: 14px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.day .units, .p3w .focus { grid-column: 2; font-size: 15px; margin: 0; }
+.day.is-done .head, .day.is-done .units, .p3w.is-done .head, .p3w.is-done .focus { opacity: .5; }
+.day.is-today { background: var(--red-tint); }
+.day.flash { animation: flash 1.4s ease-out; }
+@keyframes flash { from { background: var(--red-tint); } to { background: transparent; } }
+
+/* reference sections */
+ol.phases, ul.tips, ul.checks { padding-left: 20px; margin: 0 0 12px; }
+ol.phases li, ul.tips li, ul.checks li { margin-bottom: 8px; }
+.books { list-style: none; margin: 0 0 12px; padding: 0; }
+.books li { --cat: var(--ink-soft); display: grid; grid-template-columns: 10px 1fr; gap: 0 12px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.books li.g { --cat: var(--g); }
+.books li.v { --cat: var(--v); }
+.books li.c { --cat: var(--c); }
+.books li.p { --cat: var(--p); }
+.books li::before { content: ""; width: 10px; height: 10px; margin-top: 9px; border-radius: 50%; background: var(--cat); grid-row: span 3; }
+.books .name { font-weight: 600; }
+.books .n { font-weight: 400; font-size: 14px; color: var(--ink-soft); margin-left: 8px; }
+.books .en, .books .pace { font-size: 14px; }
+.books .pace { color: var(--ink-soft); }
+table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 0 0 12px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule); }
+th { font-size: 14px; font-weight: 600; color: var(--ink-soft); }
+td.t { white-space: nowrap; color: var(--ink-soft); }
+.note { font-size: 14px; color: var(--ink-soft); }
+footer { margin-top: 48px; font-size: 14px; color: var(--ink-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  input[type="checkbox"]::before, details.week > summary::before { transition: none; }
+  .day.flash { animation: none; }
+}
+@media print {
+  .start, .progress { display: none; }
+  .today, .day.is-today { background: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <svg class="copybook" viewBox="0 0 400 92" role="img" aria-label="Don’t give up.">
+    <line x1="0" y1="10" x2="400" y2="10"/>
+    <line x1="0" y1="34" x2="400" y2="34"/>
+    <line class="base" x1="0" y1="58" x2="400" y2="58"/>
+    <line x1="0" y1="82" x2="400" y2="82"/>
+    <text x="2" y="58" font-size="50">Don’t give up.</text>
+  </svg>
+  <h1>三个月英语学习计划</h1>
+  <p class="lede">六本书，550 个单元，再加一个月的听和读。</p>
+  <div class="start">
+    <label for="start">开始日期</label>
+    <input type="date" id="start" value="2026-11-02">
+    <span>晚开始就改这里，所有日期自动顺延。</span>
+  </div>
+</header>
+
+<section class="today" id="today" aria-live="polite">
+  <p class="when">今天</p>
+  <p>打开页面后，这里会显示今天要学的单元。</p>
+</section>
+
+<section class="progress" aria-label="进度">
+  <p id="count">已勾掉 0 / 54 天</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section>
+  <h2>总览</h2>
+  <p>前 9 周每天学 10 个左右单元，刷完六本书，共 550 个单元；后 4 周每天约 6 小时，专注听和读。计划从 <span data-k="start-long">2026 年 11 月 2 日（周一）</span>到 <span data-k="end-long">2027 年 1 月 31 日（周日）</span>。</p>
+  <ol class="phases">
+    <li><b>第 1–4 周：初级。</b>初级语法 115 个单元，初级词汇 60 个单元，第 4 周中途换到中级。惯用搭配和短语动词从第 1 天起同步学。</li>
+    <li><b>第 4–9 周：中级。</b>中级语法 145 个单元，中级词汇 100 个单元，最后两天（第 53、54 天）总复习。</li>
+    <li><b>第 10–13 周：听和读。</b>精听、泛听、分级阅读，书本只保留错题复习。</li>
+  </ol>
+  <p>每周一到周六学新内容，周日复习、补进度。刷书阶段每天花在书上的时间约 4.5 到 6.5 小时，中级阶段更长。另外建议每天加 1 小时轻松听力，这样第三个月不用从零起步。</p>
+</section>
+
+<section>
+  <h2>六本书</h2>
+  <p>一周学 6 天，每本书每天的量如下，具体是哪几个单元见“每天学什么”。按这个速度，第 52 天学完全部 550 个单元。</p>
+  <ul class="books">
+    <li class="g"><span class="name">初级语法<span class="n">115 个单元</span></span><a class="en" href="https://shop.cambridge.org/english/product/2700140115">Essential Grammar in Use 第 4 版</a><span class="pace">每天 5 个（第 1–23 天）</span></li>
+    <li class="g"><span class="name">中级语法<span class="n">145 个单元</span></span><a class="en" href="https://elgazette.com/?p=2189">English Grammar in Use 第 5 版</a><span class="pace">每天 5 个（第 24–52 天）</span></li>
+    <li class="v"><span class="name">初级词汇<span class="n">60 个单元</span></span><a class="en" href="https://www.internationalbooks.ie/product/9781316631539/">English Vocabulary in Use Elementary 第 3 版</a><span class="pace">每天 3 个（第 1–20 天）</span></li>
+    <li class="v"><span class="name">中级词汇<span class="n">100 个单元</span></span><a class="en" href="https://shop.cambridge.org/english/product/2700185403">English Vocabulary in Use Pre-intermediate and Intermediate 第 4 版</a><span class="pace">每天 3 个（第 21–48 天），4 个（第 49–52 天）</span></li>
+    <li class="c"><span class="name">中级惯用搭配<span class="n">60 个单元</span></span><a class="en" href="https://dictionary.cambridge.es/en/catalogue/grammar-vocabulary-and-pronunciation/vocabulary/english-collocations-in-use-second-edition">English Collocations in Use Intermediate 第 2 版</a><span class="pace">每天 2 个（第 1–30 天）</span></li>
+    <li class="p"><span class="name">中级短语动词<span class="n">70 个单元</span></span><a class="en" href="https://www.klett-sprachen.de/english-phrasal-verbs-in-use-intermediate-2nd-edition/t-21/9783125410121">English Phrasal Verbs in Use Intermediate 第 2 版</a><span class="pace">每天 1 个（第 1–30 天），2 个（第 31–50 天）</span></li>
+  </ul>
+  <p>六本书都是一个单元两页：左页讲解，右页练习。买带答案的版本，自己就能批改。你买的中文版单元数如果不一样，按比例微调就行。</p>
+  <p class="note">初级单元短，估计每个 15 到 20 分钟；中级单元（包括搭配和短语动词）每个 25 到 30 分钟。</p>
+</section>
+
+<section>
+  <h2>每天学什么</h2>
+  <p>周一到周六每天学一行，学完就勾掉；周日不学新单元。前 30 天每天 11 个单元，之后每天 9 到 11 个，第 53、54 天总复习。</p>
+  <div id="weeks"></div>
+  <p>第 21 天词汇换中级，第 24 天语法换中级，单元会变长；第 24–30 天搭配也还没学完，是最累的一段。</p>
+  <p>落后了不要第二天加倍，用周日补上。连续两周补不上，就把短语动词剩下的单元挪到第三个月。</p>
+</section>
+
+<section>
+  <h2>刷书阶段的一天</h2>
+  <p>每天先学语法，再学词汇、搭配和短语动词，书本合计约 4.5 到 6.5 小时。周日不学新单元：重做这一周的全部错题，清掉 Anki 积压，补上落下的单元，剩下的时间休息。</p>
+  <table>
+    <thead><tr><th>时段</th><th>做什么</th><th>用时</th></tr></thead>
+    <tbody>
+      <tr><td class="t">上午</td><td>语法 5 个单元：先做右页练习，错了再读左页讲解</td><td class="t">1.5–2.5 小时</td></tr>
+      <tr><td class="t">下午</td><td>词汇 3 个单元（第 49–52 天 4 个），把不认识的词收进 Anki</td><td class="t">1–1.5 小时</td></tr>
+      <tr><td class="t">下午</td><td>惯用搭配、短语动词共 2 到 3 个单元</td><td class="t">1–1.5 小时</td></tr>
+      <tr><td class="t">下午</td><td>重做当天错题，把左页例句大声读一遍</td><td class="t">30 分钟</td></tr>
+      <tr><td class="t">晚上</td><td>Anki 复习</td><td class="t">30 分钟</td></tr>
+      <tr><td class="t">晚上</td><td>建议，可删：轻松听力，能听懂七八成的播客或视频，不查词、不做笔记</td><td class="t">1 小时</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>第 10–13 周：听和读</h2>
+  <p>每天约 6 小时：精听 1.5 小时、泛听 1.5 小时、阅读 2 小时，再加 1 小时处理生词和错题。材料先用给学习者做的，每周往原版多走一步。</p>
+  <table>
+    <thead><tr><th>内容</th><th>怎么做</th><th>用时</th></tr></thead>
+    <tbody>
+      <tr><td class="t">精听</td><td>一段 3–6 分钟的音频：先不看文本听两遍，再对照文本查生词，然后不看文本再听，最后逐句跟读</td><td class="t">1.5 小时</td></tr>
+      <tr><td class="t">泛听</td><td>能听懂七八成的播客、视频或剧，不暂停、不查词</td><td class="t">1.5 小时</td></tr>
+      <tr><td class="t">阅读</td><td>分级读物（如牛津书虫），选一页只需查三五个词的级别</td><td class="t">2 小时</td></tr>
+      <tr><td class="t">生词</td><td>精听和阅读里的生词收进 Anki，当天复习</td><td class="t">30 分钟</td></tr>
+      <tr><td class="t">错题</td><td>每天重做一部分刷书阶段的错题</td><td class="t">30 分钟</td></tr>
+    </tbody>
+  </table>
+  <p>精听入门推荐 BBC 的 <a href="https://www.podbean.com/itunes/262026947">6 Minute English</a>：每周四更新一集，官网有免费文本、练习和小测。官网打不开的话，在常用的播客 App 里搜节目名。</p>
+  <ol class="p3weeks" id="p3weeks"></ol>
+</section>
+
+<section>
+  <h2>方法要点</h2>
+  <p>全刷六本书，最省时间的办法是先做题、后看讲解。</p>
+  <ul class="tips">
+    <li><b>先做右页，再看左页。</b>右页全对，左页扫一眼就往下走；有错再细读讲解，然后重做错的题。</li>
+    <li><b>错题记单元号。</b>错题在书上标出来，单元号记进手机备忘录。周日和第三个月按单元号回来重做。</li>
+    <li><b>例句读出声。</b>左页的例句每句大声读一遍，顺便练嘴和语感。</li>
+    <li><b>生词只收真不认识的。</b>词汇书每个单元挑 5 到 10 个不认识、又用得上的词，连同例句收进 Anki；搭配和短语动词每个单元挑几个，用自己的事各造一句。</li>
+    <li><b>Anki 每天清空。</b>一天不复习，第二天的量就翻倍；宁可少收新词，也别积压。</li>
+    <li><b>初级太简单就提速。</b>初级书如果做得很顺，可以每天多做几个单元，提前进入中级，省下的时间留给第三个月。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>检查点</h2>
+  <p>开始前和结束时各做一次免费的 <a href="https://www.efset.org/4-skill/">EF SET</a> 测试，用前后分数看进步。EF SET 完全免费，按 CEFR 给出 A1 到 C2 的等级。</p>
+  <ul class="checks">
+    <li><b data-k="test-pre">11 月 1 日（开始前一天）</b>：做<a href="https://www.efset.org/ef-set-50/">阅读加听力版</a>（约 50 分钟），记下总分和等级。</li>
+    <li><b>每个周日</b>：对照清单，看这周是否完成；落后就按“每天学什么”里的办法调整。</li>
+    <li><b data-k="test-mid">1 月 3 日（刷完书，可选）</b>：再测一次，看刷完书后阅读和听力各变了多少。</li>
+    <li><b data-k="test-end">1 月 30 日、1 月 31 日（最后两天）</b>：最后测一次，和第一次对比。</li>
+  </ul>
+  <p>想同时测口语和写作，可以做 90 分钟的四项技能版。</p>
+</section>
+
+<footer>
+  <p>计划版本：2026 年 10 月 30 日。勾选记录只保存在这台设备的这个浏览器里。</p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var KEY = 'english-plan-v1';
+  var DEFAULT_START = '2026-11-02';
+  var WD = ['日', '一', '二', '三', '四', '五', '六'];
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function $(s) { return document.querySelector(s); }
+  function setText(k, v) { document.querySelectorAll('[data-k="' + k + '"]').forEach(function (el) { el.textContent = v; }); }
+
+  var state = { start: DEFAULT_START, done: {}, weeks: {} };
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) {
+      var saved = JSON.parse(raw);
+      if (saved && typeof saved === 'object') {
+        if (typeof saved.start === 'string') state.start = saved.start;
+        if (saved.done && typeof saved.done === 'object') state.done = saved.done;
+        if (saved.weeks && typeof saved.weeks === 'object') state.weeks = saved.weeks;
+      }
+    }
+  } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  /* ---- schedule: 54 study days ---- */
+  var DAYS = (function () {
+    var out = [], g1 = 0, g2 = 0, v1 = 0, v2 = 0, c = 0, p = 0, d, k;
+    for (d = 1; d <= 54; d++) {
+      if (d > 52) {
+        out.push({ n: d, review: d === 53 ? '总复习：重做全部错题' : '总复习：清空 Anki，补完落下的单元' });
+        continue;
+      }
+      var items = [];
+      if (d <= 23) { items.push(['g', '语法初级', g1 + 1, g1 + 5]); g1 += 5; }
+      else { items.push(['g', '语法中级', g2 + 1, g2 + 5]); g2 += 5; }
+      if (d <= 20) { items.push(['v', '词汇初级', v1 + 1, v1 + 3]); v1 += 3; }
+      else { k = d <= 48 ? 3 : 4; items.push(['v', '词汇中级', v2 + 1, v2 + k]); v2 += k; }
+      if (d <= 30) { items.push(['c', '搭配', c + 1, c + 2]); c += 2; }
+      if (d <= 50) { k = d <= 30 ? 1 : 2; items.push(['p', '短语动词', p + 1, p + k]); p += k; }
+      out.push({ n: d, items: items });
+    }
+    return out;
+  })();
+  var P3 = [
+    { w: 10, focus: '精听用 6 Minute English；阅读选感觉偏简单的分级读物' },
+    { w: 11, focus: '泛听加入开英文字幕的美剧；分级读物升一级' },
+    { w: 12, focus: '泛听换成自己感兴趣的原版播客或视频；开始读一本简单的原版书' },
+    { w: 13, focus: '以原版材料为主；最后两天做水平测试、整体复盘' }
+  ];
+
+  /* ---- dates ---- */
+  function parseISO(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+  function addDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
+  function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function dayDiff(a, b) { return Math.round((a - b) / 864e5); }
+  function md(d) { return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function mdw(d) { return md(d) + '（' + WD[d.getDay()] + '）'; }
+  function longDate(d, withYear) { return (withYear ? d.getFullYear() + ' 年 ' : '') + (d.getMonth() + 1) + ' 月 ' + d.getDate() + ' 日'; }
+  function longDateW(d, withYear) { return longDate(d, withYear) + '（周' + WD[d.getDay()] + '）'; }
+  function today() { var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+
+  function computeDates(startISO) {
+    var s = parseISO(startISO) || parseISO(DEFAULT_START);
+    var dates = [], d = s;
+    while (dates.length < 54) { if (d.getDay() !== 0) dates.push(d); d = addDays(d, 1); }
+    var p3 = addDays(dates[53], 1);
+    while (p3.getDay() === 0) p3 = addDays(p3, 1);
+    return { dates: dates, p3: p3, p3End: addDays(p3, 27) };
+  }
+  var S = computeDates(state.start);
+
+  /* ---- pieces ---- */
+  function unitsHTML(day) {
+    if (day.review) return '<li class="u r">' + day.review + '</li>';
+    return day.items.map(function (it) {
+      return '<li class="u ' + it[0] + '">' + it[1] + ' <b>' + (it[2] === it[3] ? it[2] : it[2] + '–' + it[3]) + '</b></li>';
+    }).join('');
+  }
+  function weekDone(w) {
+    var c = 0;
+    for (var k = 1; k <= 6; k++) if (state.done[(w - 1) * 6 + k]) c++;
+    return c;
+  }
+  function behindCount(t) {
+    var c = 0;
+    S.dates.forEach(function (d, i) { if (d < t && !state.done[i + 1]) c++; });
+    return c;
+  }
+  var EF = '<a href="https://www.efset.org/ef-set-50/">EF SET 阅读加听力测试</a>';
+
+  function renderToday() {
+    var t = today(), dates = S.dates, html = '', i, day, nb;
+    nb = behindCount(t);
+    var behind = nb > 0 ? '<p class="behind">前面还有 ' + nb + ' 天没勾掉。落后了不要第二天加倍，用周日补上。</p>' : '';
+    var behindBook = nb > 0 ? '<p class="behind">刷书阶段还有 ' + nb + ' 天没勾掉，剩下的单元可以挪到第三个月补。</p>' : '';
+    if (t < dates[0]) {
+      var n = dayDiff(dates[0], t);
+      html = '<p class="when">还没开始</p><p class="big">还有 ' + n + ' 天开始</p>' +
+        '<p>第 1 天是 ' + longDateW(dates[0]) + '。开始前一天（' + longDate(addDays(dates[0], -1)) + '）先做一次 ' + EF + '，记下分数。</p>' +
+        '<p class="sub">第 1 天要学</p><ul class="units">' + unitsHTML(DAYS[0]) + '</ul>';
+    } else if (t <= dates[53]) {
+      i = -1;
+      dates.forEach(function (d, k) { if (sameDay(d, t)) i = k; });
+      if (i >= 0) {
+        day = DAYS[i];
+        var done = !!state.done[day.n];
+        html = '<p class="when">' + longDateW(t) + '</p><p class="big">第 ' + day.n + ' 天</p>' +
+          '<ul class="units">' + unitsHTML(day) + '</ul>' +
+          '<label class="done-toggle"><input type="checkbox" data-day="' + day.n + '"' + (done ? ' checked' : '') + '><span>' + (done ? '今天已完成' : '学完了，勾掉今天') + '</span></label>' +
+          behind;
+      } else {
+        var next = 0;
+        while (next < 54 && dates[next] <= t) next++;
+        day = DAYS[next];
+        html = '<p class="when">' + longDateW(t) + '</p><p class="big">今天周日，复习</p>' +
+          '<p>重做这一周的错题，清掉 Anki 积压，补上落下的单元，剩下的时间休息。</p>' + behind +
+          '<p class="sub">明天：第 ' + day.n + ' 天</p><ul class="units">' + unitsHTML(day) + '</ul>';
+      }
+    } else if (t < S.p3) {
+      html = '<p class="when">' + longDateW(t) + '</p><p class="big">书刷完了</p>' +
+        '<p>今天休息，也可以再做一次 ' + EF + '，看刷完书后阅读和听力各变了多少。' + longDate(S.p3) + '开始第三个月：听和读。</p>' + behindBook;
+    } else if (t <= S.p3End) {
+      var wk = P3[Math.min(3, Math.floor(dayDiff(t, S.p3) / 7))];
+      html = '<p class="when">' + longDateW(t) + '</p><p class="big">第 ' + wk.w + ' 周：听和读</p>' +
+        '<p>本周重点：' + wk.focus + '。</p>' +
+        '<ul class="routine"><li>精听 1.5 小时</li><li>泛听 1.5 小时</li><li>阅读 2 小时</li><li>生词和错题 1 小时</li></ul>' +
+        (dayDiff(S.p3End, t) <= 1 ? '<p>今明两天做一次 ' + EF + '，和第一次的分数对比。</p>' : '');
+    } else {
+      html = '<p class="when">' + longDateW(t) + '</p><p class="big">三个月完成了</p>' +
+        '<p>做一次 ' + EF + '，和第一次的分数对比，再决定下一步练什么。</p>';
+    }
+    $('#today').innerHTML = html;
+  }
+
+  function renderGrid() {
+    var t = today(), h = '', w, k, n, d, cls, total = 0;
+    for (w = 1; w <= 9; w++) {
+      h += '<div class="rl">第' + w + '周</div>';
+      for (k = 0; k < 6; k++) {
+        n = (w - 1) * 6 + k + 1;
+        d = S.dates[n - 1];
+        cls = 'cell' + (state.done[n] ? ' done' : '') + (sameDay(d, t) ? ' is-today' : '') + (n > 52 ? ' review' : '');
+        if (state.done[n]) total++;
+        h += '<button type="button" class="' + cls + '" data-go="' + n + '" aria-label="第 ' + n + ' 天，' + longDate(d) + (state.done[n] ? '，已完成' : '') + '">' + n + '</button>';
+      }
+    }
+    $('#grid').innerHTML = h;
+    $('#count').textContent = '已勾掉 ' + total + ' / 54 天，点格子跳到那一天';
+  }
+
+  function renderWeeks() {
+    var t = today(), dates = S.dates, h = '', w, k, a, n, d, day, cls, curW = 0;
+    if (t >= dates[0] && t <= dates[53]) {
+      var idx = 0;
+      while (idx < 54 && dates[idx] < t) idx++;
+      curW = Math.floor(idx / 6) + 1;
+    } else if (t < dates[0]) {
+      curW = 1;
+    }
+    for (w = 1; w <= 9; w++) {
+      a = (w - 1) * 6;
+      h += '<details class="week" id="w' + w + '"' + (w === curW ? ' open' : '') + '><summary><span>第 ' + w + ' 周</span><span class="range">' + md(dates[a]) + '–' + md(dates[a + 5]) + '</span><span class="cnt" id="cnt' + w + '">' + weekDone(w) + '/6</span></summary><ol class="days">';
+      for (k = 0; k < 6; k++) {
+        day = DAYS[a + k]; n = day.n; d = dates[a + k];
+        cls = 'day' + (state.done[n] ? ' is-done' : '') + (sameDay(d, t) ? ' is-today' : '');
+        h += '<li class="' + cls + '" id="d' + n + '"><input type="checkbox" id="c' + n + '" data-day="' + n + '"' + (state.done[n] ? ' checked' : '') + '>' +
+          '<label for="c' + n + '" class="head"><span class="num">第 ' + n + ' 天</span><span class="date">' + mdw(d) + '</span></label>' +
+          '<ul class="units">' + unitsHTML(day) + '</ul></li>';
+      }
+      h += '</ol></details>';
+    }
+    $('#weeks').innerHTML = h;
+  }
+
+  function renderP3() {
+    var h = '';
+    P3.forEach(function (wk, i) {
+      var a = addDays(S.p3, 7 * i), b = addDays(a, 6), key = 'w' + wk.w, on = !!state.weeks[key];
+      h += '<li class="p3w' + (on ? ' is-done' : '') + '"><input type="checkbox" id="' + key + 'c" data-week="' + key + '"' + (on ? ' checked' : '') + '>' +
+        '<label for="' + key + 'c" class="head"><span class="num">第 ' + wk.w + ' 周</span><span class="date">' + md(a) + '–' + md(b) + '</span></label>' +
+        '<p class="focus">' + wk.focus + '</p></li>';
+    });
+    $('#p3weeks').innerHTML = h;
+  }
+
+  function renderText() {
+    setText('start-long', longDateW(S.dates[0], true));
+    setText('end-long', longDateW(S.p3End, true));
+    setText('test-pre', longDate(addDays(S.dates[0], -1)) + '（开始前一天）');
+    setText('test-mid', longDate(addDays(S.p3, -1)) + '（刷完书，可选）');
+    setText('test-end', longDate(addDays(S.p3End, -1)) + '、' + longDate(S.p3End) + '（最后两天）');
+  }
+
+  function renderAll() { renderText(); renderToday(); renderGrid(); renderWeeks(); renderP3(); }
+
+  function syncDay(n) {
+    document.querySelectorAll('input[data-day="' + n + '"]').forEach(function (cb) { cb.checked = !!state.done[n]; });
+    var li = $('#d' + n);
+    if (li) li.classList.toggle('is-done', !!state.done[n]);
+    var w = Math.ceil(n / 6), cnt = $('#cnt' + w);
+    if (cnt) cnt.textContent = weekDone(w) + '/6';
+    var focusInToday = document.activeElement && document.activeElement.closest && document.activeElement.closest('#today');
+    renderGrid();
+    renderToday();
+    if (focusInToday) { var cb = $('#today input[data-day]'); if (cb) cb.focus(); }
+  }
+
+  document.addEventListener('change', function (e) {
+    var el = e.target;
+    if (el.matches('input[data-day]')) {
+      var n = +el.getAttribute('data-day');
+      if (el.checked) state.done[n] = true; else delete state.done[n];
+      save(); syncDay(n);
+    } else if (el.matches('input[data-week]')) {
+      var key = el.getAttribute('data-week');
+      if (el.checked) state.weeks[key] = true; else delete state.weeks[key];
+      save(); el.closest('li').classList.toggle('is-done', el.checked);
+    } else if (el.id === 'start') {
+      if (parseISO(el.value)) { state.start = el.value; save(); S = computeDates(state.start); renderAll(); }
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-go]');
+    if (!b) return;
+    var n = +b.getAttribute('data-go'), det = $('#w' + Math.ceil(n / 6)), li = $('#d' + n);
+    if (det) det.open = true;
+    if (li) {
+      li.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      li.classList.remove('flash'); void li.offsetWidth; li.classList.add('flash');
+    }
+  });
+
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { renderToday(); renderGrid(); } });
+  window.addEventListener('beforeprint', function () { document.querySelectorAll('details').forEach(function (d) { d.open = true; }); });
+
+  $('#start').value = state.start;
+  renderAll();
+})();
+</script>
+</body>
+</html>
