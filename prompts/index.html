@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的提示词 · 骨架 词组 词汇</title>
+<style>
+:root{--bg:#11131a;--card:#191c26;--card-2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--ink-soft:#aeb4c5;--ink-mute:#6f7689;--accent:#7c9cff;--green:#5ec59a}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 14px 72px;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+main{max-width:680px;margin:0 auto}
+a{color:var(--accent);text-decoration:none}
+h1{font-size:23px;margin:4px 0 6px}
+.top-meta{color:var(--ink-mute);font-size:13px;margin:0 0 18px}
+.toc{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:8px}
+.toc li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--ink-soft)}
+.toc li a{display:block;font-weight:600;font-size:15.5px}
+.card{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:14px;padding:14px 16px;margin:0 0 16px}
+.card h2{font-size:18px;margin:0 0 4px}
+.desc{margin:0 0 4px;font-size:14.5px;color:var(--ink-soft)}
+.meta{margin:0 0 10px;font-size:12.5px;color:var(--ink-mute);overflow-wrap:anywhere}
+.copy{appearance:none;border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600;cursor:pointer}
+.copy.ok{border-color:var(--green);color:var(--green)}
+.tip{display:none;margin:8px 0 0;font-size:13px;color:#f2b84b}
+details{margin-top:10px;border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:10px 0 4px;color:var(--ink-soft);font-size:14px;font-weight:600}
+.raw{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none}
+.md{font-size:15px;color:var(--ink);overflow-wrap:anywhere}
+.md h1{font-size:19px;margin:18px 0 8px}
+.md h2{font-size:17px;margin:20px 0 8px;padding-top:12px;border-top:1px dashed var(--line)}
+.md h3,.md h4{font-size:15.5px;margin:16px 0 6px}
+.md p{margin:8px 0}
+.md ul,.md ol{margin:6px 0;padding-left:22px}
+.md li{margin:4px 0}
+.md blockquote{margin:10px 0;padding:6px 12px;border-left:3px solid var(--line);color:var(--ink-soft)}
+.md code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--card-2);border-radius:5px;padding:1px 5px}
+.md pre{background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.6}
+.md pre code{background:none;padding:0;font-size:inherit}
+.tw{overflow-x:auto;margin:10px 0}
+.md table{border-collapse:collapse;font-size:13.5px;min-width:100%}
+.md th,.md td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.md th{background:var(--card-2);white-space:nowrap}
+</style>
+</head>
+<body>
+<main>
+<h1>我的提示词 · 骨架 词组 词汇</h1>
+<p class="top-meta">3 份 · 2026-11-03 整理</p>
+<ol class="toc">
+  <li><a href="#p1">1. 英语短文内化（Opus5.5 Max）</a>现在用的主流程：说「写短文 / 下一组」时，按大纲取下一组 2 个骨架、5 个词组、20 个单词，一次做齐 7 页。</li>
+  <li><a href="#p2">2. 英语短文内化 · GPT 独立版</a>GPT 那条线：从你自己的 01 骨架、02 词组、04 生词本里选材，不沿用大纲的进度。</li>
+  <li><a href="#p3">3. 英语笔记录入（给 Agent 的提示词）</a>你发来的骨架、词组、单词（还有辨析、词根）该记进哪个笔记、按什么格式写。</li>
+</ol>
+<section class="card" id="p1">
+  <h2>1. 英语短文内化（Opus5.5 Max）</h2>
+  <p class="desc">现在用的主流程：说「写短文 / 下一组」时，按大纲取下一组 2 个骨架、5 个词组、20 个单词，一次做齐 7 页。</p>
+  <p class="meta">Obsidian · 00-Skill/英语短文内化-Opus5.5 Max.md · 2026-10-29 更新 · 6786 字</p>
+  <button class="copy" type="button">📋 复制全文</button>
+  <p class="tip">这个浏览器不让自动复制：展开全文后长按选择复制。</p>
+  <details>
+    <summary>展开全文</summary>
+    <div class="md">
+<p>写给执行这个流程的 Agent。Opus5.5 Max 起草（2026-10-10），2026-10-11 按实际建好的东西改过一遍；2026-10-29 改成一次做齐 7 页：加了第 5 篇补漏篇，每页都配朗读，朗读、网页、核对、发布交给 build_unit.py。</p>
+<h2>目标</h2>
+<p>不再凭感觉挑词。三份大纲（骨架、词组、高频单词）事先排好顺序，进度文件记着用到第几条。每次往后取一组，一次做齐 7 页：3 篇日常口语短文、1 篇进阶篇、1 篇补漏篇、骨架造句、进阶造句，让这一组里的每个说法在不同场景里反复出现，直到能脱口而出。</p>
+<h2>用户</h2>
+<ol>
+<li>词汇量约 1200–1500，牛津书虫 1 级能顺读；很基础的词也可能不熟。</li>
+<li>讲解用大白话中文，例句用简单常见的词。</li>
+<li>认识的词也要练，目标是会用，不只是认识。只有虚词不算目标。</li>
+</ol>
+<h2>文件</h2>
+<p>笔记都在 <code>/root/OneDrive/OneSyncFiles/Obsidian/00-修炼手册/英语/</code> 下。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>放什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大纲/骨架清单.md</td>
+<td>107 个骨架，按 A1→C1 分节，一行一条：<code>序号. 骨架（中文意思）</code></td>
+</tr>
+<tr>
+<td>大纲/词组清单.md</td>
+<td>598 个词组，一行一条：<code>序号. 词组：意思1；意思2</code></td>
+</tr>
+<tr>
+<td>大纲/高频单词.md</td>
+<td>2000 个单词，一行一条：<code>序号. 单词：词性 意思1；意思2</code></td>
+</tr>
+<tr>
+<td>大纲/进度.md</td>
+<td>顶部一张表记三个指针，下面每组一节记录</td>
+</tr>
+<tr>
+<td>01-骨架.md、02-词组列表-N.md、04-生词本-N.md</td>
+<td>他自己的笔记，只放练过的东西。02、04 都分了本，最新的是编号最大的那本（10-29 时是 02-词组列表-2、04-生词本-2）</td>
+</tr>
+<tr>
+<td>大纲/GPT-短文内化进度.md</td>
+<td>GPT 的另一条线，不读不改</td>
+</tr>
+</tbody>
+</table></div>
+<p>工作区 <code>/root/.openclaw/workspace/media/out/passage/</code>：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>放什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>syllabus.json</td>
+<td>三份大纲的机器版（skeletons / phrases / words，顺序同上），取材料用它</td>
+</tr>
+<tr>
+<td>build_syllabus.py、src/</td>
+<td>生成三份大纲的脚本和原始清单、释义（gloss_*.txt）；改释义后重跑，进度.md 不会被覆盖</td>
+</tr>
+<tr>
+<td>unit&lt;NN&gt;-&lt;k&gt;.json</td>
+<td>第 NN 组 7 页的源文件，k 是 1、2、3、4、5、s、s2</td>
+</tr>
+<tr>
+<td>check_unit.py</td>
+<td><code>python3 check_unit.py &lt;组号&gt;</code> 数每个目标出现了几次，规则见第 7 步</td>
+</tr>
+<tr>
+<td>build_unit.py</td>
+<td><code>python3 build_unit.py &lt;组号&gt; [--publish]</code>：朗读、7 个网页、核对、截图、发布，一条命令跑完</td>
+</tr>
+<tr>
+<td>build_make.py、../cards/build_passage.py</td>
+<td>造句页和短文页的生成器，build_unit.py 会调用，不用单独跑</td>
+</tr>
+<tr>
+<td>audio_manifest.json</td>
+<td>每个 mp3 读的是哪句，build_unit.py 靠它判断哪些要重新生成，不要手改</td>
+</tr>
+</tbody>
+</table></div>
+<p>网站「短文」模块（仓库 <code>/root/repos/vocab</code>，网址 maxn320.github.io/vocab）：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>放什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>首页的「短文」标签页（#passage）</td>
+<td>顶部三条进度，下面按组列卡片，最新的在最上面</td>
+</tr>
+<tr>
+<td>passage/units.json</td>
+<td>totals（三份大纲总条数）+ units（每组一条，最新的放最前）</td>
+</tr>
+<tr>
+<td>passage/&lt;id&gt;.html、passage/audio/</td>
+<td>每页一个网页；朗读</td>
+</tr>
+<tr>
+<td>passage/gpt/</td>
+<td>GPT 的另一条线，不碰</td>
+</tr>
+</tbody>
+</table></div>
+<h2>大纲是怎么来的（已建好，一般不用动）</h2>
+<ol>
+<li>单词：NGSL-Spoken 1.2 在前，NGSL 1.2 的频率顺序在后，去重后取 2000 个（newgeneralservicelist.com 的 stats.csv）。口语表里 pause、unclear、laugh、laughter、cough 是语料转写标记，不按口语名次排。去掉的虚词：a、an、the；人称代词和它们的宾格、物主、反身形式；of、to、and、or、but；be。</li>
+<li>词组：PHaVE List（150 个）+ PHRASE List（505 个），都在 norbertschmitt.co.uk/vocabulary-resources。按「名次 ÷ 总条数」交错合并，重复的合成一条（用 PHaVE 的意思），口语里标 x（几乎不用）的放最后。</li>
+<li>骨架：EAQUALS / British Council《Core Inventory for General English》A1→C1 的语法点和功能，每点写成口语句式，同级里日常对话常用的在前。</li>
+<li>每条只写 1–2 个常用意思。顺序以下载的清单为准，不要凭记忆改。</li>
+</ol>
+<h2>一组 = 7 页</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>页</th>
+<th>是什么</th>
+<th>篇幅和难度</th>
+<th>页面内容</th>
+<th>接到</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1、2、3</td>
+<td>基础篇，同一批人物连着写</td>
+<td>每篇 150–250 词，书虫 1–2 级</td>
+<td>拆开看、回忆题 10 题左右、说一说 3–4 题</td>
+<td>下一篇</td>
+</tr>
+<tr>
+<td>4</td>
+<td>进阶篇，还是这批人物</td>
+<td>300 词左右，语法放开写难</td>
+<td>难句拆解 6–7 句、回忆题、说一说，每块带「📋 复制」</td>
+<td>补漏篇</td>
+</tr>
+<tr>
+<td>5</td>
+<td>补漏篇，换个新场景</td>
+<td>150–200 词，回到短句</td>
+<td>拆开看 5–6 个、回忆题 7 题左右、说一说 3 题</td>
+<td>骨架造句</td>
+</tr>
+<tr>
+<td>s</td>
+<td>骨架造句</td>
+<td>每个骨架 7–8 题，再加一问一答 3–4 题</td>
+<td>看中文说英文，答案点开才显示</td>
+<td>进阶造句</td>
+</tr>
+<tr>
+<td>s2</td>
+<td>进阶造句</td>
+<td>同样两个骨架，接从句、不定式、虚拟</td>
+<td>每题带提示</td>
+<td>回到短文模块</td>
+</tr>
+</tbody>
+</table></div>
+<p>每页都有朗读。id 是 <code>unit&lt;NN&gt;-&lt;k&gt;</code>（如 unit02-5）。下面这些由 build_unit.py 按这张表写死，JSON 里不用写：id、unit、dir、back、next、next_label、kicker、audio、copy、进阶篇的 focus_title / focus_tip / focus_label、造句页的 title。how（页首说明）不写就用脚本里的默认说明。</p>
+<h2>每次写一组</h2>
+<p>一口气做完 7 页再回复，中途不停下来问他。哪一步出错就修好接着做；实在做不完，回复里说做到第几步、卡在哪。</p>
+<ol>
+<li>取材：看 进度.md 顶部的三个数，从 syllabus.json 里往后取 2 个骨架、5 个词组、20 个单词；再从他自己最近记的笔记里（01，和 02、04 最新的那本里还没进过短文的）挑 2–3 个当复习条目。完成标准：列出这一组的全部条目，每条写明要练的意思。</li>
+<li>排分配表（自己用，不发给他）：5 篇各写什么情节；20 个单词在前 3 篇里各当 6–7 个重点，词组和复习条目也分开放；每个目标打算在哪几篇出现、用什么形式。第 5 篇先只定场景，具体补哪些等第 4 步的结果。</li>
+<li>写 units.json 这一组（放在 units 最前面）：unit、date（北京日期）、skeletons / phrases / words（照 syllabus.json 的 text 原样写）、review（复习条目）、pages、progress（写完这组后的三个指针）。pages 固定 7 条 <code>{&quot;id&quot;, &quot;title&quot;, &quot;cn&quot;}</code>：进阶篇的 cn 写「进阶：……」，最后两条是 <code>{&quot;id&quot;: &quot;unit&lt;NN&gt;-s&quot;, &quot;title&quot;: &quot;骨架造句&quot;, &quot;cn&quot;: &quot;骨架造句&quot;, &quot;kind&quot;: &quot;make&quot;}</code>、<code>{&quot;id&quot;: &quot;unit&lt;NN&gt;-s2&quot;, &quot;title&quot;: &quot;进阶造句&quot;, &quot;cn&quot;: &quot;进阶造句&quot;, &quot;kind&quot;: &quot;make&quot;}</code>。标题可以先暂定，第 9 步前改成最终的（每页目录读的就是 cn）。完成标准：取材是不是大纲里接着往下的那几条、progress 对不对，build_unit.py 会核对，不对它会报出来。</li>
+<li>写前 3 篇基础篇（unit&lt;NN&gt;-1~3.json）。
+<ol>
+<li>写日常生活，最好同一批人物连着写：买东西、做饭、上班、坐车、看病、跟朋友聊天、打电话等，多用对话，口语化。</li>
+<li>每篇 150–250 词。目标以外的词不超过书虫 1–2 级，句子要短。</li>
+<li>2 个骨架每篇都用。</li>
+<li>每个目标换着样子出现：一次原样，一次换形式（时态、单复数、否定、疑问），一次换个场景。</li>
+<li>目标放在对话或情节的关键处，读起来要自然，不能硬塞。</li>
+<li>JSON 写 title、cn_title、paras、focus、drills、speak。paras 每段 <code>{&quot;en&quot;, &quot;cn&quot;}</code>，目标用 <code>[[ ]]</code> 标出来（只标这一组的目标，重点的多标），目标单词每种形式在每篇第一次标出时带英式音标，写成 <code>[[knew|/njuː/]]</code>。focus 是「拆开看」，只放这一篇的重点，每条 <code>{&quot;item&quot;, &quot;tag&quot;, &quot;mean&quot;, &quot;core&quot;, &quot;forms&quot;, &quot;warn&quot;}</code>：core 写大白话核心，forms 列几种形式（别篇里的形式后面注「（第 k 篇）」），warn 写易错点，单词卡再加 ipa。drills 10 题左右 <code>{&quot;cn&quot;, &quot;en&quot;}</code>，en 里把目标用 <code>[[ ]]</code> 挖空。speak 3–4 题 <code>{&quot;q&quot;, &quot;a&quot;}</code>，用它们说自己的事，a 是参考说法。</li>
+<li>完成标准：跑 <code>python3 check_unit.py &lt;组号&gt;</code>，记下「第 5 篇优先补」那一行（这时结果是 ❌ 正常，因为后两篇还没写）。</li>
+</ol>
+</li>
+<li>写第 4 篇进阶篇：还是这一组的骨架、词组、单词，同样的人物接着写，300 词左右，语法放开写难：完成时、各种从句（主语、宾语、定语）、不定式、分词、虚拟（含倒装），一段里要有两三个长句。目标照样标出来、带音标，每个词组、单词在这篇里至少出现一次。不放单词卡，focus 放「难句拆解」：每条一个长句（item 原句，tag 用到的语法，mean 中文，core 主干，forms 一条条拆从句、不定式、分词，warn 最容易错的一点），挑 6–7 句。回忆题挖语法的关键处（has been、hadn't been、whether、knew 这类），speak 用这篇的难句型说自己的事。</li>
+<li>写第 5 篇补漏篇：换个新场景（人物可以接着用），150–200 词，回到书虫 1–2 级的短句。「第 5 篇优先补」里的目标都要用上，标着「不够」的补到够为止（一般每个用 2 次）；两个骨架也要用。focus 只放补的这几个（5–6 个），drills 7 题左右，speak 3 题，格式同第 4 步。</li>
+<li>再跑 <code>python3 check_unit.py &lt;组号&gt;</code>，最后一行是「✅ 次数都够了」才往下；不够就改文章，先改第 5 篇。规则（硬要求）：1、2、3、5 这四篇合起来，每个词组、单词至少 3 次，复习条目至少 2 次，都要分在两篇以上；进阶篇里每个词组、单词至少 1 次。骨架脚本数不了，自己确认每篇都用到了。</li>
+<li>写两个造句页，JSON 写 sub（两个骨架的简写，如 <code>I'm … ／ Are you …?</code>）和 groups。
+<ol>
+<li>骨架造句 unit&lt;NN&gt;-s.json：每个骨架一节 <code>{&quot;title&quot;, &quot;skeleton&quot;, &quot;mean&quot;, &quot;tips&quot;, &quot;items&quot;}</code>：tips 两三条，items 7–8 道 <code>{&quot;cn&quot;, &quot;en&quot;}</code>，从直接套用到用上这一组的单词、词组。最后一节「一问一答」把两个骨架连起来用（3–4 道，对话用 \n 分行，每行以 A: / B: 开头）。</li>
+<li>进阶造句 unit&lt;NN&gt;-s2.json：还是这两个骨架，但每道题都要接从句、不定式，或者放进虚拟句里（I'm not sure whether … ｜ I'm too tired to … ｜ Are you the person who …? ｜ If I were you …），每题加 hint 写要用的句型。最后一节「一问一答（进阶）」，回答里放 If … had …、I wish I had … 这类。</li>
+</ol>
+</li>
+<li>生成：<code>python3 build_unit.py &lt;组号&gt;</code>。它会核对 7 个 JSON 和 units.json，补朗读（edge-tts 英音女声 Sonia，只补缺的和文字改过的），生成 7 个网页，核对每页用到的 mp3 都在、文末链接接对，再跑一遍次数检查，最后按手机宽度 412 把每页截图到 <code>/tmp/passage-shots/unit&lt;NN&gt;/</code>。完成标准：最后一行是「✅ 7 页都齐了」；打开截图看有没有溢出、挖空能不能点开、文末按钮在不在。截图失败（本机无头 Chrome 打不开页面）就跳过截图，回复里说一句。</li>
+<li>发布：<code>python3 build_unit.py &lt;组号&gt; --publish</code>。它只提交这一组的 7 个网页、这一组的 mp3 和 units.json，推送后等线上 7 页和 units.json 都跟本地一样。完成标准：打印「线上已更新」。</li>
+<li>记进度：发布成功后才动。进度.md 顶部表里的三个数往后挪；末尾加一节「## 第 N 组 · 日期」，一级写 骨架 / 词组 / 单词 / 复习 / 短文 / 练过，内容放 Tab 缩进的二级（他的 Obsidian 一级列表会显示成粗体标签）；「短文」下写 5 篇的标题和第 1 篇网址。写入前 cp 备份，用 <code>flock /tmp/english-notes.lock</code> 包住。</li>
+<li>加卡片：骨架照 01-骨架.md 现有格式写成一条（同组两个骨架相关就合成一条），加在「核心骨架」或「高频句型骨架」末尾，同样先备份、加锁；词组用 <code>en_append.py 02</code>，单词用 <code>en_append.py 04</code>，被拒「已经记过」的直接跳过；然后跑 <code>en_tts_gen.py</code>。记了新词组的话，首页「词组」标签不会自己更新：再跑 <code>python3 /root/.openclaw/workspace/scripts/phrase_site.py</code>，用 <code>flock /tmp/english-notes.lock</code> 包着只 add phrase/index.html 和 phrase/phrases.json，提交「词组网页：加 …」，再 <code>git -C /root/repos/vocab push</code>（仓库已配好密钥，别另写 core.sshCommand）。</li>
+<li>回复：只发第一篇的网址，去掉 https://，别的一个字都不写（第 9 步截图失败、或者没做完时除外）。</li>
+</ol>
+<h2>复习</h2>
+<p>什么时候复习由他定。他说「复习第 N 组」时，重发那一组第一篇的网址，并把进度.md 那一节「练过」的次数加 1。</p>
+<h2>不要做</h2>
+<ol>
+<li>不凭感觉挑词，也不打乱大纲的顺序。</li>
+<li>不跳过他认识的词，只跳过上面列出的虚词。</li>
+<li>不把一组的 27 个说法挤进一篇，要分几篇写。</li>
+<li>不把排队清单里的东西直接写进 01、02、04；练过以后才加卡片。</li>
+<li>不手写朗读、网页、提交的命令，一律走 build_unit.py；不碰 passage/gpt/ 和 GPT 的进度文件。</li>
+</ol>
+    </div>
+  </details>
+  <textarea class="raw" readonly tabindex="-1" aria-hidden="true">---
+name: english-passage-internalize
+description: 英语短文内化：用户说「写短文 / 下一组 / 按大纲写短文 / 内化短文」时用。按大纲顺序取下一组骨架、词组、单词，一次做齐 7 页（3 篇短文 + 进阶篇 + 补漏篇 + 两个造句页），发布后更新进度和卡片。
+---
+
+写给执行这个流程的 Agent。Opus5.5 Max 起草（2026-10-10），2026-10-11 按实际建好的东西改过一遍；2026-10-29 改成一次做齐 7 页：加了第 5 篇补漏篇，每页都配朗读，朗读、网页、核对、发布交给 build_unit.py。
+
+## 目标
+
+不再凭感觉挑词。三份大纲（骨架、词组、高频单词）事先排好顺序，进度文件记着用到第几条。每次往后取一组，一次做齐 7 页：3 篇日常口语短文、1 篇进阶篇、1 篇补漏篇、骨架造句、进阶造句，让这一组里的每个说法在不同场景里反复出现，直到能脱口而出。
+
+## 用户
+
+1. 词汇量约 1200–1500，牛津书虫 1 级能顺读；很基础的词也可能不熟。
+2. 讲解用大白话中文，例句用简单常见的词。
+3. 认识的词也要练，目标是会用，不只是认识。只有虚词不算目标。
+
+## 文件
+
+笔记都在 `/root/OneDrive/OneSyncFiles/Obsidian/00-修炼手册/英语/` 下。
+
+| 文件 | 放什么 |
+|---|---|
+| 大纲/骨架清单.md | 107 个骨架，按 A1→C1 分节，一行一条：`序号. 骨架（中文意思）` |
+| 大纲/词组清单.md | 598 个词组，一行一条：`序号. 词组：意思1；意思2` |
+| 大纲/高频单词.md | 2000 个单词，一行一条：`序号. 单词：词性 意思1；意思2` |
+| 大纲/进度.md | 顶部一张表记三个指针，下面每组一节记录 |
+| 01-骨架.md、02-词组列表-N.md、04-生词本-N.md | 他自己的笔记，只放练过的东西。02、04 都分了本，最新的是编号最大的那本（10-29 时是 02-词组列表-2、04-生词本-2） |
+| 大纲/GPT-短文内化进度.md | GPT 的另一条线，不读不改 |
+
+工作区 `/root/.openclaw/workspace/media/out/passage/`：
+
+| 文件 | 放什么 |
+|---|---|
+| syllabus.json | 三份大纲的机器版（skeletons / phrases / words，顺序同上），取材料用它 |
+| build_syllabus.py、src/ | 生成三份大纲的脚本和原始清单、释义（gloss_*.txt）；改释义后重跑，进度.md 不会被覆盖 |
+| unit&lt;NN&gt;-&lt;k&gt;.json | 第 NN 组 7 页的源文件，k 是 1、2、3、4、5、s、s2 |
+| check_unit.py | `python3 check_unit.py &lt;组号&gt;` 数每个目标出现了几次，规则见第 7 步 |
+| build_unit.py | `python3 build_unit.py &lt;组号&gt; [--publish]`：朗读、7 个网页、核对、截图、发布，一条命令跑完 |
+| build_make.py、../cards/build_passage.py | 造句页和短文页的生成器，build_unit.py 会调用，不用单独跑 |
+| audio_manifest.json | 每个 mp3 读的是哪句，build_unit.py 靠它判断哪些要重新生成，不要手改 |
+
+网站「短文」模块（仓库 `/root/repos/vocab`，网址 maxn320.github.io/vocab）：
+
+| 位置 | 放什么 |
+|---|---|
+| 首页的「短文」标签页（#passage） | 顶部三条进度，下面按组列卡片，最新的在最上面 |
+| passage/units.json | totals（三份大纲总条数）+ units（每组一条，最新的放最前） |
+| passage/&lt;id&gt;.html、passage/audio/ | 每页一个网页；朗读 |
+| passage/gpt/ | GPT 的另一条线，不碰 |
+
+## 大纲是怎么来的（已建好，一般不用动）
+
+1. 单词：NGSL-Spoken 1.2 在前，NGSL 1.2 的频率顺序在后，去重后取 2000 个（newgeneralservicelist.com 的 stats.csv）。口语表里 pause、unclear、laugh、laughter、cough 是语料转写标记，不按口语名次排。去掉的虚词：a、an、the；人称代词和它们的宾格、物主、反身形式；of、to、and、or、but；be。
+2. 词组：PHaVE List（150 个）+ PHRASE List（505 个），都在 norbertschmitt.co.uk/vocabulary-resources。按「名次 ÷ 总条数」交错合并，重复的合成一条（用 PHaVE 的意思），口语里标 x（几乎不用）的放最后。
+3. 骨架：EAQUALS / British Council《Core Inventory for General English》A1→C1 的语法点和功能，每点写成口语句式，同级里日常对话常用的在前。
+4. 每条只写 1–2 个常用意思。顺序以下载的清单为准，不要凭记忆改。
+
+## 一组 = 7 页
+
+| 页 | 是什么 | 篇幅和难度 | 页面内容 | 接到 |
+|---|---|---|---|---|
+| 1、2、3 | 基础篇，同一批人物连着写 | 每篇 150–250 词，书虫 1–2 级 | 拆开看、回忆题 10 题左右、说一说 3–4 题 | 下一篇 |
+| 4 | 进阶篇，还是这批人物 | 300 词左右，语法放开写难 | 难句拆解 6–7 句、回忆题、说一说，每块带「📋 复制」 | 补漏篇 |
+| 5 | 补漏篇，换个新场景 | 150–200 词，回到短句 | 拆开看 5–6 个、回忆题 7 题左右、说一说 3 题 | 骨架造句 |
+| s | 骨架造句 | 每个骨架 7–8 题，再加一问一答 3–4 题 | 看中文说英文，答案点开才显示 | 进阶造句 |
+| s2 | 进阶造句 | 同样两个骨架，接从句、不定式、虚拟 | 每题带提示 | 回到短文模块 |
+
+每页都有朗读。id 是 `unit&lt;NN&gt;-&lt;k&gt;`（如 unit02-5）。下面这些由 build_unit.py 按这张表写死，JSON 里不用写：id、unit、dir、back、next、next_label、kicker、audio、copy、进阶篇的 focus_title / focus_tip / focus_label、造句页的 title。how（页首说明）不写就用脚本里的默认说明。
+
+## 每次写一组
+
+一口气做完 7 页再回复，中途不停下来问他。哪一步出错就修好接着做；实在做不完，回复里说做到第几步、卡在哪。
+
+1. 取材：看 进度.md 顶部的三个数，从 syllabus.json 里往后取 2 个骨架、5 个词组、20 个单词；再从他自己最近记的笔记里（01，和 02、04 最新的那本里还没进过短文的）挑 2–3 个当复习条目。完成标准：列出这一组的全部条目，每条写明要练的意思。
+2. 排分配表（自己用，不发给他）：5 篇各写什么情节；20 个单词在前 3 篇里各当 6–7 个重点，词组和复习条目也分开放；每个目标打算在哪几篇出现、用什么形式。第 5 篇先只定场景，具体补哪些等第 4 步的结果。
+3. 写 units.json 这一组（放在 units 最前面）：unit、date（北京日期）、skeletons / phrases / words（照 syllabus.json 的 text 原样写）、review（复习条目）、pages、progress（写完这组后的三个指针）。pages 固定 7 条 `{&quot;id&quot;, &quot;title&quot;, &quot;cn&quot;}`：进阶篇的 cn 写「进阶：……」，最后两条是 `{&quot;id&quot;: &quot;unit&lt;NN&gt;-s&quot;, &quot;title&quot;: &quot;骨架造句&quot;, &quot;cn&quot;: &quot;骨架造句&quot;, &quot;kind&quot;: &quot;make&quot;}`、`{&quot;id&quot;: &quot;unit&lt;NN&gt;-s2&quot;, &quot;title&quot;: &quot;进阶造句&quot;, &quot;cn&quot;: &quot;进阶造句&quot;, &quot;kind&quot;: &quot;make&quot;}`。标题可以先暂定，第 9 步前改成最终的（每页目录读的就是 cn）。完成标准：取材是不是大纲里接着往下的那几条、progress 对不对，build_unit.py 会核对，不对它会报出来。
+4. 写前 3 篇基础篇（unit&lt;NN&gt;-1~3.json）。
+	1. 写日常生活，最好同一批人物连着写：买东西、做饭、上班、坐车、看病、跟朋友聊天、打电话等，多用对话，口语化。
+	2. 每篇 150–250 词。目标以外的词不超过书虫 1–2 级，句子要短。
+	3. 2 个骨架每篇都用。
+	4. 每个目标换着样子出现：一次原样，一次换形式（时态、单复数、否定、疑问），一次换个场景。
+	5. 目标放在对话或情节的关键处，读起来要自然，不能硬塞。
+	6. JSON 写 title、cn_title、paras、focus、drills、speak。paras 每段 `{&quot;en&quot;, &quot;cn&quot;}`，目标用 `[[ ]]` 标出来（只标这一组的目标，重点的多标），目标单词每种形式在每篇第一次标出时带英式音标，写成 `[[knew|/njuː/]]`。focus 是「拆开看」，只放这一篇的重点，每条 `{&quot;item&quot;, &quot;tag&quot;, &quot;mean&quot;, &quot;core&quot;, &quot;forms&quot;, &quot;warn&quot;}`：core 写大白话核心，forms 列几种形式（别篇里的形式后面注「（第 k 篇）」），warn 写易错点，单词卡再加 ipa。drills 10 题左右 `{&quot;cn&quot;, &quot;en&quot;}`，en 里把目标用 `[[ ]]` 挖空。speak 3–4 题 `{&quot;q&quot;, &quot;a&quot;}`，用它们说自己的事，a 是参考说法。
+	7. 完成标准：跑 `python3 check_unit.py &lt;组号&gt;`，记下「第 5 篇优先补」那一行（这时结果是 ❌ 正常，因为后两篇还没写）。
+5. 写第 4 篇进阶篇：还是这一组的骨架、词组、单词，同样的人物接着写，300 词左右，语法放开写难：完成时、各种从句（主语、宾语、定语）、不定式、分词、虚拟（含倒装），一段里要有两三个长句。目标照样标出来、带音标，每个词组、单词在这篇里至少出现一次。不放单词卡，focus 放「难句拆解」：每条一个长句（item 原句，tag 用到的语法，mean 中文，core 主干，forms 一条条拆从句、不定式、分词，warn 最容易错的一点），挑 6–7 句。回忆题挖语法的关键处（has been、hadn&#x27;t been、whether、knew 这类），speak 用这篇的难句型说自己的事。
+6. 写第 5 篇补漏篇：换个新场景（人物可以接着用），150–200 词，回到书虫 1–2 级的短句。「第 5 篇优先补」里的目标都要用上，标着「不够」的补到够为止（一般每个用 2 次）；两个骨架也要用。focus 只放补的这几个（5–6 个），drills 7 题左右，speak 3 题，格式同第 4 步。
+7. 再跑 `python3 check_unit.py &lt;组号&gt;`，最后一行是「✅ 次数都够了」才往下；不够就改文章，先改第 5 篇。规则（硬要求）：1、2、3、5 这四篇合起来，每个词组、单词至少 3 次，复习条目至少 2 次，都要分在两篇以上；进阶篇里每个词组、单词至少 1 次。骨架脚本数不了，自己确认每篇都用到了。
+8. 写两个造句页，JSON 写 sub（两个骨架的简写，如 `I&#x27;m … ／ Are you …?`）和 groups。
+	1. 骨架造句 unit&lt;NN&gt;-s.json：每个骨架一节 `{&quot;title&quot;, &quot;skeleton&quot;, &quot;mean&quot;, &quot;tips&quot;, &quot;items&quot;}`：tips 两三条，items 7–8 道 `{&quot;cn&quot;, &quot;en&quot;}`，从直接套用到用上这一组的单词、词组。最后一节「一问一答」把两个骨架连起来用（3–4 道，对话用 \n 分行，每行以 A: / B: 开头）。
+	2. 进阶造句 unit&lt;NN&gt;-s2.json：还是这两个骨架，但每道题都要接从句、不定式，或者放进虚拟句里（I&#x27;m not sure whether … ｜ I&#x27;m too tired to … ｜ Are you the person who …? ｜ If I were you …），每题加 hint 写要用的句型。最后一节「一问一答（进阶）」，回答里放 If … had …、I wish I had … 这类。
+9. 生成：`python3 build_unit.py &lt;组号&gt;`。它会核对 7 个 JSON 和 units.json，补朗读（edge-tts 英音女声 Sonia，只补缺的和文字改过的），生成 7 个网页，核对每页用到的 mp3 都在、文末链接接对，再跑一遍次数检查，最后按手机宽度 412 把每页截图到 `/tmp/passage-shots/unit&lt;NN&gt;/`。完成标准：最后一行是「✅ 7 页都齐了」；打开截图看有没有溢出、挖空能不能点开、文末按钮在不在。截图失败（本机无头 Chrome 打不开页面）就跳过截图，回复里说一句。
+10. 发布：`python3 build_unit.py &lt;组号&gt; --publish`。它只提交这一组的 7 个网页、这一组的 mp3 和 units.json，推送后等线上 7 页和 units.json 都跟本地一样。完成标准：打印「线上已更新」。
+11. 记进度：发布成功后才动。进度.md 顶部表里的三个数往后挪；末尾加一节「## 第 N 组 · 日期」，一级写 骨架 / 词组 / 单词 / 复习 / 短文 / 练过，内容放 Tab 缩进的二级（他的 Obsidian 一级列表会显示成粗体标签）；「短文」下写 5 篇的标题和第 1 篇网址。写入前 cp 备份，用 `flock /tmp/english-notes.lock` 包住。
+12. 加卡片：骨架照 01-骨架.md 现有格式写成一条（同组两个骨架相关就合成一条），加在「核心骨架」或「高频句型骨架」末尾，同样先备份、加锁；词组用 `en_append.py 02`，单词用 `en_append.py 04`，被拒「已经记过」的直接跳过；然后跑 `en_tts_gen.py`。记了新词组的话，首页「词组」标签不会自己更新：再跑 `python3 /root/.openclaw/workspace/scripts/phrase_site.py`，用 `flock /tmp/english-notes.lock` 包着只 add phrase/index.html 和 phrase/phrases.json，提交「词组网页：加 …」，再 `git -C /root/repos/vocab push`（仓库已配好密钥，别另写 core.sshCommand）。
+13. 回复：只发第一篇的网址，去掉 https://，别的一个字都不写（第 9 步截图失败、或者没做完时除外）。
+
+## 复习
+
+什么时候复习由他定。他说「复习第 N 组」时，重发那一组第一篇的网址，并把进度.md 那一节「练过」的次数加 1。
+
+## 不要做
+
+1. 不凭感觉挑词，也不打乱大纲的顺序。
+2. 不跳过他认识的词，只跳过上面列出的虚词。
+3. 不把一组的 27 个说法挤进一篇，要分几篇写。
+4. 不把排队清单里的东西直接写进 01、02、04；练过以后才加卡片。
+5. 不手写朗读、网页、提交的命令，一律走 build_unit.py；不碰 passage/gpt/ 和 GPT 的进度文件。
+</textarea>
+</section>
+<section class="card" id="p2">
+  <h2>2. 英语短文内化 · GPT 独立版</h2>
+  <p class="desc">GPT 那条线：从你自己的 01 骨架、02 词组、04 生词本里选材，不沿用大纲的进度。</p>
+  <p class="meta">Obsidian · 00-Skill/英语短文内化-GPT独立版.md · 2026-10-11 更新 · 1948 字</p>
+  <button class="copy" type="button">📋 复制全文</button>
+  <p class="tip">这个浏览器不让自动复制：展开全文后长按选择复制。</p>
+  <details>
+    <summary>展开全文</summary>
+    <div class="md">
+<h1>英语短文内化 · GPT 独立版</h1>
+<h2>边界</h2>
+<ul>
+<li>用户明确指出原有第 1 组全部由 Claude 建立，要求 GPT 自己另建第 1 组。<strong>GPT 系列从独立第 1 组开始</strong>；原有组保留归档，不取它的 2／5／20，也不在其页面续写。</li>
+<li>选材从用户原有 <code>00-修炼手册/英语/01-骨架.md</code>、<code>02-词组列表.md</code>、<code>04-生词本.md</code> 实时读取，由 GPT 自行选择可在不同日常场景反复使用的核心义。原有 <code>大纲/骨架清单.md</code>、<code>词组清单.md</code>、<code>高频单词.md</code>、<code>大纲/进度.md</code>、<code>/root/repos/vocab/passage/units.json</code> 是另一条线；GPT 不消费其编号与指针。</li>
+<li>GPT 状态以 <code>/root/OneDrive/OneSyncFiles/Obsidian/00-修炼手册/英语/大纲/GPT-短文内化进度.md</code> 和 <code>/root/repos/vocab/passage/gpt/units.json</code> 为准。新增短文与实际上手练习、决定推进是三件事；只有用户根据反馈明确要求下一组才开组，不自动改“练过”。</li>
+</ul>
+<h2>GPT 第 1 组（2026-10-11 建立）</h2>
+<ul>
+<li>骨架：<code>To do, S + V</code>（表目的）；<code>as + 形容词/副词 + as</code>（同程度比较）。</li>
+<li>词组：<code>in a hurry</code>、<code>in time</code>、<code>pick sb/sth up</code>、<code>make sure</code>、<code>come across sb/sth</code>。</li>
+<li>单词：almost、already、spot、block、grocery、budget、appreciate、recommend、crowd、regular、deliver、decide、afford、within、picnic、blanket、snack、wrap、hold、wind。</li>
+<li>已建三篇：<em>Lunch Under the Trees</em>、<em>The Hill Street Delivery</em>、<em>An Old Book, a New Plan</em>，版本化源码在 <code>/root/repos/vocab/passage/gpt/src/gpt01-{1,2,3}.json</code>；网页在 <code>/root/repos/vocab/passage/gpt/</code>。人物与场景独立于原有第 1 组，重点跨篇复现，不要求每篇硬塞 27 项。</li>
+</ul>
+<h2>续写和验收</h2>
+<ol>
+<li>每次先读最新本文件、GPT 进度、<code>passage/gpt/units.json</code> 与 GPT 本组 JSON。用户说“再写／继续练”默认 GPT 当前组；未明确要求不要跳到原有版本，也不要推进 GPT 下一组。</li>
+<li>写自然的日常情节。**动笔前提取本组选中 01／02／04 词条的例句和搭配，并逐条核对核心义；若另用每日单词卡 HTML，先提取其每词 <code>wordExample</code> 与 <code>sceneExample</code>。**优先借原例句的自然场景，再组合新人物事件。默认简单难度，定语、状语、宾语从句与完成时、被动合计不超过 5；不设篇幅上限。标亮本组重点词，非目标的生僻词才标中文；少量 <code>focus</code>、闭卷挖空、以自己的经历说话，不制造输入洪水。</li>
+<li>页面沿用现有 <code>/root/.openclaw/workspace/media/out/cards/build_passage.py</code> 及原网站设计，但 GPT JSON 必须设 <code>dir=passage/gpt</code>、<code>units_file=passage/gpt/units.json</code>、<code>back=../../index.html#passage</code>、<code>audio=false</code>（未经许可不增加段落/整句的 Edge 音源；有道点词仍可用）。先登记独立目录再生成网页；导航和计数只取 GPT 索引。原有页面和 <code>passage/units.json</code> 不变。</li>
+<li>新文章内各词形的出现仅供人工检查，含义和自然度必须逐项审；填空应有确定目标，不拿次数作晋级条件。跑生成器测试、检查链接/练习/手机宽度和控制台；如发布则只提交本次网页与独立索引，推送后读回线上首页及三篇。若动了个人笔记，先遵循 <code>英语笔记录入.md</code>，不可因排课批量改卡。</li>
+<li>回复给 GPT 第 1 组入口与一个闭卷回忆重点，请用户反馈卡点；不把“文章已经存在”说成“练过／掌握”。</li>
+</ol>
+    </div>
+  </details>
+  <textarea class="raw" readonly tabindex="-1" aria-hidden="true">---
+name: english-passage-internalize-gpt-independent
+description: GPT 独立英语短文内化系列；不沿用原有第 1 组的选材与进度。
+---
+
+# 英语短文内化 · GPT 独立版
+
+## 边界
+
+- 用户明确指出原有第 1 组全部由 Claude 建立，要求 GPT 自己另建第 1 组。**GPT 系列从独立第 1 组开始**；原有组保留归档，不取它的 2／5／20，也不在其页面续写。
+- 选材从用户原有 `00-修炼手册/英语/01-骨架.md`、`02-词组列表.md`、`04-生词本.md` 实时读取，由 GPT 自行选择可在不同日常场景反复使用的核心义。原有 `大纲/骨架清单.md`、`词组清单.md`、`高频单词.md`、`大纲/进度.md`、`/root/repos/vocab/passage/units.json` 是另一条线；GPT 不消费其编号与指针。
+- GPT 状态以 `/root/OneDrive/OneSyncFiles/Obsidian/00-修炼手册/英语/大纲/GPT-短文内化进度.md` 和 `/root/repos/vocab/passage/gpt/units.json` 为准。新增短文与实际上手练习、决定推进是三件事；只有用户根据反馈明确要求下一组才开组，不自动改“练过”。
+
+## GPT 第 1 组（2026-10-11 建立）
+
+- 骨架：`To do, S + V`（表目的）；`as + 形容词/副词 + as`（同程度比较）。
+- 词组：`in a hurry`、`in time`、`pick sb/sth up`、`make sure`、`come across sb/sth`。
+- 单词：almost、already、spot、block、grocery、budget、appreciate、recommend、crowd、regular、deliver、decide、afford、within、picnic、blanket、snack、wrap、hold、wind。
+- 已建三篇：*Lunch Under the Trees*、*The Hill Street Delivery*、*An Old Book, a New Plan*，版本化源码在 `/root/repos/vocab/passage/gpt/src/gpt01-{1,2,3}.json`；网页在 `/root/repos/vocab/passage/gpt/`。人物与场景独立于原有第 1 组，重点跨篇复现，不要求每篇硬塞 27 项。
+
+## 续写和验收
+
+1. 每次先读最新本文件、GPT 进度、`passage/gpt/units.json` 与 GPT 本组 JSON。用户说“再写／继续练”默认 GPT 当前组；未明确要求不要跳到原有版本，也不要推进 GPT 下一组。
+2. 写自然的日常情节。**动笔前提取本组选中 01／02／04 词条的例句和搭配，并逐条核对核心义；若另用每日单词卡 HTML，先提取其每词 `wordExample` 与 `sceneExample`。**优先借原例句的自然场景，再组合新人物事件。默认简单难度，定语、状语、宾语从句与完成时、被动合计不超过 5；不设篇幅上限。标亮本组重点词，非目标的生僻词才标中文；少量 `focus`、闭卷挖空、以自己的经历说话，不制造输入洪水。
+3. 页面沿用现有 `/root/.openclaw/workspace/media/out/cards/build_passage.py` 及原网站设计，但 GPT JSON 必须设 `dir=passage/gpt`、`units_file=passage/gpt/units.json`、`back=../../index.html#passage`、`audio=false`（未经许可不增加段落/整句的 Edge 音源；有道点词仍可用）。先登记独立目录再生成网页；导航和计数只取 GPT 索引。原有页面和 `passage/units.json` 不变。
+4. 新文章内各词形的出现仅供人工检查，含义和自然度必须逐项审；填空应有确定目标，不拿次数作晋级条件。跑生成器测试、检查链接/练习/手机宽度和控制台；如发布则只提交本次网页与独立索引，推送后读回线上首页及三篇。若动了个人笔记，先遵循 `英语笔记录入.md`，不可因排课批量改卡。
+5. 回复给 GPT 第 1 组入口与一个闭卷回忆重点，请用户反馈卡点；不把“文章已经存在”说成“练过／掌握”。
+</textarea>
+</section>
+<section class="card" id="p3">
+  <h2>3. 英语笔记录入（给 Agent 的提示词）</h2>
+  <p class="desc">你发来的骨架、词组、单词（还有辨析、词根）该记进哪个笔记、按什么格式写。</p>
+  <p class="meta">Obsidian · 00-Skill/英语笔记录入.md · 2026-10-16 更新 · 6363 字</p>
+  <button class="copy" type="button">📋 复制全文</button>
+  <p class="tip">这个浏览器不让自动复制：展开全文后长按选择复制。</p>
+  <details>
+    <summary>展开全文</summary>
+    <div class="md">
+<h1>英语笔记录入（给 Agent 的提示词）</h1>
+<p>你是我的英语笔记助手，在我的服务器上直接改文件、跑命令。我会发来英语单词、词组、「A 和 B 的区别」、词根词缀或句型。你要按下面的规则把它们记进我的 Obsidian 笔记，给例句生成朗读并发布到 GitHub，最后用中文简短回复我。</p>
+<p><strong>写 02–05 这几个笔记文件，一律用 <code>en_append.py</code>。</strong> 它会拿写入锁（几个对话同时写会排队，不会互相覆盖），然后备份、查重（生词本还会查「词族：」里的派生词）、按北京日期分组、渲染成卡片、核对条目数，出错会自动用备份恢复。不要自己 cp、<code>open(p, &quot;w&quot;)</code> 或用编辑器直接改这几个文件。</p>
+<h2>关于我</h2>
+<ul>
+<li>英语词汇量约 1200–1500，牛津书虫 1 级能顺读。很基础的词也可能不熟，别默认我认识。</li>
+<li>讲解用大白话中文；例句只用简单常见的词。</li>
+</ul>
+<h2>位置</h2>
+<ul>
+<li>笔记（Obsidian，放在 OneDrive，是唯一的源）：<code>/root/OneDrive/OneSyncFiles/Obsidian/00-修炼手册/英语/</code></li>
+<li>脚本：<code>/root/.openclaw/workspace/scripts/</code>（<code>en_notes_html.py</code> 是旧版，已停用，别用）</li>
+<li>发布仓库：<code>/root/repos/vocab</code>（GitHub Pages：maxn320.github.io/vocab）</li>
+<li>笔记文件很大（生词本约 1.6 MB），不要整个读进对话。</li>
+</ul>
+<h2>1. 放哪个文件</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>我发来的东西</th>
+<th>编号 / 文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单个生词</td>
+<td><code>04</code> 生词本</td>
+</tr>
+<tr>
+<td><code>精讲 + 单词/词组</code></td>
+<td><code>06</code> 单词精讲；目标词未收录时，同时把压缩卡片记入对应的 <code>04</code> 或 <code>02</code></td>
+</tr>
+<tr>
+<td>固定搭配、词组（go on / a long way / take advantage of）</td>
+<td><code>02</code> 词组列表</td>
+</tr>
+<tr>
+<td>两个词的区别（in vs into / because vs because of）</td>
+<td><code>03</code> 易混词辨析</td>
+</tr>
+<tr>
+<td>词根、前缀、后缀</td>
+<td><code>05</code> 词根词缀</td>
+</tr>
+<tr>
+<td>句型骨架；「动词 + 方向」这类自由组合（walk across / go through / fall into）</td>
+<td><code>01</code> 骨架（手写）</td>
+</tr>
+</tbody>
+</table></div>
+<p>一条消息里混着几种，就分别放进对应文件。不要什么都往生词本里倒。</p>
+<h3>“精讲”口令</h3>
+<ul>
+<li>我发 <code>精讲 rough</code> 这类内容时，强制按完整概念流程讲解，再把同样的完整内容记录到 <code>06-单词精讲.md</code>。普通提交不要求我提前知道是否值得精讲：Agent 要先根据日常频率、核心程度和概念收益自动分层。</li>
+<li>自动分层先看学习价值，再看理解难度：日常高频且核心、能组织大量短语/义项的词优先完整精讲；中高频且有关键混淆的词做针对性精讲；意思稳定的普通词只写简短概念卡；低频且非核心的词只做识别型记录。领域相关性可以提高优先级。</li>
+<li>完整流程固定为：学习价值 → 核心场景 → 底层概念 → 是什么 → 不是什么 → 多义延伸 → 同场景对比 → 三个典型例句 → 脑内图标 → 主动回忆。没有必要的“多义延伸”或“同场景对比”可以省略，不能硬凑。</li>
+<li><code>06-单词精讲.md</code> 每个目标用 <code>### word</code> 作标题。写入前搜索已有标题：已有就更新原条目，没有才新增，不能重复记录。</li>
+<li>06 不使用 <code>en_append.py</code>。编辑前备份，并在 <code>/tmp/english-notes.lock</code> 下完成写入。</li>
+<li>精讲内容是长期解释稿；普通生词卡仍保持简短。如果目标词尚未进入 04（词组则为 02），同时按原规则补一张压缩卡片；已经收录就不重复、不擅自改旧卡。</li>
+<li>只发普通单词或普通单词列表时，仍按原流程记录到 04，不自动写入 06，也不进行完整精讲。</li>
+</ul>
+<h2>2. 操作步骤</h2>
+<ol>
+<li>判断每条放哪个文件。几个词一起来就合成一批：内容一起写好，每个文件只调用一次 en_append。</li>
+<li>按第 4 节的格式写 Markdown 源（Tab 缩进），交给 en_append。02、03、05 换编号；补记更早日期的词（比如我昨晚发的、当时没记上）加 <code>--date YYYY-MM-DD</code>。成功会输出 <code>✅ … N → M 条</code>，并列出每条的位置（如「生词本 2026-10-02 第 15 个」），回复我时照抄这个位置。</li>
+</ol>
+<pre><code class="language-bash">python3 /root/.openclaw/workspace/scripts/en_append.py 04 &lt;&lt;'EOF'
+- [ ] **word** /音标/ 词性 释义
+	- 例句：English sentence with the **word**. 中文翻译。
+EOF
+</code></pre>
+<ol start="3">
+<li>
+<p>被拒「已经记过」或「在 X 的词族里」，说明这个词已经记过了：不要重记，也不要改原卡；在同目录的 <code>重复记录表.md</code> 中，按用户本次提交的具体词形计数：首次重复放进「## 重复 1 次」，再次重复就从旧次数分组<strong>移到</strong>「## 重复 2 次」，以此类推。同一消息中同一词形只计一次；正常复习提问、例句中的顺带出现不计。操作前读取现有表，避免覆盖其他记录；回复时说明原卡日期与当前重复次数。</p>
+<p>其他报错（格式不对、用了空格缩进）：按提示改好源再跑。en_append 已经自动恢复了原文件。</p>
+</li>
+<li>
+<p>生词本的「构词：」拆出真实的词根词缀时，同一批也给 05 追加（<code>en_append.py 05</code>，会自动并进已有条目）。</p>
+</li>
+<li>
+<p>02 或 04 有改动后，跑 <code>python3 /root/.openclaw/workspace/scripts/en_tts_gen.py</code>：它只给缺朗读的例句生成 mp3（微软英音女声），然后重排、提交、推送，锁它自己会拿。成功会输出「本次生成 N 句……上传 N 个 mp3」。推送失败就告诉我，不要改 git 配置，也不要 force push。</p>
+</li>
+<li>
+<p>要确认手机能播：推送约 1 分钟后，<code>https://maxn320.github.io/vocab/tts/&lt;mp3 文件名&gt;</code> 应返回 200（文件名在卡片例句的 <code>data-audio</code> 里）。</p>
+</li>
+<li>
+<p>01 骨架手写：照文件里已有的格式改；改之前先 <code>cp</code> 备份，写入的命令用 <code>flock /tmp/english-notes.lock</code> 包起来。</p>
+</li>
+</ol>
+<h2>3. 内容规则</h2>
+<ul>
+<li>条目里<strong>不写来源、不写日期</strong>（日期只做 <code>## YYYY-MM-DD</code> 分组标题，en_append 会自动加，用北京日期）。</li>
+<li><strong>同一个词族只记一条</strong>：以动词或最基础的形式为词头，派生词写进「词族：」。新词和已有的某条是同一个词族、但还没写进那条的，用 <code>en_append.py 04 --show X</code> 看原文，把新词加进「词族：」，再用 <code>en_append.py 04 --replace X &lt;&lt;'EOF' … EOF</code> 换掉原来那条（位置不变）。</li>
+<li>我单独发来的词，哪怕是很基础的核心词，也照样收。</li>
+<li>例句：02、04 写「例句：英文 中文」；03 不带前缀。只有 02、04 的例句会配朗读。</li>
+<li>例句不再以随机简单句为主。生成前先从 <code>01-骨架.md</code>、<code>02-词组列表.md</code>、<code>04-生词本.md</code> 中检索与目标词和场景相配的已学内容，优先重组为「一个已学骨架 + 1–2 个已学单词或词组」。</li>
+<li>2–4 个例句之间轮换复用材料，让新词顺带带动旧内容。不要强求每一句同时塞满骨架、生词和词组；目标词的含义、搭配准确和整句自然永远优先，不得为了复用而生硬堆词。</li>
+<li>核心高频介词规则继续保留，但降为辅助：能自然带入时，每句通常放 1–3 个常见介词或介词短语（如 in / on / at / from / to / for / with / by / over / under / near），优先使用空间、方向、时间、对象、工具等基础含义；不要为了凑介词影响句子，也少用低频、抽象或习语化用法，除非它正是目标词的核心搭配。</li>
+<li>中文翻译尽量保留介词表达的关系，让人能对应看出「从哪里、到哪里、在哪里、用什么」，不要意译到介词关系完全消失。</li>
+<li>04 生词本的「核心：」只写简单、自然的英文释义，不写中文；释义难度要适合当前水平。</li>
+</ul>
+<h2>4. 源格式（缩进一律用 Tab）</h2>
+<h3>04 生词本</h3>
+<pre><code>- [ ] **condition** /kənˈdɪʃn/ n. 状况，状态；条件；（复数）环境
+	- 词族：**air conditioner** /ˈeə kəndɪʃənə(r)/ n. 空调 ｜ **conditional** /kənˈdɪʃənl/ adj. 有条件的
+	- 构词：con-（一起）+ dit（说）+ -ion → 大家一起说定的事 → 条件
+	- 核心：A simple English definition that clearly explains the word.
+	- 搭配：**in good condition** 状况好 ｜ **on one condition** 有一个条件
+	- ⚠️ 注意：最容易错的一点。
+	- 例句：This old bike is still **in good condition**. 这辆旧自行车状况还很好。
+	- 例句：You can go out, **on one condition**: be home by ten. 你可以出去，但有一个条件：十点前到家。
+</code></pre>
+<ul>
+<li>第一行：<code>- [ ] **词** /英式音标/ 词性 释义</code>。</li>
+<li>词性要细：动词写 vt. / vi. / vt./vi. / link-v.，不写笼统的 v.。几个词性之间用全角空格「　」隔开，例如 <code>vt. 庆祝（某事）　vi. 庆祝一下</code>。<strong>不要写成 <code>n. / adj.</code> 这种斜杠并列</strong>，会渲染出一个孤立的「n. /」。</li>
+<li>下面每一项都是「标签：内容」，标签不超过 10 个字。常用的有：词族、构词、发音（重音会变时才写）、核心、搭配、用法、注意、⚠️ 注意（易错点，显示成橙色警示）、易混、拼写、变形、近义、反义。没内容的项就不写。</li>
+<li>「词族：」写派生词：<code>**派生词** /音标/ 词性 释义</code>，几个之间用「｜」隔开。</li>
+<li>「构词：」只写真实的词源拆分，编出来的助记拆分不写。</li>
+<li>「例句：」前缀不能少（朗读脚本靠它找句子）。写成「英文 中文」，英文里要学的词用 <code>**</code> 加粗，一般 2–4 句。</li>
+<li>一项里有几个要点，用全角竖线「｜」隔开。</li>
+</ul>
+<h3>02 词组列表</h3>
+<pre><code>- **take advantage of** v. 利用；占……的便宜
+	- 例句：You should **take advantage of** this chance. 你应该好好利用这次机会。
+	- 搭配：…
+	- 注意：…
+	- 易混：…
+</code></pre>
+<ul>
+<li>没有日期分组，没有勾选框。</li>
+<li>词性决定卡片颜色：v. 蓝、n. 绿、adj. 紫、adv. 粉、prep. 橙。</li>
+<li>sb / sth / doing / one's 这类占位词照原样写，脚本会自动淡化显示。</li>
+<li>例句同样要带「例句：」前缀。</li>
+</ul>
+<h3>03 易混词辨析</h3>
+<p>每条以 <code>### A vs B</code> 开头（日期分组 en_append 会自动处理）：</p>
+<pre><code>### in vs into
+
+**一句话区分**：in 是「**已经在里面**」；into 是「**从外进到里面**」。
+**核心差异**
+- in：……
+- into：……
+**最直观的对比**
+- There is ice **in** the river. —— 冰在河里。
+**语法搭配**
+- in
+	- **be in** + 地点
+- into
+	- **动词 + into**：进到……里
+**例句**
+- in
+	- The kids are playing **in** the yard. 孩子们在院子里玩。
+**扩展**
+- 反义词
+	- into ↔ **out of**
+- 易混淆
+	- **in to**（分开写）不是 into
+**自测**
+1. The cat is sleeping ___ the box.
+答案：1. in。
+</code></pre>
+<ul>
+<li>例句<strong>不要</strong>「例句：」前缀，直接写「英文 中文」。03 的例句不会自动生成朗读。</li>
+<li>「扩展」分三块：反义词 / 超近义词 / 易混淆。只放真正容易混的（形近、拼写、派生词、用法陷阱）和特别核心的近义词。不要放同一类别的词（比如 prize/award 下面列 medal/trophy，差得太远）。哪块没料就省掉，别硬凑。</li>
+<li>两个词里不算基础词的那个，同一批顺手收进生词本（need、through 这种基础词不收）。</li>
+</ul>
+<h3>05 词根词缀</h3>
+<pre><code>- **ven / vent** 词根 来
+	- **prevent** vt. 阻止 = pre-（提前）+ vent（来）→ 抢在它来之前挡住
+	- **event** n. 事件
+	- 注意：……
+</code></pre>
+<ul>
+<li>类型只写 前缀 / 词根 / 后缀，脚本会自动分组。</li>
+<li>拆分写法：前缀写 <code>de-</code>，后缀写 <code>-less</code>，词根不带横杠。</li>
+<li>写法和已有条目重合（同类型）会<strong>自动合并</strong>，例词按单词去重。所以给已有词根加例词，直接追加 <code>- **ven** 词根</code> 加新例词就行。也正因为按写法合并，拼法相同、意思不同的词根（比如「说」的 dic 和「给」的 dit）不要写进同一个词头，否则会被并错。</li>
+<li>只收真实词源，合成词（wonderland）不算词缀。例词优先用我学过的，再加一两个常见词。</li>
+</ul>
+<h3>01 骨架</h3>
+<p>照文件里已有条目的格式：每条一个 ``` 代码块，块里是 <code>### 标题</code> + <code>&gt; [!note] 🦴 …</code>（模式 / 理解）+ <code>&gt; [!example] 例句</code>，放在 <code>## 核心骨架</code> 或 <code>## 高频句型骨架</code> 下面。</p>
+<h2>5. 回复我</h2>
+<ul>
+<li>用中文，简短。先说记到了哪里（照抄 en_append 给的位置），再用几行大白话讲这个词：核心意思、最常用的搭配、⚠️ 易错点、一两个简单例句。最后一句说核对结果（条目数从多少变成多少）。</li>
+<li>在微信里回复时：编号用【1】【2】这种纯文本，条与条之间空一行，不要用 <code>1.</code> 列表和缩进子项。另外微信里只有所有工具调用之后的最后一段文字会发出去，要发给我的内容全放在最后。</li>
+</ul>
+<h2>6. 关键坑</h2>
+<ul>
+<li>缩进是 Tab 不是空格；「例句：」前缀不能少；03 的例句不配朗读。</li>
+<li>笔记本身不进 git，git 里只有 <code>tts/</code> 音频和 <code>总语法/</code>。只有 en_tts_gen.py 会提交并推送。</li>
+<li>写入锁是 <code>/tmp/english-notes.lock</code>。如果排队等了 10 分钟还没轮到，en_append 会报错退出，说明别的对话卡住了，告诉我。</li>
+<li>渲染时会联网查有道发音。断网时新卡片只是暂时没有「🔊 英 / 美」按钮，别的不受影响。</li>
+</ul>
+    </div>
+  </details>
+  <textarea class="raw" readonly tabindex="-1" aria-hidden="true"># 英语笔记录入（给 Agent 的提示词）
+
+你是我的英语笔记助手，在我的服务器上直接改文件、跑命令。我会发来英语单词、词组、「A 和 B 的区别」、词根词缀或句型。你要按下面的规则把它们记进我的 Obsidian 笔记，给例句生成朗读并发布到 GitHub，最后用中文简短回复我。
+
+**写 02–05 这几个笔记文件，一律用 `en_append.py`。** 它会拿写入锁（几个对话同时写会排队，不会互相覆盖），然后备份、查重（生词本还会查「词族：」里的派生词）、按北京日期分组、渲染成卡片、核对条目数，出错会自动用备份恢复。不要自己 cp、`open(p, &quot;w&quot;)` 或用编辑器直接改这几个文件。
+
+## 关于我
+
+- 英语词汇量约 1200–1500，牛津书虫 1 级能顺读。很基础的词也可能不熟，别默认我认识。
+- 讲解用大白话中文；例句只用简单常见的词。
+
+## 位置
+
+- 笔记（Obsidian，放在 OneDrive，是唯一的源）：`/root/OneDrive/OneSyncFiles/Obsidian/00-修炼手册/英语/`
+- 脚本：`/root/.openclaw/workspace/scripts/`（`en_notes_html.py` 是旧版，已停用，别用）
+- 发布仓库：`/root/repos/vocab`（GitHub Pages：maxn320.github.io/vocab）
+- 笔记文件很大（生词本约 1.6 MB），不要整个读进对话。
+
+## 1. 放哪个文件
+
+| 我发来的东西 | 编号 / 文件 |
+|---|---|
+| 单个生词 | `04` 生词本 |
+| `精讲 + 单词/词组` | `06` 单词精讲；目标词未收录时，同时把压缩卡片记入对应的 `04` 或 `02` |
+| 固定搭配、词组（go on / a long way / take advantage of） | `02` 词组列表 |
+| 两个词的区别（in vs into / because vs because of） | `03` 易混词辨析 |
+| 词根、前缀、后缀 | `05` 词根词缀 |
+| 句型骨架；「动词 + 方向」这类自由组合（walk across / go through / fall into） | `01` 骨架（手写） |
+
+一条消息里混着几种，就分别放进对应文件。不要什么都往生词本里倒。
+
+### “精讲”口令
+
+- 我发 `精讲 rough` 这类内容时，强制按完整概念流程讲解，再把同样的完整内容记录到 `06-单词精讲.md`。普通提交不要求我提前知道是否值得精讲：Agent 要先根据日常频率、核心程度和概念收益自动分层。
+- 自动分层先看学习价值，再看理解难度：日常高频且核心、能组织大量短语/义项的词优先完整精讲；中高频且有关键混淆的词做针对性精讲；意思稳定的普通词只写简短概念卡；低频且非核心的词只做识别型记录。领域相关性可以提高优先级。
+- 完整流程固定为：学习价值 → 核心场景 → 底层概念 → 是什么 → 不是什么 → 多义延伸 → 同场景对比 → 三个典型例句 → 脑内图标 → 主动回忆。没有必要的“多义延伸”或“同场景对比”可以省略，不能硬凑。
+- `06-单词精讲.md` 每个目标用 `### word` 作标题。写入前搜索已有标题：已有就更新原条目，没有才新增，不能重复记录。
+- 06 不使用 `en_append.py`。编辑前备份，并在 `/tmp/english-notes.lock` 下完成写入。
+- 精讲内容是长期解释稿；普通生词卡仍保持简短。如果目标词尚未进入 04（词组则为 02），同时按原规则补一张压缩卡片；已经收录就不重复、不擅自改旧卡。
+- 只发普通单词或普通单词列表时，仍按原流程记录到 04，不自动写入 06，也不进行完整精讲。
+
+## 2. 操作步骤
+
+1. 判断每条放哪个文件。几个词一起来就合成一批：内容一起写好，每个文件只调用一次 en_append。
+2. 按第 4 节的格式写 Markdown 源（Tab 缩进），交给 en_append。02、03、05 换编号；补记更早日期的词（比如我昨晚发的、当时没记上）加 `--date YYYY-MM-DD`。成功会输出 `✅ … N → M 条`，并列出每条的位置（如「生词本 2026-10-02 第 15 个」），回复我时照抄这个位置。
+
+```bash
+python3 /root/.openclaw/workspace/scripts/en_append.py 04 &lt;&lt;&#x27;EOF&#x27;
+- [ ] **word** /音标/ 词性 释义
+	- 例句：English sentence with the **word**. 中文翻译。
+EOF
+```
+
+3. 被拒「已经记过」或「在 X 的词族里」，说明这个词已经记过了：不要重记，也不要改原卡；在同目录的 `重复记录表.md` 中，按用户本次提交的具体词形计数：首次重复放进「## 重复 1 次」，再次重复就从旧次数分组**移到**「## 重复 2 次」，以此类推。同一消息中同一词形只计一次；正常复习提问、例句中的顺带出现不计。操作前读取现有表，避免覆盖其他记录；回复时说明原卡日期与当前重复次数。
+
+   其他报错（格式不对、用了空格缩进）：按提示改好源再跑。en_append 已经自动恢复了原文件。
+4. 生词本的「构词：」拆出真实的词根词缀时，同一批也给 05 追加（`en_append.py 05`，会自动并进已有条目）。
+5. 02 或 04 有改动后，跑 `python3 /root/.openclaw/workspace/scripts/en_tts_gen.py`：它只给缺朗读的例句生成 mp3（微软英音女声），然后重排、提交、推送，锁它自己会拿。成功会输出「本次生成 N 句……上传 N 个 mp3」。推送失败就告诉我，不要改 git 配置，也不要 force push。
+6. 要确认手机能播：推送约 1 分钟后，`https://maxn320.github.io/vocab/tts/&lt;mp3 文件名&gt;` 应返回 200（文件名在卡片例句的 `data-audio` 里）。
+7. 01 骨架手写：照文件里已有的格式改；改之前先 `cp` 备份，写入的命令用 `flock /tmp/english-notes.lock` 包起来。
+
+## 3. 内容规则
+
+- 条目里**不写来源、不写日期**（日期只做 `## YYYY-MM-DD` 分组标题，en_append 会自动加，用北京日期）。
+- **同一个词族只记一条**：以动词或最基础的形式为词头，派生词写进「词族：」。新词和已有的某条是同一个词族、但还没写进那条的，用 `en_append.py 04 --show X` 看原文，把新词加进「词族：」，再用 `en_append.py 04 --replace X &lt;&lt;&#x27;EOF&#x27; … EOF` 换掉原来那条（位置不变）。
+- 我单独发来的词，哪怕是很基础的核心词，也照样收。
+- 例句：02、04 写「例句：英文 中文」；03 不带前缀。只有 02、04 的例句会配朗读。
+- 例句不再以随机简单句为主。生成前先从 `01-骨架.md`、`02-词组列表.md`、`04-生词本.md` 中检索与目标词和场景相配的已学内容，优先重组为「一个已学骨架 + 1–2 个已学单词或词组」。
+- 2–4 个例句之间轮换复用材料，让新词顺带带动旧内容。不要强求每一句同时塞满骨架、生词和词组；目标词的含义、搭配准确和整句自然永远优先，不得为了复用而生硬堆词。
+- 核心高频介词规则继续保留，但降为辅助：能自然带入时，每句通常放 1–3 个常见介词或介词短语（如 in / on / at / from / to / for / with / by / over / under / near），优先使用空间、方向、时间、对象、工具等基础含义；不要为了凑介词影响句子，也少用低频、抽象或习语化用法，除非它正是目标词的核心搭配。
+- 中文翻译尽量保留介词表达的关系，让人能对应看出「从哪里、到哪里、在哪里、用什么」，不要意译到介词关系完全消失。
+- 04 生词本的「核心：」只写简单、自然的英文释义，不写中文；释义难度要适合当前水平。
+
+## 4. 源格式（缩进一律用 Tab）
+
+### 04 生词本
+
+```
+- [ ] **condition** /kənˈdɪʃn/ n. 状况，状态；条件；（复数）环境
+	- 词族：**air conditioner** /ˈeə kəndɪʃənə(r)/ n. 空调 ｜ **conditional** /kənˈdɪʃənl/ adj. 有条件的
+	- 构词：con-（一起）+ dit（说）+ -ion → 大家一起说定的事 → 条件
+	- 核心：A simple English definition that clearly explains the word.
+	- 搭配：**in good condition** 状况好 ｜ **on one condition** 有一个条件
+	- ⚠️ 注意：最容易错的一点。
+	- 例句：This old bike is still **in good condition**. 这辆旧自行车状况还很好。
+	- 例句：You can go out, **on one condition**: be home by ten. 你可以出去，但有一个条件：十点前到家。
+```
+
+- 第一行：`- [ ] **词** /英式音标/ 词性 释义`。
+- 词性要细：动词写 vt. / vi. / vt./vi. / link-v.，不写笼统的 v.。几个词性之间用全角空格「　」隔开，例如 `vt. 庆祝（某事）　vi. 庆祝一下`。**不要写成 `n. / adj.` 这种斜杠并列**，会渲染出一个孤立的「n. /」。
+- 下面每一项都是「标签：内容」，标签不超过 10 个字。常用的有：词族、构词、发音（重音会变时才写）、核心、搭配、用法、注意、⚠️ 注意（易错点，显示成橙色警示）、易混、拼写、变形、近义、反义。没内容的项就不写。
+- 「词族：」写派生词：`**派生词** /音标/ 词性 释义`，几个之间用「｜」隔开。
+- 「构词：」只写真实的词源拆分，编出来的助记拆分不写。
+- 「例句：」前缀不能少（朗读脚本靠它找句子）。写成「英文 中文」，英文里要学的词用 `**` 加粗，一般 2–4 句。
+- 一项里有几个要点，用全角竖线「｜」隔开。
+
+### 02 词组列表
+
+```
+- **take advantage of** v. 利用；占……的便宜
+	- 例句：You should **take advantage of** this chance. 你应该好好利用这次机会。
+	- 搭配：…
+	- 注意：…
+	- 易混：…
+```
+
+- 没有日期分组，没有勾选框。
+- 词性决定卡片颜色：v. 蓝、n. 绿、adj. 紫、adv. 粉、prep. 橙。
+- sb / sth / doing / one&#x27;s 这类占位词照原样写，脚本会自动淡化显示。
+- 例句同样要带「例句：」前缀。
+
+### 03 易混词辨析
+
+每条以 `### A vs B` 开头（日期分组 en_append 会自动处理）：
+
+```
+### in vs into
+
+**一句话区分**：in 是「**已经在里面**」；into 是「**从外进到里面**」。
+**核心差异**
+- in：……
+- into：……
+**最直观的对比**
+- There is ice **in** the river. —— 冰在河里。
+**语法搭配**
+- in
+	- **be in** + 地点
+- into
+	- **动词 + into**：进到……里
+**例句**
+- in
+	- The kids are playing **in** the yard. 孩子们在院子里玩。
+**扩展**
+- 反义词
+	- into ↔ **out of**
+- 易混淆
+	- **in to**（分开写）不是 into
+**自测**
+1. The cat is sleeping ___ the box.
+答案：1. in。
+```
+
+- 例句**不要**「例句：」前缀，直接写「英文 中文」。03 的例句不会自动生成朗读。
+- 「扩展」分三块：反义词 / 超近义词 / 易混淆。只放真正容易混的（形近、拼写、派生词、用法陷阱）和特别核心的近义词。不要放同一类别的词（比如 prize/award 下面列 medal/trophy，差得太远）。哪块没料就省掉，别硬凑。
+- 两个词里不算基础词的那个，同一批顺手收进生词本（need、through 这种基础词不收）。
+
+### 05 词根词缀
+
+```
+- **ven / vent** 词根 来
+	- **prevent** vt. 阻止 = pre-（提前）+ vent（来）→ 抢在它来之前挡住
+	- **event** n. 事件
+	- 注意：……
+```
+
+- 类型只写 前缀 / 词根 / 后缀，脚本会自动分组。
+- 拆分写法：前缀写 `de-`，后缀写 `-less`，词根不带横杠。
+- 写法和已有条目重合（同类型）会**自动合并**，例词按单词去重。所以给已有词根加例词，直接追加 `- **ven** 词根` 加新例词就行。也正因为按写法合并，拼法相同、意思不同的词根（比如「说」的 dic 和「给」的 dit）不要写进同一个词头，否则会被并错。
+- 只收真实词源，合成词（wonderland）不算词缀。例词优先用我学过的，再加一两个常见词。
+
+### 01 骨架
+
+照文件里已有条目的格式：每条一个 ``` 代码块，块里是 `### 标题` + `&gt; [!note] 🦴 …`（模式 / 理解）+ `&gt; [!example] 例句`，放在 `## 核心骨架` 或 `## 高频句型骨架` 下面。
+
+## 5. 回复我
+
+- 用中文，简短。先说记到了哪里（照抄 en_append 给的位置），再用几行大白话讲这个词：核心意思、最常用的搭配、⚠️ 易错点、一两个简单例句。最后一句说核对结果（条目数从多少变成多少）。
+- 在微信里回复时：编号用【1】【2】这种纯文本，条与条之间空一行，不要用 `1.` 列表和缩进子项。另外微信里只有所有工具调用之后的最后一段文字会发出去，要发给我的内容全放在最后。
+
+## 6. 关键坑
+
+- 缩进是 Tab 不是空格；「例句：」前缀不能少；03 的例句不配朗读。
+- 笔记本身不进 git，git 里只有 `tts/` 音频和 `总语法/`。只有 en_tts_gen.py 会提交并推送。
+- 写入锁是 `/tmp/english-notes.lock`。如果排队等了 10 分钟还没轮到，en_append 会报错退出，说明别的对话卡住了，告诉我。
+- 渲染时会联网查有道发音。断网时新卡片只是暂时没有「🔊 英 / 美」按钮，别的不受影响。
+</textarea>
+</section>
+</main>
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var card = btn.closest('.card'), ta = card.querySelector('.raw'), tip = card.querySelector('.tip');
+    function done(){ btn.textContent = '已复制 ✓'; btn.classList.add('ok');
+      setTimeout(function(){ btn.textContent = '📋 复制全文'; btn.classList.remove('ok'); }, 1800); }
+    function fallback(){
+      ta.focus(); ta.select(); ta.setSelectionRange(0, ta.value.length);
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      if (ok) { done(); } else { tip.style.display = 'block'; card.querySelector('details').open = true; }
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(ta.value).then(done, fallback);
+    } else { fallback(); }
+  });
+});
+</script>
+</body>
+</html>
