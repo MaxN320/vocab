@@ -23,7 +23,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 /* ---- 顶部 ---- */
 .brand{font-size:26px;font-weight:700}
 .sub{font-size:13px;color:var(--ink-mute);margin:6px 0 18px}
-.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px}
 .tab{flex:1 1 auto;appearance:none;border:0;background:transparent;color:var(--ink-soft);font:600 14.5px var(--sans);padding:9px 4px;border-radius:9px;cursor:pointer;white-space:nowrap}
 .tab .n{font-weight:500;font-size:12px;color:var(--ink-mute);margin-left:5px}
 @media (max-width:400px){.tab{font-size:13.5px;padding:9px 2px}.tab .n{font-size:11.5px;margin-left:3px}}
@@ -103,6 +103,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
   <div class="tabs" role="tablist">
     <button class="tab" data-tab="notes" role="tab">语法笔记<span class="n" id="n-notes"></span></button>
     <button class="tab" data-tab="passage" role="tab">短文<span class="n" id="n-passage"></span></button>
+    <button class="tab" data-tab="daily" role="tab" aria-controls="view-daily">每日打怪<span class="n" id="n-daily"></span></button>
   </div>
 </header>
 
@@ -116,6 +117,15 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
   <div class="pp" id="passprog"></div>
   <div class="c-label">每一组</div>
   <div id="passlist"><div class="empty">还没有短文</div></div>
+</main>
+
+<main id="view-daily" hidden>
+  <div class="c-label" style="margin-top:18px">每日打怪 · 按天练习</div>
+  <a class="item" href="daily/Day01.html">
+    <span class="num">01</span>
+    <span class="it-main"><span class="it-title">Day 01 · 单词解析卡片</span><span class="it-desc">查看释义和例句，切换英音或美音跟读。</span></span>
+    <span class="it-arrow" aria-hidden="true">›</span>
+  </a>
 </main>
 
 </div>
@@ -380,9 +390,10 @@ fetch('passage/units.json?' + Date.now()).then(r => r.json()).then(d => {
   });
 }).catch(() => {});
 
-/* 两个标签页：地址带 #passage 时直接打开短文 */
+/* 模块标签页支持直接用网址进入 */
+document.getElementById('n-daily').textContent = document.querySelectorAll('#view-daily a.item').length;
 const tabs = [...document.querySelectorAll('.tab')];
-const VIEWS = ['notes', 'passage'];
+const VIEWS = ['notes', 'passage', 'daily'];
 function show(name) {
   VIEWS.forEach(v => { document.getElementById('view-' + v).hidden = name !== v; });
   tabs.forEach(t => { t.classList.toggle('on', t.dataset.tab === name); t.setAttribute('aria-selected', t.dataset.tab === name); });

@@ -1,0 +1,6558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单词解析卡片</title>
+<style>
+  :root{
+    --bg:#11131a;
+    --card:#191c26;
+    --card-2:#1f2330;
+    --line:#2a2f3d;
+    --ink:#e9ecf4;
+    --ink-soft:#aeb4c5;
+    --ink-mute:#6f7689;
+    --accent:#7c9cff;
+    --accent-soft:#2d3658;
+    --green:#5ec59a;
+    --rose:#e08aa0;
+    --pos:#7c9cff;
+    --radius:16px;
+    --maxw:100%;               /* 卡片/顶栏宽度：全屏铺满（所有设备都占满可用宽度） */
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 60px}
+
+  /* top bar */
+  .topbar{width:100%;max-width:var(--maxw);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:30;background:var(--bg);padding:12px 0 10px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .counter{font-family:var(--mono);font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  .counter b{color:var(--ink);font-weight:600}
+  .nav{display:flex;gap:8px}
+  .nav button{
+    appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+    font-size:14px;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:var(--sans);
+    transition:.15s;display:flex;align-items:center;gap:6px;
+  }
+  .nav button:hover:not(:disabled){border-color:var(--accent);color:var(--ink);background:var(--card-2)}
+  .nav button:active:not(:disabled){transform:translateY(1px)}
+  .nav button:disabled{opacity:.35;cursor:not-allowed}
+  .nav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* jump 跳转下拉框 */
+  .jump{
+    appearance:none;-webkit-appearance:none;
+    flex:1 1 130px;min-width:110px;max-width:280px;
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font-size:13.5px;font-family:var(--sans);padding:8px 30px 8px 12px;border-radius:10px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aeb4c5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;
+  }
+  .jump:hover{border-color:var(--accent)}
+  .jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .jump option{background:var(--card);color:var(--ink)}
+
+  /* card */
+  .card{
+    width:100%;max-width:var(--maxw);background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px 26px 28px;
+  }
+
+  /* headword */
+  .head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .head-left{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .word{font-size:36px;font-weight:700;letter-spacing:-.01em;line-height:1.05}
+  .ipa-line{display:flex;align-items:center;gap:8px}
+  .ipa{font-family:var(--mono);font-size:16px;color:var(--ink-soft)}
+  .copy-struct{
+    appearance:none;border:1px solid var(--line);background:var(--card-2);color:var(--ink-soft);
+    font-size:12.5px;padding:7px 13px;border-radius:9px;cursor:pointer;font-family:var(--sans);
+    transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:6px;flex-shrink:0;
+  }
+  .copy-struct:hover{border-color:var(--accent);color:var(--ink)}
+  .copy-struct:active{transform:translateY(1px)}
+  .copy-struct:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* speaker */
+  .spk{
+    appearance:none;border:none;background:transparent;cursor:pointer;padding:3px;border-radius:8px;
+    color:var(--ink-mute);display:inline-flex;align-items:center;justify-content:center;transition:.15s;line-height:0;
+  }
+  .spk:hover{color:var(--accent)}
+  .spk.playing{color:var(--accent)}
+  .spk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .spk svg{width:18px;height:18px}
+
+  /* defs */
+  .defs{margin:20px 0 4px;display:flex;flex-direction:column;gap:7px}
+  .def-row{display:flex;align-items:baseline;gap:10px;font-size:16px}
+  .pos{
+    font-family:var(--mono);font-size:12px;color:var(--accent);background:var(--accent-soft);
+    padding:2px 8px;border-radius:6px;flex-shrink:0;min-width:34px;text-align:center;font-weight:600;
+  }
+  .def-zh{color:var(--ink)}
+
+  /* chunk */
+  .chunk{
+    margin-top:18px;background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  }
+  .chunk-head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .chunk-phrase{font-size:17px;font-weight:600;color:var(--ink)}
+  .chunk-zh{font-size:14px;color:var(--ink-soft)}
+
+  /* section label */
+  .sec-label{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-mute);margin:24px 0 10px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* example block */
+  .ex{background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+  .ex + .ex{margin-top:0}
+  .ex-en{font-size:16px;line-height:1.55;color:var(--ink)}
+  .ex-en b{color:var(--accent);font-weight:700}
+  .ex-zh{font-size:13.5px;color:var(--ink-mute);margin-top:5px;line-height:1.5}
+  .ex-actions{display:flex;gap:8px;margin-top:11px}
+  .mini{
+    appearance:none;border:1px solid var(--line);background:transparent;color:var(--ink-mute);
+    font-size:11.5px;padding:5px 11px;border-radius:8px;cursor:pointer;font-family:var(--sans);transition:.15s;
+    display:flex;align-items:center;gap:5px;
+  }
+  .mini:hover{border-color:var(--accent);color:var(--ink-soft)}
+  .mini:active{transform:translateY(1px)}
+  .mini:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .mini svg{width:12px;height:12px}
+
+  /* grammar */
+  .gram{margin-top:11px;border-top:1px dashed var(--line);padding-top:11px}
+  .gram-tag{font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);margin-bottom:6px}
+  .clause{margin-bottom:9px}
+  .clause:last-child{margin-bottom:0}
+  .clause-label{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:5px}
+  .roles{display:flex;flex-wrap:wrap;gap:6px}
+  .role{
+    background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:5px 9px;font-size:12.5px;
+    color:var(--ink-soft);line-height:1.4;
+  }
+  .role .r-form{display:block;color:var(--ink-mute);font-family:var(--mono);font-size:10.5px;margin-top:2px}
+  .role .r-note{display:block;color:var(--green);font-size:10.5px;margin-top:2px}
+
+  /* trans (vt./vi.) 及物性胶囊 */
+  .trans{font-family:var(--mono);font-size:11px;color:var(--green);background:rgba(95,211,154,.12);padding:2px 7px;border-radius:6px;flex-shrink:0;font-weight:600;line-height:1.5}
+
+  /* contrast 同台对比 */
+  .contrast{background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px;display:flex;flex-direction:column;gap:9px}
+  .contrast-frame{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute);letter-spacing:.02em}
+  .ct-item{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .ct-mark{font-size:15px;font-weight:700;flex-shrink:0;width:16px;text-align:center;line-height:1.4}
+  .ct-en{font-size:15px;font-weight:600;color:var(--ink)}
+  .ct-note{font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+  .ct-item.ok .ct-mark{color:var(--green)}
+  .ct-item.ok .ct-en{color:var(--green)}
+  .ct-item.meh .ct-mark{color:#e2b23c}
+  .ct-item.no .ct-mark{color:var(--rose)}
+
+  /* relations */
+  .rel{display:flex;gap:11px;background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+  .rel-sym{font-size:18px;font-weight:700;flex-shrink:0;line-height:1.5;width:20px;text-align:center}
+  .rel.syn .rel-sym{color:var(--green)}
+  .rel.ant .rel-sym{color:var(--rose)}
+  .rel-body{flex:1;min-width:0}
+  .rel-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .rel-word{font-size:16px;font-weight:600;color:var(--ink)}
+  .rel-ipa{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute)}
+  .rel-pos{font-family:var(--mono);font-size:11px;color:var(--accent);background:var(--accent-soft);padding:1px 7px;border-radius:5px;font-weight:600}
+  .rel-zh{font-size:13px;color:var(--ink-soft)}
+  .rel-diff{font-size:13px;color:var(--ink-soft);margin-top:5px;line-height:1.5}
+
+  /* ---- 英/美 双音标 ---- */
+  .ipa-line{flex-wrap:wrap;gap:14px}
+  .ipa-grp{display:inline-flex;align-items:center;gap:6px}
+  .ipa-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:5px;flex-shrink:0}
+  .ipa-tag.gb{color:var(--accent);background:var(--accent-soft)}
+  .ipa-tag.us{color:var(--green);background:rgba(94,197,154,.14)}
+  .rel-ipa .rt{font-size:10px;font-weight:700;margin-right:3px;opacity:.8}
+  .rel-ipa.gb .rt{color:var(--accent)}
+  .rel-ipa.us .rt{color:var(--green)}
+
+  /* ---- TTS 朗读 ---- */
+  .ttsbar{width:100%;max-width:var(--maxw);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;display:flex;flex-direction:column;gap:9px}
+  .ttsbar[hidden]{display:none}
+  .tts-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .tts-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);flex-shrink:0}
+  .tts-meta{font-size:12px;color:var(--ink-mute);line-height:1.55}
+  .tts-hint{font-size:11.5px;color:var(--ink-mute);line-height:1.5}
+  #ttsVoice{flex:1 1 200px;max-width:none}
+  .mini.on{border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
+  .nav button.icon{padding:8px 11px}
+  .nav button.icon svg{width:17px;height:17px}
+  .nav button.icon.on{border-color:var(--accent);color:var(--accent);background:var(--card-2)}
+  .ex-en .w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s}
+  .ex-en .w:hover{background:var(--accent-soft)}
+  .ex-en .w.on,.ex-en .w.playing{background:var(--accent-soft)}
+  .mini.playing{border-color:var(--accent);color:var(--accent)}
+
+  /* toast */
+  .toast{
+    position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);
+    background:var(--accent);color:#0d1018;font-size:13.5px;font-weight:600;padding:10px 20px;border-radius:10px;
+    opacity:0;pointer-events:none;transition:.22s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:520px){
+    .word{font-size:30px}
+    .card{padding:20px 18px 22px}
+    body{padding:18px 12px 50px}
+  }
+
+  /* ── 收集按钮 + 提示 + 光晕 + 粒子 ── */
+  .collect{margin-right:4px;position:relative}
+  .collect.on{border-color:var(--accent)!important;color:var(--accent)!important;background:var(--accent-soft)!important}
+  .collect svg{width:16px;height:16px}
+  .mode-toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:rgba(30,35,50,.92);border:1px solid var(--line);border-radius:10px;color:var(--ink-soft);font-size:13px;padding:8px 18px;z-index:100;pointer-events:none;opacity:0;transition:opacity .3s,top .3s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .mode-toast.show{opacity:1;top:24px}
+  .vocab-count{font-family:var(--mono);font-size:14px;color:var(--ink-mute);margin-left:10px}
+  .vocab-count b{color:var(--accent)}
+  .aura{position:fixed;border-radius:50%;filter:blur(80px);opacity:.12;pointer-events:none;z-index:0}
+  .aura.a1{width:320px;height:320px;background:radial-gradient(circle,#5c7cfa,#1c254100)}
+  .aura.a2{width:280px;height:280px;background:radial-gradient(circle,#e08aa0,#1c254100)}
+  .particles{position:fixed;inset:0;pointer-events:none;z-index:1}
+  .particle{position:absolute;border-radius:50%;background:var(--ink-mute);opacity:0;animation:float 6s infinite}
+  @keyframes float{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:.4}90%{opacity:.4}100%{transform:translateY(-100vh) scale(.3);opacity:0}}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="counter"><b id="cur">1</b> / <span id="total">5</span></div>
+  <select id="jump" class="jump" aria-label="跳转到某个单词"></select>
+  <div class="nav">
+    <button id="collectBtn" class="icon collect" aria-label="收集模式" title="收集模式:关闭&#10;点击开启后,点例句单词可收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button id="ttsBtn" class="icon" aria-label="朗读设置" title="朗读设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg></button>
+    <button id="prev" aria-label="上一个">‹ 上一个</button>
+    <button id="next" aria-label="下一个">下一个 ›</button>
+  </div>
+</div>
+
+<div class="mode-toast" id="modeToast"></div>
+<div class="ttsbar" id="ttsbar" hidden>
+  <div class="tts-row">
+    <span class="tts-label">口音</span>
+    <button class="mini tscope on" data-s="gb">英音</button>
+    <button class="mini tscope" data-s="us">美音</button>
+  </div>
+  <div class="tts-row">
+    <span class="tts-label">单词</span>
+    <button class="mini on" id="ttsLoop">循环：开</button>
+  </div>
+  <div class="tts-hint">有道词典真人发音。音标旁边的英/美小喇叭固定口音；点击例句里的单词也可发音。</div>
+</div>
+
+<div class="card" id="card"></div>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+/* ============ 数据区：往这里塞 JSON ============ */
+const DATA = [
+  {
+    "word": "react",
+    "ipa": "/riˈækt/",
+    "ipaUS": "/riˈækt/",
+    "defs": [
+      {
+        "pos": "v.",
+        "trans": "vi.",
+        "zh": "作出反应；起反应"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "react to",
+      "zh": "对……作出反应",
+      "example": {
+        "en": "How did your boss <b>react to<\/b> the news?",
+        "zh": "你的老板对这个消息有什么反应？",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "方式状语: How",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "主语: your boss",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: did ... react",
+                  "form": "过去式（did + 原形 react）",
+                  "note": null
+                },
+                {
+                  "text": "介词补语: to the news",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "I <b>reacted<\/b> too late and hit the car in front.",
+      "zh": "我反应太晚，撞上了前面的车。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: reacted",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "状语: too late",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（and 连接，省略主语 I）",
+            "roles": [
+              {
+                "text": "谓语: hit",
+                "form": "过去式 | 原形: hit /hɪt/ 碰；击中",
+                "note": null
+              },
+              {
+                "text": "宾语: the car in front（in front 后置修饰 car）",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The baby <b>reacted<\/b> to my voice with a smile.",
+      "zh": "宝宝听见我的声音，笑着作出了反应。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The baby",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: reacted",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "介词补语: to my voice",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "方式状语: with a smile",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "respond",
+        "ipa": "/rɪˈspɒnd/",
+        "pos": "v.",
+        "zh": "回应；作出反应",
+        "diff": "两者都可接 to。react 常突出受到刺激后的情绪或身体反应；respond 也可这样用，但常用于回答问题、回复消息或采取应对行动。"
+      }
+    ],
+    "contrast": {
+      "frame": "____ to an email",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "react",
+          "en": "react to an email",
+          "note": "表示对邮件内容产生反应，例如生气；不表示一定回信。"
+        },
+        {
+          "mark": "~",
+          "word": "respond",
+          "en": "respond to an email",
+          "note": "表达自然，但通常指回复邮件，改变了这里所强调的反应类型。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "reaction",
+    "ipa": "/riˈækʃən/",
+    "ipaUS": "/riˈækʃən/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "反应；回应"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "first reaction",
+      "zh": "第一反应",
+      "example": {
+        "en": "My <b>first reaction<\/b> was to call Mum.",
+        "zh": "我的第一反应是给妈妈打电话。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My first reaction",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "系动词: was",
+                  "form": "过去式 | 原形: be /biː/ 是；处于",
+                  "note": null
+                },
+                {
+                  "text": "表语: to call Mum",
+                  "form": "不定式(to+原形) | 原形: call /kɔːl/ 打电话",
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "His <b>reaction<\/b> to the gift hurt me.",
+      "zh": "他对这份礼物的反应伤了我的心。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: His reaction to the gift（to the gift 修饰 reaction）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurt",
+                "form": "过去式 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              },
+              {
+                "text": "宾语: me",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "She had a bad <b>reaction<\/b> to the new cream.",
+      "zh": "她用了这种新乳霜后出现了不良反应。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: She",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: had",
+                "form": "过去式 | 原形: have /hæv/ 有",
+                "note": null
+              },
+              {
+                "text": "宾语: a bad reaction to the new cream（to 短语修饰 reaction）",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "response",
+        "ipa": "/rɪˈspɒns/",
+        "pos": "n.",
+        "zh": "回应；反应",
+        "diff": "reaction 常指受到刺激后的情绪、身体或化学反应；response 也能指反应，但更常指答复或应对措施，如 a response to an email。"
+      }
+    ],
+    "contrast": {
+      "frame": "a ____ to the news",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "reaction",
+          "en": "a reaction to the news",
+          "note": "自然表达听到消息后的情绪或行为反应。"
+        },
+        {
+          "mark": "~",
+          "word": "response",
+          "en": "a response to the news",
+          "note": "也自然；语境中可能更突出公开回应或采取的行动，并非不能替换。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "army",
+    "ipa": "/ˈɑːmi/",
+    "ipaUS": "/ˈɑːrmi/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "陆军；军队"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "join the army",
+      "zh": "参军；加入陆军",
+      "example": {
+        "en": "My brother <b>joined the army<\/b> at eighteen.",
+        "zh": "我哥哥十八岁时参军了。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My brother",
+                  "form": null,
+                  "note": "brother n. 兄弟 /ˈbrʌðə/"
+                },
+                {
+                  "text": "谓语: joined",
+                  "form": "过去式 | 原形: join /dʒɔɪn/ 加入",
+                  "note": null
+                },
+                {
+                  "text": "宾语: the army",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: at eighteen",
+                  "form": null,
+                  "note": "eighteen number 十八 /ˌeɪˈtiːn/"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The <b>army<\/b> sent food to our village after the storm.",
+      "zh": "暴风雨后，军队给我们村送来了食物。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The army",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: sent",
+                "form": "过去式 | 原形: send /send/ 送；发送",
+                "note": null
+              },
+              {
+                "text": "宾语: food",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "对象状语: to our village",
+                "form": null,
+                "note": "village n. 村庄 /ˈvɪlɪdʒ/"
+              },
+              {
+                "text": "时间状语: after the storm",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "Dad came home from the <b>army<\/b> with a broken leg.",
+      "zh": "爸爸从部队回家了，一条腿受了伤。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Dad",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: came",
+                "form": "过去式 | 原形: come /kʌm/ 来",
+                "note": null
+              },
+              {
+                "text": "地点状语: home",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "来源状语: from the army",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "伴随状语: with a broken leg（broken 是过去分词作定语）",
+                "form": "broken：过去分词 | 原形: break /breɪk/ 弄伤",
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "alarm",
+    "ipa": "/əˈlɑːm/",
+    "ipaUS": "/əˈlɑːrm/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "闹钟；警报；惊恐"
+      },
+      {
+        "pos": "v.",
+        "trans": "vt.",
+        "zh": "使惊恐；使担忧"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "set an alarm",
+      "zh": "设闹钟",
+      "example": {
+        "en": "I <b>set an alarm<\/b> for six before bed.",
+        "zh": "睡前我设了一个六点的闹钟。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: set",
+                  "form": "过去式 | 原形: set /set/ 设置；放置",
+                  "note": null
+                },
+                {
+                  "text": "宾语: an alarm",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "设定时间: for six",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: before bed",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The smoke <b>alarm<\/b> woke us at night.",
+      "zh": "夜里，烟雾警报器把我们叫醒了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The smoke alarm",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: woke",
+                "form": "过去式 | 原形: wake /weɪk/ 醒来；叫醒",
+                "note": null
+              },
+              {
+                "text": "宾语: us",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: at night",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The blood on his shirt <b>alarmed<\/b> me.",
+      "zh": "他衬衫上的血迹让我很惊恐。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The blood on his shirt（on his shirt 修饰 blood）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: alarmed",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "宾语: me",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "alert",
+        "ipa": "/əˈlɜːt/",
+        "pos": "n.",
+        "zh": "警报；提醒",
+        "diff": "alarm 常指警报器发出的声音，也指闹钟；alert 常指提醒或警报通知，如手机上的天气提醒。普通起床闹钟用 alarm。"
+      }
+    ],
+    "contrast": {
+      "frame": "set an ____ for six",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "alarm",
+          "en": "set an alarm for six",
+          "note": "设六点响的闹钟，最常用。"
+        },
+        {
+          "mark": "~",
+          "word": "alert",
+          "en": "set an alert for six",
+          "note": "可用于设置六点出现的提醒，但不一定是叫醒人的闹钟。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "airplane",
+    "ipa": "/ˈeəpleɪn/",
+    "ipaUS": "/ˈerpleɪn/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "飞机（常用于美式英语）"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "by airplane",
+      "zh": "乘飞机",
+      "example": {
+        "en": "We went to Rome <b>by airplane<\/b> last summer.",
+        "zh": "去年夏天我们乘飞机去了罗马。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: went",
+                  "form": "过去式 | 原形: go /ɡəʊ/ 去",
+                  "note": null
+                },
+                {
+                  "text": "方向状语: to Rome",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "方式状语: by airplane",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: last summer",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "Our <b>airplane<\/b> shook in the storm.",
+      "zh": "我们的飞机在暴风雨中晃了起来。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Our airplane",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: shook",
+                "form": "过去式 | 原形: shake /ʃeɪk/ 摇动；发抖",
+                "note": null
+              },
+              {
+                "text": "情境状语: in the storm",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "From her seat, my daughter saw an <b>airplane<\/b> for the first time.",
+      "zh": "女儿坐在座位上，第一次看见了飞机。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "地点状语: From her seat",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "主语: my daughter",
+                "form": null,
+                "note": "daughter n. 女儿 /ˈdɔːtə/"
+              },
+              {
+                "text": "谓语: saw",
+                "form": "过去式 | 原形: see /siː/ 看见",
+                "note": null
+              },
+              {
+                "text": "宾语: an airplane",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: for the first time",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "plane",
+        "ipa": "/pleɪn/",
+        "pos": "n.",
+        "zh": "飞机",
+        "diff": "plane 是 airplane 的常用简称，英美日常口语都常见；airplane 更完整，主要用于美式英语，英式完整写法常为 aeroplane。"
+      }
+    ],
+    "contrast": {
+      "frame": "by ____",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "airplane",
+          "en": "by airplane",
+          "note": "正确，完整说出交通工具；常见于美式英语。"
+        },
+        {
+          "mark": "✓",
+          "word": "plane",
+          "en": "by plane",
+          "note": "同义且日常更常用，不存在意义上的高下。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "airport",
+    "ipa": "/ˈeəpɔːt/",
+    "ipaUS": "/ˈerpɔːrt/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "机场"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "at the airport",
+      "zh": "在机场",
+      "example": {
+        "en": "Dad is waiting <b>at the airport<\/b> with our bags.",
+        "zh": "爸爸正带着我们的行李在机场等候。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: Dad",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: is waiting",
+                  "form": "助动词be+现在分词 | 原形: wait /weɪt/ 等候",
+                  "note": null
+                },
+                {
+                  "text": "地点状语: at the airport",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "伴随状语: with our bags",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "I left my phone at the <b>airport<\/b>.",
+      "zh": "我把手机落在机场了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: left",
+                "form": "过去式 | 原形: leave /liːv/ 离开；留下",
+                "note": null
+              },
+              {
+                "text": "宾语: my phone",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: at the airport",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "We reached the <b>airport<\/b> just in time for our flight.",
+      "zh": "我们及时赶到了机场，刚好赶上航班。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: We",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: reached",
+                "form": "过去式 | 原形: reach /riːtʃ/ 到达",
+                "note": null
+              },
+              {
+                "text": "宾语: the airport",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: just in time for our flight",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "airline",
+    "ipa": "/ˈeəlaɪn/",
+    "ipaUS": "/ˈerlaɪn/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "航空公司"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "budget airline",
+      "zh": "廉价航空公司",
+      "example": {
+        "en": "We chose a <b>budget airline<\/b> for our trip to Spain.",
+        "zh": "我们去西班牙旅行时选了一家廉价航空公司。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: chose",
+                  "form": "过去式 | 原形: choose /tʃuːz/ 选择",
+                  "note": null
+                },
+                {
+                  "text": "宾语: a budget airline",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "目的状语: for our trip to Spain",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The <b>airline<\/b> lost my bag with my work clothes inside.",
+      "zh": "航空公司弄丢了我的包，工作服都在里面。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The airline",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: lost",
+                "form": "过去式 | 原形: lose /luːz/ 丢失",
+                "note": null
+              },
+              {
+                "text": "宾语: my bag with my work clothes inside（with 短语修饰 bag，说明里面装着什么）",
+                "form": null,
+                "note": "clothes n. 衣服（复数名词） /kləʊðz/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The <b>airline<\/b> paid for our hotel after the long delay.",
+      "zh": "航班长时间延误后，航空公司支付了我们的酒店费用。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The airline",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: paid",
+                "form": "过去式 | 原形: pay /peɪ/ 支付",
+                "note": null
+              },
+              {
+                "text": "介词补语: for our hotel",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: after the long delay",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "awful",
+    "ipa": "/ˈɔːfəl/",
+    "ipaUS": "/ˈɑːfəl/",
+    "defs": [
+      {
+        "pos": "adj.",
+        "trans": null,
+        "zh": "糟糕的；极坏的；令人难受的"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "feel awful",
+      "zh": "感觉很难受",
+      "example": {
+        "en": "I <b>feel awful<\/b> after that long bus ride.",
+        "zh": "坐了那么久的公交车后，我感觉很难受。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "系动词: feel",
+                  "form": "原形 | 原形: feel /fiːl/ 感觉",
+                  "note": null
+                },
+                {
+                  "text": "表语: awful",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: after that long bus ride",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "An <b>awful<\/b> smell filled the kitchen.",
+      "zh": "一股难闻的气味充满了厨房。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: An awful smell",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: filled",
+                "form": "过去式 | 原形: fill /fɪl/ 充满",
+                "note": null
+              },
+              {
+                "text": "宾语: the kitchen",
+                "form": null,
+                "note": "kitchen n. 厨房 /ˈkɪtʃɪn/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The hotel room was <b>awful<\/b>, so we left that night.",
+      "zh": "酒店房间糟透了，所以我们当晚就走了。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: The hotel room",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "系动词: was",
+                "form": "过去式 | 原形: be /biː/ 是；处于",
+                "note": null
+              },
+              {
+                "text": "表语: awful",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（so 表结果）",
+            "roles": [
+              {
+                "text": "主语: we",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: left",
+                "form": "过去式 | 原形: leave /liːv/ 离开；留下",
+                "note": null
+              },
+              {
+                "text": "时间状语: that night",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "terrible",
+        "ipa": "/ˈterəbəl/",
+        "pos": "adj.",
+        "zh": "很糟的；可怕的",
+        "diff": "在 awful weather、terrible weather 等评价中常可互换。awful 常表达主观不舒服或难受；terrible 也常用于严重事故等客观坏事，不能据此划出绝对边界。"
+      }
+    ],
+    "contrast": {
+      "frame": "____ weather",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "awful",
+          "en": "awful weather",
+          "note": "天气很糟，日常表达自然。"
+        },
+        {
+          "mark": "✓",
+          "word": "terrible",
+          "en": "terrible weather",
+          "note": "也自然，通常可互换，不应硬说其中一个错误。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "backpack",
+    "ipa": "/ˈbækpæk/",
+    "ipaUS": "/ˈbækpæk/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "双肩背包"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "pack a backpack",
+      "zh": "收拾双肩背包；往背包里装东西",
+      "example": {
+        "en": "I <b>packed my backpack<\/b> with water and bread.",
+        "zh": "我往双肩背包里装好了水和面包。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: packed",
+                  "form": "过去式 | 原形: pack /pæk/ 收拾；装入",
+                  "note": null
+                },
+                {
+                  "text": "宾语: my backpack",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "内容补语: with water and bread",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My <b>backpack<\/b> was gone from the train seat.",
+      "zh": "我放在火车座位上的双肩背包不见了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My backpack",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "系动词: was",
+                "form": "过去式 | 原形: be /biː/ 是；处于",
+                "note": null
+              },
+              {
+                "text": "表语: gone（表示不在了的状态）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点补语: from the train seat",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "She carried her books home in a heavy <b>backpack<\/b>.",
+      "zh": "她背着一个沉重的双肩背包，把书带回了家。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: She",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: carried",
+                "form": "过去式 | 原形: carry /ˈkæri/ 搬；携带",
+                "note": null
+              },
+              {
+                "text": "宾语: her books",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "方向状语: home",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "方式状语: in a heavy backpack",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "rucksack",
+        "ipa": "/ˈrʌksæk/",
+        "pos": "n.",
+        "zh": "双肩背包",
+        "diff": "rucksack 在英式英语中常见，尤其用于步行或户外旅行；backpack 英美都能使用，也常指学生的双肩包。二者可指同一种包。"
+      }
+    ],
+    "contrast": {
+      "frame": "a heavy ____",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "backpack",
+          "en": "a heavy backpack",
+          "note": "通用说法，可指装满课本或旅行用品的双肩包。"
+        },
+        {
+          "mark": "✓",
+          "word": "rucksack",
+          "en": "a heavy rucksack",
+          "note": "英式英语自然说法，与 backpack 很多场合可互换。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "backward",
+    "ipa": "/ˈbækwəd/",
+    "ipaUS": "/ˈbækwɚd/",
+    "defs": [
+      {
+        "pos": "adv.",
+        "trans": null,
+        "zh": "向后；倒着"
+      },
+      {
+        "pos": "adj.",
+        "trans": null,
+        "zh": "向后的；落后的"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "step backward",
+      "zh": "向后退一步",
+      "example": {
+        "en": "Please <b>step backward<\/b> from the edge.",
+        "zh": "请从边缘向后退一步。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: （祈使句省略 you）",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "礼貌标记: Please",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: step",
+                  "form": "原形 | 原形: step /step/ 迈步",
+                  "note": null
+                },
+                {
+                  "text": "方向状语: backward",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "起点状语: from the edge",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "He fell <b>backward<\/b> off his chair.",
+      "zh": "他从椅子上向后摔了下去。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: He",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: fell",
+                "form": "过去式 | 原形: fall /fɔːl/ 落下；跌倒",
+                "note": null
+              },
+              {
+                "text": "方向状语: backward",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "路径状语: off his chair",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "I put my shirt on <b>backward<\/b> before the meeting.",
+      "zh": "开会前，我把衬衫前后穿反了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: put ... on（可分离短语动词）",
+                "form": "过去式 | 原形: put /pʊt/ 放",
+                "note": null
+              },
+              {
+                "text": "宾语: my shirt",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "方式状语: backward",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: before the meeting",
+                "form": null,
+                "note": "meeting n. 会议 /ˈmiːtɪŋ/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "ant",
+        "sym": "≠",
+        "word": "forward",
+        "ipa": "/ˈfɔːwəd/",
+        "pos": "adv.",
+        "zh": "向前",
+        "diff": "backward 指朝后退或倒向；forward 指朝前进。step backward 是退一步，step forward 是向前迈一步。"
+      }
+    ],
+    "contrast": null
+  },
+  {
+    "word": "basement",
+    "ipa": "/ˈbeɪsmənt/",
+    "ipaUS": "/ˈbeɪsmənt/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "地下室；地下层"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "in the basement",
+      "zh": "在地下室",
+      "example": {
+        "en": "We keep our bikes <b>in the basement<\/b>.",
+        "zh": "我们把自行车存放在地下室。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: keep",
+                  "form": "原形 | 原形: keep /kiːp/ 保持；保留",
+                  "note": null
+                },
+                {
+                  "text": "宾语: our bikes",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "地点状语: in the basement",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "Rainwater filled the <b>basement<\/b> during the night.",
+      "zh": "夜里，雨水灌满了地下室。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Rainwater",
+                "form": null,
+                "note": "rainwater n. 雨水 /ˈreɪnwɔːtə/"
+              },
+              {
+                "text": "谓语: filled",
+                "form": "过去式 | 原形: fill /fɪl/ 充满",
+                "note": null
+              },
+              {
+                "text": "宾语: the basement",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: during the night",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "I found Dad's old letters in the <b>basement<\/b>.",
+      "zh": "我在地下室找到了爸爸以前写的信。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: found",
+                "form": "过去式 | 原形: find /faɪnd/ 发现；找到",
+                "note": null
+              },
+              {
+                "text": "宾语: Dad's old letters",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: in the basement",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "cellar",
+        "ipa": "/ˈselə/",
+        "pos": "n.",
+        "zh": "地下储藏室；地窖",
+        "diff": "basement 可指房屋地下的整层，也可能用作卧室或办公室；cellar 更强调地下储藏空间，常用于存酒、食物。二者所指有重叠。"
+      }
+    ],
+    "contrast": {
+      "frame": "a ____ bedroom",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "basement",
+          "en": "a basement bedroom",
+          "note": "设在房屋地下层的卧室，常见搭配。"
+        },
+        {
+          "mark": "~",
+          "word": "cellar",
+          "en": "a cellar bedroom",
+          "note": "能理解为由地窖改成的卧室，但 cellar 本身更突出储藏用途，普通地下层卧室更常说 basement bedroom。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "breakthrough",
+    "ipa": "/ˈbreɪkθruː/",
+    "ipaUS": "/ˈbreɪkθruː/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "重大突破；关键进展"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "make a breakthrough",
+      "zh": "取得突破",
+      "example": {
+        "en": "Our team <b>made a breakthrough<\/b> in the search for a new drug.",
+        "zh": "我们团队在寻找新药方面取得了突破。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: Our team",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: made",
+                  "form": "过去式 | 原形: make /meɪk/ 制作；使",
+                  "note": null
+                },
+                {
+                  "text": "宾语: a breakthrough",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "方面状语: in the search for a new drug",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "That phone call led to a <b>breakthrough<\/b> in the case.",
+      "zh": "那通电话促成了案件的突破。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: That phone call",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: led",
+                "form": "过去式 | 原形: lead /liːd/ 引向；导致",
+                "note": null
+              },
+              {
+                "text": "介词补语: to a breakthrough in the case（in the case 修饰 breakthrough）",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "After months of tests, the doctor finally had a <b>breakthrough<\/b>.",
+      "zh": "做了数月检查后，医生终于取得了突破。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "时间状语: After months of tests",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "主语: the doctor",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: finally",
+                "form": null,
+                "note": "finally adv. 终于 /ˈfaɪnəli/"
+              },
+              {
+                "text": "谓语: had",
+                "form": "过去式 | 原形: have /hæv/ 有",
+                "note": null
+              },
+              {
+                "text": "宾语: a breakthrough",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "progress",
+        "ipa": "/ˈprəʊɡres/",
+        "pos": "n.",
+        "zh": "进步；进展",
+        "diff": "breakthrough 是突破难关的关键进展，可数，常说 a breakthrough；progress 可以是逐步的小进展，不可数，不能说 a progress。"
+      }
+    ],
+    "contrast": {
+      "frame": "make ____",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "breakthrough",
+          "en": "make a breakthrough",
+          "note": "取得一次突破，需要 a；通常意味着越过关键障碍。"
+        },
+        {
+          "mark": "~",
+          "word": "progress",
+          "en": "make progress",
+          "note": "表示取得进展，不保证有重大突破；progress 前不加 a。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "coverage",
+    "ipa": "/ˈkʌvərɪdʒ/",
+    "ipaUS": "/ˈkʌvərɪdʒ/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "新闻报道"
+      },
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "保险保障范围；保险保障"
+      },
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "信号覆盖范围"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "live coverage",
+      "zh": "实况报道；现场直播",
+      "example": {
+        "en": "We watched <b>live coverage<\/b> of the match at home.",
+        "zh": "我们在家看了这场比赛的现场直播。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: watched",
+                  "form": "过去式 | 原形: watch /wɒtʃ/ 观看",
+                  "note": null
+                },
+                {
+                  "text": "宾语: live coverage of the match（of the match 修饰 coverage；live 在此读 /laɪv/）",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "地点状语: at home",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My insurance <b>coverage<\/b> did not include the broken window.",
+      "zh": "我的保险保障范围不包括那扇碎掉的窗户。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My insurance coverage",
+                "form": null,
+                "note": "insurance n. 保险 /ɪnˈʃʊərəns/"
+              },
+              {
+                "text": "谓语: did not include",
+                "form": "过去式（did not + 原形 include） | 原形: include /ɪnˈkluːd/ 包括",
+                "note": null
+              },
+              {
+                "text": "宾语: the broken window",
+                "form": "broken：过去分词作定语 | 原形: break /breɪk/ 打破",
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "There was no phone <b>coverage<\/b> on that road.",
+      "zh": "那条路上没有手机信号覆盖。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "形式引导词: There（存在句，不是地点状语）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: was",
+                "form": "过去式 | 原形: be /biː/ 是；处于",
+                "note": null
+              },
+              {
+                "text": "真正主语: no phone coverage",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: on that road",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "discover",
+    "ipa": "/dɪˈskʌvə/",
+    "ipaUS": "/dɪˈskʌvɚ/",
+    "defs": [
+      {
+        "pos": "v.",
+        "trans": "vt.",
+        "zh": "发现；了解到"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "discover the truth",
+      "zh": "发现真相",
+      "example": {
+        "en": "She <b>discovered the truth<\/b> in an old letter.",
+        "zh": "她在一封旧信里发现了真相。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: She",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: discovered",
+                  "form": "过去式",
+                  "note": null
+                },
+                {
+                  "text": "宾语: the truth",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "来源状语: in an old letter",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "I <b>discovered<\/b> a hole in my bag at the station.",
+      "zh": "我在车站发现自己的包上有个洞。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: discovered",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "宾语: a hole in my bag（in my bag 修饰 hole）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: at the station",
+                "form": null,
+                "note": "station n. 车站 /ˈsteɪʃən/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "We <b>discovered<\/b> that our new house had no hot water.",
+      "zh": "我们发现新房子里没有热水。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "主句",
+            "roles": [
+              {
+                "text": "主语: We",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: discovered",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "宾语: that 引导的宾语从句",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "宾语从句",
+            "roles": [
+              {
+                "text": "引导词: that",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "主语: our new house",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: had",
+                "form": "过去式 | 原形: have /hæv/ 有",
+                "note": null
+              },
+              {
+                "text": "宾语: no hot water",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "find",
+        "ipa": "/faɪnd/",
+        "pos": "v.",
+        "zh": "找到；发现",
+        "diff": "find 常用于找到正在寻找的具体物品，也能表示发现；discover 更突出原先不知道的事实或此前未被发现的事物。找到丢失的钥匙通常用 find。"
+      }
+    ],
+    "contrast": {
+      "frame": "____ a new island",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "discover",
+          "en": "discover a new island",
+          "note": "强调发现此前未知的岛屿。"
+        },
+        {
+          "mark": "✓",
+          "word": "find",
+          "en": "find a new island",
+          "note": "也自然；find 更宽泛，是否是首次发现由语境决定。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "discovery",
+    "ipa": "/dɪˈskʌvəri/",
+    "ipaUS": "/dɪˈskʌvəri/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "发现；被发现的事物"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "make a discovery",
+      "zh": "有所发现；作出发现",
+      "example": {
+        "en": "The children <b>made a discovery<\/b> under the old tree: a box of coins.",
+        "zh": "孩子们在老树下有所发现：一个装着硬币的盒子。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: The children",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: made",
+                  "form": "过去式 | 原形: make /meɪk/ 制作；使",
+                  "note": null
+                },
+                {
+                  "text": "宾语: a discovery",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "地点状语: under the old tree",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "同位解释: a box of coins（解释发现的是什么）",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The <b>discovery<\/b> of a cheap drug saved many lives.",
+      "zh": "一种便宜药物的发现挽救了许多生命。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The discovery of a cheap drug（of 短语修饰 discovery）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: saved",
+                "form": "过去式 | 原形: save /seɪv/ 存下；挽救",
+                "note": null
+              },
+              {
+                "text": "宾语: many lives",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The <b>discovery<\/b> of Dad's diary made me cry.",
+      "zh": "发现爸爸的日记让我哭了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The discovery of Dad's diary",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: made",
+                "form": "过去式 | 原形: make /meɪk/ 制作；使",
+                "note": null
+              },
+              {
+                "text": "宾语: me",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "宾语补足语: cry（make sb do，省略 to）",
+                "form": "原形 | 原形: cry /kraɪ/ 哭",
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "invention",
+        "ipa": "/ɪnˈvenʃən/",
+        "pos": "n.",
+        "zh": "发明；发明物",
+        "diff": "discovery 通常是发现本来存在但未被认识的事物或事实；invention 是人创造出的新工具、方法等。发现一种星体用 discovery，发明新机器用 invention。"
+      }
+    ],
+    "contrast": {
+      "frame": "the ____ of a new planet",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "discovery",
+          "en": "the discovery of a new planet",
+          "note": "星球原本就存在，人发现它。"
+        },
+        {
+          "mark": "✗",
+          "word": "invention",
+          "en": "the invention of a new planet",
+          "note": "谈真实天文发现时不合适；invention 会变成人造或虚构出一个星球。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "relatives",
+    "ipa": "/ˈrelətɪvz/",
+    "ipaUS": "/ˈrelətɪvz/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "亲戚；亲属（relative 的复数）"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "close relatives",
+      "zh": "近亲；关系亲近的亲戚",
+      "example": {
+        "en": "Only <b>close relatives<\/b> came to the small wedding.",
+        "zh": "只有近亲来参加了这场小型婚礼。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: Only close relatives",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: came",
+                  "form": "过去式 | 原形: come /kʌm/ 来",
+                  "note": null
+                },
+                {
+                  "text": "目的地状语: to the small wedding",
+                  "form": null,
+                  "note": "wedding n. 婚礼 /ˈwedɪŋ/"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "Our <b>relatives<\/b> sent us money after the fire.",
+      "zh": "火灾后，我们的亲戚给我们寄来了钱。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Our relatives",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: sent",
+                "form": "过去式 | 原形: send /send/ 送；发送",
+                "note": null
+              },
+              {
+                "text": "间接宾语: us",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "直接宾语: money",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: after the fire",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "I stayed with <b>relatives<\/b> during my first week in the city.",
+      "zh": "刚到这座城市的第一周，我住在亲戚家。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: stayed",
+                "form": "过去式 | 原形: stay /steɪ/ 停留",
+                "note": null
+              },
+              {
+                "text": "住宿对象: with relatives",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: during my first week in the city",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "relations",
+        "ipa": "/rɪˈleɪʃənz/",
+        "pos": "n.",
+        "zh": "亲戚（也可指关系）",
+        "diff": "relations 在英式英语里也能表示亲戚，与 relatives 在此义可互换；relatives 更明确地指人，而 relations 更常还表示人与人或国家之间的关系。"
+      }
+    ],
+    "contrast": {
+      "frame": "visit my ____",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "relatives",
+          "en": "visit my relatives",
+          "note": "直接明确地表示拜访亲戚。"
+        },
+        {
+          "mark": "✓",
+          "word": "relations",
+          "en": "visit my relations",
+          "note": "英式英语里也成立；此处指亲戚，不指抽象关系。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "relations",
+    "ipa": "/rɪˈleɪʃənz/",
+    "ipaUS": "/rɪˈleɪʃənz/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "关系；交往（常用复数）"
+      },
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "亲戚；亲属（尤用于英式英语）"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "good relations with",
+      "zh": "与……的良好关系",
+      "example": {
+        "en": "We have <b>good relations with<\/b> the family next door.",
+        "zh": "我们与隔壁那家人关系很好。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: have",
+                  "form": "原形 | 原形: have /hæv/ 有",
+                  "note": null
+                },
+                {
+                  "text": "宾语: good relations with the family next door（with 短语修饰 relations；next door 修饰 family）",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The war damaged <b>relations<\/b> between the two countries.",
+      "zh": "这场战争损害了两国之间的关系。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The war",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: damaged",
+                "form": "过去式 | 原形: damage /ˈdæmɪdʒ/ 损害",
+                "note": null
+              },
+              {
+                "text": "宾语: relations between the two countries（between 短语修饰 relations）",
+                "form": null,
+                "note": "between prep. 在……之间 /bɪˈtwiːn/；country n. 国家 /ˈkʌntri/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "All my <b>relations<\/b> came to see the new baby.",
+      "zh": "我所有的亲戚都来看新生的宝宝了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: All my relations",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: came",
+                "form": "过去式 | 原形: come /kʌm/ 来",
+                "note": null
+              },
+              {
+                "text": "目的状语: to see the new baby",
+                "form": "不定式(to+原形) | 原形: see /siː/ 看望",
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "relationships",
+        "ipa": "/rɪˈleɪʃənʃɪps/",
+        "pos": "n.",
+        "zh": "关系；人际关系；恋爱关系",
+        "diff": "relations 常用于群体、组织或国家间的往来，也可指亲戚；relationships 常用于具体的人际纽带或恋爱关系，不能用来指亲戚这些人。"
+      }
+    ],
+    "contrast": {
+      "frame": "my ____ came to visit",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "relations",
+          "en": "my relations came to visit",
+          "note": "英式英语中表示我的亲戚来拜访。"
+        },
+        {
+          "mark": "✗",
+          "word": "relationships",
+          "en": "my relationships came to visit",
+          "note": "relationships 指抽象关系，不指来访的亲戚本人。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "uncle",
+    "ipa": "/ˈʌŋkəl/",
+    "ipaUS": "/ˈʌŋkəl/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "叔叔；伯伯；舅舅；姑父；姨父"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "my uncle",
+      "zh": "我的叔伯、舅舅或姑姨父",
+      "example": {
+        "en": "<b>My uncle<\/b> takes me to school on Fridays.",
+        "zh": "我的叔叔每周五送我上学。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My uncle",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: takes",
+                  "form": "第三人称单数 | 原形: take /teɪk/ 拿；带；乘坐",
+                  "note": null
+                },
+                {
+                  "text": "宾语: me",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "目的地状语: to school",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: on Fridays",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My <b>uncle<\/b> sold his car to pay for my studies.",
+      "zh": "我叔叔卖掉了自己的车，来支付我的学费。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My uncle",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: sold",
+                "form": "过去式 | 原形: sell /sel/ 出售",
+                "note": null
+              },
+              {
+                "text": "宾语: his car",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "目的状语: to pay for my studies",
+                "form": "不定式(to+原形) | 原形: pay /peɪ/ 支付",
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "I became an <b>uncle<\/b> when my sister had a baby.",
+      "zh": "姐姐生了孩子后，我当上了舅舅。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "主句",
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "系动词: became",
+                "form": "过去式 | 原形: become /bɪˈkʌm/ 成为",
+                "note": null
+              },
+              {
+                "text": "表语: an uncle",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "时间状语从句",
+            "roles": [
+              {
+                "text": "引导词: when",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "主语: my sister",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: had",
+                "form": "过去式 | 原形: have /hæv/ 有",
+                "note": null
+              },
+              {
+                "text": "宾语: a baby",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "aunts",
+    "ipa": "/ɑːnts/",
+    "ipaUS": "/ænts/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "姑姑；姨妈；伯母；婶婶；舅妈（aunt 的复数）"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "aunts and uncles",
+      "zh": "姑姨叔伯等长辈亲戚",
+      "example": {
+        "en": "My <b>aunts and uncles<\/b> came for Sunday lunch.",
+        "zh": "我的姑姨叔伯们来吃周日午饭了。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My aunts and uncles",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: came",
+                  "form": "过去式 | 原形: come /kʌm/ 来",
+                  "note": null
+                },
+                {
+                  "text": "目的状语: for Sunday lunch",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "Both my <b>aunts<\/b> cried at my wedding.",
+      "zh": "我的两位姨妈都在我婚礼上哭了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Both my aunts",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: cried",
+                "form": "过去式 | 原形: cry /kraɪ/ 哭",
+                "note": null
+              },
+              {
+                "text": "地点／情境状语: at my wedding",
+                "form": null,
+                "note": "wedding n. 婚礼 /ˈwedɪŋ/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "One of my <b>aunts<\/b> stayed with me in hospital.",
+      "zh": "我的一位姑姑在医院陪着我。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: One of my aunts（中心词 One，单数）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: stayed",
+                "form": "过去式 | 原形: stay /steɪ/ 停留",
+                "note": null
+              },
+              {
+                "text": "陪伴对象: with me",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: in hospital",
+                "form": null,
+                "note": "hospital n. 医院 /ˈhɒspɪtəl/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "niece",
+    "ipa": "/niːs/",
+    "ipaUS": "/niːs/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "侄女；外甥女"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "my niece",
+      "zh": "我的侄女／外甥女",
+      "example": {
+        "en": "<b>My niece<\/b> holds my hand on the way to school.",
+        "zh": "我的外甥女在上学路上牵着我的手。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My niece",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: holds",
+                  "form": "第三人称单数 | 原形: hold /həʊld/ 拿着；握住",
+                  "note": null
+                },
+                {
+                  "text": "宾语: my hand",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "地点／情境状语: on the way to school",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My <b>niece<\/b> gave me her last sweet.",
+      "zh": "我的侄女把她最后一颗糖给了我。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My niece",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: gave",
+                "form": "过去式 | 原形: give /ɡɪv/ 给",
+                "note": null
+              },
+              {
+                "text": "间接宾语: me",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "直接宾语: her last sweet",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "I held my new <b>niece<\/b> for the first time today.",
+      "zh": "今天，我第一次抱了刚出生的外甥女。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: held",
+                "form": "过去式 | 原形: hold /həʊld/ 拿着；握住",
+                "note": null
+              },
+              {
+                "text": "宾语: my new niece",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: for the first time",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: today",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "nephew",
+    "ipa": "/ˈnefjuː/",
+    "ipaUS": "/ˈnefjuː/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "侄子；外甥"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "my nephew",
+      "zh": "我的侄子／外甥",
+      "example": {
+        "en": "<b>My nephew<\/b> plays football with me on Sundays.",
+        "zh": "我的侄子每周日和我一起踢足球。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My nephew",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: plays",
+                  "form": "第三人称单数 | 原形: play /pleɪ/ 玩；参加运动",
+                  "note": null
+                },
+                {
+                  "text": "宾语: football",
+                  "form": null,
+                  "note": "football n. 足球 /ˈfʊtbɔːl/"
+                },
+                {
+                  "text": "伴随状语: with me",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: on Sundays",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My <b>nephew<\/b> broke his arm at school.",
+      "zh": "我的外甥在学校摔断了胳膊。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My nephew",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: broke",
+                "form": "过去式 | 原形: break /breɪk/ 打破；弄伤",
+                "note": null
+              },
+              {
+                "text": "宾语: his arm",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: at school",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "My shy <b>nephew<\/b> sang on stage for the first time.",
+      "zh": "我害羞的侄子第一次在台上唱了歌。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My shy nephew",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: sang",
+                "form": "过去式 | 原形: sing /sɪŋ/ 唱歌",
+                "note": null
+              },
+              {
+                "text": "地点状语: on stage",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: for the first time",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "cousins",
+    "ipa": "/ˈkʌzənz/",
+    "ipaUS": "/ˈkʌzənz/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "堂兄弟姐妹；表兄弟姐妹（cousin 的复数）"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "first cousins",
+      "zh": "堂／表兄弟姐妹（双方父母中有一对是亲兄弟姐妹）",
+      "example": {
+        "en": "My <b>first cousins<\/b> sat beside me at the wedding.",
+        "zh": "我的堂表兄弟姐妹们在婚礼上坐在我旁边。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My first cousins",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: sat",
+                  "form": "过去式 | 原形: sit /sɪt/ 坐",
+                  "note": null
+                },
+                {
+                  "text": "地点状语: beside me",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "情境状语: at the wedding",
+                  "form": null,
+                  "note": "wedding n. 婚礼 /ˈwedɪŋ/"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My <b>cousins<\/b> drove all night to reach my wedding.",
+      "zh": "我的堂表兄弟姐妹们开了一夜车来参加我的婚礼。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My cousins",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: drove",
+                "form": "过去式 | 原形: drive /draɪv/ 驾驶",
+                "note": null
+              },
+              {
+                "text": "时间状语: all night",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "目的状语: to reach my wedding",
+                "form": "不定式(to+原形) | 原形: reach /riːtʃ/ 到达",
+                "note": "wedding n. 婚礼 /ˈwedɪŋ/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "I shared a room with my <b>cousins<\/b> during the summer.",
+      "zh": "那个夏天，我和堂表兄弟姐妹们住一个房间。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: shared",
+                "form": "过去式 | 原形: share /ʃeə/ 共用",
+                "note": null
+              },
+              {
+                "text": "宾语: a room",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "共同参与者: with my cousins",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: during the summer",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "single",
+    "ipa": "/ˈsɪŋɡəl/",
+    "ipaUS": "/ˈsɪŋɡəl/",
+    "defs": [
+      {
+        "pos": "adj.",
+        "trans": null,
+        "zh": "单个的；单人的；单身的"
+      },
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "单程票（英式英语）"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "a single room",
+      "zh": "一间单人房",
+      "example": {
+        "en": "I booked <b>a single room<\/b> near the station.",
+        "zh": "我在车站附近订了一间单人房。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: booked",
+                  "form": "过去式 | 原形: book /bʊk/ 预订",
+                  "note": null
+                },
+                {
+                  "text": "宾语: a single room",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "地点状语: near the station",
+                  "form": null,
+                  "note": "station n. 车站 /ˈsteɪʃən/"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "He did not say a <b>single<\/b> word during dinner.",
+      "zh": "吃晚饭时，他一个字都没说。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: He",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: did not say",
+                "form": "过去式（did not + 原形 say） | 原形: say /seɪ/ 说",
+                "note": null
+              },
+              {
+                "text": "宾语: a single word",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: during dinner",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "My sister is <b>single<\/b>, but she never eats alone on her birthday.",
+      "zh": "我姐姐单身，但生日那天她从来不独自吃饭。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: My sister",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "系动词: is",
+                "form": "第三人称单数 | 原形: be /biː/ 是；处于",
+                "note": null
+              },
+              {
+                "text": "表语: single",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（but 表转折）",
+            "roles": [
+              {
+                "text": "主语: she",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "频率状语: never",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: eats",
+                "form": "第三人称单数 | 原形: eat /iːt/ 吃",
+                "note": null
+              },
+              {
+                "text": "方式状语: alone",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: on her birthday",
+                "form": null,
+                "note": "birthday n. 生日 /ˈbɜːθdeɪ/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "alone",
+        "ipa": "/əˈləʊn/",
+        "pos": "adj.",
+        "zh": "独自的；单独的",
+        "diff": "说一个人 single 通常指没有配偶或恋爱伴侣；alone 指当时没有别人陪伴。已婚的人也可以独处，单身的人也可以和朋友在一起。"
+      }
+    ],
+    "contrast": {
+      "frame": "I am ____.",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "single",
+          "en": "I am single.",
+          "note": "描述单身状态，不说明身边有没有人。"
+        },
+        {
+          "mark": "~",
+          "word": "alone",
+          "en": "I am alone.",
+          "note": "句子自然，但变成现在独自一人，不能直接表示单身。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "weighed",
+    "ipa": "/weɪd/",
+    "ipaUS": "/weɪd/",
+    "defs": [
+      {
+        "pos": "v.",
+        "trans": "vi.",
+        "zh": "重；重量为（weigh 的过去式／过去分词）"
+      },
+      {
+        "pos": "v.",
+        "trans": "vt.",
+        "zh": "称……的重量；权衡（weigh 的过去式／过去分词）"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "weighed the options",
+      "zh": "权衡了各种选择",
+      "example": {
+        "en": "We <b>weighed the options<\/b> before buying the car.",
+        "zh": "买车前，我们权衡了各种选择。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: weighed",
+                  "form": "过去式",
+                  "note": null
+                },
+                {
+                  "text": "宾语: the options",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: before buying the car（before 后接动名词短语）",
+                  "form": "buying：现在分词（动名词用法） | 原形: buy /baɪ/ 购买",
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The nurse <b>weighed<\/b> my baby twice.",
+      "zh": "护士给我的宝宝称了两次体重。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The nurse",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: weighed",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "宾语: my baby",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "次数状语: twice",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "My bag <b>weighed<\/b> twenty kilos, so I paid extra at the desk.",
+      "zh": "我的包重二十千克，所以我在柜台多付了钱。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: My bag",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: weighed",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "重量补语: twenty kilos（说明重量，不是被称量的对象）",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（so 表结果）",
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: paid",
+                "form": "过去式 | 原形: pay /peɪ/ 支付",
+                "note": null
+              },
+              {
+                "text": "程度状语: extra（额外地）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: at the desk",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "after",
+    "ipa": "/ˈɑːftə/",
+    "ipaUS": "/ˈæftɚ/",
+    "defs": [
+      {
+        "pos": "prep.",
+        "trans": null,
+        "zh": "在……之后；跟在……后面"
+      },
+      {
+        "pos": "conj.",
+        "trans": null,
+        "zh": "在……之后（接从句）"
+      },
+      {
+        "pos": "adv.",
+        "trans": null,
+        "zh": "以后；后来"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "after work",
+      "zh": "下班后",
+      "example": {
+        "en": "I call Mum <b>after work<\/b> on Fridays.",
+        "zh": "我每周五下班后给妈妈打电话。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: call",
+                  "form": "原形 | 原形: call /kɔːl/ 打电话；叫",
+                  "note": null
+                },
+                {
+                  "text": "宾语: Mum",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: after work",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: on Fridays",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "<b>After<\/b> I closed the door, I saw my keys inside.",
+      "zh": "关上门之后，我看见钥匙还在里面。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "时间状语从句",
+            "roles": [
+              {
+                "text": "引导词: After",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: closed",
+                "form": "过去式 | 原形: close /kləʊz/ 关闭",
+                "note": null
+              },
+              {
+                "text": "宾语: the door",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "主句",
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: saw",
+                "form": "过去式 | 原形: see /siː/ 看见",
+                "note": null
+              },
+              {
+                "text": "宾语: my keys",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: inside",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The bus left at six, and we arrived soon <b>after<\/b>.",
+      "zh": "公交车六点开走了，我们随后才到。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: The bus",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: left",
+                "form": "过去式 | 原形: leave /liːv/ 离开；留下",
+                "note": null
+              },
+              {
+                "text": "时间状语: at six",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（and 连接）",
+            "roles": [
+              {
+                "text": "主语: we",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: arrived",
+                "form": "过去式 | 原形: arrive /əˈraɪv/ 到达",
+                "note": null
+              },
+              {
+                "text": "时间状语: soon after（after 为副词，后面不接宾语）",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "later",
+        "ipa": "/ˈleɪtə/",
+        "pos": "adv.",
+        "zh": "以后；后来",
+        "diff": "later 常独立作时间状语，或放在时长后，如 two hours later；介词 after 后可以直接接时间或事件，如 after lunch，不能换成 later lunch。"
+      }
+    ],
+    "contrast": null
+  },
+  {
+    "word": "groom",
+    "ipa": "/ɡruːm/",
+    "ipaUS": "/ɡruːm/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "新郎"
+      },
+      {
+        "pos": "v.",
+        "trans": "vt.",
+        "zh": "给动物梳洗；梳理毛发"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "bride and groom",
+      "zh": "新娘和新郎",
+      "example": {
+        "en": "The <b>bride and groom<\/b> smiled for the photo.",
+        "zh": "新娘和新郎面对镜头露出了笑容。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: The bride and groom",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: smiled",
+                  "form": "过去式 | 原形: smile /smaɪl/ 微笑",
+                  "note": null
+                },
+                {
+                  "text": "目的状语: for the photo",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The <b>groom<\/b> dropped the ring in front of everyone.",
+      "zh": "新郎在众人面前把戒指掉在了地上。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The groom",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: dropped",
+                "form": "过去式 | 原形: drop /drɒp/ 掉落；使落下",
+                "note": null
+              },
+              {
+                "text": "宾语: the ring",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: in front of everyone",
+                "form": null,
+                "note": "everyone pron. 每个人 /ˈevriwʌn/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "I <b>groomed<\/b> the wet dog after our walk in the rain.",
+      "zh": "我们冒雨散步后，我给湿漉漉的狗梳洗了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: groomed",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "宾语: the wet dog",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: after our walk in the rain（in the rain 修饰 walk）",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "honeymoon",
+    "ipa": "/ˈhʌnimuːn/",
+    "ipaUS": "/ˈhʌnimuːn/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "蜜月；蜜月旅行"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "on our honeymoon",
+      "zh": "在我们的蜜月期间",
+      "example": {
+        "en": "We went to Italy <b>on our honeymoon<\/b>.",
+        "zh": "我们度蜜月时去了意大利。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: went",
+                  "form": "过去式 | 原形: go /ɡəʊ/ 去",
+                  "note": null
+                },
+                {
+                  "text": "方向状语: to Italy",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间／情境状语: on our honeymoon",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "We spent our <b>honeymoon<\/b> in a tiny room by the sea.",
+      "zh": "我们在海边的一间小房间里度过了蜜月。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: We",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: spent",
+                "form": "过去式 | 原形: spend /spend/ 度过",
+                "note": null
+              },
+              {
+                "text": "宾语: our honeymoon",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: in a tiny room by the sea（by the sea 修饰 room）",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "Our <b>honeymoon<\/b> ended with a missed flight.",
+      "zh": "我们的蜜月以错过航班收场。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Our honeymoon",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: ended",
+                "form": "过去式 | 原形: end /end/ 结束",
+                "note": null
+              },
+              {
+                "text": "结果状语: with a missed flight",
+                "form": "missed：过去分词作定语 | 原形: miss /mɪs/ 错过",
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "funeral",
+    "ipa": "/ˈfjuːnərəl/",
+    "ipaUS": "/ˈfjuːnərəl/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "葬礼"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "attend a funeral",
+      "zh": "参加葬礼",
+      "example": {
+        "en": "We <b>attended a funeral<\/b> at the village church.",
+        "zh": "我们在村里的教堂参加了一场葬礼。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: We",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: attended",
+                  "form": "过去式 | 原形: attend /əˈtend/ 出席",
+                  "note": null
+                },
+                {
+                  "text": "宾语: a funeral",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "地点状语: at the village church",
+                  "form": null,
+                  "note": "village n. 村庄 /ˈvɪlɪdʒ/"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "At Dad's <b>funeral<\/b>, I could not read my letter aloud.",
+      "zh": "在爸爸的葬礼上，我没能把信大声念出来。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "地点／情境状语: At Dad's funeral",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: could not read",
+                "form": "情态+原形 | 原形: read /riːd/ 读",
+                "note": null
+              },
+              {
+                "text": "宾语: my letter",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "方式状语: aloud",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The whole street came to her <b>funeral<\/b>.",
+      "zh": "整条街的邻居都来参加了她的葬礼。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The whole street（借指这条街上的人）",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: came",
+                "form": "过去式 | 原形: come /kʌm/ 来",
+                "note": null
+              },
+              {
+                "text": "目的地／活动: to her funeral",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "tooth",
+    "ipa": "/tuːθ/",
+    "ipaUS": "/tuːθ/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "牙齿（复数 teeth）"
+      }
+    ],
+    "chunk": {
+      "pos": "n.",
+      "phrase": "a loose tooth",
+      "zh": "一颗松动的牙齿",
+      "example": {
+        "en": "My son has <b>a loose tooth<\/b> at the front.",
+        "zh": "我儿子前面有一颗牙齿松了。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: My son",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: has",
+                  "form": "第三人称单数 | 原形: have /hæv/ 有",
+                  "note": null
+                },
+                {
+                  "text": "宾语: a loose tooth",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "位置状语: at the front",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "I broke a <b>tooth<\/b> on a hard sweet.",
+      "zh": "我咬硬糖时崩掉了一颗牙。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: broke",
+                "form": "过去式 | 原形: break /breɪk/ 打破；弄伤",
+                "note": null
+              },
+              {
+                "text": "宾语: a tooth",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "原因／接触对象: on a hard sweet",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "This <b>tooth<\/b> hurts every time I drink cold water.",
+      "zh": "我每次喝冷水，这颗牙就疼。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "主句",
+            "roles": [
+              {
+                "text": "主语: This tooth",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurts",
+                "form": "第三人称单数 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "时间状语从句",
+            "roles": [
+              {
+                "text": "引导短语: every time",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: drink",
+                "form": "原形 | 原形: drink /drɪŋk/ 喝",
+                "note": null
+              },
+              {
+                "text": "宾语: cold water",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "teeth",
+    "ipa": "/tiːθ/",
+    "ipaUS": "/tiːθ/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "牙齿（tooth 的不规则复数）"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "brush your teeth",
+      "zh": "刷牙",
+      "example": {
+        "en": "Please <b>brush your teeth<\/b> before bed.",
+        "zh": "睡觉前请刷牙。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: （祈使句省略 you）",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "礼貌标记: Please",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: brush",
+                  "form": "原形 | 原形: brush /brʌʃ/ 刷",
+                  "note": null
+                },
+                {
+                  "text": "宾语: your teeth",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: before bed",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The dog showed its <b>teeth<\/b> at the gate.",
+      "zh": "那只狗在大门口龇出了牙。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The dog",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: showed",
+                "form": "过去式 | 原形: show /ʃəʊ/ 露出；展示",
+                "note": null
+              },
+              {
+                "text": "宾语: its teeth",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: at the gate",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "My <b>teeth<\/b> hurt all night after the cold drink.",
+      "zh": "喝了那杯冷饮后，我的牙疼了一整夜。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My teeth",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurt",
+                "form": "过去式 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              },
+              {
+                "text": "时间状语: all night",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: after the cold drink",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "ear",
+    "ipa": "/ɪə/",
+    "ipaUS": "/ɪr/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "耳朵；听觉"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "by ear",
+      "zh": "凭听觉；凭记住的声音",
+      "example": {
+        "en": "Dad plays this song on the piano <b>by ear<\/b>.",
+        "zh": "爸爸不用看谱，凭听觉就在钢琴上弹出了这首歌。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: Dad",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: plays",
+                  "form": "第三人称单数 | 原形: play /pleɪ/ 演奏",
+                  "note": null
+                },
+                {
+                  "text": "宾语: this song",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "乐器／方式状语: on the piano",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "方式状语: by ear",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My left <b>ear<\/b> hurt during the flight.",
+      "zh": "飞行途中，我的左耳疼了起来。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My left ear",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurt",
+                "form": "过去式 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              },
+              {
+                "text": "时间状语: during the flight",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "She spoke into my <b>ear<\/b> in the noisy room.",
+      "zh": "在嘈杂的房间里，她贴着我的耳朵说话。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: She",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: spoke",
+                "form": "过去式 | 原形: speak /spiːk/ 说话",
+                "note": null
+              },
+              {
+                "text": "方向状语: into my ear",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: in the noisy room",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "lip",
+    "ipa": "/lɪp/",
+    "ipaUS": "/lɪp/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "嘴唇"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "bite your lip",
+      "zh": "咬住嘴唇（常因紧张或克制情绪）",
+      "example": {
+        "en": "She <b>bit her lip<\/b> before reading her exam result.",
+        "zh": "读考试结果前，她咬住了嘴唇。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: She",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: bit",
+                  "form": "过去式 | 原形: bite /baɪt/ 咬",
+                  "note": null
+                },
+                {
+                  "text": "宾语: her lip",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: before reading her exam result",
+                  "form": "reading：现在分词（动名词用法） | 原形: read /riːd/ 读",
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "I cut my <b>lip<\/b> on a broken glass.",
+      "zh": "我被破玻璃杯割伤了嘴唇。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: cut",
+                "form": "过去式 | 原形: cut /kʌt/ 切；割伤",
+                "note": null
+              },
+              {
+                "text": "宾语: my lip",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "原因／接触对象: on a broken glass",
+                "form": "broken：过去分词作定语 | 原形: break /breɪk/ 打破",
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "Her lower <b>lip<\/b> was shaking after the bad news.",
+      "zh": "听到那个坏消息后，她的下嘴唇在发抖。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Her lower lip",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: was shaking",
+                "form": "助动词be+现在分词 | 原形: shake /ʃeɪk/ 摇动；发抖",
+                "note": null
+              },
+              {
+                "text": "时间状语: after the bad news",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "shoulder",
+    "ipa": "/ˈʃəʊldə/",
+    "ipaUS": "/ˈʃoʊldɚ/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "肩；肩膀"
+      },
+      {
+        "pos": "v.",
+        "trans": "vt.",
+        "zh": "扛起；承担"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "look over your shoulder",
+      "zh": "回头看；从肩膀上方朝后看",
+      "example": {
+        "en": "I <b>looked over my shoulder<\/b> at the sound of steps.",
+        "zh": "听到脚步声，我回头看了一眼。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: looked",
+                  "form": "过去式 | 原形: look /lʊk/ 看；看起来",
+                  "note": null
+                },
+                {
+                  "text": "方向状语: over my shoulder",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "触发情境: at the sound of steps",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "She rested her head on my <b>shoulder<\/b> and cried.",
+      "zh": "她把头靠在我肩上，哭了。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: She",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: rested",
+                "form": "过去式 | 原形: rest /rest/ 使靠在；休息",
+                "note": null
+              },
+              {
+                "text": "宾语: her head",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "位置补语: on my shoulder",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（and 连接，省略主语 she）",
+            "roles": [
+              {
+                "text": "谓语: cried",
+                "form": "过去式 | 原形: cry /kraɪ/ 哭",
+                "note": null
+              },
+              {
+                "text": "主语: （承接 She）",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "He <b>shouldered<\/b> the heavy bag and walked into the rain.",
+      "zh": "他扛起沉重的包，走进了雨里。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: He",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: shouldered",
+                "form": "过去式",
+                "note": null
+              },
+              {
+                "text": "宾语: the heavy bag",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（and 连接，省略主语 he）",
+            "roles": [
+              {
+                "text": "谓语: walked",
+                "form": "过去式 | 原形: walk /wɔːk/ 走",
+                "note": null
+              },
+              {
+                "text": "方向状语: into the rain",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "thumb",
+    "ipa": "/θʌm/",
+    "ipaUS": "/θʌm/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "拇指"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "give someone the thumbs up",
+      "zh": "向某人竖起大拇指；表示赞同或鼓励",
+      "example": {
+        "en": "Dad <b>gave me the thumbs up<\/b> from the door.",
+        "zh": "爸爸站在门口向我竖起了大拇指。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: Dad",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: gave",
+                  "form": "过去式 | 原形: give /ɡɪv/ 给",
+                  "note": null
+                },
+                {
+                  "text": "间接宾语: me",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "直接宾语: the thumbs up（整个搭配表示赞同或鼓励）",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "位置状语: from the door",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "I hit my <b>thumb<\/b> with a hammer.",
+      "zh": "我用锤子砸到了自己的拇指。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hit",
+                "form": "过去式 | 原形: hit /hɪt/ 碰；击中",
+                "note": null
+              },
+              {
+                "text": "宾语: my thumb",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "工具状语: with a hammer",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The baby held my <b>thumb<\/b> and fell asleep.",
+      "zh": "宝宝握着我的拇指睡着了。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: The baby",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: held",
+                "form": "过去式 | 原形: hold /həʊld/ 拿着；握住",
+                "note": null
+              },
+              {
+                "text": "宾语: my thumb",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（and 连接，省略主语 the baby）",
+            "roles": [
+              {
+                "text": "系动词: fell（fall asleep 表进入睡眠状态）",
+                "form": "过去式 | 原形: fall /fɔːl/ 落下；跌倒",
+                "note": null
+              },
+              {
+                "text": "表语: asleep",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "feet",
+    "ipa": "/fiːt/",
+    "ipaUS": "/fiːt/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "脚；足（foot 的不规则复数）"
+      },
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "英尺（foot 的不规则复数）"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "on your feet",
+      "zh": "站着；站立着",
+      "example": {
+        "en": "I spent all day <b>on my feet<\/b> in the shop.",
+        "zh": "我在店里站了一整天。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: spent",
+                  "form": "过去式 | 原形: spend /spend/ 度过",
+                  "note": null
+                },
+                {
+                  "text": "宾语: all day",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "状态状语: on my feet",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "地点状语: in the shop",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My <b>feet<\/b> hurt after the long walk home.",
+      "zh": "走了很久回到家后，我的双脚疼了起来。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My feet",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurt",
+                "form": "过去式 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              },
+              {
+                "text": "时间状语: after the long walk home",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The wall was ten <b>feet<\/b> high, so I could not climb over it.",
+      "zh": "那堵墙有十英尺高，所以我爬不过去。",
+      "grammar": {
+        "compound": true,
+        "clauses": [
+          {
+            "label": "第一分句",
+            "roles": [
+              {
+                "text": "主语: The wall",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "系动词: was",
+                "form": "过去式 | 原形: be /biː/ 是；处于",
+                "note": null
+              },
+              {
+                "text": "表语: ten feet high（ten feet 修饰 high，说明高度）",
+                "form": null,
+                "note": null
+              }
+            ]
+          },
+          {
+            "label": "第二分句（so 表结果）",
+            "roles": [
+              {
+                "text": "主语: I",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: could not climb",
+                "form": "情态+原形 | 原形: climb /klaɪm/ 攀爬",
+                "note": null
+              },
+              {
+                "text": "路径状语: over it",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "toe",
+    "ipa": "/təʊ/",
+    "ipaUS": "/toʊ/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "脚趾"
+      }
+    ],
+    "chunk": {
+      "pos": "v.",
+      "phrase": "stub your toe",
+      "zh": "不小心踢碰到硬物而弄疼脚趾",
+      "example": {
+        "en": "I <b>stubbed my toe<\/b> on the bed in the dark.",
+        "zh": "黑暗中，我的脚趾踢到床上，疼了一下。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: stubbed",
+                  "form": "过去式 | 原形: stub /stʌb/ 踢碰而弄疼",
+                  "note": null
+                },
+                {
+                  "text": "宾语: my toe",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "接触对象: on the bed",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "情境状语: in the dark",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "The heavy box fell on my big <b>toe<\/b>.",
+      "zh": "那个沉重的盒子砸到了我的大脚趾上。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The heavy box",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: fell",
+                "form": "过去式 | 原形: fall /fɔːl/ 落下；跌倒",
+                "note": null
+              },
+              {
+                "text": "落点状语: on my big toe",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "My little <b>toe<\/b> hurts in these new shoes.",
+      "zh": "穿这双新鞋时，我的小脚趾疼。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My little toe",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurts",
+                "form": "第三人称单数 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              },
+              {
+                "text": "情境状语: in these new shoes",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "waist",
+    "ipa": "/weɪst/",
+    "ipaUS": "/weɪst/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "腰；腰围；衣服的腰部"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "around your waist",
+      "zh": "围在腰间；环绕腰部",
+      "example": {
+        "en": "I tied a shirt <b>around my waist<\/b> before the walk.",
+        "zh": "散步前，我把一件衬衫系在腰间。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: I",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: tied",
+                  "form": "过去式 | 原形: tie /taɪ/ 系",
+                  "note": null
+                },
+                {
+                  "text": "宾语: a shirt",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "位置补语: around my waist",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "时间状语: before the walk",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "These jeans felt too tight at the <b>waist<\/b> after lunch.",
+      "zh": "午饭后，这条牛仔裤的腰部感觉太紧了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: These jeans",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "系动词: felt",
+                "form": "过去式 | 原形: feel /fiːl/ 感觉",
+                "note": null
+              },
+              {
+                "text": "表语: too tight",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "部位状语: at the waist",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: after lunch",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "The water came up to my <b>waist<\/b> in the street.",
+      "zh": "街上的水已经涨到了我的腰部。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: The water",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: came up",
+                "form": "过去式 | 原形: come /kʌm/ 来",
+                "note": null
+              },
+              {
+                "text": "范围／终点状语: to my waist",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: in the street",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "stomach",
+    "ipa": "/ˈstʌmək/",
+    "ipaUS": "/ˈstʌmək/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "胃；肚子；腹部"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "on an empty stomach",
+      "zh": "空腹；在没吃东西的情况下",
+      "example": {
+        "en": "Do not take these pills <b>on an empty stomach<\/b>.",
+        "zh": "不要空腹吃这些药片。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: （祈使句省略 you）",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: Do not take",
+                  "form": "原形（do not + 原形 take） | 原形: take /teɪk/ 服用",
+                  "note": null
+                },
+                {
+                  "text": "宾语: these pills",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "状态状语: on an empty stomach",
+                  "form": null,
+                  "note": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "My <b>stomach<\/b> hurt after the cold milk.",
+      "zh": "喝了冷牛奶后，我肚子疼了。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My stomach",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurt",
+                "form": "过去式 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              },
+              {
+                "text": "时间状语: after the cold milk",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "My <b>stomach<\/b> made a loud noise during the quiet exam.",
+      "zh": "考试很安静，我的肚子却响亮地叫了一声。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My stomach",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: made",
+                "form": "过去式 | 原形: make /meɪk/ 制作；使",
+                "note": null
+              },
+              {
+                "text": "宾语: a loud noise",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "时间状语: during the quiet exam",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [
+      {
+        "type": "syn",
+        "sym": "≈",
+        "word": "belly",
+        "ipa": "/ˈbeli/",
+        "pos": "n.",
+        "zh": "肚子；腹部",
+        "diff": "stomach 可以精确指消化器官胃，日常也常泛指肚子；belly 更口语，多指外部可见的肚子或整个腹部。不能把所有腹痛都认定为胃这个器官的问题。"
+      }
+    ],
+    "contrast": {
+      "frame": "my ____ hurts",
+      "items": [
+        {
+          "mark": "✓",
+          "word": "stomach",
+          "en": "my stomach hurts",
+          "note": "常用的肚子疼说法；日常未必精确限定为胃部。"
+        },
+        {
+          "mark": "✓",
+          "word": "belly",
+          "en": "my belly hurts",
+          "note": "也可说，较口语，常见于谈论肚子或儿童说话。"
+        }
+      ]
+    }
+  },
+  {
+    "word": "hip",
+    "ipa": "/hɪp/",
+    "ipaUS": "/hɪp/",
+    "defs": [
+      {
+        "pos": "n.",
+        "trans": null,
+        "zh": "髋部；胯部；髋关节"
+      }
+    ],
+    "chunk": {
+      "pos": "prep.",
+      "phrase": "on your hip",
+      "zh": "在胯部一侧；在腰胯处",
+      "example": {
+        "en": "She carried the baby <b>on her hip<\/b> into the kitchen.",
+        "zh": "她把宝宝抱在腰胯一侧，走进了厨房。",
+        "grammar": {
+          "compound": false,
+          "clauses": [
+            {
+              "label": null,
+              "roles": [
+                {
+                  "text": "主语: She",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "谓语: carried",
+                  "form": "过去式 | 原形: carry /ˈkæri/ 搬；携带",
+                  "note": null
+                },
+                {
+                  "text": "宾语: the baby",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "位置状语: on her hip",
+                  "form": null,
+                  "note": null
+                },
+                {
+                  "text": "方向状语: into the kitchen",
+                  "form": null,
+                  "note": "kitchen n. 厨房 /ˈkɪtʃɪn/"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "wordExample": {
+      "en": "Grandma broke her <b>hip<\/b> on the icy steps.",
+      "zh": "奶奶在结冰的台阶上摔伤了髋部。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: Grandma",
+                "form": null,
+                "note": "grandma n. 奶奶；外婆 /ˈɡrænmɑː/"
+              },
+              {
+                "text": "谓语: broke",
+                "form": "过去式 | 原形: break /breɪk/ 打破；弄伤",
+                "note": null
+              },
+              {
+                "text": "宾语: her hip",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "地点状语: on the icy steps",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sceneExample": {
+      "en": "My right <b>hip<\/b> hurt after the long run.",
+      "zh": "长跑后，我的右侧髋部疼了起来。",
+      "grammar": {
+        "compound": false,
+        "clauses": [
+          {
+            "label": null,
+            "roles": [
+              {
+                "text": "主语: My right hip",
+                "form": null,
+                "note": null
+              },
+              {
+                "text": "谓语: hurt",
+                "form": "过去式 | 原形: hurt /hɜːt/ 疼；弄伤",
+                "note": null
+              },
+              {
+                "text": "时间状语: after the long run",
+                "form": null,
+                "note": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relations": [],
+    "contrast": null
+  },
+  {
+    "word": "__three__",
+    "words": []
+  }
+];
+
+/* ============ 数据区结束 ============ */
+
+/* ---------- 生词本定位与存储键（2026-08-14 修复） ---------- */
+// 原先靠数组末位下标认生词本，等于假设"最后一条必是生词本"。
+// Day02/Day03 没有 __three__ 占位，第 50 个单词就被当成生词本页吞掉了。
+// 改为按身份认：TIDX 是生词本下标，没有则为 -1；WCOUNT 是真实单词数。
+const TIDX = DATA.findIndex(d => d && d.word === '__three__');
+const WCOUNT = TIDX >= 0 ? TIDX : DATA.length;
+// 键名按文件名派生，否则各天共用 day01 的进度和生词本。
+const DAY_KEY = (location.pathname.match(/Day\d+/i) || ['dayX'])[0].toLowerCase();
+const VOCAB_KEY = 'hermes-vocab-' + DAY_KEY;
+
+
+/* ---------- 发音：有道词典真人发音（单词） ---------- */
+const TTS={scope:'gb',loop:true};
+let curBtn=null, repTimer=null, repeating=false, audioEl=null;let collectMode=false;
+
+function stopAll(){
+  repeating=false; clearTimeout(repTimer);
+  if(audioEl){ audioEl.pause(); audioEl=null; }
+  if(curBtn){ curBtn.classList.remove('playing'); curBtn=null; }
+  document.querySelectorAll('.ex-en .w.on').forEach(x=>x.classList.remove('on'));
+}
+
+function getVocab(){ return TIDX>=0 ? DATA[TIDX] : null; }
+function isInVocab(word){ const w=word.toLowerCase(); return getVocab().words.some(e=>e.toLowerCase()===w); }
+function addToVocab(word){ if(isInVocab(word)) return false; getVocab().words.push(word); saveVocab(); return true; }
+function saveVocab(){ const v=getVocab(); if(!v) return; try{ localStorage.setItem(VOCAB_KEY,JSON.stringify(v.words)); }catch(e){} }
+function loadVocab(){ const v=getVocab(); if(!v) return; try{ const d=localStorage.getItem(VOCAB_KEY); if(d){ v.words=JSON.parse(d); } }catch(e){} }
+
+// ═══ 学习进度：记住上次看到第几个单词，下次打开从这里继续 ═══
+const PROGRESS_KEY='hermes-progress-'+DAY_KEY;
+function saveProgress(i){
+  if(i>=WCOUNT) return;   // 生词本不是单词，不作为学习进度记录
+  try{ localStorage.setItem(PROGRESS_KEY,String(i)); }catch(e){}
+}
+function loadProgress(){
+  try{
+    const v=parseInt(localStorage.getItem(PROGRESS_KEY),10);
+    // 越界保护：词表增删后旧进度可能失效，回退到第一个；上界排除生词本
+    return (Number.isInteger(v)&&v>=0&&v<WCOUNT)?v:0;
+  }catch(e){ return 0; }
+}
+function collectWord(word, el){ playWord(word, el); if(!collectMode) return; if(TIDX<0){ showModeToast('本文件无生词本'); return; } if(!addToVocab(word)){ showModeToast('已存在：'+word); return; } showModeToast('已收藏：'+word); if(idx===TIDX) renderThree(); }
+function showModeToast(msg){ const t=document.getElementById('modeToast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1200); }
+function renderThree(){
+  const vocab=getVocab();
+  if(window.__threeId){ cancelAnimationFrame(window.__threeId); window.__threeId=0; }
+  // 释放上一次的 WebGL 上下文。浏览器对同时存在的上下文有配额(约8-16个)，
+  // 每次打开生词本都新建而不释放的话，来回切换十几次后会渲染失败。
+  if(window.__threeRenderer){
+    try{ window.__threeRenderer.dispose(); window.__threeRenderer.forceContextLoss(); }catch(e){}
+    window.__threeRenderer=null;
+  }
+
+  let h='<div class="head" style="margin-bottom:8px"><div class="head-left"><div class="word">🌌 太空生词本</div><span class="vocab-count"><b>'+vocab.words.length+'</b> 个</span></div></div>';
+  h+='<div id="threeCanvas" style="touch-action:manipulation;width:100%;height:calc(100vh - 210px);min-height:460px;border-radius:18px;overflow:hidden;background:#05060c;cursor:grab;position:relative"></div>';
+  if(!vocab.words.length){
+    h+='<div style="margin-top:16px;color:var(--ink-mute);font-size:15px;text-align:center">还没有收藏单词。打开右上角 ⊕ 收集模式，点击例句中的单词即可收藏。</div>';
+  }else{
+    // 版本戳：用来判断手机上打开的到底是不是最新文件（浏览器缓存旧版时一眼可辨）
+    h+='<div style="margin-top:10px;font-size:13px;color:var(--ink-mute);text-align:center">🖱 拖拽旋转 · 滚轮缩放 · 轻点高亮 · 双击删除'
+      +'<span style="opacity:.45;font-size:11px;margin-left:8px">v2026.08.10</span></div>';
+  }
+  document.getElementById('card').innerHTML=h;
+  stopAll();
+
+  if(!vocab.words.length||typeof THREE==='undefined') return;
+  const container=document.getElementById('threeCanvas');
+  if(!container) return;
+  const W=container.clientWidth,H=container.clientHeight;
+
+  const scene=new THREE.Scene();
+  scene.fog=new THREE.FogExp2(0x05060c,.008);
+  const camera=new THREE.PerspectiveCamera(45,W/H,.1,250);
+
+  // ═══ 自适应取景 ═══
+  // 45° 是「垂直」视角，水平可视范围 = 垂直 × 宽高比。手机竖屏宽高比 <1，
+  // 固定距离 16 只能看到 ±4.1，而词球簇横向到 ±7.95 —— 一半被裁掉。
+  // 所以距离必须由宽高比推出：横竖两个方向都装得下才行。
+  // 竖屏(宽高比<1)把词球簇「压窄拉高」贴合屏幕比例，
+  // 否则相机要退到 40+ 才装得下，上下会空掉一大片、词球也变得很小。
+  const PORTRAIT = W/H < 1;
+  const SPREAD_X = PORTRAIT ? .62 : 1;
+  const SPREAD_Y = PORTRAIT ? 1.55 : 1;
+  // 球径随词长变大（见下方词球部分），布局间距必须同步放大，否则球会挤成一团。
+  // 词表越长 SPACING 越大；普通长度的词 SPACING=1，布局与之前完全一致。
+  const avgLen = vocab.words.reduce((a,w)=>a+w.length,0)/Math.max(1,vocab.words.length);
+  const SPACING = Math.min(1.8,Math.max(1,avgLen/7));
+  // 余量 1.75 = 最大球径 .8*1.8 再乘光环的 1.15
+  const CLUSTER_X = 7.0*SPREAD_X*SPACING + 1.75;
+  const CLUSTER_Y = 3.2*SPREAD_Y*SPACING + 1.75;
+  const TAN_HALF_FOV = Math.tan(45*Math.PI/360);
+  function fitDistance(w,h){
+    const need=Math.max(CLUSTER_Y/TAN_HALF_FOV, CLUSTER_X/(TAN_HALF_FOV*(w/h)))*1.08;
+    return Math.max(16,Math.min(50,need));   // 下限 16 = 原桌面距离，宽屏观感完全不变
+  }
+  let baseDist=fitDistance(W,H);
+  camera.position.set(0,0,baseDist);
+  // alpha:false —— 画布不透明。原本 alpha:true + setClearColor(...,0) 让画布全透明，
+  // 而加色混合产生的 RGB 会远高于其 alpha，是非法的「预乘 alpha」值，
+  // 浏览器合成时会把星点压掉：帧缓冲里画得好好的，屏幕上却什么都没有。
+  // 容器自带 background:#05060c，本来就不需要透明画布。
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+  renderer.setSize(W,H);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setClearColor(0x05060c,1);
+  window.__threeRenderer=renderer;      // 供下次进入时释放
+  container.appendChild(renderer.domElement);
+
+  // ═══ Bloom 后期处理 ═══
+  let composer=null,bloomPass=null;
+  if(THREE.EffectComposer){
+    composer=new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene,camera));
+    bloomPass=new THREE.UnrealBloomPass(new THREE.Vector2(W,H),1.2,.4,.85);
+    composer.addPass(bloomPass);
+  }
+
+  // ═══ 视口自适应：高度改为 vh 后必须跟随窗口/旋转变化 ═══
+  if(window.__threeResize) window.removeEventListener('resize',window.__threeResize);
+  window.__threeResize=function(){
+    const el=document.getElementById('threeCanvas');
+    if(!el){ window.removeEventListener('resize',window.__threeResize); window.__threeResize=null; return; }
+    const w=el.clientWidth,h=el.clientHeight;
+    if(!w||!h) return;
+    const nd=fitDistance(w,h);                       // 横竖屏切换后重新取景
+    camera.position.z=camera.position.z/baseDist*nd; // 按比例保留用户当前缩放
+    baseDist=nd;
+    camera.aspect=w/h; camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+    if(composer) composer.setSize(w,h);
+    if(bloomPass) bloomPass.setSize(w,h);
+  };
+  window.addEventListener('resize',window.__threeResize);
+
+  // ═══ 固定种子随机 ═══
+  // 星空原本用 Math.random()，导致每次打开生词本都是一片全新的天空。
+  // 换成定种子的 mulberry32：星星位置、浮动参数每次生成完全一致，
+  // 生词本看起来就是"同一片星空"而不是每次刷新。流星仍用真随机（本就该随机）。
+  let __seed=20260810;
+  function srand(){
+    __seed=__seed+0x6D2B79F5|0;
+    let t=Math.imul(__seed^__seed>>>15,1|__seed);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  }
+
+  // ═══ 星空：三层球形壳分布，铺满整个视野 ═══
+  // sizeAttenuation:false —— size 直接以「像素」为单位。
+  // 原本用世界单位 + 距离衰减，实际像素大小同时取决于相机距离、画布高度、
+  // 设备像素比，三个变量全都因设备而异；最小一层在手机上不足 1 像素，
+  // 移动 GPU 会直接丢弃亚像素点，表现就是「一颗星星都没有」。
+  // 改成像素单位后，任何设备、任何相机距离下星点大小都是确定的。
+  function makeStars(count,size,opacity,speed,hue){
+    const geo=new THREE.BufferGeometry();
+    const pos=new Float32Array(count*3);
+    for(let i=0;i<count;i++){
+      const r=30+srand()*60;                       // 球壳半径 30-90，四面八方都有星
+      const theta=srand()*Math.PI*2;
+      const phi=Math.acos(2*srand()-1);
+      pos[i*3]=r*Math.sin(phi)*Math.cos(theta);
+      pos[i*3+1]=r*Math.sin(phi)*Math.sin(theta);
+      pos[i*3+2]=r*Math.cos(phi);
+    }
+    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    const col=new THREE.Color('hsl('+hue+',65%,78%)');
+    const mat=new THREE.PointsMaterial({color:col,size,sizeAttenuation:false,transparent:true,opacity,blending:THREE.AdditiveBlending,fog:false,depthWrite:false});
+    const pts=new THREE.Points(geo,mat);
+    scene.add(pts);
+    return {pts,speed,baseOpacity:opacity};
+  }
+  const starLayers=[
+    makeStars(3400,1.1,.5,.0001,210),    // size 现在是像素
+    makeStars(1600,1.7,.8,.0003,220),
+    makeStars(700,2.6,1,.0005,230),
+  ];
+
+  // ═══ 流星 ═══
+  // 每颗是一条 14 段的线，顶点色从头部亮到尾部黑；配合加色混合，
+  // 黑色端等于透明，于是自然形成一条越拖越淡的尾巴。
+  const METEOR_N=7, TRAIL=14, METEOR_Z=-42;   // 同屏最多 7 颗
+  const meteors=[];
+  for(let i=0;i<METEOR_N;i++){
+    const g=new THREE.BufferGeometry();
+    const pos=new Float32Array(TRAIL*3), col=new Float32Array(TRAIL*3);
+    for(let j=0;j<TRAIL;j++){
+      const k=Math.pow(1-j/(TRAIL-1),1.6);   // 头 1 → 尾 0，非线性衰减更像真流星
+      col[j*3]=k; col[j*3+1]=k*.93; col[j*3+2]=k*.85;
+    }
+    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    g.setAttribute('color',new THREE.BufferAttribute(col,3));
+    const m=new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false});
+    const line=new THREE.Line(g,m);
+    line.frustumCulled=false;              // 端点常在视锥外，关掉剔除免得整条消失
+    scene.add(line);
+    meteors.push({pos:g.attributes.position,mat:m,t:0,
+      delay:1+Math.random()*6,active:false,
+      from:new THREE.Vector3(),dir:new THREE.Vector3(),speed:1,len:1,life:1});
+  }
+  function spawnMeteor(mt){
+    // 按流星所在深度处的实际可视范围投放，保证在任何屏幕比例下都划过画面内
+    const dist=baseDist-METEOR_Z;
+    const halfH=dist*TAN_HALF_FOV, halfW=halfH*(W/H);
+    mt.from.set((Math.random()*1.6-.8)*halfW, halfH*(.45+Math.random()*.5), METEOR_Z+(Math.random()*16-8));
+    mt.dir.set(-.5-Math.random()*.9, -1, (Math.random()-.5)*.35).normalize();
+    mt.speed=halfH*(.75+Math.random()*.5);   // 约 1.2 秒横穿,随画面大小自动缩放
+    mt.len=halfH*(.14+Math.random()*.1);
+    mt.life=1.1+Math.random()*.7;
+    mt.t=0; mt.active=true;
+  }
+  function updateMeteors(dt){
+    for(const mt of meteors){
+      if(!mt.active){ mt.delay-=dt; if(mt.delay<=0) spawnMeteor(mt); continue; }
+      mt.t+=dt;
+      const a=mt.pos.array, s=mt.speed*mt.t;
+      for(let j=0;j<TRAIL;j++){
+        const back=s-(j/(TRAIL-1))*mt.len;
+        a[j*3]  =mt.from.x+mt.dir.x*back;
+        a[j*3+1]=mt.from.y+mt.dir.y*back;
+        a[j*3+2]=mt.from.z+mt.dir.z*back;
+      }
+      mt.pos.needsUpdate=true;
+      const fadeIn=.12;
+      mt.mat.opacity = mt.t<fadeIn ? mt.t/fadeIn : Math.max(0,(mt.life-mt.t)/(mt.life-fadeIn));
+      if(mt.t>=mt.life){ mt.active=false; mt.mat.opacity=0; mt.delay=2.5+Math.random()*7; }
+    }
+  }
+
+  // ═══ 球内流星 ═══
+  // 和场景流星同样的"顶点色渐变 + 加色混合"手法，但尺度按球半径换算，
+  // 并挂在球体下面(mesh 的子对象)，所以会跟着球一起自转、浮动、缩放。
+  const innerMeteors=[];
+  function makeInnerMeteors(parent,rad,n){
+    for(let k=0;k<n;k++){
+      const T=8, g=new THREE.BufferGeometry();
+      const pos=new Float32Array(T*3), col=new Float32Array(T*3);
+      for(let j=0;j<T;j++){
+        const q=Math.pow(1-j/(T-1),1.5);
+        col[j*3]=q; col[j*3+1]=q*.96; col[j*3+2]=q*.9;
+      }
+      g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+      g.setAttribute('color',new THREE.BufferAttribute(col,3));
+      const mt=new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0,
+        blending:THREE.AdditiveBlending,depthWrite:false,fog:false});
+      const line=new THREE.Line(g,mt);
+      line.frustumCulled=false;
+      line.renderOrder=1;                    // 与球内星尘同层：先画，再让半透明球面盖上
+      parent.add(line);
+      innerMeteors.push({pos:g.attributes.position,mat:mt,T:T,rad:rad,
+        t:0,delay:srand()*5,active:false,
+        from:new THREE.Vector3(),dir:new THREE.Vector3(),speed:1,len:1,life:1});
+    }
+  }
+  function spawnInner(mt){
+    const R=mt.rad*.82;
+    // 从球内壳面出发，大致朝对侧穿过去，再加一点偏移免得每条都正穿球心
+    const a=srand()*Math.PI*2, b=Math.acos(2*srand()-1);
+    mt.from.set(R*Math.sin(b)*Math.cos(a),R*Math.sin(b)*Math.sin(a),R*Math.cos(b));
+    mt.dir.copy(mt.from).multiplyScalar(-1).normalize();
+    mt.dir.x+=(srand()-.5)*.8; mt.dir.y+=(srand()-.5)*.8; mt.dir.z+=(srand()-.5)*.8;
+    mt.dir.normalize();
+    mt.speed=R*(1.0+srand()*.9);
+    mt.len=R*(.28+srand()*.26);
+    mt.life=1.3+srand()*1.1;
+    mt.t=0; mt.active=true;
+  }
+  function stepInner(dt){
+    for(const mt of innerMeteors){
+      if(!mt.active){ mt.delay-=dt; if(mt.delay<=0) spawnInner(mt); continue; }
+      mt.t+=dt;
+      const a=mt.pos.array, s0=mt.speed*mt.t;
+      for(let j=0;j<mt.T;j++){
+        const back=s0-(j/(mt.T-1))*mt.len;
+        a[j*3]  =mt.from.x+mt.dir.x*back;
+        a[j*3+1]=mt.from.y+mt.dir.y*back;
+        a[j*3+2]=mt.from.z+mt.dir.z*back;
+      }
+      mt.pos.needsUpdate=true;
+      const fi=.14;
+      mt.mat.opacity=(mt.t<fi ? mt.t/fi : Math.max(0,(mt.life-mt.t)/(mt.life-fi)))*.95;
+      if(mt.t>=mt.life){ mt.active=false; mt.mat.opacity=0; mt.delay=1.5+srand()*5; }
+    }
+  }
+
+  // ═══ 星云 ═══
+  const nebula=new THREE.Mesh(
+    new THREE.PlaneGeometry(80,50),
+    // depthWrite:false —— 这两片星云是 80x50 的大平面,横在 z=-15,
+    // 默认会写深度缓冲。视锥里的星星几乎都在 z≈-30/-60/-90(球壳的 -z 极点),
+    // 全在它后面,深度测试直接被丢弃 —— 它自己只有 0.05 不透明度看不见,
+    // 却把整片星空挡光了。这就是「一颗星星都没有」的真正原因。
+    new THREE.MeshBasicMaterial({color:0x1a1540,transparent:true,opacity:.05,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false})
+  );
+  nebula.position.z=-15;scene.add(nebula);
+  const nebula2=new THREE.Mesh(
+    new THREE.PlaneGeometry(60,40),
+    new THREE.MeshBasicMaterial({color:0x401a30,transparent:true,opacity:.03,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false})
+  );
+  nebula2.position.set(8,-5,-12);nebula2.rotation.y=.3;scene.add(nebula2);
+
+  // ═══ 词球 ═══
+  const group=new THREE.Group();scene.add(group);
+  const meshes=[];const labels=[];
+  const hues=[210,240,195,285,170,315]; // 蓝 紫 青 粉 绿 玫红
+  const sat=[80,75,70,75,70,80];
+
+  vocab.words.forEach((w,i)=>{
+    const hi=i%hues.length;
+    const col=new THREE.Color('hsl('+hues[hi]+','+sat[hi]+'%,55%)');
+
+    // Canvas — sharp text
+    const cv=document.createElement('canvas');
+    cv.width=512;cv.height=256;
+    const ctx=cv.getContext('2d');
+    // 球面画成「星球」而不是贴单词：文字绕过曲面会被截断成半截，看着像出错，
+    // 而完整单词已由 CSS 标签清晰显示，贴图上再放一遍是重复的。
+    const HU=hues[hi], SA=sat[hi];
+    // 1) 底色：上亮下暗的竖直渐变，像被斜上方光源照到
+    const g0=ctx.createLinearGradient(0,0,0,256);
+    g0.addColorStop(0,  'hsl('+HU+','+SA+'%,40%)');
+    g0.addColorStop(.5, 'hsl('+HU+','+SA+'%,20%)');
+    g0.addColorStop(1,  'hsl('+((HU+20)%360)+','+SA+'%,7%)');
+    ctx.fillStyle=g0;ctx.fillRect(0,0,512,256);
+    // 2) 云带：几条横向柔和亮带，转动时像气态行星的纹理
+    for(let b=0;b<5;b++){
+      const by=25+srand()*205, bh=6+srand()*26;
+      const gb=ctx.createLinearGradient(0,by-bh,0,by+bh);
+      gb.addColorStop(0,  'hsla('+HU+','+SA+'%,60%,0)');
+      gb.addColorStop(.5, 'hsla('+((HU+srand()*30-15+360)%360)+','+SA+'%,'+(45+srand()*25)+'%,.22)');
+      gb.addColorStop(1,  'hsla('+HU+','+SA+'%,60%,0)');
+      ctx.fillStyle=gb;ctx.fillRect(0,by-bh,512,bh*2);
+    }
+    // 3) 高光：左上一团柔光，给出体积感
+    const g1=ctx.createRadialGradient(150,58,4,150,58,125);
+    g1.addColorStop(0,'hsla('+HU+','+SA+'%,90%,.5)');
+    g1.addColorStop(1,'hsla('+HU+','+SA+'%,90%,0)');
+    ctx.fillStyle=g1;ctx.fillRect(0,0,512,256);
+    // 4) 细碎质感颗粒
+    for(let k=0;k<90;k++){
+      ctx.fillStyle='hsla('+HU+','+SA+'%,'+(70+srand()*25)+'%,'+(.05+srand()*.14).toFixed(3)+')';
+      ctx.fillRect(srand()*512,srand()*256,1+srand()*2,1+srand()*2);
+    }
+
+    const tex=new THREE.CanvasTexture(cv);
+    tex.colorSpace=THREE.SRGBColorSpace;
+
+    const mat=new THREE.MeshStandardMaterial({
+      map:tex,
+      roughness:.55,metalness:.15,   // 压低金属度,避免反光糊成一片
+      emissive:col,emissiveIntensity:.18,
+      emissiveMap:tex,
+      transparent:true,opacity:.58   // 半透明,才能看见球体内部的星尘
+    });
+    // 球径随单词长度增大：短词维持原来的 .8，长词最多放大到 1.8 倍，
+    // 这样单词始终装得进自己的球，而不必把字缩到看不清、或把标签挪出球外。
+    const rad=.8*Math.min(1.8,Math.max(1,w.length/7));
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(rad,48,48),mat);
+    const phi=(i/vocab.words.length)*Math.PI*2;
+    const r=(5.5+Math.sin(i*1.7)*1.5)*SPACING;
+    const y=Math.sin(i*.9)*3.2*SPACING;
+    mesh.position.set(Math.cos(phi)*r*SPREAD_X,y*SPREAD_Y,Math.sin(phi)*r*.55);
+    mesh.userData={word:w,ix:i,baseY:y,rad:rad};
+    group.add(mesh);meshes.push(mesh);
+
+    // 球内星尘：点云装在球体内部，转动时能看到里面的星星在视差移动。
+    // cbrt 让点在球体内均匀分布，否则会全堆在球心。
+    const isg=new THREE.BufferGeometry();
+    const IN=70, ip=new Float32Array(IN*3);
+    for(let k=0;k<IN;k++){
+      const rr=rad*.84*Math.cbrt(srand());
+      const th=srand()*Math.PI*2, ph=Math.acos(2*srand()-1);
+      ip[k*3]  =rr*Math.sin(ph)*Math.cos(th);
+      ip[k*3+1]=rr*Math.sin(ph)*Math.sin(th);
+      ip[k*3+2]=rr*Math.cos(ph);
+    }
+    isg.setAttribute('position',new THREE.BufferAttribute(ip,3));
+    const inner=new THREE.Points(isg,new THREE.PointsMaterial({
+      color:0xffffff,size:1.7,sizeAttenuation:false,transparent:true,opacity:.9,
+      blending:THREE.AdditiveBlending,depthWrite:false}));
+    inner.renderOrder=1;          // 先画星尘,再让半透明球面盖上去
+    mesh.add(inner);
+    mesh.renderOrder=2;
+    makeInnerMeteors(mesh,rad,1+Math.floor(srand()*3));   // 每颗球 1-3 颗球内流星
+
+    // （原来这里有个 TorusGeometry 光环 —— 就是球外那圈发白的细线，已移除。
+    //   球体轮廓现在由下面的菲涅尔边缘光提供，更贴合球面也更自然。）
+
+    // 大气层：略大一圈、只渲染背面的加色球壳 —— 沿球体边缘形成一圈辉光。
+    // （原来那颗「内发光球」半径只有 .44，整个包在不透明球体内部，永远看不见。）
+    // 菲涅尔边缘光：算视线方向与球面法线的夹角,越掠过边缘越亮。
+    // 这是「能量球」质感的来源 —— 纯贴图做不出随视角变化的轮廓光。
+    const fresnelMat=(c,power,intensity)=>new THREE.ShaderMaterial({
+      uniforms:{uColor:{value:c},uPower:{value:power},uInt:{value:intensity}},
+      vertexShader:'varying vec3 vN;varying vec3 vP;void main(){vN=normalize(normalMatrix*normal);vec4 mv=modelViewMatrix*vec4(position,1.);vP=mv.xyz;gl_Position=projectionMatrix*mv;}',
+      fragmentShader:'uniform vec3 uColor;uniform float uPower;uniform float uInt;varying vec3 vN;varying vec3 vP;void main(){float f=pow(1.0-abs(dot(normalize(vN),normalize(-vP))),uPower);gl_FragColor=vec4(uColor*f*uInt,f);}',
+      transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.FrontSide
+    });
+    const rim=new THREE.Mesh(new THREE.SphereGeometry(rad*1.02,32,32),fresnelMat(col,2.6,1.9));
+    rim.renderOrder=3;
+    mesh.add(rim);
+    mesh.userData.rim=rim;        // 供选中高亮使用(不再靠 children[0] 取)
+    // 外层柔和光晕,让轮廓光向星空里渗出一点
+    mesh.add(new THREE.Mesh(new THREE.SphereGeometry(rad*1.16,24,24),
+      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.07,
+        side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false})));
+
+    // CSS label
+    const lbl=document.createElement('div');
+    lbl.textContent=w;
+    lbl.style.cssText='position:absolute;color:#f0f2f8;font-size:14px;font-weight:600;pointer-events:none;'
+      +'white-space:nowrap;transform:translate(-50%,-50%);'
+      +'text-shadow:0 0 12px hsla('+hues[hi]+','+sat[hi]+'%,60%,.9);'
+      +'font-family:-apple-system,sans-serif;letter-spacing:-.01em';
+    container.appendChild(lbl);
+    // 记下 14px 下的自然宽度，之后每帧按词球的屏幕半径反推该用多大字号
+    labels.push({el:lbl,mesh:mesh,w14:lbl.offsetWidth||w.length*8.2});
+  });
+
+  // ═══ 星座连线 ═══
+  if(meshes.length>1){
+    const lineMat=new THREE.LineBasicMaterial({color:0x5566aa,transparent:true,opacity:.12,blending:THREE.AdditiveBlending});
+    const lineGeo=new THREE.BufferGeometry();
+    const linePos=[];
+    for(let i=0;i<meshes.length;i++){
+      for(let j=i+1;j<meshes.length;j++){
+        if(meshes[i].position.distanceTo(meshes[j].position)<6){
+          linePos.push(meshes[i].position.x,meshes[i].position.y,meshes[i].position.z);
+          linePos.push(meshes[j].position.x,meshes[j].position.y,meshes[j].position.z);
+        }
+      }
+    }
+    if(linePos.length){
+      lineGeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(linePos),3));
+      group.add(new THREE.LineSegments(lineGeo,lineMat));
+    }
+  }
+
+  // ═══ 灯光 ═══
+  scene.add(new THREE.AmbientLight(0x223355,1.3));
+  const keyLight=new THREE.PointLight(0x8899ff,3,40);
+  keyLight.position.set(10,6,14);scene.add(keyLight);
+  const fillLight=new THREE.PointLight(0xff88aa,2.5,30);
+  fillLight.position.set(-8,-4,-8);scene.add(fillLight);
+  const rimLight=new THREE.PointLight(0x66ddaa,2,22);
+  rimLight.position.set(0,0,-12);scene.add(rimLight);
+
+  // ═══ 交互 ═══
+  const raycaster=new THREE.Raycaster();
+  const mouse=new THREE.Vector2();
+  let dragging=false,px=0,py=0,dist=0,hovered=null;
+  // 从上次的视角继续（删除单词会重建场景，不希望视角突然归位）
+  let autoRotY=(window.__threeRot?window.__threeRot.y:0),
+      autoRotX=(window.__threeRot?window.__threeRot.x:12);
+  group.rotation.x=autoRotX*Math.PI/180;
+
+  // 射线坐标必须相对画布自身换算：原来用 e.clientX/container.clientWidth，
+  // 漏掉了画布在页面中的偏移(实际在 x≈31,y≈195)，导致命中位置整体偏移。
+  function updateMouse(e){
+    const r=renderer.domElement.getBoundingClientRect();
+    mouse.x=((e.clientX-r.left)/r.width)*2-1;
+    mouse.y=-((e.clientY-r.top)/r.height)*2+1;
+  }
+  // 手机上轻点不产生 pointermove，若只在 move 里更新坐标，点击就会用上一次的旧坐标。
+  const onDown=e=>{dragging=false;px=e.clientX;py=e.clientY;dist=0;updateMouse(e);renderer.domElement.style.cursor='grab';e.preventDefault();};
+  const onMove=e=>{
+    const dx=e.clientX-px,dy=e.clientY-py;
+    dist+=Math.abs(dx)+Math.abs(dy);
+    if(dist>3)dragging=true;
+    if(dragging){
+      renderer.domElement.style.cursor='grabbing';
+      autoRotY+=dx*.12;autoRotX-=dy*.12;
+      autoRotX=Math.max(-35,Math.min(50,autoRotX));
+      group.rotation.y=autoRotY*.003;group.rotation.x=autoRotX*.003;
+    }
+    px=e.clientX;py=e.clientY;
+    updateMouse(e);
+    raycaster.setFromCamera(mouse,camera);
+    const hits=raycaster.intersectObjects(meshes,false);  // false=不递归子对象：辉光壳比球更大,会挡在前面且没有 userData.word
+    // 桌面端的悬停预览；已选中的球不被悬停逻辑改写
+    if(hovered&&(!hits.length||hits[0].object!==hovered)){
+      if(hovered!==selected) hovered.material.emissiveIntensity=.18;
+      hovered=null;
+    }
+    if(hits.length&&hits[0].object!==hovered){
+      hovered=hits[0].object;
+      if(hovered!==selected) hovered.material.emissiveIntensity=.75;
+    }
+  };
+  const onUp=()=>{renderer.domElement.style.cursor='grab';};
+
+  // ═══ 选中高亮 ═══
+  // 原本高亮只在 hover 时触发，而手机没有 hover —— 等于这个效果在手机上从不出现。
+  // 改成两段式：第一次点选中并高亮，再点同一颗才跳转。
+  let selected=null;
+  function setSelected(m){
+    if(selected===m) return;
+    if(selected){
+      selected.material.emissiveIntensity=.18;
+      selected.material.opacity=.58;
+      selected.scale.setScalar(1);
+      if(selected.userData.rim) selected.userData.rim.material.uniforms.uInt.value=1.9;
+    }
+    selected=m;
+    if(selected){
+      selected.material.emissiveIntensity=1.0;
+      selected.material.opacity=.78;
+      selected.scale.setScalar(1.16);
+      if(selected.userData.rim) selected.userData.rim.material.uniforms.uInt.value=4.5;
+    }
+  }
+
+  // 从生词本里删掉这个词并重建场景
+  function removeWord(m){
+    const w=m.userData.word;
+    const arr=getVocab().words;
+    const i=arr.findIndex(x=>String(x).toLowerCase()===String(w).toLowerCase());
+    if(i<0) return;
+    arr.splice(i,1);
+    saveVocab();
+    showModeToast('已删除：'+w);
+    window.__threeRot={y:autoRotY,x:autoRotX};   // 记住视角,重建后接着用
+    renderThree();
+  }
+
+  // 单击 = 选中高亮（球体继续自转/浮动）；双击同一颗 = 删除。
+  // 手机上 dblclick 常被"双击缩放"抢走，所以自己按时间间隔判定。
+  let lastTapT=0,lastTapObj=null;
+  const onClick=e=>{
+    if(dist>8)return;                       // 拖拽旋转不算点击
+    updateMouse(e);                         // 用本次点击的真实坐标,不依赖此前的 move
+    raycaster.setFromCamera(mouse,camera);
+    const hits=raycaster.intersectObjects(meshes,false);  // false=不递归子对象：辉光壳比球更大,会挡在前面且没有 userData.word
+    if(!hits.length){ setSelected(null); lastTapObj=null; return; }   // 点空白处取消选中
+    const m=hits[0].object, now=Date.now();
+    if(m===lastTapObj && now-lastTapT<420){  // 双击同一颗 → 删除
+      lastTapObj=null; lastTapT=0;
+      removeWord(m);
+      return;
+    }
+    lastTapT=now; lastTapObj=m;
+    setSelected(m);                          // 单击 → 只高亮
+  };
+
+  container.addEventListener('pointerdown',onDown);
+  container.addEventListener('pointermove',onMove);
+  container.addEventListener('pointerup',onUp);
+  container.addEventListener('click',onClick);
+  container.addEventListener('wheel',e=>{
+    camera.position.z+=e.deltaY*.008;
+    camera.position.z=Math.max(baseDist*.5,Math.min(baseDist*1.9,camera.position.z));
+    e.preventDefault();
+  },{passive:false});
+
+  // ═══ 动画 ═══
+  const bobSpeed=meshes.map((_,i)=>(.5+srand()*.7)*(.7+i*.08));
+  const floatAmp=meshes.map(()=>.25+srand()*.35);
+
+  function animate(){
+    if(!document.getElementById('threeCanvas'))return;
+    window.__threeId=requestAnimationFrame(animate);
+    const t=Date.now()*.001;
+
+    starLayers.forEach((s,si)=>{
+      s.pts.rotation.y+=s.speed;s.pts.rotation.x+=s.speed*.3;
+      s.pts.material.opacity=s.baseOpacity*(.85+.15*Math.sin(t*(.8+si*.35)+si*2));
+    });
+
+    // 用真实帧间隔驱动流星，掉帧时速度不会跟着变慢
+    const dt=Math.min(.05,t-(window.__lastT||t)); window.__lastT=t;
+    updateMeteors(dt);
+    stepInner(dt);
+
+    if(!dragging){
+      autoRotY+=.02;
+      group.rotation.y=autoRotY*.003;
+      group.rotation.x=autoRotX*.003;
+    }
+
+    meshes.forEach((m,i)=>{
+      m.position.y=m.userData.baseY+Math.sin(t*bobSpeed[i]+i)*floatAmp[i];
+      const ring=m.children[0];
+      if(ring){
+        ring.material.opacity=.25+Math.sin(t*2+i)*.12;
+        ring.rotation.z=t*.5;
+      }
+    });
+
+    labels.forEach(l=>{
+      const wp=l.mesh.getWorldPosition(new THREE.Vector3());
+      const edge=wp.clone().setY(wp.y+l.mesh.userData.rad);   // 球心 + 该球自己的半径
+      wp.project(camera); edge.project(camera);
+      if(wp.z>1){l.el.style.opacity='0';return;}
+      const x=(wp.x*.5+.5)*container.clientWidth;
+      const y=(-wp.y*.5+.5)*container.clientHeight;
+      // 字号跟着这颗球在屏幕上的实际半径走：近大远小、滚轮缩放都同步。
+      // 可用宽度取直径的 85%（2R*.85 = 1.70R），下限 10px 保证可读。
+      const R=Math.abs((edge.y-wp.y)*.5*container.clientHeight);
+      l.el.style.fontSize=Math.max(10,Math.min(14,14*(R*1.70)/l.w14)).toFixed(1)+'px';
+      l.el.style.left=x+'px';l.el.style.top=y+'px';l.el.style.opacity='1';
+    });
+
+    keyLight.position.x=10*Math.cos(t*.3);
+    keyLight.position.z=10*Math.sin(t*.3);
+    fillLight.position.x=-8*Math.cos(t*.25);
+    fillLight.position.z=-8*Math.sin(t*.25);
+
+    if(composer) composer.render(); else renderer.render(scene,camera);
+  }
+  animate();
+}
+
+function playWord(word, btn, acc){
+  if(curBtn===btn){ stopAll(); return; }
+  stopAll();
+  curBtn=btn; btn.classList.add('playing'); repeating=TTS.loop;
+  const go=()=>{
+    if(curBtn!==btn) return;
+    const actual = acc || TTS.scope;
+    const type = (actual==='gb') ? 1 : 2;
+    const url = 'https://dict.youdao.com/dictvoice?audio='+encodeURIComponent(word)+'&type='+type;
+    const au = new Audio(url);
+    audioEl = au;
+    au.onended=()=>{ if(curBtn!==btn) return; if(repeating){ repTimer=setTimeout(go,900); } else { stopAll(); } };
+    au.onerror=()=>{ if(curBtn===btn) stopAll(); };
+    au.play();
+  };
+  setTimeout(go,60);
+}
+
+/* 例句拆成可点单词，保留 <b> 结构，并记录字符偏移供逐词高亮 */
+function wrapWords(el){
+  const nodes=[]; const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
+  let n; while(n=walker.nextNode()) nodes.push(n);
+  let off=0;
+  nodes.forEach(node=>{
+    const frag=document.createDocumentFragment();
+    node.nodeValue.split(/(\s+)/).forEach(p=>{
+      if(!p) return;
+      if(/^\s+$/.test(p)){ frag.appendChild(document.createTextNode(p)); off+=p.length; return; }
+      const sp=document.createElement('span');
+      sp.className='w'; sp.textContent=p;
+      sp.dataset.start=off;
+      sp.dataset.word=p.replace(/[^A-Za-z'\u2019-]/g,'');
+      frag.appendChild(sp); off+=p.length;
+    });
+    node.parentNode.replaceChild(frag,node);
+  });
+}
+
+/* ---------- 朗读设置面板 ---------- */
+(function(){
+  const bar=document.getElementById('ttsbar'), btn=document.getElementById('ttsBtn');
+  if(btn) btn.addEventListener('click',()=>{
+    const hidden=bar.hasAttribute('hidden');
+    if(hidden){ bar.removeAttribute('hidden'); } else { bar.setAttribute('hidden',''); }
+    btn.classList.toggle('on',hidden);
+  });
+  document.querySelectorAll('#ttsbar .tscope').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('#ttsbar .tscope').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on'); TTS.scope=b.dataset.s; stopAll();
+    });
+  });
+  const lp=document.getElementById('ttsLoop');
+  if(lp) lp.addEventListener('click',()=>{ TTS.loop=!TTS.loop; lp.textContent='循环：'+(TTS.loop?'开':'关'); lp.classList.toggle('on',TTS.loop); if(!TTS.loop) repeating=false; });
+})();
+
+(function(){
+  const cb=document.getElementById('collectBtn');
+  if(!cb) return;
+  cb.addEventListener('click',()=>{
+    collectMode=!collectMode;
+    cb.classList.toggle('on',collectMode);
+    showModeToast(collectMode?'收集模式已开启，点击例句单词即可收藏':'收集模式已关闭');
+  });
+})();
+
+/* ---------- 复制 ---------- */
+function copy(text){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>toast('已复制')).catch(()=>fallbackCopy(text));
+  }else{ fallbackCopy(text); }
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('已复制'); }catch(e){ toast('复制失败'); }
+  document.body.removeChild(ta);
+}
+let toastTimer=null;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1400);
+}
+
+/* ---------- 结构复制文本（每行首加Tab，粘进Obsidian callout用） ---------- */
+function buildStruct(d){
+  const T='\t';
+  const L=[];
+  // 1) 单词  音标
+  L.push(d.word + '  ' + (d.ipaUS ? '英 '+d.ipa+'  美 '+d.ipaUS : d.ipa));
+  // 2..) 词性  释义（逐条）
+  d.defs.forEach(x=> L.push(x.pos + (x.trans?'  '+x.trans:'') + '  ' + x.zh));
+  // 语块  词性  释义
+  L.push(d.chunk.phrase + '  ' + d.chunk.pos + '  ' + d.chunk.zh);
+  // 近义/反义：两行制 —— 第1行: 符号 词 音标 词性 释义；第2行: 差异说明
+  d.relations.forEach(r=>{
+    L.push('');                                                  // 空行
+    L.push(r.sym + ' ' + r.word + '  ' + (r.ipaUS ? '英 '+r.ipa+' 美 '+r.ipaUS : r.ipa) + '  ' + r.pos + '  ' + (r.zh||''));
+    L.push(r.diff);                                              // 差异说明
+  });
+  // 同台对比（若有）
+  if(d.contrast && d.contrast.items && d.contrast.items.length){
+    L.push('');
+    L.push('同台对比' + (d.contrast.frame?'：'+d.contrast.frame:''));
+    d.contrast.items.forEach(it=>{ L.push((it.mark||'') + ' ' + (it.en||it.word||'') + (it.note?'  '+it.note:'')); });
+  }
+  // 每行首加 Tab（空行也加，保持 callout 连续）
+  return L.map(line => T + line).join('\n');
+}
+
+/* ---------- 渲染 ---------- */
+const SVG_SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>';
+const SVG_COPY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function stripTags(s){return s.replace(/<\/?b>/g,'');}
+
+function spk(word, acc){
+  const t = acc==='us' ? '美音发音' : (acc==='gb' ? '英音发音' : '点击发音');
+  return '<button class="spk" title="'+t+'" data-spk="'+esc(word)+'"'+(acc?' data-acc="'+acc+'"':'')+'>'+SVG_SPK+'</button>';
+}
+
+/* 词头：英 / 美 两个音标，各带各的喇叭 */
+function ipaPair(word, gb, us){
+  let h='';
+  if(gb) h+='<span class="ipa-grp"><span class="ipa-tag gb">英</span><span class="ipa">'+esc(gb)+'</span>'+spk(word,'gb')+'</span>';
+  if(us) h+='<span class="ipa-grp"><span class="ipa-tag us">美</span><span class="ipa">'+esc(us)+'</span>'+spk(word,'us')+'</span>';
+  if(!gb && !us) h+=spk(word);
+  return h;
+}
+/* 近反义词：ipaUS 有就一起显示 */
+function relIpa(r){
+  let h='<span class="rel-ipa gb"><span class="rt">英</span>'+esc(r.ipa)+'</span>'+spk(r.word,'gb');
+  if(r.ipaUS) h+='<span class="rel-ipa us"><span class="rt">美</span>'+esc(r.ipaUS)+'</span>'+spk(r.word,'us');
+  return h;
+}
+
+function renderGrammar(g){
+  if(!g||!g.clauses) return '';
+  let h='<div class="gram"><div class="gram-tag">'+(g.compound?'复合句 / 并列句':'简单句')+'</div>';
+  g.clauses.forEach(c=>{
+    h+='<div class="clause">';
+    if(c.label) h+='<div class="clause-label">'+esc(c.label)+'</div>';
+    h+='<div class="roles">';
+    c.roles.forEach(r=>{
+      h+='<span class="role">'+esc(r.text);
+      if(r.form) h+='<span class="r-form">'+esc(r.form)+'</span>';
+      if(r.note) h+='<span class="r-note">'+esc(r.note)+'</span>';
+      h+='</span>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function renderExample(ex,label){
+  const enPlain=stripTags(ex.en);
+  return ''
+    +'<div class="ex">'
+    +'<div class="ex-en">'+ex.en+'</div>'
+    +'<div class="ex-zh">'+esc(ex.zh)+'</div>'
+    +'<div class="ex-actions">'
+    +'<button class="mini" data-copy="'+encodeURIComponent('	'+enPlain)+'">'+SVG_COPY+'复制英文</button>'
+    +'<button class="mini" data-copy="'+encodeURIComponent('	'+ex.zh)+'">'+SVG_COPY+'复制中文</button>'
+    +'</div>'
+    +renderGrammar(ex.grammar)
+    +'</div>';
+}
+
+function render(i){
+  if(!DATA.length) return;   // 原始模板 DATA 为空,直接打开时不报错
+  saveProgress(i);   // 所有翻页入口(按钮/下拉/键盘)最终都走这里,只需在此存一次
+  // 计数器与导航按钮必须在生词本的提前返回之前更新,
+  // 否则进入生词本时它们会停在上一个单词的状态。
+  document.getElementById('cur').textContent=(i===TIDX)?'🌌':(i+1);
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===DATA.length-1);
+  if(i===TIDX){ renderThree(); return; }
+  const d=DATA[i];
+  let h='';
+  // head
+  h+='<div class="head"><div class="head-left">';
+  h+='<div class="word">'+esc(d.word)+'</div>';
+  h+='<div class="ipa-line">'+ipaPair(d.word, d.ipa, d.ipaUS)+'</div>';
+  h+='</div>';
+  h+='<button class="copy-struct" data-struct="'+i+'">'+SVG_COPY+'复制释义结构</button>';
+  h+='</div>';
+  // defs
+  h+='<div class="defs">';
+  d.defs.forEach(x=>{h+='<div class="def-row"><span class="pos">'+esc(x.pos)+'</span>'+(x.trans?'<span class="trans">'+esc(x.trans)+'</span>':'')+'<span class="def-zh">'+esc(x.zh)+'</span></div>';});
+  h+='</div>';
+  // chunk
+  h+='<div class="chunk"><div class="chunk-head"><span class="pos">'+esc(d.chunk.pos)+'</span><span class="chunk-phrase">'+esc(d.chunk.phrase)+'</span>'+spk(d.chunk.phrase)+'<span class="chunk-zh">'+esc(d.chunk.zh)+'</span></div></div>';
+  // examples
+  h+='<div class="sec-label">语块例句</div>'+renderExample(d.chunk.example);
+  h+='<div class="sec-label">单词例句</div>'+renderExample(d.wordExample);
+  h+='<div class="sec-label">高频场景句</div>'+renderExample(d.sceneExample);
+  // contrast 同台对比（仅当存在时渲染，兼容无此字段的旧数据）
+  if(d.contrast && d.contrast.items && d.contrast.items.length){
+    h+='<div class="sec-label">同台对比 · 同框替换</div>';
+    h+='<div class="contrast">';
+    if(d.contrast.frame){h+='<div class="contrast-frame">框架：'+esc(d.contrast.frame)+'</div>';}
+    d.contrast.items.forEach(it=>{
+      const m=(it.mark==='✓')?'ok':((it.mark==='✗')?'no':'meh');
+      h+='<div class="ct-item '+m+'"><span class="ct-mark">'+esc(it.mark||'')+'</span><span class="ct-en">'+esc(it.en||it.word||'')+'</span>'+(it.note?'<span class="ct-note">'+esc(it.note)+'</span>':'')+'</div>';
+    });
+    h+='</div>';
+  }
+  // relations
+  h+='<div class="sec-label">近义 / 反义辨析</div>';
+  d.relations.forEach(r=>{
+    h+='<div class="rel '+(r.type==='syn'?'syn':'ant')+'">';
+    h+='<div class="rel-sym">'+esc(r.sym)+'</div>';
+    h+='<div class="rel-body"><div class="rel-top"><span class="rel-word">'+esc(r.word)+'</span>'+relIpa(r)+'<span class="rel-pos">'+esc(r.pos)+'</span>'+(r.zh?'<span class="rel-zh">'+esc(r.zh)+'</span>':'')+'</div>';
+    h+='<div class="rel-diff">'+esc(r.diff)+'</div></div></div>';
+  });
+
+  const card=document.getElementById('card');
+  card.innerHTML=h;
+  stopAll();
+  window.scrollTo(0,0);
+
+  // 例句拆词 + 点词发音
+  card.querySelectorAll('.ex-en').forEach(el=>{
+    wrapWords(el);
+    el.querySelectorAll('.w').forEach(sp=>{
+      const w=sp.dataset.word; if(!w) return;
+      sp.title='点击朗读这个词';
+      sp.addEventListener('click',()=>collectWord(w,sp));
+    });
+  });
+  // bind speakers
+  card.querySelectorAll('[data-spk]').forEach(b=>{
+    b.addEventListener('click',()=>playWord(b.getAttribute('data-spk'),b,b.getAttribute('data-acc')));
+  });
+  // bind example copy
+  card.querySelectorAll('[data-copy]').forEach(b=>{
+    b.addEventListener('click',()=>copy(decodeURIComponent(b.getAttribute('data-copy'))));
+  });
+  // bind struct copy
+  card.querySelector('[data-struct]').addEventListener('click',()=>{
+    copy(buildStruct(DATA[parseInt(card.querySelector('[data-struct]').getAttribute('data-struct'))]));
+  });
+
+  // counter + nav 已移至函数开头统一处理（生词本分支也需要更新）
+  const _j=document.getElementById('jump'); if(_j) _j.value=i;   // 同步跳转下拉框选中项
+}
+
+/* ---------- nav ---------- */
+let idx=0;
+// DATA 末项是生词本(__three__)本身，不是单词，不计入总数
+document.getElementById('total').textContent=WCOUNT;
+document.getElementById('prev').addEventListener('click',()=>{ if(idx>0){idx--;render(idx);} });
+document.getElementById('next').addEventListener('click',()=>{ if(idx<DATA.length-1){idx++;render(idx);} });
+// 跳转下拉框：填充全部单词，选择即跳转（复用同一 idx / render）
+const _jump=document.getElementById('jump');
+if(_jump){
+  _jump.innerHTML=DATA.map((d,i)=>'<option value="'+i+'">'+(d.word==='__three__'?'🌌 太空生词本':((i+1)+'. '+esc(d.word)))+'</option>').join('');
+  _jump.addEventListener('change',()=>{ idx=parseInt(_jump.value,10); render(idx); });
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'&&idx>0){idx--;render(idx);}
+  if(e.key==='ArrowRight'&&idx<DATA.length-1){idx++;render(idx);}
+});
+// 恢复上次的学习进度
+// 存储自检：某些浏览器/隐私模式/本地文件协议下 localStorage 不可用，
+// 此前 saveVocab 用 catch(e){} 静默吞掉了错误 —— 表现就是"存了但没存上"却毫无提示。
+// 这里主动测一次读写，失败就明确告诉用户，而不是让数据悄悄丢失。
+function storageOK(){
+  try{
+    const k='__probe_'+Date.now();
+    localStorage.setItem(k,'1');
+    const v=localStorage.getItem(k);
+    localStorage.removeItem(k);
+    return v==='1';
+  }catch(e){ return false; }
+}
+const STORAGE_OK=storageOK();
+
+// 载入已收藏的生词。saveVocab() 一直在写 localStorage，但此前没有任何地方
+// 调用 loadVocab() 读回来，导致每次打开生词本都是空的 —— 词没丢，只是没载入。
+loadVocab();
+idx=loadProgress();
+if(_jump) _jump.value=String(idx);
+render(idx);
+if(!STORAGE_OK) setTimeout(()=>showModeToast('⚠ 此浏览器无法保存生词与进度'),900);
+else if(idx>0) setTimeout(()=>showModeToast('已回到上次：第 '+(idx+1)+' 个'),400);
+</script>
+<div class="aura a1" style="top:15%;left:-5%"></div>
+<div class="aura a2" style="bottom:10%;right:-8%"></div>
+<div class="particles" id="particles"></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.157/build/three.min.js"></script>
+<!-- 已移除三个后期处理脚本：three.js r150+ 删掉了 examples/js/ 目录，
+     这三个 URL 一直是 404，EffectComposer 从未加载成功，bloom 也从未生效。
+     代码里的 if(THREE.EffectComposer) 判断为假，自动走普通渲染，无副作用。
+     若日后要启用泛光，需改用 examples/jsm/ 的 ES 模块写法。 -->
+</body>
+</html>
