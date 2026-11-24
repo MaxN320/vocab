@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One More Bowl</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 2 组 · 第 5 篇 · 补漏篇</div><h1>One More Bowl</h1><div class="sub">再添一只碗</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit02-1.html">1 耳朵上的纽扣</a><a href="unit02-2.html">2 两只红耳朵</a><a href="unit02-3.html">3 小熊的车票</a><a href="unit02-4.html">4 进阶：纸箱里传来的声音</a><a href="unit02-5.html" class="on">5 再添一只碗</a><a href="unit02-s.html">✍️ 骨架造句</a><a href="unit02-s2.html">✍️ 进阶造句</a></div><div class="toc-row"><span>本页</span><a href="#sec-text">短文</a><a href="#sec-focus">拆开看</a><a href="#sec-drill">回忆练习</a><a href="#sec-speak">换成你自己的事</a></div></nav>
+<div class="how"><b>补漏篇</b>：前几篇里出现得少的说法，换个新场景再练一遍，句子回到简单。<br>① 先读故事，黄色的点一下能听发音；读不懂就点「中文」。<br>② 看「拆开看」，这几个是这一组里最容易忘的。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用它们说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div id="sec-text"><div class="p"><div class="en">On Monday, May took a pot of soup to her new neighbour. The door was open <span class="w">a few</span> inches. “<span class="w">Hi, how are you</span>? <span class="w">My name is</span> May. <span class="w">I live in</span> the flat below you.” A man in a wet shirt opened the door. “<span class="w">Nice to meet you</span>. Come in, <span class="w">if</span><span class="ipa">/ɪf/</span> you <span class="w">can</span><span class="ipa">/kæn/</span> find a dry spot!”</div><div class="cn">星期一，梅端了一锅汤去看新邻居。门开了一条缝。“嗨，你好！我叫梅，住你楼下。”一个衬衫湿透的男人打开门。“很高兴认识你。请进，看看还有没有干的地方能落脚！”</div><div class="bar"><button id="pa1" data-a="audio/unit02-5-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">There was water <span class="w">all</span><span class="ipa">/ɔːl/</span> over the kitchen floor. “I went <span class="w">out</span><span class="ipa">/aʊt/</span> to <span class="w">pick up</span> <span class="w">a few</span> <span class="w">things</span><span class="ipa">/θɪŋz/</span>. <span class="w">When</span><span class="ipa">/wen/</span> I got back, the sink was full.” “<span class="w">Would</span><span class="ipa">/wʊd/</span> you like a hand?” “<span class="w">Yes</span><span class="ipa">/jes/</span>, please. There are <span class="w">at least</span> two dry towels on that chair.” May used <span class="w">one</span><span class="ipa">/wʌn/</span> <span class="w">as</span><span class="ipa">/æz/</span> a mat for the pot. <span class="w">Then</span><span class="ipa">/ðen/</span> they dried the floor together.</div><div class="cn">厨房地板上全是水。“我出门取了几样东西。回来的时候，水池满了。”“要我帮忙吗？”“太好了，椅子上至少有两条干毛巾。”梅用一条垫住汤锅。接着两人一起把地擦干。</div><div class="bar"><button id="pa2" data-a="audio/unit02-5-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">“<span class="w">Such a</span> welcome!” he said. “Do you <span class="w">mean</span><span class="ipa">/miːn/</span> the soup or the wet feet?” “The soup, <span class="w">of course</span>!” May looked <span class="w">about</span><span class="ipa">/əˈbaʊt/</span> for a bowl. He held <span class="w">up</span><span class="ipa">/ʌp/</span> two. “<span class="w">Can</span> you stay for lunch?” “<span class="w">Yes</span>. But there&#x27;s <span class="w">one</span> <span class="w">thing</span><span class="ipa">/θɪŋ/</span> I need to do first.” She went down to change her socks.</div><div class="cn">“这欢迎可真特别！”他说。“你说的是汤，还是湿脚丫？”“当然是汤！”梅四下找碗。他举起两只。“留下来吃午饭好吗？”“好呀，不过我得先办件事。”她下楼换袜子去了。</div><div class="bar"><button id="pa3" data-a="audio/unit02-5-03.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div></div>
+<div class="sec" id="sec-focus"><h2>拆开看：这 6 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>a few + 可数名词复数</b><i>结构</i><span>几个</span></div><div class="fcore">数量不大，但有一些。</div><div class="ff"><div>a few people</div><div>a few inches</div></div><div class="fw">⚠️ few 不带 a 常强调少得不够。</div></div><div class="fc"><div class="fh"><b>pick up + 人 / 物</b><i>结构</i><span>接人；取东西</span></div><div class="fcore">先看宾语：可以接人，也能把东西拿起来。</div><div class="ff"><div>pick up my brother</div><div>pick it up</div></div><div class="fw">⚠️ 宾语是 it / him 时放在中间。</div></div><div class="fc"><div class="fh"><b>at least + 数量</b><i>结构</i><span>至少</span></div><div class="fcore">给出下限，实际可以更多。</div><div class="ff"><div>at least ten minutes</div><div>at least two towels</div></div><div class="fw">⚠️ 不是最多；最多是 at most。</div></div><div class="fc"><div class="fh"><b>use + 物 + as + 名词</b><i>结构</i><span>拿……当……用</span></div><div class="fcore">一条毛巾临时当锅垫，as 后是用途。</div><div class="ff"><div>use a towel as a mat</div><div>use a leaf as a ticket</div></div><div class="fw">⚠️ 不要在 as 前再加 to。</div></div><div class="fc"><div class="fh"><b>thing</b><span class="ipa">/θɪŋ/</span><i>单词</i><span>n. 东西；事情</span></div><div class="fcore">不知道或不强调具体名称时，说 thing；也可以指事。</div><div class="ff"><div>one thing</div><div>three things</div></div><div class="fw">⚠️ one thing 没有 -s。</div></div><div class="fc"><div class="fh"><b>when</b><span class="ipa">/wen/</span><i>单词</i><span>adv. 什么时候；conj. 当……时</span></div><div class="fcore">问时间；也可以把两个同时发生的动作连起来。</div><div class="ff"><div>When do we leave?</div><div>when I got back</div></div><div class="fw">⚠️ 直接问句用 do；when I got back 不是问句。</div></div></div><div class="sec" id="sec-drill"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>门开了一条缝（几英寸）；补「几」。</div><div class="den">The door was open <span class="gap" data-ans="a few">　　　</span> inches.</div><div class="bar"><button data-a="audio/unit02-5-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>我住你楼下的公寓；填表示居住地的动词和介词。</div><div class="den">I <span class="gap" data-ans="live in">　　　</span> the flat below you.</div><div class="bar"><button data-a="audio/unit02-5-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>我出门去取了几样东西；用 pick。</div><div class="den">I went out to <span class="gap" data-ans="pick up">　　　</span> a few things.</div><div class="bar"><button data-a="audio/unit02-5-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>当我回来时，水池满了。</div><div class="den"><span class="gap" data-ans="When">　　　</span> I got back, the sink was full.</div><div class="bar"><button data-a="audio/unit02-5-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>椅子上至少有两条干毛巾。</div><div class="den">There are <span class="gap" data-ans="at least">　　　</span> two dry towels on that chair.</div><div class="bar"><button data-a="audio/unit02-5-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>梅拿一条毛巾当锅垫。</div><div class="den">May used one <span class="gap" data-ans="as">　　　</span> a mat for the pot.</div><div class="bar"><button data-a="audio/unit02-5-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>我得先办一件事；填单数名词。</div><div class="den">There&#x27;s one <span class="gap" data-ans="thing">　　　</span> I need to do first.</div><div class="bar"><button data-a="audio/unit02-5-d07.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec" id="sec-speak"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 你初次见到楼上的邻居，怎么介绍自己？</div><details><summary>看参考说法</summary><div class="sa">Hi, my name is Lin. I live downstairs.</div></details></div><div class="sp"><div>2. 用 at least 说你家里一样东西的数量下限。</div><details><summary>看参考说法</summary><div class="sa">I have at least three cups.</div></details></div><div class="sp"><div>3. 朋友问你是不是指那只蓝碗，你怎么确认？</div><details><summary>看参考说法</summary><div class="sa">Yes, I mean the blue one.</div></details></div></div><a class="next" href="unit02-s.html">下一步：骨架造句 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) { n.dataset.chain = "1"; n.click(); } } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+var allBtn = document.getElementById("all");
+if (allBtn) allBtn.onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+function copyFallback(t) {
+  var a = document.createElement("textarea"); a.value = t; a.setAttribute("readonly", "");
+  a.style.position = "fixed"; a.style.top = "0"; a.style.opacity = "0"; document.body.appendChild(a);
+  a.select(); a.setSelectionRange(0, t.length); var ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(a); return ok;
+}
+document.querySelectorAll(".cpbtn").forEach(function (b) { b.onclick = function (ev) {
+  ev.stopPropagation(); var t = b.dataset.copy, old = b.textContent;
+  var done = function () { b.textContent = "已复制 ✓"; b.classList.add("playing"); setTimeout(function () { b.textContent = old; b.classList.remove("playing"); }, 1500); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, function () { if (copyFallback(t)) done(); });
+  else if (copyFallback(t)) done();
+}; });
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
