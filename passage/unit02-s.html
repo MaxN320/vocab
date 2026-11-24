@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>骨架造句</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+
+.grp{margin-top:22px}
+.grp>h2{font-size:16px;margin:0 0 8px}
+.pat{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:10px 13px}
+.pat b{color:var(--amber);font-size:16px}
+.pat .m{color:var(--ink);font-size:14px;margin-left:6px}
+.pat ul{margin:6px 0 0 18px;font-size:13.5px;color:var(--soft);line-height:1.7}
+.mk{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.mcn{font-size:15px;line-height:1.7}
+.mcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.mhint{font-size:12.5px;color:var(--mute);margin-top:2px}
+.mk details{margin-top:6px}
+.mk summary{font-size:13px;color:var(--accent);cursor:pointer}
+.mans{margin-top:6px;font-size:16.5px;line-height:1.8;color:var(--amber)}
+.mk .bar{margin-top:6px}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 2 组 · 骨架造句</div><h1>骨架造句</h1><div class="sub">介绍自己 ／ 初次打招呼</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit02-1.html">1 耳朵上的纽扣</a><a href="unit02-2.html">2 两只红耳朵</a><a href="unit02-3.html">3 小熊的车票</a><a href="unit02-4.html">4 进阶：纸箱里传来的声音</a><a href="unit02-5.html">5 再添一只碗</a><a href="unit02-s.html" class="on">✍️ 骨架造句</a><a href="unit02-s2.html">✍️ 进阶造句</a></div><div class="toc-row"><span>本页</span><a href="#grp-1">介绍自己</a><a href="#grp-2">打招呼</a><a href="#grp-3">一问一答</a></div></nav>
+<div class="how"><b>先看中文，用上面的骨架把英文说出声</b>；说完再点「看答案」对照，然后点 🔊 跟读。答不上来的，隔一会儿再试一次。</div></header>
+<div class="grp" id="grp-1"><h2>介绍自己</h2><div class="pat"><b>My name is + 名字 / I’m from + 来处 / I live in + 地点</b><span class="m">讲清名字、来处或住处。</span><ul><li>名字、来处、住处是三件事。</li><li>地点是 here 时不加 in。</li></ul></div><div class="mk"><div class="mcn"><em>1</em>我叫梅。</div><details><summary>看答案</summary><div class="mans">My name is May.</div><div class="bar"><button data-a="audio/unit02-s-01.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>2</em>我来自约克。</div><details><summary>看答案</summary><div class="mans">I&#x27;m from York.</div><div class="bar"><button data-a="audio/unit02-s-02.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>3</em>我住在镇上。</div><details><summary>看答案</summary><div class="mans">I live in town.</div><div class="bar"><button data-a="audio/unit02-s-03.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>4</em>我和姐姐住在一起。</div><details><summary>看答案</summary><div class="mans">I live with my sister.</div><div class="bar"><button data-a="audio/unit02-s-04.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>5</em>我住在商店楼上那套公寓里。</div><details><summary>看答案</summary><div class="mans">I live in the flat above the shop.</div><div class="bar"><button data-a="audio/unit02-s-05.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>6</em>我来自一个小镇。</div><details><summary>看答案</summary><div class="mans">I&#x27;m from a small town.</div><div class="bar"><button data-a="audio/unit02-s-06.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>7</em>我叫乔，和爸爸同名。</div><details><summary>看答案</summary><div class="mans">My name is Joe, like my dad.</div><div class="bar"><button data-a="audio/unit02-s-07.mp3">🔊 听这句</button></div></details></div></div><div class="grp" id="grp-2"><h2>打招呼</h2><div class="pat"><b>Hi, how are you? / Nice to meet you.</b><span class="m">问候对方或回应初次见面。</span><ul><li>初次见面说 meet；熟人重逢说 see。</li><li>问候时注意听对方的回答。</li></ul></div><div class="mk"><div class="mcn"><em>8</em>嗨，你好吗？</div><details><summary>看答案</summary><div class="mans">Hi, how are you?</div><div class="bar"><button data-a="audio/unit02-s-08.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>9</em>很高兴认识你，本。</div><details><summary>看答案</summary><div class="mans">Nice to meet you, Ben.</div><div class="bar"><button data-a="audio/unit02-s-09.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>10</em>嗨，你今天感觉怎么样？</div><details><summary>看答案</summary><div class="mans">Hi, how are you feeling today?</div><div class="bar"><button data-a="audio/unit02-s-10.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>11</em>你好吗，梅？</div><details><summary>看答案</summary><div class="mans">How are you, May?</div><div class="bar"><button data-a="audio/unit02-s-11.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>12</em>终于见到你了，真高兴。</div><details><summary>看答案</summary><div class="mans">Nice to meet you at last.</div><div class="bar"><button data-a="audio/unit02-s-12.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>13</em>你好，乔。你的爸爸怎么样？</div><details><summary>看答案</summary><div class="mans">Hi, Joe. How is your dad?</div><div class="bar"><button data-a="audio/unit02-s-13.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>14</em>认识你们两位真高兴。</div><details><summary>看答案</summary><div class="mans">Nice to meet you both.</div><div class="bar"><button data-a="audio/unit02-s-14.mp3">🔊 听这句</button></div></details></div></div><div class="grp" id="grp-3"><h2>一问一答</h2><div class="pat"><b>打招呼 → 介绍自己</b><span class="m">先回应对方，再补一句。</span><ul><li>按 A、B 两个角色分别说。</li><li>先遮住英文，再完整读一遍。</li></ul></div><div class="mk"><div class="mcn"><em>15</em>A：你好，我叫梅。<br>B：很高兴认识你，梅。我叫本。</div><details><summary>看答案</summary><div class="mans">A: Hi, my name is May.<br>B: Nice to meet you, May. I&#x27;m Ben.</div><div class="bar"><button data-a="audio/unit02-s-15.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>16</em>A：嗨，今天过得怎么样？<br>B：很好，谢谢。我叫乔。</div><details><summary>看答案</summary><div class="mans">A: Hi, how are you today?<br>B: Fine, thanks. My name is Joe.</div><div class="bar"><button data-a="audio/unit02-s-16.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>17</em>A：我来自约克。<br>B：我也是。很高兴认识你！</div><details><summary>看答案</summary><div class="mans">A: I&#x27;m from York.<br>B: Me too. Nice to meet you!</div><div class="bar"><button data-a="audio/unit02-s-17.mp3">🔊 听这句</button></div></details></div></div>
+<a class="next" href="unit02-s2.html">下一步：进阶造句 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function () {
+  var same = playing === b; stop(); if (same) return;
+  audio = new Audio(b.dataset.a); playing = b; b.classList.add("playing");
+  audio.onended = stop; audio.play().catch(stop);
+}; });
+</script></body></html>
