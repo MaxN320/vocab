@@ -17,6 +17,38 @@
      "id": "unit02-1",
      "title": "The Button in the Ear",
      "cn": "耳朵上的纽扣"
+    },
+    {
+     "id": "unit02-2",
+     "title": "Two Red Ears",
+     "cn": "两只红耳朵"
+    },
+    {
+     "id": "unit02-3",
+     "title": "A Ticket for Bear",
+     "cn": "小熊的车票"
+    },
+    {
+     "id": "unit02-4",
+     "title": "A Voice from the Box",
+     "cn": "进阶：纸箱里传来的声音"
+    },
+    {
+     "id": "unit02-5",
+     "title": "One More Bowl",
+     "cn": "再添一只碗"
+    },
+    {
+     "id": "unit02-s",
+     "title": "骨架造句",
+     "cn": "骨架造句",
+     "kind": "make"
+    },
+    {
+     "id": "unit02-s2",
+     "title": "进阶造句",
+     "cn": "进阶造句",
+     "kind": "make"
     }
    ],
    "progress": {
