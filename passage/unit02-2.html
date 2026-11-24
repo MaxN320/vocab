@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Red Ears</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 2 组 · 第 2 篇（共 5 篇）</div><h1>Two Red Ears</h1><div class="sub">两只红耳朵</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit02-1.html">1 耳朵上的纽扣</a><a href="unit02-2.html" class="on">2 两只红耳朵</a><a href="unit02-3.html">3 小熊的车票</a><a href="unit02-4.html">4 进阶：纸箱里传来的声音</a><a href="unit02-5.html">5 再添一只碗</a><a href="unit02-s.html">✍️ 骨架造句</a><a href="unit02-s2.html">✍️ 进阶造句</a></div><div class="toc-row"><span>本页</span><a href="#sec-text">短文</a><a href="#sec-focus">拆开看</a><a href="#sec-drill">回忆练习</a><a href="#sec-speak">换成你自己的事</a></div></nav>
+<div class="how">这一组练 <b>2 个骨架、5 个词组、20 个单词</b>，分在前 3 篇里，这一篇重点练卡片里的 9 个。<br>① 先读故事，黄色的是这一组要练的，点一下能听发音；读不懂就点「中文」。<br>② 看「拆开看」，留意同一个说法在几篇里怎么变。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用它们说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div id="sec-text"><div class="p"><div class="en">“<span class="w">Hi, how are you</span>?” Ben called <span class="w">when</span><span class="ipa">/wen/</span> May came back <span class="w">with</span><span class="ipa">/wɪð/</span> their lunch. “Hungry! I got <span class="w">one</span><span class="ipa">/wʌn/</span> roll for you and <span class="w">one</span> for me.” <span class="w">Then</span><span class="ipa">/ðen/</span> she stopped. There was <span class="w">no</span><span class="ipa">/nəʊ/</span> bear beside the sign. <span class="w">All</span><span class="ipa">/ɔːl/</span> she <span class="w">could</span><span class="ipa">/kʊd/</span> <span class="w">see</span><span class="ipa">/siː/</span> was a little red bus.</div><div class="cn">梅带着午饭回来时，本喊道：“嗨，还好吗？”“饿了！我给你和自己各买了一个小面包。”她忽然停下来。牌子旁边没了小熊，只看得到一辆红色玩具巴士。</div><div class="bar"><button id="pa1" data-a="audio/unit02-2-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">A girl was waiting <span class="w">at</span><span class="ipa">/æt/</span> the door <span class="w">with</span> a brown bear. May ran <span class="w">out</span><span class="ipa">/aʊt/</span>. “Sorry! <span class="w">My name is</span> May. Is that your bear?” “<span class="w">Yes</span><span class="ipa">/jes/</span>. I came to <span class="w">pick up</span> my brother. Why?” “<span class="w">Because</span><span class="ipa">/bɪˈkɒz/</span> mine has a red ear too. <span class="w">Would</span><span class="ipa">/wʊd/</span> you show me yours?” “<span class="w">Of course</span>.”</div><div class="cn">一个女孩抱着棕色小熊，在门口等人。梅跑了出去。“不好意思！我叫梅。那是你的熊吗？”“是呀。我来接弟弟。怎么了？”“因为我的熊也有只红耳朵。能给我看看你的吗？”“当然。”</div><div class="bar"><button id="pa2" data-a="audio/unit02-2-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">The girl held <span class="w">up</span><span class="ipa">/ʌp/</span> the bear. The ear was red wool, not a button. “My gran made it <span class="w">as</span><span class="ipa">/æz/</span> a birthday present. It <span class="w">means</span><span class="ipa">/miːnz/</span> a lot to me.” May felt her face get hot. “I&#x27;m sorry. I didn&#x27;t <span class="w">mean</span><span class="ipa">/miːn/</span> to stop you.” “That&#x27;s <span class="w">all</span> <span class="w">right</span><span class="ipa">/raɪt/</span>. I <span class="w">can</span><span class="ipa">/kæn/</span> help you look.”</div><div class="cn">女孩举起熊。红耳朵是毛线织的，不是纽扣。“这是奶奶给我做的生日礼物。我很珍惜它。”梅觉得脸上发烫。“对不起，我不是故意拦你的。”“没关系。我可以帮你找。”</div><div class="bar"><button id="pa3" data-a="audio/unit02-2-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">They looked under <span class="w">a few</span> tables. <span class="w">No</span> bear. <span class="w">Then</span> the girl pointed <span class="w">at</span> the little bus. “That was my brother&#x27;s! <span class="w">If</span><span class="ipa">/ɪf/</span> he left it here, he took something else. He loves <span class="w">things</span><span class="ipa">/θɪŋz/</span> <span class="w">with</span> wheels, but he loves bears too.” She laughed. “I think I know who to ask <span class="w">about</span><span class="ipa">/əˈbaʊt/</span> your bear.”</div><div class="cn">她们找了几张桌子底下，没找到。女孩指着小巴士：“那是我弟弟的！要是他把车留在这儿了，肯定拿了别的东西。他喜欢带轮子的东西，也喜欢熊。”她笑了。“我想我知道该找谁问你那只熊了。”</div><div class="bar"><button id="pa4" data-a="audio/unit02-2-04.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div></div>
+<div class="sec" id="sec-focus"><h2>拆开看：这 9 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>about</b><span class="ipa">/əˈbaʊt/</span><i>单词</i><span>prep. 关于；adv. 大约</span></div><div class="fcore">表示话题时，问的、想着的都是后面那件事。</div><div class="ff"><div>ask about the bear</div><div>think about that</div></div><div class="fw">⚠️ look about 是向四周看，不能按「关于」翻译。</div></div><div class="fc"><div class="fh"><b>as</b><span class="ipa">/æz/</span><i>单词</i><span>prep. 作为；conj. 当……时，因为</span></div><div class="fcore">这里把人或东西放进一个角色。</div><div class="ff"><div>as a present</div><div>as a driver</div></div><div class="fw">⚠️ as a driver 是真当司机；like a driver 只是像司机。</div></div><div class="fc"><div class="fh"><b>would</b><span class="ipa">/wʊd/</span><i>单词</i><span>aux. 会（过去或假设）；（Would you…?）请你……好吗</span></div><div class="fcore">Would you …? 把要求说得客气些。</div><div class="ff"><div>Would you show me?</div><div>Would you like a hand?</div></div><div class="fw">⚠️ would 后用原形，不加 -s。</div></div><div class="fc"><div class="fh"><b>then</b><span class="ipa">/ðen/</span><i>单词</i><span>adv. 然后；那时</span></div><div class="fcore">给动作排队：先做一件，然后做下一件。</div><div class="ff"><div>then she stopped</div><div>then she said</div></div><div class="fw">⚠️ 不要把 then（然后）拼成 than（比）。</div></div><div class="fc"><div class="fh"><b>because</b><span class="ipa">/bɪˈkɒz/</span><i>单词</i><span>conj. 因为</span></div><div class="fcore">把原因放到 because 后面。</div><div class="ff"><div>because mine has a red ear</div><div>because I work here</div></div><div class="fw">⚠️ 同一个因果关系不要又用 because 又用 so 来连。</div></div><div class="fc"><div class="fh"><b>up</b><span class="ipa">/ʌp/</span><i>单词</i><span>adv. 向上；（放在动词后）完，光</span></div><div class="fcore">从低处到高处；看谁把什么举了起来。</div><div class="ff"><div>held up the bear</div><div>held it up</div></div><div class="fw">⚠️ it 要夹在 hold 和 up 中间。</div></div><div class="fc"><div class="fh"><b>mean</b><span class="ipa">/miːn/</span><i>单词</i><span>v. 意思是；打算</span></div><div class="fcore">既可问「是什么意思」，也能说「打算」。</div><div class="ff"><div>What does it mean?</div><div>I didn&#x27;t mean to stop you.</div></div><div class="fw">⚠️ didn&#x27;t 后面用 mean，不用 meant。</div></div><div class="fc"><div class="fh"><b>pick up + 人 / 物</b><i>结构</i><span>接人；取东西</span></div><div class="fcore">先看宾语：可以接人，也能把东西拿起来。</div><div class="ff"><div>pick up my brother</div><div>pick it up</div></div><div class="fw">⚠️ 宾语是 it / him 时放在中间。</div></div><div class="fc"><div class="fh"><b>Hi, how are you? / Nice to meet you.</b><i>结构</i><span>打招呼；初次见面很高兴</span></div><div class="fcore">How are you? 问近况；Nice to meet you 用来回应初次介绍。</div><div class="ff"><div>Hi, how are you?</div><div>Nice to meet you both.</div></div><div class="fw">⚠️ 老朋友再见面说 Nice to see you again。</div></div></div><div class="sec" id="sec-drill"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>所有她能看见的，只是一辆小巴士。</div><div class="den"><span class="gap" data-ans="All">　　　</span> she could see was a little red bus.</div><div class="bar"><button data-a="audio/unit02-2-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>她跟爸爸一起等；填表示「和……一起」的词。</div><div class="den">She waited <span class="gap" data-ans="with">　　　</span> her dad.</div><div class="bar"><button data-a="audio/unit02-2-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>我来接我弟弟；用 pick。</div><div class="den">I came to <span class="gap" data-ans="pick up">　　　</span> my brother.</div><div class="bar"><button data-a="audio/unit02-2-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>因为我的熊也有红耳朵。</div><div class="den"><span class="gap" data-ans="Because">　　　</span> mine has a red ear too.</div><div class="bar"><button data-a="audio/unit02-2-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>当然可以。</div><div class="den"><span class="gap" data-ans="Of course">　　　</span>.</div><div class="bar"><button data-a="audio/unit02-2-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>女孩把熊举起来；填表示向上的词。</div><div class="den">The girl held <span class="gap" data-ans="up">　　　</span> the bear.</div><div class="bar"><button data-a="audio/unit02-2-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>奶奶是把它当作生日礼物做的。</div><div class="den">My gran made it <span class="gap" data-ans="as">　　　</span> a birthday present.</div><div class="bar"><button data-a="audio/unit02-2-d07.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>8</em>它对我意义很大；填 mean 的正确形式。</div><div class="den">It <span class="gap" data-ans="means">　　　</span> a lot to me.</div><div class="bar"><button data-a="audio/unit02-2-d08.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>9</em>我不是有意拦你的。</div><div class="den">I didn&#x27;t <span class="gap" data-ans="mean to">　　　</span> stop you.</div><div class="bar"><button data-a="audio/unit02-2-d09.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>10</em>要是他留下了车，他就拿了别的东西；填连词。</div><div class="den"><span class="gap" data-ans="If">　　　</span> he left his bus here, he took something else.</div><div class="bar"><button data-a="audio/unit02-2-d10.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec" id="sec-speak"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 你想看看朋友的照片，用 would 礼貌地问。</div><details><summary>看参考说法</summary><div class="sa">Would you show me the photo?</div></details></div><div class="sp"><div>2. 用 mean 说一样对你很有意义的东西。</div><details><summary>看参考说法</summary><div class="sa">This watch means a lot to me.</div></details></div><div class="sp"><div>3. 你一会儿要去哪儿接谁？</div><details><summary>看参考说法</summary><div class="sa">I&#x27;m going to pick up my sister at school.</div></details></div></div><a class="next" href="unit02-3.html">下一篇 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) { n.dataset.chain = "1"; n.click(); } } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+var allBtn = document.getElementById("all");
+if (allBtn) allBtn.onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+function copyFallback(t) {
+  var a = document.createElement("textarea"); a.value = t; a.setAttribute("readonly", "");
+  a.style.position = "fixed"; a.style.top = "0"; a.style.opacity = "0"; document.body.appendChild(a);
+  a.select(); a.setSelectionRange(0, t.length); var ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(a); return ok;
+}
+document.querySelectorAll(".cpbtn").forEach(function (b) { b.onclick = function (ev) {
+  ev.stopPropagation(); var t = b.dataset.copy, old = b.textContent;
+  var done = function () { b.textContent = "已复制 ✓"; b.classList.add("playing"); setTimeout(function () { b.textContent = old; b.classList.remove("playing"); }, 1500); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, function () { if (copyFallback(t)) done(); });
+  else if (copyFallback(t)) done();
+}; });
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
