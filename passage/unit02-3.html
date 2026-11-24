@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Ticket for Bear</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 2 组 · 第 3 篇（共 5 篇）</div><h1>A Ticket for Bear</h1><div class="sub">小熊的车票</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit02-1.html">1 耳朵上的纽扣</a><a href="unit02-2.html">2 两只红耳朵</a><a href="unit02-3.html" class="on">3 小熊的车票</a><a href="unit02-4.html">4 进阶：纸箱里传来的声音</a><a href="unit02-5.html">5 再添一只碗</a><a href="unit02-s.html">✍️ 骨架造句</a><a href="unit02-s2.html">✍️ 进阶造句</a></div><div class="toc-row"><span>本页</span><a href="#sec-text">短文</a><a href="#sec-focus">拆开看</a><a href="#sec-drill">回忆练习</a><a href="#sec-speak">换成你自己的事</a></div></nav>
+<div class="how">这一组练 <b>2 个骨架、5 个词组、20 个单词</b>，分在前 3 篇里，这一篇重点练卡片里的 8 个。<br>① 先读故事，黄色的是这一组要练的，点一下能听发音；读不懂就点「中文」。<br>② 看「拆开看」，留意同一个说法在几篇里怎么变。<br>③ 做回忆题：先自己说出来，再点空格对答案，然后点 🔊 跟读整句。<br>④ 最后用它们说说你自己的事。</div>
+<div class="toggle"><button id="all">🔊 从头听一遍</button>　全部中文：<button data-cn="hide" class="on">隐藏</button><button data-cn="show">显示</button></div>
+</header>
+<div id="sec-text"><div class="p"><div class="en">The girl took May and Ben to a bench behind the school. A small boy sat there <span class="w">with</span><span class="ipa">/wɪð/</span> his dad. He had May&#x27;s bear on his knee. “<span class="w">Hi, how are you</span>?” May sat down beside him. “<span class="w">My name is</span> May.” “I&#x27;m Joe. Is this the <span class="w">right</span><span class="ipa">/raɪt/</span> bus for town?”</div><div class="cn">女孩领着梅和本来到学校后面的长椅旁。一个男孩和爸爸坐在那里，膝盖上是梅的小熊。“嗨，你好吗？”梅在他身边坐下。“我叫梅。”“我叫乔。这是去城里的那班车吗？”</div><div class="bar"><button id="pa1" data-a="audio/unit02-3-01.mp3" data-next="pa2">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">May looked <span class="w">about</span><span class="ipa">/əˈbaʊt/</span> her. “Do you <span class="w">mean</span><span class="ipa">/miːn/</span> this bench?” “<span class="w">Yes</span><span class="ipa">/jes/</span>! I work <span class="w">as</span><span class="ipa">/æz/</span> a bus driver. <span class="w">All</span><span class="ipa">/ɔːl/</span> these people need tickets.” He pointed <span class="w">at</span><span class="ipa">/æt/</span> <span class="w">a few</span> stones. “<span class="w">Can</span><span class="ipa">/kæn/</span> Bear have <span class="w">one</span><span class="ipa">/wʌn/</span> too?” “<span class="w">Of course</span>! <span class="w">Would</span><span class="ipa">/wʊd/</span> you like to sit <span class="w">at</span> the back <span class="w">with</span> him?”</div><div class="cn">梅看了看四周。“你指的是这条长椅吗？”“对！我是司机。这些人都得有票。”他指了指几块石头。“小熊也能来一张吗？”“当然！你想陪它坐后排吗？”</div><div class="bar"><button id="pa2" data-a="audio/unit02-3-02.mp3" data-next="pa3">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Ben held <span class="w">out</span><span class="ipa">/aʊt/</span> a leaf <span class="w">as</span> a ticket. “<span class="w">When</span><span class="ipa">/wen/</span> do we leave?” “<span class="w">Right</span> now!” Joe made <span class="w">such a</span> loud bus noise that his dad laughed. May waited for a minute. <span class="w">Then</span><span class="ipa">/ðen/</span> she said, “I came to <span class="w">pick up</span> Bear. He&#x27;s mine. He was there to help me <span class="w">with</span> the sign.”</div><div class="cn">本递过一片树叶当车票。“我们什么时候发车？”“现在！”乔学巴士的声音可响了，把爸爸都逗笑了。梅等了一会儿才说：“我来接小熊。它是我的，刚才是陪我看牌子的。”</div><div class="bar"><button id="pa3" data-a="audio/unit02-3-03.mp3" data-next="pa4">🔊 听这段</button><button class="cnbtn">中文</button></div></div><div class="p"><div class="en">Joe looked down. “I thought I <span class="w">could</span><span class="ipa">/kʊd/</span> take him <span class="w">because</span><span class="ipa">/bɪˈkɒz/</span> I left my bus.” “I <span class="w">see</span><span class="ipa">/siː/</span>. It wasn&#x27;t your fault. <span class="w">If</span><span class="ipa">/ɪf/</span> you like, Bear <span class="w">can</span> ride to <span class="w">one</span> more stop.” Joe nodded. On that short ride, May thought of <span class="w">at least</span> three <span class="w">things</span><span class="ipa">/θɪŋz/</span> to put on the sign. But in the end she needed just two words: MAY&#x27;S HELPER.</div><div class="cn">乔低下头。“我留下了巴士，以为就能带它走。”“我明白，不怪你。你要是愿意，小熊还可以再坐一站。”乔点点头。这短短一程里，梅想到至少三件该写在牌子上的事。可最后她只用了两个词：梅的小帮手。</div><div class="bar"><button id="pa4" data-a="audio/unit02-3-04.mp3">🔊 听这段</button><button class="cnbtn">中文</button></div></div></div>
+<div class="sec" id="sec-focus"><h2>拆开看：这 8 个</h2><div class="tip">留意同一个说法在故事里怎么变形</div><div class="fc"><div class="fh"><b>out</b><span class="ipa">/aʊt/</span><i>单词</i><span>adv. 出去；在外面</span></div><div class="fcore">抓住从里面到外面的方向。</div><div class="ff"><div>ran out</div><div>held out a leaf</div></div><div class="fw">⚠️ stand outside 表示人在外面；run out 是跑出去。</div></div><div class="fc"><div class="fh"><b>see</b><span class="ipa">/siː/</span><i>单词</i><span>v. 看见；明白</span></div><div class="fcore">眼睛看见，也能用来告诉对方「我明白了」。</div><div class="ff"><div>I can see it.</div><div>Oh, I see.</div></div><div class="fw">⚠️ I see 不一定是说眼睛看到了。</div></div><div class="fc"><div class="fh"><b>thing</b><span class="ipa">/θɪŋ/</span><i>单词</i><span>n. 东西；事情</span></div><div class="fcore">不知道或不强调具体名称时，说 thing；也可以指事。</div><div class="ff"><div>one thing</div><div>three things</div></div><div class="fw">⚠️ one thing 没有 -s。</div></div><div class="fc"><div class="fh"><b>yes</b><span class="ipa">/jes/</span><i>单词</i><span>int. 是，对</span></div><div class="fcore">对问题给肯定答复；再接一句把意思说清。</div><div class="ff"><div>Yes, please.</div><div>Yes, of course.</div></div><div class="fw">⚠️ 别人提供帮助时，Yes, please 比孤零零的 Yes 自然。</div></div><div class="fc"><div class="fh"><b>no</b><span class="ipa">/nəʊ/</span><i>单词</i><span>det. 没有；int. 不</span></div><div class="fcore">no 放名词前面就表示「没有」。</div><div class="ff"><div>no toys</div><div>no bear</div></div><div class="fw">⚠️ no toys 相当于 not any toys，不说 no any toys。</div></div><div class="fc"><div class="fh"><b>when</b><span class="ipa">/wen/</span><i>单词</i><span>adv. 什么时候；conj. 当……时</span></div><div class="fcore">问时间；也可以把两个同时发生的动作连起来。</div><div class="ff"><div>When do we leave?</div><div>when I got back</div></div><div class="fw">⚠️ 直接问句用 do；when I got back 不是问句。</div></div><div class="fc"><div class="fh"><b>at least + 数量</b><i>结构</i><span>至少</span></div><div class="fcore">给出下限，实际可以更多。</div><div class="ff"><div>at least ten minutes</div><div>at least two towels</div></div><div class="fw">⚠️ 不是最多；最多是 at most。</div></div><div class="fc"><div class="fh"><b>such a(n) +（形容词 +）单数可数名词</b><i>结构</i><span>这么一个……</span></div><div class="fcore">把感叹落在整个名词短语上。</div><div class="ff"><div>such a good ear</div><div>such a dark home</div></div><div class="fw">⚠️ 说 such a good ear，不说 such good an ear。</div></div></div><div class="sec" id="sec-drill"><h2>回忆练习</h2><div class="tip">先看中文，自己把英文说出来；再点空格对答案，然后听整句、跟着读</div><div class="dr"><div class="dcn"><em>1</em>他膝盖上放着梅的小熊；填介词。</div><div class="den">He sat <span class="gap" data-ans="with">　　　</span> May&#x27;s bear on his knee.</div><div class="bar"><button data-a="audio/unit02-3-d01.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>2</em>你指的是这条长椅吗？</div><div class="den">Do you <span class="gap" data-ans="mean">　　　</span> this bench?</div><div class="bar"><button data-a="audio/unit02-3-d02.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>3</em>我的工作是开公交车；填表示身份的词。</div><div class="den">I work <span class="gap" data-ans="as">　　　</span> a bus driver.</div><div class="bar"><button data-a="audio/unit02-3-d03.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>4</em>这些人全部都要票。</div><div class="den"><span class="gap" data-ans="All">　　　</span> these people need tickets.</div><div class="bar"><button data-a="audio/unit02-3-d04.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>5</em>小熊也能来一张吗？用一个词代替 a ticket。</div><div class="den">Can Bear have <span class="gap" data-ans="one">　　　</span> too?</div><div class="bar"><button data-a="audio/unit02-3-d05.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>6</em>我们什么时候走？</div><div class="den"><span class="gap" data-ans="When">　　　</span> do we leave?</div><div class="bar"><button data-a="audio/unit02-3-d06.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>7</em>不是过一会儿，是马上。</div><div class="den"><span class="gap" data-ans="Right now">　　　</span>!</div><div class="bar"><button data-a="audio/unit02-3-d07.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>8</em>原来如此；不是说眼睛看见了。</div><div class="den">I <span class="gap" data-ans="see">　　　</span>.</div><div class="bar"><button data-a="audio/unit02-3-d08.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>9</em>我来接小熊；用 pick。</div><div class="den">I came to <span class="gap" data-ans="pick up">　　　</span> Bear.</div><div class="bar"><button data-a="audio/unit02-3-d09.mp3">🔊 听整句</button></div></div><div class="dr"><div class="dcn"><em>10</em>要是你愿意，小熊还能再坐一站。</div><div class="den"><span class="gap" data-ans="If">　　　</span> you like, Bear can ride to one more stop.</div><div class="bar"><button data-a="audio/unit02-3-d10.mp3">🔊 听整句</button></div></div><div class="reveal"><button id="revealall">全部显示答案</button></div></div><div class="sec" id="sec-speak"><h2>换成你自己的事</h2><div class="tip">每题说一句，说出声；卡住了再看参考</div><div class="sp"><div>1. 用 as 说你真实或想象中的职业。</div><details><summary>看参考说法</summary><div class="sa">I work as a cook.</div></details></div><div class="sp"><div>2. 上车前，你想问司机什么时候开车。</div><details><summary>看参考说法</summary><div class="sa">When do we leave?</div></details></div><div class="sp"><div>3. 怎么问能不能替朋友再拿一张票？</div><details><summary>看参考说法</summary><div class="sa">Can I have one more ticket for my friend?</div></details></div></div><a class="next" href="unit02-4.html">下一篇：进阶篇 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+function play(url, btn) {
+  var same = playing === btn; stop(); if (same) return;
+  audio = new Audio(url); playing = btn || null; if (btn) btn.classList.add("playing");
+  audio.onended = function () { stop(); if (btn && btn.dataset.next) { var n = document.getElementById(btn.dataset.next); if (n && allMode) { n.dataset.chain = "1"; n.click(); } } };
+  audio.play().catch(function () { stop(); });
+}
+var allMode = false;
+document.querySelectorAll(".w").forEach(function (e) { e.onclick = function (ev) { ev.stopPropagation(); allMode = false; play("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(e.textContent) + "&type=1"); }; });
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); if (!b.dataset.chain) allMode = false; delete b.dataset.chain; play(b.dataset.a, b); }; });
+document.querySelectorAll(".cnbtn").forEach(function (b) { b.onclick = function () { b.closest(".p").classList.toggle("show"); }; });
+var allBtn = document.getElementById("all");
+if (allBtn) allBtn.onclick = function () { allMode = true; var f = document.getElementById("pa1"); f.dataset.chain = "1"; f.click(); };
+document.querySelectorAll(".gap").forEach(function (g) { g.onclick = function () {
+  var open = g.classList.toggle("open"); g.textContent = open ? g.dataset.ans : "\u3000\u3000\u3000";
+}; });
+var rv = document.getElementById("revealall");
+if (rv) rv.onclick = function () {
+  var gs = document.querySelectorAll(".gap"), shut = Array.prototype.some.call(gs, function (g) { return !g.classList.contains("open"); });
+  gs.forEach(function (g) { g.classList.toggle("open", shut); g.textContent = shut ? g.dataset.ans : "\u3000\u3000\u3000"; });
+  rv.textContent = shut ? "全部收起" : "全部显示答案";
+};
+function copyFallback(t) {
+  var a = document.createElement("textarea"); a.value = t; a.setAttribute("readonly", "");
+  a.style.position = "fixed"; a.style.top = "0"; a.style.opacity = "0"; document.body.appendChild(a);
+  a.select(); a.setSelectionRange(0, t.length); var ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(a); return ok;
+}
+document.querySelectorAll(".cpbtn").forEach(function (b) { b.onclick = function (ev) {
+  ev.stopPropagation(); var t = b.dataset.copy, old = b.textContent;
+  var done = function () { b.textContent = "已复制 ✓"; b.classList.add("playing"); setTimeout(function () { b.textContent = old; b.classList.remove("playing"); }, 1500); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, function () { if (copyFallback(t)) done(); });
+  else if (copyFallback(t)) done();
+}; });
+var tg = document.querySelectorAll(".toggle [data-cn]");
+tg.forEach(function (b) { b.onclick = function () {
+  document.body.classList.toggle("show-cn", b.dataset.cn === "show");
+  tg.forEach(function (x) { x.classList.toggle("on", x === b); });
+}; });
+</script></body></html>
