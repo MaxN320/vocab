@@ -6,6 +6,59 @@
  },
  "units": [
   {
+   "unit": 2,
+   "date": "2026-11-22",
+   "review": [
+    "for a minute",
+    "help … look"
+   ],
+   "pages": [
+    {
+     "id": "unit02-1",
+     "title": "The Button in the Ear",
+     "cn": "耳朵上的纽扣"
+    }
+   ],
+   "progress": {
+    "skeleton": 4,
+    "phrase": 10,
+    "word": 40
+   },
+   "skeletons": [
+    "My name is … / I'm from … / I live in …",
+    "Hi, how are you? / Nice to meet you."
+   ],
+   "phrases": [
+    "of course",
+    "a few",
+    "pick up",
+    "at least",
+    "such a / such an"
+   ],
+   "words": [
+    "one",
+    "with",
+    "if",
+    "at",
+    "all",
+    "about",
+    "as",
+    "would",
+    "then",
+    "because",
+    "right",
+    "can",
+    "no",
+    "up",
+    "mean",
+    "out",
+    "see",
+    "thing",
+    "yes",
+    "when"
+   ]
+  },
+  {
    "unit": 1,
    "date": "2026-10-11",
    "skeletons": [
