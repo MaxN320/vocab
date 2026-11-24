@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>进阶造句</title><style>
+:root{--bg:#11131a;--card:#191c26;--card2:#1f2330;--line:#2a2f3d;--ink:#e9ecf4;--soft:#aeb4c5;--mute:#6f7689;
+--accent:#7c9cff;--green:#5ec59a;--amber:#e2b23c;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding:0 16px 48px}
+.wrap{max-width:580px;margin:0 auto}
+header{padding:22px 0 6px}
+.kicker{font-size:12px;letter-spacing:.1em;color:var(--mute)}
+h1{font-size:26px;margin:4px 0 2px}
+.sub{color:var(--soft);font-size:14px}
+.how{margin-top:10px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--soft)}
+.how b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:13px;color:var(--soft);flex-wrap:wrap}
+.toggle button{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.toggle button.on{border-color:var(--amber);color:var(--amber)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:14px}
+.p .en{font-size:17.5px;line-height:1.85}
+.p .cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--soft)}
+body.show-cn .p .cn,.p.show .cn{display:block}
+.w{color:var(--amber);font-weight:700;border-bottom:1px dashed rgba(226,178,60,.6);cursor:pointer}
+.bar{display:flex;gap:8px;margin-top:10px}
+.bar button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.bar button.playing{border-color:var(--accent);color:var(--accent)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+.list h2{font-size:15px;margin-bottom:6px}
+.row{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--amber);min-width:140px}
+.row span{color:var(--soft)}
+.row i{margin-left:auto;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.sec{margin-top:22px}
+.sec>h2{font-size:16px;margin:0 0 2px}
+.sec>.tip{font-size:13px;color:var(--mute)}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:11px 13px;margin-top:10px}
+.fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fh b{font-size:17px;color:var(--amber)}
+.fh i{font-style:normal;font-size:11.5px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.fh span{color:var(--ink);font-size:14.5px}
+.fcore{margin-top:5px;font-size:14px;color:var(--soft)}
+.ff{margin-top:7px;padding-left:10px;border-left:2px solid var(--line)}
+.ff div{font-size:14.5px;line-height:1.7}
+.fw{margin-top:7px;font-size:13.5px;color:var(--amber)}
+.dr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.dcn{font-size:14.5px;color:var(--soft)}
+.dcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.den{font-size:16.5px;line-height:1.9;margin-top:4px}
+.gap{display:inline-block;min-width:76px;text-align:center;color:var(--mute);border-bottom:2px solid var(--amber);cursor:pointer;padding:0 4px}
+.gap.open{color:var(--amber);font-weight:700}
+.dr .bar{margin-top:6px}
+.sp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px;font-size:14.5px}
+.sp details{margin-top:6px}
+.sp summary{font-size:13px;color:var(--accent);cursor:pointer}
+.sp .sa{margin-top:6px;font-size:15.5px;line-height:1.7}
+.reveal{margin-top:8px}
+.reveal button{padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);font-size:13px}
+.back{display:inline-block;margin-bottom:6px;font-size:13.5px;color:var(--accent);text-decoration:none}
+html{scroll-behavior:smooth}
+.toc{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.toc-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:5px 0}
+.toc-row+.toc-row{border-top:1px dashed var(--line)}
+.toc-row span{font-size:12px;color:var(--mute);margin-right:2px}
+.toc-row a{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--soft);text-decoration:none}
+.toc-row a.on{border-color:var(--amber);color:var(--amber)}
+#sec-text,.sec,.grp{scroll-margin-top:12px}
+.totop{position:fixed;right:14px;bottom:18px;z-index:20;padding:8px 13px;border-radius:999px;background:var(--card2);border:1px solid var(--amber);color:var(--amber);font-size:13px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+.ipa{font-size:.78em;color:var(--soft);margin-left:4px;font-weight:400;white-space:nowrap}
+.fh .ipa{font-size:13px}
+.next{display:block;margin-top:24px;padding:12px 14px;border-radius:12px;border:1px solid var(--amber);color:var(--amber);text-align:center;text-decoration:none;font-weight:600}
+
+.grp{margin-top:22px}
+.grp>h2{font-size:16px;margin:0 0 8px}
+.pat{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:10px 13px}
+.pat b{color:var(--amber);font-size:16px}
+.pat .m{color:var(--ink);font-size:14px;margin-left:6px}
+.pat ul{margin:6px 0 0 18px;font-size:13.5px;color:var(--soft);line-height:1.7}
+.mk{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:10px}
+.mcn{font-size:15px;line-height:1.7}
+.mcn em{font-style:normal;color:var(--mute);margin-right:6px}
+.mhint{font-size:12.5px;color:var(--mute);margin-top:2px}
+.mk details{margin-top:6px}
+.mk summary{font-size:13px;color:var(--accent);cursor:pointer}
+.mans{margin-top:6px;font-size:16.5px;line-height:1.8;color:var(--amber)}
+.mk .bar{margin-top:6px}
+</style></head><body><div class="wrap">
+<header><a class="back" href="../index.html#passage">← 返回</a><div class="kicker">短文 · 第 2 组 · 进阶造句</div><h1>进阶造句</h1><div class="sub">介绍自己 ／ 初次打招呼</div><nav class="toc" id="toc"><div class="toc-row"><span>本组</span><a href="unit02-1.html">1 耳朵上的纽扣</a><a href="unit02-2.html">2 两只红耳朵</a><a href="unit02-3.html">3 小熊的车票</a><a href="unit02-4.html">4 进阶：纸箱里传来的声音</a><a href="unit02-5.html">5 再添一只碗</a><a href="unit02-s.html">✍️ 骨架造句</a><a href="unit02-s2.html" class="on">✍️ 进阶造句</a></div><div class="toc-row"><span>本页</span><a href="#grp-1">介绍自己（进阶）</a><a href="#grp-2">打招呼（进阶）</a><a href="#grp-3">一问一答（进阶）</a></div></nav>
+<div class="how">还是这两个骨架，每句后面只多加一样东西：一个从句（that / because / if）或一个不定式（to …）。<b>先看中文和提示，把整句英文说出声</b>；说完再点「看答案」对照，然后点 🔊 跟读。</div></header>
+<div class="grp" id="grp-1"><h2>介绍自己（进阶）</h2><div class="pat"><b>My name is + 名字 / I’m from + 来处 / I live in + 地点</b><span class="m">讲清名字、来处或住处。</span><ul><li>名字、来处、住处是三件事。</li><li>地点是 here 时不加 in。</li></ul></div><div class="mk"><div class="mcn"><em>1</em>我住在镇上，因为我在这里工作。</div><div class="mhint">提示：I live in + 地点 + because + 原因</div><details><summary>看答案</summary><div class="mans">I live in town because I work here.</div><div class="bar"><button data-a="audio/unit02-s2-01.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>2</em>我住在学校附近，好走路去上课。</div><div class="mhint">提示：I live near + 地点 + to + 动词原形</div><details><summary>看答案</summary><div class="mans">I live near school to walk to class.</div><div class="bar"><button data-a="audio/unit02-s2-02.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>3</em>我住在家里，因为我帮爸爸做饭。</div><div class="mhint">提示：I live at home + because + 原因</div><details><summary>看答案</summary><div class="mans">I live at home because I help Dad cook.</div><div class="bar"><button data-a="audio/unit02-s2-03.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>4</em>我住在奶奶家，为了给她做饭。</div><div class="mhint">提示：I live with + 人 + to + 动词原形</div><details><summary>看答案</summary><div class="mans">I live with Gran to cook for her.</div><div class="bar"><button data-a="audio/unit02-s2-04.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>5</em>我来自约克，不知道你熟不熟那里。</div><div class="mhint">提示：I&#x27;m from + 地名，再用 if 补充</div><details><summary>看答案</summary><div class="mans">I&#x27;m from York, if you know it.</div><div class="bar"><button data-a="audio/unit02-s2-05.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>6</em>我叫乔，不过在家请叫我小乔。</div><div class="mhint">提示：My name is + 名字，用 but 补一句请求</div><details><summary>看答案</summary><div class="mans">My name is Joe, but please call me Little Joe at home.</div><div class="bar"><button data-a="audio/unit02-s2-06.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>7</em>我住在楼上，因为楼下太吵。</div><div class="mhint">提示：I live upstairs + because + 原因</div><details><summary>看答案</summary><div class="mans">I live upstairs because it&#x27;s noisy downstairs.</div><div class="bar"><button data-a="audio/unit02-s2-07.mp3">🔊 听这句</button></div></details></div></div><div class="grp" id="grp-2"><h2>打招呼（进阶）</h2><div class="pat"><b>Hi, how are you? / Nice to meet you.</b><span class="m">问候对方或回应初次见面。</span><ul><li>初次见面说 meet；熟人重逢说 see。</li><li>问候时注意听对方的回答。</li></ul></div><div class="mk"><div class="mcn"><em>8</em>嗨，既然你已经回家了，现在感觉怎么样？</div><div class="mhint">提示：How are you feeling + now that + 句子</div><details><summary>看答案</summary><div class="mans">Hi, how are you feeling now that you&#x27;re home?</div><div class="bar"><button data-a="audio/unit02-s2-08.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>9</em>今天认识你真好，因为我是新来的。</div><div class="mhint">提示：It&#x27;s nice to meet you + because + 原因</div><details><summary>看答案</summary><div class="mans">It&#x27;s nice to meet you because I&#x27;m new here.</div><div class="bar"><button data-a="audio/unit02-s2-09.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>10</em>你工作的时候感觉怎么样？</div><div class="mhint">提示：How do you feel + when + 场景</div><details><summary>看答案</summary><div class="mans">How do you feel when you&#x27;re at work?</div><div class="bar"><button data-a="audio/unit02-s2-10.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>11</em>嗨，你刚开始新工作，感觉怎么样？</div><div class="mhint">提示：How are you feeling + now that + 句子</div><details><summary>看答案</summary><div class="mans">Hi, how are you feeling now that you&#x27;ve started work?</div><div class="bar"><button data-a="audio/unit02-s2-11.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>12</em>我正需要帮忙，这时候遇见你真好。</div><div class="mhint">提示：It&#x27;s nice to meet you + when + 句子</div><details><summary>看答案</summary><div class="mans">It&#x27;s nice to meet you when I need a hand.</div><div class="bar"><button data-a="audio/unit02-s2-12.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>13</em>嗨，在家休息的时候你感觉怎么样？</div><div class="mhint">提示：How do you feel + when + 场景</div><details><summary>看答案</summary><div class="mans">Hi, how do you feel when you rest at home?</div><div class="bar"><button data-a="audio/unit02-s2-13.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>14</em>嗨，你和朋友在一起时感觉怎么样？</div><div class="mhint">提示：How do you feel + when + 场景</div><details><summary>看答案</summary><div class="mans">Hi, how do you feel when you&#x27;re with friends?</div><div class="bar"><button data-a="audio/unit02-s2-14.mp3">🔊 听这句</button></div></details></div></div><div class="grp" id="grp-3"><h2>一问一答（进阶）</h2><div class="pat"><b>打招呼 → 介绍自己</b><span class="m">先回应对方，再补一句。</span><ul><li>按 A、B 两个角色分别说。</li><li>先遮住英文，再完整读一遍。</li></ul></div><div class="mk"><div class="mcn"><em>15</em>A：你是从约克来的吗？<br>B：是的。我住在这里，因为在这里工作。</div><div class="mhint">提示：Are you from + 地点？回答后用 because</div><details><summary>看答案</summary><div class="mans">A: Are you from York?<br>B: Yes, I am. I live here because I work here.</div><div class="bar"><button data-a="audio/unit02-s2-15.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>16</em>A：你是新来的吗？<br>B：是的。我住在附近，好照顾奶奶。</div><div class="mhint">提示：Are you new here? 回答后用 to + 动词原形</div><details><summary>看答案</summary><div class="mans">A: Are you new here?<br>B: Yes, I am. I live nearby to help Gran.</div><div class="bar"><button data-a="audio/unit02-s2-16.mp3">🔊 听这句</button></div></details></div><div class="mk"><div class="mcn"><em>17</em>A：你是从镇上来的吗？<br>B：不是。我住在农场，因为我喜爱动物。</div><div class="mhint">提示：Are you from + 地点？否定回答后用 because</div><details><summary>看答案</summary><div class="mans">A: Are you from town?<br>B: No, I&#x27;m not. I live on a farm because I love animals.</div><div class="bar"><button data-a="audio/unit02-s2-17.mp3">🔊 听这句</button></div></details></div></div>
+<a class="next" href="../index.html#passage">做完了，回到短文模块 →</a>
+</div><a class="totop" href="#toc">目录</a><script>
+var audio = null, playing = null;
+function stop() { if (audio) audio.pause(); if (playing) playing.classList.remove("playing"); playing = null; }
+document.querySelectorAll("[data-a]").forEach(function (b) { b.onclick = function () {
+  var same = playing === b; stop(); if (same) return;
+  audio = new Audio(b.dataset.a); playing = b; b.classList.add("playing");
+  audio.onended = stop; audio.play().catch(stop);
+}; });
+</script></body></html>
