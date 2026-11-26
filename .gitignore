@@ -1,0 +1,6 @@
+
+# 音频文件不入库（2026-11-24）
+tts/
+cards/audio/
+passage/audio/
+*.mp3
